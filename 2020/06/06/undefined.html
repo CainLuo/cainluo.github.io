@@ -11,8 +11,8 @@
     <meta name="google" content="notranslate">
     <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
     <meta name="description" content="在这个iOS教程中，你将学习如何实现一个集合视图与UICollectionViewDiffableDataSource和NSDiffableDataSourceSnapshot。
-版本
-Swift ,"> 
+
+注意: Swif,"> 
     <meta name="author" content="CainLuo"> 
     <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
@@ -65,9 +65,9 @@ Swift ,">
         </div>
         <div class="content markdown">
             <p>在这个iOS教程中，你将学习如何实现一个集合视图与UICollectionViewDiffableDataSource和NSDiffableDataSourceSnapshot。</p>
-<h4 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h4><ul>
-<li>Swift 5, iOS 13, Xcode 11</li>
-</ul>
+<blockquote>
+<p>注意: Swift 5, iOS 13, Xcode 11</p>
+</blockquote>
 <p>在iOS 13中，苹果对“UICollectionView”API进行了重大更新:“UICollectionViewDiffableDataSource”。这个新的API比复杂、脆弱和容易出错的“UICollectionViewDataSource”API更加灵活和声明性。</p>
 <p>在本教程中，您将学习如何:</p>
 <ul>
@@ -328,7 +328,7 @@ Swift ,">
     </div>
     
         <div class='side'>
-            <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#版本"><span class="toc-number">1.</span> <span class="toc-text">版本</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开始"><span class="toc-number"></span> <span class="toc-text">开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UICollectionViewDiffableDataSource的好处"><span class="toc-number"></span> <span class="toc-text">UICollectionViewDiffableDataSource的好处</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建一个可扩散的数据源"><span class="toc-number"></span> <span class="toc-text">创建一个可扩散的数据源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现Hashable"><span class="toc-number"></span> <span class="toc-text">实现Hashable</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置可扩散数据源"><span class="toc-number"></span> <span class="toc-text">配置可扩散数据源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用NSDiffableDataSourceSnapshot"><span class="toc-number"></span> <span class="toc-text">使用NSDiffableDataSourceSnapshot</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决搜索"><span class="toc-number"></span> <span class="toc-text">解决搜索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多个部分"><span class="toc-number"></span> <span class="toc-text">多个部分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#选项之一"><span class="toc-number"></span> <span class="toc-text">选项之一</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#选择之二"><span class="toc-number">1.</span> <span class="toc-text">选择之二</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Section类"><span class="toc-number"></span> <span class="toc-text">创建Section类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#采用新的Section类"><span class="toc-number"></span> <span class="toc-text">采用新的Section类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#再次修正搜索"><span class="toc-number"></span> <span class="toc-text">再次修正搜索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#补充意见"><span class="toc-number"></span> <span class="toc-text">补充意见</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#该何去何从"><span class="toc-number"></span> <span class="toc-text">该何去何从?</span></a>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始"><span class="toc-number">1.</span> <span class="toc-text">开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UICollectionViewDiffableDataSource的好处"><span class="toc-number">2.</span> <span class="toc-text">UICollectionViewDiffableDataSource的好处</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建一个可扩散的数据源"><span class="toc-number">3.</span> <span class="toc-text">创建一个可扩散的数据源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现Hashable"><span class="toc-number">4.</span> <span class="toc-text">实现Hashable</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置可扩散数据源"><span class="toc-number">5.</span> <span class="toc-text">配置可扩散数据源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用NSDiffableDataSourceSnapshot"><span class="toc-number">6.</span> <span class="toc-text">使用NSDiffableDataSourceSnapshot</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决搜索"><span class="toc-number">7.</span> <span class="toc-text">解决搜索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多个部分"><span class="toc-number">8.</span> <span class="toc-text">多个部分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#选项之一"><span class="toc-number">8.1.</span> <span class="toc-text">选项之一</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#选择之二"><span class="toc-number">8.1.1.</span> <span class="toc-text">选择之二</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Section类"><span class="toc-number">9.</span> <span class="toc-text">创建Section类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#采用新的Section类"><span class="toc-number">10.</span> <span class="toc-text">采用新的Section类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#再次修正搜索"><span class="toc-number">11.</span> <span class="toc-text">再次修正搜索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#补充意见"><span class="toc-number">12.</span> <span class="toc-text">补充意见</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#该何去何从"><span class="toc-number">13.</span> <span class="toc-text">该何去何从?</span></a></li></ol>
         </div>
     
 </div>
