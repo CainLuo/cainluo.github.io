@@ -5,12 +5,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Source - CainLuo</title>
+    <title>Collection View 和 Diffable Data Source - CainLuo</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate">
     <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
-    
+    <meta name="description" content="在这个iOS教程中，你将学习如何实现一个集合视图与UICollectionViewDiffableDataSource和NSDiffableDataSourceSnapshot。
+
+注意: Swif,"> 
     <meta name="author" content="CainLuo"> 
     <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
@@ -35,7 +37,7 @@
     <div class="bar" style="width: 0;"></div>
     <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
     <div title="播放/暂停" class="icon-play"></div>
-    <h3 class="subtitle">Source</h3>
+    <h3 class="subtitle">Collection View 和 Diffable Data Source</h3>
     <div class="social">
         <!--<div class="like-icon">-->
             <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
@@ -53,14 +55,250 @@
     <div class="section">
         <div class="article">
     <div class='main'>
-        <h1 class="title">Source</h1>
+        <h1 class="title">Collection View 和 Diffable Data Source</h1>
         <div class="stuff">
             <span>六月 06, 2020</span>
             
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/Swift/">Swift</a></li></ul>
+
 
         </div>
         <div class="content markdown">
-            
+            <p>在这个iOS教程中，你将学习如何实现一个集合视图与UICollectionViewDiffableDataSource和NSDiffableDataSourceSnapshot。</p>
+<blockquote>
+<p>注意: Swift 5, iOS 13, Xcode 11</p>
+</blockquote>
+<p>在iOS 13中，苹果对“UICollectionView”API进行了重大更新:“UICollectionViewDiffableDataSource”。这个新的API比复杂、脆弱和容易出错的“UICollectionViewDataSource”API更加灵活和声明性。</p>
+<p>在本教程中，您将学习如何:</p>
+<ul>
+<li>用新的“UICollectionViewDiffableDataSource”替换旧的“UICollectionViewDataSource”</li>
+<li>用“NSDiffableDataSourceSnapshot”。</li>
+<li>向数据源添加节。</li>
+<li>向数据源添加补充视图。</li>
+</ul>
+<p>此外，您将看到使用这种新类型的数据源使更改具有动画效果是多么容易。我希望你对开始感到兴奋!</p>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>首先使用本教程顶部或底部的“下载材料”按钮下载项目材料。</p>
+<p>这个项目叫做RayTube，它允许你浏览一系列的RayWenderlich视频课程，搜索一个特定的课程，并点击它来查看更多的细节。</p>
+<p>首先，打开“starter project”。构建和运行。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2020/03/Simulator-Screen-Shot-iPhone-11-Pro-2020-03-08-at-08.52.33-231x500.png" alt="UICollectionView with RayWenderlich courses as collection view cells."></p>
+<p>你会看到一系列的RayWenderlich视频。点击视频查看详细信息。此外，尝试搜索一个特定的视频标题使用搜索栏。</p>
+<p>目前，在执行搜索查询时，过滤后的视频不会被动画化。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2020/02/iphone-starter-search-noanim.gif" alt="The search results appearing without animation as the user searches"></p>
+<p>显然，这并不理想。这个UI看起来断断续续的，这可能不是你想要的动画。你需要那个平滑的动画!在添加可扩散的数据源时，您还可以自动地解决这个问题。</p>
+<p>什么是UICollectionViewDiffableDataSource?</p>
+<p>在iOS 13之前，你需要通过采用“UICollectionView数据源”来配置一个“UICollectionView”的数据源。这个协议告诉集合视图显示什么单元格、显示多少单元格、显示单元格在哪个部分，等等。</p>
+<blockquote>
+<p>注意: 如果你以前没有使用过“UICollectionView”，请查看<a href="https://www.raywenderlich.com/9334-uicollectionview-tutorial-getting-started" target="_blank" rel="noopener">UICollectionView教程:Getting Started</a>来了解它是如何工作的。</p>
+</blockquote>
+<p>新的“UICollectionViewDiffableDataSource”抽象了大量的“UICollectionViewDataSource”的逻辑。这在处理集合视图的数据源时为客户端代码错误留下更少的空间。</p>
+<p>您不是告诉数据源显示多少项，而是告诉它显示哪些部分和项。</p>
+<p>“UICollectionViewDiffableDataSource”的“可扩散”部分意味着无论何时更新所显示的项，集合视图都会自动计算更新后的集合与先前显示的集合之间的差异。这又将导致集合视图将更改(如更新、插入和删除)设置为动画。</p>
+<h2 id="UICollectionViewDiffableDataSource的好处"><a href="#UICollectionViewDiffableDataSource的好处" class="headerlink" title="UICollectionViewDiffableDataSource的好处"></a>UICollectionViewDiffableDataSource的好处</h2><p>以下是实现“UICollectionViewDiffableDataSource”的三个好处:</p>
+<ol>
+<li><em>自动数据更改动画</em>:无论何时添加、更新或删除数据，都可以自动获得数据更改动画。</li>
+<li>自动数据同步:要利用没有UICollectionViewDiffableDataSource的集合视图的标准动画，您必须手动管理和同步集合视图和数据源之间的数据更改。如果你在一个同步操作中有偏差，你会看到这样的错误:</li>
+</ol>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2020/03/Screen-Shot-2020-03-09-at-7.09.27-PM.png" alt="Assertion error because the collection view update is invalid"></p>
+<ol start="3">
+<li>减少代码: 总的来说，您可以编写更少的代码，并受益于集合视图的数据更改动画和数据同步。</li>
+</ol>
+<p>聪明,对吧?那么，如何使用新的UICollectionViewDiffableDataSource呢?下节课再详细介绍。</p>
+<h2 id="创建一个可扩散的数据源"><a href="#创建一个可扩散的数据源" class="headerlink" title="创建一个可扩散的数据源"></a>创建一个可扩散的数据源</h2><p>‘UICollectionViewDiffableDataSource’有两种通用类型:Section类型和item类型。如果您以前使用过集合视图，那么应该熟悉节和项的概念。</p>
+<p>要创建您的section类型，请在<em>VideosViewController.swift</em>中添加下面的代码“videoList”:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Section</span> </span>&#123;</span><br><span class="line">  <span class="keyword">case</span> main</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>既然已经创建了“Section”enum，现在就可以创建可扩散的数据源了。</p>
+<p>为了保持简洁，为数据源创建一个类型别名。这减少了在需要配置数据源以及每次需要引用相同数据类型时编写“UICollectionViewDiffableDataSource”值类型的需要。</p>
+<p>在section类型下面，编写以下代码来声明’ DataSource ‘类型别名:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typealias</span> <span class="type">DataSource</span> = <span class="type">UICollectionViewDiffableDataSource</span>&lt;<span class="type">Section</span>, <span class="type">Video</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>太棒了!构建和运行。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2020/03/VideoHashableError-650x38.png" alt="An Xcode error saying Video doesn&#39;t conform to Hashable"></p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2020/03/Screen-Shot-2020-03-05-at-1.58.59-PM-480x285.png" alt="Swift bird saying &quot;Uh oh... What is Hashable?&quot;"></p>
+<p>事实证明，你的视频数据类型需要符合<code>Hashable</code>。</p>
+<h2 id="实现Hashable"><a href="#实现Hashable" class="headerlink" title="实现Hashable"></a>实现Hashable</h2><p><code>Hashable</code>允许可扩散的数据源在视频被添加、删除或更新时执行更新。为了知道两个元素是否相等，需要符合协议。</p>
+<p>打开<code>Video.swift</code>。让<code>Video</code>遵循<code>Hashable</code>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Video</span>: <span class="title">Hashable</span> </span>&#123;</span><br></pre></td></tr></table></figure>
+
+<p>接下来，您需要实现协议方法。在<code>init(title:thumbnail:lessonCount:link:)</code>下面添加以下代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">hash</span><span class="params">(into hasher: <span class="keyword">inout</span> Hasher)</span></span> &#123;</span><br><span class="line">  <span class="comment">// 2</span></span><br><span class="line">  hasher.combine(id)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line"><span class="keyword">static</span> <span class="function"><span class="keyword">func</span> == <span class="params">(lhs: Video, rhs: Video)</span></span> -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">  lhs.id == rhs.id</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>你是这样做的:</p>
+<ol>
+<li>实现了<code>hash(into:)</code>，它对给定的组件进行散列。</li>
+<li>将<code>Video</code>的<code>id</code>添加到散列中。对于视频，只需要ID就可以知道两个视频是否相等。</li>
+<li>实现了<code>Equatable</code>协议的<code>==</code>函数，因为所有<code>Hashable</code>对象也必须是<code>Equatable</code>。</li>
+</ol>
+<p>您的项目现在应该能够再次构建，没有任何错误。</p>
+<h2 id="配置可扩散数据源"><a href="#配置可扩散数据源" class="headerlink" title="配置可扩散数据源"></a>配置可扩散数据源</h2><p>打开<code>VideosViewController.swift</code>。现在，<code>Video</code>符合<code>Hashable</code>，您可以完成创建可扩散的数据源。</p>
+<p>在<code>viewDidLoad()</code>下面，添加以下代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">makeDataSource</span><span class="params">()</span></span> -&gt; <span class="type">DataSource</span> &#123;</span><br><span class="line">  <span class="comment">// 1</span></span><br><span class="line">  <span class="keyword">let</span> dataSource = <span class="type">DataSource</span>(</span><br><span class="line">    collectionView: collectionView,</span><br><span class="line">    cellProvider: &#123; (collectionView, indexPath, video) -&gt;</span><br><span class="line">      <span class="type">UICollectionViewCell?</span> <span class="keyword">in</span></span><br><span class="line">      <span class="comment">// 2</span></span><br><span class="line">      <span class="keyword">let</span> cell = collectionView.dequeueReusableCell(</span><br><span class="line">        withReuseIdentifier: <span class="string">"VideoCollectionViewCell"</span>,</span><br><span class="line">        <span class="keyword">for</span>: indexPath) <span class="keyword">as</span>? <span class="type">VideoCollectionViewCell</span></span><br><span class="line">      cell?.video = video</span><br><span class="line">      <span class="keyword">return</span> cell</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">return</span> dataSource</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这里:</p>
+<ol>
+<li>创建一个’ dataSource ‘，传入’ collectionView ‘和’ cellProvider ‘回调。</li>
+<li>在“cellProvider”回调函数中，你返回一个“VideoCollectionViewCell”。你在这个函数中编写的代码与你在’ UICollectionViewDataSource’s <code>collectionView(_:cellForItemAt:)</code>中看到的代码相同。</li>
+</ol>
+<p>现在您已经实现了’ makeDataSource() ‘，您可以删除’ ‘ // MARK: - UICollectionViewDataSource ‘ ‘下的数据源方法。具体来说，删除以下两个方法:</p>
+<ul>
+<li><code>collectionView (_: numberOfItemsInSection)</code></li>
+<li><code>collectionView (_: cellForItemAt)</code></li>
+</ul>
+<p>您可以删除这些方法，因为可扩散数据源会自动为您处理这些功能。</p>
+<p>接下来，是时候实际使用您努力开发的“makeDataSource()”了!</p>
+<p>在“VideosViewController”中，在顶部添加以下属性:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="built_in">lazy</span> <span class="keyword">var</span> dataSource = makeDataSource()</span><br></pre></td></tr></table></figure>
+
+<p>这将为集合视图创建数据源。必须将其标记为<code>lazy</code>，因为Swift需要<code>VidoesViewController</code>完成初始化，然后才能调用<code>makeDataSource()</code>。</p>
+<p>最后，在<code>collectionView(_:didSelectItemAt:)</code>中替换:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> video = videoList[indexPath.row]</span><br></pre></td></tr></table></figure>
+
+<p>…为:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> video = dataSource.itemIdentifier(<span class="keyword">for</span>: indexPath) <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这确保应用程序直接从“数据源”检索视频。这很重要，因为“UICollectionViewDiffableDataSource”可能在后台工作，使“videoList”与当前显示的数据不一致。</p>
+<p>构建和运行。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2020/02/Simulator-Screen-Shot-iPhone-11-Pro-2020-02-25-at-21.54.39-148x320.png" alt="The RayTube app with no videos displayed"></p>
+<p>唔……啥都没有。</p>
+<p>在集合视图可以显示任何单元格之前，您需要告诉它要显示什么数据。这就是snapshots的用武之地!</p>
+<h2 id="使用NSDiffableDataSourceSnapshot"><a href="#使用NSDiffableDataSourceSnapshot" class="headerlink" title="使用NSDiffableDataSourceSnapshot"></a>使用NSDiffableDataSourceSnapshot</h2><p>‘ NSDiffableDataSourceSnapshot ‘存储你的节和项目，其中可扩散数据源引用了解有多少节和单元格显示。</p>
+<p>就像您为“UICollectionViewDiffableDataSource”创建了一个类型别名一样，您也可以创建一个“Snapshot”类型别名。</p>
+<p>添加以下类型别名到“VideosViewController”:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typealias</span> <span class="type">Snapshot</span> = <span class="type">NSDiffableDataSourceSnapshot</span>&lt;<span class="type">Section</span>, <span class="type">Video</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>‘ NSDiffableDataSourceSnapshot ‘和’ UICollectionViewDiffableDataSource ‘一样，取一个section类型和一个item类型:’ section ‘和’ Video ‘。</p>
+<p>现在，是创建快照的时候了!</p>
+<p>在“viewDidLoad()”下面，添加以下方法:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">applySnapshot</span><span class="params">(animatingDifferences: Bool = <span class="literal">true</span>)</span></span> &#123;</span><br><span class="line">  <span class="comment">// 2</span></span><br><span class="line">  <span class="keyword">var</span> snapshot = <span class="type">Snapshot</span>()</span><br><span class="line">  <span class="comment">// 3</span></span><br><span class="line">  snapshot.appendSections([.main])</span><br><span class="line">  <span class="comment">// 4</span></span><br><span class="line">  snapshot.appendItems(videoList)</span><br><span class="line">  <span class="comment">// 5</span></span><br><span class="line">  dataSource.apply(snapshot, animatingDifferences: animatingDifferences)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>与“applySnapshot (animatingDifferences:)“你:</p>
+<ol>
+<li>创建一个将快照应用于数据源的新方法。该方法接受一个布尔值，该布尔值决定对数据源的更改是否应该动画化。</li>
+<li>创建一个新的“快照”对象。</li>
+<li>添加”。主’节到快照。这是您目前为应用程序定义的惟一节类型。</li>
+<li>将视频数组添加到快照。</li>
+<li>告诉’ dataSource ‘关于最新快照，以便它可以相应地更新和动画。</li>
+</ol>
+<p>太棒了!现在在viewDidLoad()的末尾调用这个方法:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">applySnapshot(animatingDifferences: <span class="literal">false</span>)</span><br></pre></td></tr></table></figure>
+
+<p>构建和运行。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2020/02/Simulator-Screen-Shot-iPhone-11-Pro-2020-02-13-at-13.52.24-148x320.png" alt="The RayTube app with multiple videos on screen"></p>
+<p>它的工作原理!但有个小问题。搜索某个东西，您会注意到用户界面根本没有更新。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2020/02/iphone-snapshots-search-notworking.gif" alt="The user types text into the search field, but the UI doesn&#39;t update"></p>
+<p>幸运的是，修复搜索功能非常简单!</p>
+<h2 id="解决搜索"><a href="#解决搜索" class="headerlink" title="解决搜索"></a>解决搜索</h2><p>在<code>updateSearchResults(for:)</code>内替换:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">collectionView.reloadData()</span><br></pre></td></tr></table></figure>
+
+<p>为:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">applySnapshot()</span><br></pre></td></tr></table></figure>
+
+<p>不是重新加载整个集合视图，而是向数据库应用一个新的快照，这将导致更改为animate。</p>
+<p>构建和运行。在搜索栏中输入<em>No</em>，可以看到UI动画:</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2020/02/phone-animation.gif" alt="The user types text into the search field, and the UI animates to reflect their search query"></p>
+<p>如果你在iPad上运行这个应用程序，动画会更复杂，而且是免费的!</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2020/02/ipad-gif.gif" alt="The user types text into the iPad search field, and the UI animates to reflect their search query"></p>
+<p>成功!接下来，您将学习如何实现多个部分。</p>
+<h2 id="多个部分"><a href="#多个部分" class="headerlink" title="多个部分"></a>多个部分</h2><p>有两种方法可以使用可扩散数据源API实现多个部分。</p>
+<h3 id="选项之一"><a href="#选项之一" class="headerlink" title="选项之一"></a>选项之一</h3><p>还记得“Section”enum吗?</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Section</span> </span>&#123;</span><br><span class="line">  <span class="keyword">case</span> main</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>您可以向枚举添加另一种情况来实现多个部分。当您想要显示一组预定义的区段时，这个选项非常有用。例如，一个消息应用程序有一个“朋友”部分和一个“其他”部分。</p>
+<p>然而，如果你没有简单的方法知道你想要你的应用显示什么部分，选择二是为你!</p>
+<h3 id="选择之二"><a href="#选择之二" class="headerlink" title="选择之二"></a>选择之二</h3><p>第二个选项是将“Section”从值类型更改为类。之后，您可以自由地创建任意数量的这些对象，而不必预先定义每个部分。</p>
+<p>如果您的服务器提供可以随时更改的类别，或者允许用户动态创建节，那么这个选项非常好。</p>
+<p>因为RayTube应用程序有很多部分，而且如果你的数据改变，这些部分可能会改变，所以你会选择这个选项。</p>
+<h2 id="创建Section类"><a href="#创建Section类" class="headerlink" title="创建Section类"></a>创建Section类</h2><p>在<code>VideosViewController.swift</code>内部，删除以下代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Section</span> </span>&#123;</span><br><span class="line">  <span class="keyword">case</span> main</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来，创建一个名为<em>Section.swift</em>的新文件。添加以下代码到该文件:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Section</span>: <span class="title">Hashable</span> </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> id = <span class="type">UUID</span>()</span><br><span class="line">  <span class="comment">// 2</span></span><br><span class="line">  <span class="keyword">var</span> title: <span class="type">String</span></span><br><span class="line">  <span class="keyword">var</span> videos: [<span class="type">Video</span>]</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">init</span>(title: <span class="type">String</span>, videos: [<span class="type">Video</span>]) &#123;</span><br><span class="line">    <span class="keyword">self</span>.title = title</span><br><span class="line">    <span class="keyword">self</span>.videos = videos</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">hash</span><span class="params">(into hasher: <span class="keyword">inout</span> Hasher)</span></span> &#123;</span><br><span class="line">    hasher.combine(id)</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> == <span class="params">(lhs: Section, rhs: Section)</span></span> -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">    lhs.id == rhs.id</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>你是这样做的:</p>
+<ol>
+<li>就像“Video”类一样，你也让“Section”遵循“Hashable”协议。</li>
+<li>“Section”有两个重要属性，你一会儿会用到它们来对视频进行分类:“title”和“videos”。</li>
+</ol>
+<p>接下来，您需要创建一些section。打开视频。迅速*和向下滚动。您会注意到类的一个扩展，它具有一个名为“allVideos”的静态属性。这个数组存储应用程序显示的所有视频。</p>
+<p>既然要引入多个部分，这个属性就不够了。删除<em>所有代码</em>下面的’ //标记:-视频样本数据’。</p>
+<p>这会在使用’Video.allVideos’的地方引起问题，但是现在不要担心。你马上就能修好它。</p>
+<p>接下来,打开* Section.swift *。然后粘贴以下代码在文件的底部:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">Section</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">var</span> allSections: [<span class="type">Section</span>] = [</span><br><span class="line">    <span class="type">Section</span>(title: <span class="string">"SwiftUI"</span>, videos: [</span><br><span class="line">      <span class="type">Video</span>(</span><br><span class="line">        title: <span class="string">"SwiftUI"</span>,</span><br><span class="line">        thumbnail: <span class="type">UIImage</span>(named: <span class="string">"swiftui"</span>),</span><br><span class="line">        lessonCount: <span class="number">37</span>,</span><br><span class="line">        link: <span class="type">URL</span>(string: <span class="string">"https://www.raywenderlich.com/4001741-swiftui"</span>)</span><br><span class="line">      )</span><br><span class="line">    ]),</span><br><span class="line">    <span class="type">Section</span>(title: <span class="string">"UIKit"</span>, videos: [</span><br><span class="line">      <span class="type">Video</span>(</span><br><span class="line">        title: <span class="string">"Demystifying Views in iOS"</span>,</span><br><span class="line">        thumbnail: <span class="type">UIImage</span>(named: <span class="string">"views"</span>),</span><br><span class="line">        lessonCount: <span class="number">26</span>,</span><br><span class="line">        link:</span><br><span class="line">        <span class="type">URL</span>(string:</span><br><span class="line">          <span class="string">"https://www.raywenderlich.com/4518-demystifying-views-in-ios"</span>)</span><br><span class="line">      ),</span><br><span class="line">      <span class="type">Video</span>(</span><br><span class="line">        title: <span class="string">"Reproducing Popular iOS Controls"</span>,</span><br><span class="line">        thumbnail: <span class="type">UIImage</span>(named: <span class="string">"controls"</span>),</span><br><span class="line">        lessonCount: <span class="number">31</span>,</span><br><span class="line">        link: <span class="type">URL</span>(string: <span class="string">"""</span></span><br><span class="line"><span class="string">          https://www.raywenderlich.com/5298-reproducing</span></span><br><span class="line"><span class="string">          -popular-ios-controls</span></span><br><span class="line"><span class="string">          """</span>)</span><br><span class="line">      )</span><br><span class="line">    ]),</span><br><span class="line">    <span class="type">Section</span>(title: <span class="string">"Frameworks"</span>, videos: [</span><br><span class="line">      <span class="type">Video</span>(</span><br><span class="line">        title: <span class="string">"Fastlane for iOS"</span>,</span><br><span class="line">        thumbnail: <span class="type">UIImage</span>(named: <span class="string">"fastlane"</span>),</span><br><span class="line">        lessonCount: <span class="number">44</span>,</span><br><span class="line">        link: <span class="type">URL</span>(string:</span><br><span class="line">          <span class="string">"https://www.raywenderlich.com/1259223-fastlane-for-ios"</span>)</span><br><span class="line">      ),</span><br><span class="line">      <span class="type">Video</span>(</span><br><span class="line">        title: <span class="string">"Beginning RxSwift"</span>,</span><br><span class="line">        thumbnail: <span class="type">UIImage</span>(named: <span class="string">"rxswift"</span>),</span><br><span class="line">        lessonCount: <span class="number">39</span>,</span><br><span class="line">        link: <span class="type">URL</span>(string:</span><br><span class="line">          <span class="string">"https://www.raywenderlich.com/4743-beginning-rxswift"</span>)</span><br><span class="line">      )</span><br><span class="line">    ]),</span><br><span class="line">    <span class="type">Section</span>(title: <span class="string">"Miscellaneous"</span>, videos: [</span><br><span class="line">      <span class="type">Video</span>(</span><br><span class="line">        title: <span class="string">"Data Structures &amp; Algorithms in Swift"</span>,</span><br><span class="line">        thumbnail: <span class="type">UIImage</span>(named: <span class="string">"datastructures"</span>),</span><br><span class="line">        lessonCount: <span class="number">29</span>,</span><br><span class="line">        link: <span class="type">URL</span>(string: <span class="string">"""</span></span><br><span class="line"><span class="string">          https://www.raywenderlich.com/977854-data-structures</span></span><br><span class="line"><span class="string">          -algorithms-in-swift</span></span><br><span class="line"><span class="string">        """</span>)</span><br><span class="line">      ),</span><br><span class="line">      <span class="type">Video</span>(</span><br><span class="line">        title: <span class="string">"Beginning ARKit"</span>,</span><br><span class="line">        thumbnail: <span class="type">UIImage</span>(named: <span class="string">"arkit"</span>),</span><br><span class="line">        lessonCount: <span class="number">46</span>,</span><br><span class="line">        link: <span class="type">URL</span>(string:</span><br><span class="line">          <span class="string">"https://www.raywenderlich.com/737368-beginning-arkit"</span>)</span><br><span class="line">      ),</span><br><span class="line">      <span class="type">Video</span>(</span><br><span class="line">        title: <span class="string">"Machine Learning in iOS"</span>,</span><br><span class="line">        thumbnail: <span class="type">UIImage</span>(named: <span class="string">"machinelearning"</span>),</span><br><span class="line">        lessonCount: <span class="number">15</span>,</span><br><span class="line">        link: <span class="type">URL</span>(string: <span class="string">"""</span></span><br><span class="line"><span class="string">          https://www.raywenderlich.com/1320561-machine-learning-in-ios</span></span><br><span class="line"><span class="string">        """</span>)</span><br><span class="line">      ),</span><br><span class="line">      <span class="type">Video</span>(</span><br><span class="line">        title: <span class="string">"Push Notifications"</span>,</span><br><span class="line">        thumbnail: <span class="type">UIImage</span>(named: <span class="string">"notifications"</span>),</span><br><span class="line">        lessonCount: <span class="number">33</span>,</span><br><span class="line">        link: <span class="type">URL</span>(string:</span><br><span class="line">          <span class="string">"https://www.raywenderlich.com/1258151-push-notifications"</span>)</span><br><span class="line">      ),</span><br><span class="line">    ])</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>唷，很多代码。这里创建了一个静态属性“allSections”，它有四个部分，每个部分有一个或多个视频。这基本上只是虚拟数据——在一个完全成熟的应用程序中，你可以从服务器获取这些信息。</p>
+<p>有了这个，你现在可以使用“Section”访问应用程序的<code>Section.allSections</code>属性。</p>
+<h2 id="采用新的Section类"><a href="#采用新的Section类" class="headerlink" title="采用新的Section类"></a>采用新的Section类</h2><p>回到VideosViewController.swift*。</p>
+<p>替换:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">var</span> videoList = <span class="type">Video</span>.allVideos</span><br></pre></td></tr></table></figure>
+
+<p>为:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">var</span> sections = <span class="type">Section</span>.allSections</span><br></pre></td></tr></table></figure>
+
+<p>接下来，你需要更新“applySnapshot(animatingDifferences:)”来处理“Section”。</p>
+<p>在“applySnapshot(animatingDifferences:)”中替换以下代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">snapshot.appendSections([.main])</span><br><span class="line">snapshot.appendItems(videos)</span><br></pre></td></tr></table></figure>
+
+<p>为:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">snapshot.appendSections(sections)</span><br><span class="line">sections.forEach &#123; section <span class="keyword">in</span></span><br><span class="line">  snapshot.appendItems(section.videos, toSection: section)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里有两个变化。首先，将“sections”数组追加到快照。其次，对每个部分进行循环，并将其项(视频)添加到快照。</p>
+<p>您还可以显式地指定每个视频的节，因为既然有多个节，数据源就不能正确地推断出条目的节。</p>
+<h2 id="再次修正搜索"><a href="#再次修正搜索" class="headerlink" title="再次修正搜索"></a>再次修正搜索</h2><p>现在应用程序中已经有了section，需要再次修复搜索功能。这是最后一次了，我保证。前面处理搜索查询的方法返回了一个视频数组，因此需要编写一个返回section数组的新方法。</p>
+<p>用以下方法替换“filteredVideos(for:)”:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">filteredSections</span><span class="params">(<span class="keyword">for</span> queryOrNil: String?)</span></span> -&gt; [<span class="type">Section</span>] &#123;</span><br><span class="line">  <span class="keyword">let</span> sections = <span class="type">Section</span>.allSections</span><br><span class="line"></span><br><span class="line">  <span class="keyword">guard</span> </span><br><span class="line">    <span class="keyword">let</span> query = queryOrNil, </span><br><span class="line">    !query.isEmpty </span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> sections</span><br><span class="line">  &#125;</span><br><span class="line">    </span><br><span class="line">  <span class="keyword">return</span> sections.<span class="built_in">filter</span> &#123; section <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">var</span> matches = section.title.lowercased().<span class="built_in">contains</span>(query.lowercased())</span><br><span class="line">    <span class="keyword">for</span> video <span class="keyword">in</span> section.videos &#123;</span><br><span class="line">      <span class="keyword">if</span> video.title.lowercased().<span class="built_in">contains</span>(query.lowercased()) &#123;</span><br><span class="line">        matches = <span class="literal">true</span></span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> matches</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个新过滤器返回名称与搜索条件匹配的所有部分，以及包含标题与搜索匹配的视频的部分。</p>
+<p>在“updateSearchResults(for:)”,替换:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">videoList = filteredVideos(<span class="keyword">for</span>: searchController.searchBar.text)</span><br></pre></td></tr></table></figure>
+
+<p>…为:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sections = filteredSections(<span class="keyword">for</span>: searchController.searchBar.text)</span><br></pre></td></tr></table></figure>
+
+<p>这将关闭刚刚实现的基于扇区的新版本的搜索过滤器。</p>
+<p>唷!那真是一次冒险。</p>
+<p>你可以在iPad上看得更清楚，所以使用iPad模拟器。构建和运行。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2020/03/ipadcategories.png" alt="The videos are separated into sections"></p>
+<p>太棒了!视频分类!但是，没有一个简单的方法可以看出视频属于哪一类。</p>
+<h2 id="补充意见"><a href="#补充意见" class="headerlink" title="补充意见"></a>补充意见</h2><p>要将页眉添加到节中，您需要实现补充页眉视图。不要担心，因为这并不像听起来那么复杂。</p>
+<p>首先，创建一个名为<em>SectionHeaderReusableView.swift</em>的新文件。添加以下代码到该文件:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SectionHeaderReusableView</span>: <span class="title">UICollectionReusableView</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">var</span> reuseIdentifier: <span class="type">String</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="type">String</span>(describing: <span class="type">SectionHeaderReusableView</span>.<span class="keyword">self</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 2</span></span><br><span class="line">  <span class="built_in">lazy</span> <span class="keyword">var</span> titleLabel: <span class="type">UILabel</span> = &#123;</span><br><span class="line">    <span class="keyword">let</span> label = <span class="type">UILabel</span>()</span><br><span class="line">    label.translatesAutoresizingMaskIntoConstraints = <span class="literal">false</span></span><br><span class="line">    label.font = <span class="type">UIFont</span>.systemFont(</span><br><span class="line">      ofSize: <span class="type">UIFont</span>.preferredFont(forTextStyle: .title1).pointSize,</span><br><span class="line">      weight: .bold)</span><br><span class="line">    label.adjustsFontForContentSizeCategory = <span class="literal">true</span></span><br><span class="line">    label.textColor = .label</span><br><span class="line">    label.textAlignment = .<span class="keyword">left</span></span><br><span class="line">    label.numberOfLines = <span class="number">1</span></span><br><span class="line">    label.setContentCompressionResistancePriority(</span><br><span class="line">      .defaultHigh, </span><br><span class="line">      <span class="keyword">for</span>: .horizontal)</span><br><span class="line">    <span class="keyword">return</span> label</span><br><span class="line">  &#125;()</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">override</span> <span class="keyword">init</span>(frame: <span class="type">CGRect</span>) &#123;</span><br><span class="line">    <span class="keyword">super</span>.<span class="keyword">init</span>(frame: frame)</span><br><span class="line">    <span class="comment">// 3</span></span><br><span class="line">    backgroundColor = .systemBackground</span><br><span class="line">    addSubview(titleLabel)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="type">UIDevice</span>.current.userInterfaceIdiom == .pad &#123;</span><br><span class="line">      <span class="type">NSLayoutConstraint</span>.activate([</span><br><span class="line">        titleLabel.leadingAnchor.constraint(</span><br><span class="line">          equalTo: leadingAnchor, </span><br><span class="line">          constant: <span class="number">5</span>),</span><br><span class="line">        titleLabel.trailingAnchor.constraint(</span><br><span class="line">          lessThanOrEqualTo: trailingAnchor, </span><br><span class="line">          constant: -<span class="number">5</span>)])</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="type">NSLayoutConstraint</span>.activate([</span><br><span class="line">        titleLabel.leadingAnchor.constraint(</span><br><span class="line">          equalTo: readableContentGuide.leadingAnchor),</span><br><span class="line">        titleLabel.trailingAnchor.constraint(</span><br><span class="line">          lessThanOrEqualTo: readableContentGuide.trailingAnchor)</span><br><span class="line">      ])</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">NSLayoutConstraint</span>.activate([</span><br><span class="line">      titleLabel.topAnchor.constraint(</span><br><span class="line">        equalTo: topAnchor, </span><br><span class="line">        constant: <span class="number">10</span>),</span><br><span class="line">      titleLabel.bottomAnchor.constraint(</span><br><span class="line">        equalTo: bottomAnchor, </span><br><span class="line">        constant: -<span class="number">10</span>)</span><br><span class="line">    ])</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">required</span> <span class="keyword">init</span>?(coder: <span class="type">NSCoder</span>) &#123;</span><br><span class="line">    <span class="built_in">fatalError</span>(<span class="string">"init(coder:) has not been implemented"</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是相当大的代码块，但没有太多。简而言之，视图有一个标签，用于显示节的标题。检查代码:</p>
+<ol>
+<li>你添加一个类，让它成为UICollectionReusableView的子类。这意味着section header视图可以像单元格一样重用。</li>
+<li>设置标题标签的样式</li>
+<li>在初始化时，将标题标签添加到header视图并设置其自动布局约束。取决于你是否在iPad上使用不同的规则。</li>
+</ol>
+<p>打开* VideosViewController.swift *。在“// MARK: - Layout Handling”下面，在“configureLayout()”的开头添加以下代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">collectionView.register(</span><br><span class="line">  <span class="type">SectionHeaderReusableView</span>.<span class="keyword">self</span>, </span><br><span class="line">  forSupplementaryViewOfKind: <span class="type">UICollectionView</span>.elementKindSectionHeader, </span><br><span class="line">  withReuseIdentifier: <span class="type">SectionHeaderReusableView</span>.reuseIdentifier</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>这将注册您刚刚使用集合视图编写的标题视图，因此您可以使用节标题。</p>
+<p>接下来，在相同的方法中，在’ sectionProvider ‘闭包中并在’ return section ‘之前添加以下代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Supplementary header view setup</span></span><br><span class="line"><span class="keyword">let</span> headerFooterSize = <span class="type">NSCollectionLayoutSize</span>(</span><br><span class="line">  widthDimension: .fractionalWidth(<span class="number">1.0</span>), </span><br><span class="line">  heightDimension: .estimated(<span class="number">20</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> sectionHeader = <span class="type">NSCollectionLayoutBoundarySupplementaryItem</span>(</span><br><span class="line">  layoutSize: headerFooterSize, </span><br><span class="line">  elementKind: <span class="type">UICollectionView</span>.elementKindSectionHeader, </span><br><span class="line">  alignment: .top</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">section.boundarySupplementaryItems = [sectionHeader]</span><br></pre></td></tr></table></figure>
+
+<p>这段代码告诉布局系统，您希望为每个部分显示一个标题。</p>
+<p>你几乎完成了!在’ makeDataSource() ‘中，在’ return dataSource ‘之前添加以下代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line">dataSource.supplementaryViewProvider = &#123; collectionView, kind, indexPath <span class="keyword">in</span></span><br><span class="line">  <span class="comment">// 2</span></span><br><span class="line">  <span class="keyword">guard</span> kind == <span class="type">UICollectionView</span>.elementKindSectionHeader <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 3</span></span><br><span class="line">  <span class="keyword">let</span> view = collectionView.dequeueReusableSupplementaryView(</span><br><span class="line">    ofKind: kind,</span><br><span class="line">    withReuseIdentifier: <span class="type">SectionHeaderReusableView</span>.reuseIdentifier,</span><br><span class="line">    <span class="keyword">for</span>: indexPath) <span class="keyword">as</span>? <span class="type">SectionHeaderReusableView</span></span><br><span class="line">  <span class="comment">// 4</span></span><br><span class="line">  <span class="keyword">let</span> section = <span class="keyword">self</span>.dataSource.snapshot()</span><br><span class="line">    .sectionIdentifiers[indexPath.section]</span><br><span class="line">  view?.titleLabel.text = section.title</span><br><span class="line">  <span class="keyword">return</span> view</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这里你:</p>
+<ol>
+<li>获取补充视图部分的一个实例。</li>
+<li>确保补充视图提供程序请求报头。</li>
+<li>删除一个新的头视图。</li>
+<li>从数据源检索该节，然后将’ titleLabel ‘的文本值设置为’节的标题。</li>
+</ol>
+<p>构建和运行。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2020/03/Simulator-Screen-Shot-iPhone-11-Pro-2020-03-13-at-09.33.08-231x500.png" alt="Final build and run screenshot with section headers."></p>
+<p>下面是这款应用在iPad上的样子:</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2020/03/ipadtitlecategories.png" alt="The sections now have titles"></p>
+<p>成功!</p>
+<h2 id="该何去何从"><a href="#该何去何从" class="headerlink" title="该何去何从?"></a>该何去何从?</h2><p>干得好!您可以使用本页顶部或底部的“下载材料”按钮下载最终项目。</p>
+<p>在本教程中，您学习了如何将“UICollectionViewDiffableDataSource”添加到现有的基于集合视图的项目中。</p>
+<p>如果您需要挑战，请尝试基于数据源返回的项引入不同的集合视图单元。</p>
+<p>示例应用程序还使用了组合布局。如果你想了解更多关于他们的信息，请查看<a href="https://www.raywenderlich.com/5436806-modern-collection-views-with-compositional-layouts" target="_blank" rel="noopener">Modern Collection Views with Compositional Layouts</a>。</p>
+<p>如果你有任何问题或意见，请加入下面的论坛!</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2020/04/DiffableDataSources.zip" target="_blank" rel="noopener">Project Download</a></p>
+
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
                 <source type="audio/mpeg" src="">
@@ -90,7 +328,7 @@
     </div>
     
         <div class='side'>
-            
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始"><span class="toc-number">1.</span> <span class="toc-text">开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UICollectionViewDiffableDataSource的好处"><span class="toc-number">2.</span> <span class="toc-text">UICollectionViewDiffableDataSource的好处</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建一个可扩散的数据源"><span class="toc-number">3.</span> <span class="toc-text">创建一个可扩散的数据源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现Hashable"><span class="toc-number">4.</span> <span class="toc-text">实现Hashable</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置可扩散数据源"><span class="toc-number">5.</span> <span class="toc-text">配置可扩散数据源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用NSDiffableDataSourceSnapshot"><span class="toc-number">6.</span> <span class="toc-text">使用NSDiffableDataSourceSnapshot</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决搜索"><span class="toc-number">7.</span> <span class="toc-text">解决搜索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多个部分"><span class="toc-number">8.</span> <span class="toc-text">多个部分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#选项之一"><span class="toc-number">8.1.</span> <span class="toc-text">选项之一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#选择之二"><span class="toc-number">8.2.</span> <span class="toc-text">选择之二</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Section类"><span class="toc-number">9.</span> <span class="toc-text">创建Section类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#采用新的Section类"><span class="toc-number">10.</span> <span class="toc-text">采用新的Section类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#再次修正搜索"><span class="toc-number">11.</span> <span class="toc-text">再次修正搜索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#补充意见"><span class="toc-number">12.</span> <span class="toc-text">补充意见</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#该何去何从"><span class="toc-number">13.</span> <span class="toc-text">该何去何从?</span></a></li></ol>
         </div>
     
 </div>
