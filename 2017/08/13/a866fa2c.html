@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：iOS架构之MVC - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="在iOS开发中, 苹果一直建议我们去使用MVC这种架构, 酱紫就可以减少模块与模块之间的耦合度, 但随着时间的推移, MVC比较难满足复杂的项目开发, 从而转向其他的架构, 但MVC是初学者入门的架,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：iOS架构之MVC</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：iOS架构之MVC</h1>
+        <div class="stuff">
+            <span>八月 13, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/iOS架构/">iOS架构</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>在<strong>iOS</strong>开发中, 苹果一直建议我们去使用<strong>MVC</strong>这种架构, 酱紫就可以减少模块与模块之间的耦合度, 但随着时间的推移, <strong>MVC</strong>比较难满足复杂的项目开发, 从而转向其他的架构, 但<strong>MVC</strong>是初学者入门的架构首选之一, 所以我们还是得去了解了解.</p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="传统的MVC"><a href="#传统的MVC" class="headerlink" title="传统的MVC"></a>传统的MVC</h2><p>其实在苹果倡导使用<strong>MVC</strong>架构的时候, 早就已经有了这个架构的出现, 但在一些小细节上, 又区分开了, 我们可以看看<a href="https://zh.wikipedia.org/wiki/MVC" target="_blank" rel="noopener">传统的MVC架构</a>这篇文章.</p>
+<p>原理图:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-Project-Example/master/MVC/Images/1.png" alt="1"></p>
+<p>从图里, 我们可以看得出, 这里面的<strong>Controller</strong>, <strong>View</strong>, <strong>Model</strong>三者之间可以互相通信, 按照这样子来说, 的确是没什么实现难度, 但这里会存在一个问题, 耦合度.</p>
+<p>这三者之间相互联系太过密切, 那么就会造成一个问题, 耦合太高, 复用性太低, 这样子是会大大的提高我们后期维护的时间, 所以我们得出一个结论, 传统的<strong>MVC</strong>不太适合做<strong>iOS</strong>开发.</p>
+<h2 id="苹果味的MVC"><a href="#苹果味的MVC" class="headerlink" title="苹果味的MVC"></a>苹果味的MVC</h2><p><img src="https://raw.githubusercontent.com/cainluo/iOS-Project-Example/master/MVC/Images/2.png" alt="2"></p>
+<p>为了满足<strong>iOS</strong>的开发, 苹果在原来的<strong>MVC</strong>基础上进行了优化, 从图里我们可以看到, <strong>View</strong>和<strong>Model</strong>之间是没有直接的联系, 都是通过<strong>Controller</strong>进行交互, 同样的, <strong>Controller</strong>在一定的场景下, 也可以做到复用.</p>
+<p>从我们现在看到的, 这个设计模式的确是非常的简单直观, 不知道大家会不会想到这么一个问题, 或者在一些博客里会看到一堆说要为<strong>Controller</strong>减少负担, 甚至有很多在讽刺这个<strong>MVC</strong>是<strong>Massive View Controller</strong>.</p>
+<p>为什么这么说呢? 我们来看看图:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-Project-Example/master/MVC/Images/3.png" alt="3"></p>
+<p>在图里面, 看到的是我们实际上开发的时候的操作, 按照苹果的想法, 的确是可以可以做到一些简单的页面, 但复杂一提升, 我们就需要在Controller写一大堆的逻辑代码去实现我们想要的效果, 同时因为View和Controller是紧密联系在一起的, 所以很难说它们两者是分离开来的, 所以也被称为M-VC模式.</p>
+<p>而且在开发的时候, 我们也会看到一种写法, 在TableView上是几乎都能看的到的:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:&quot;identifier&quot;];</span><br><span class="line"></span><br><span class="line">[cell configureWithUser:userModel];</span><br></pre></td></tr></table></figure>
+
+<p>其实这么做就违背了<strong>MVC</strong>的理念, 这样子就相当于<strong>View</strong>直接去调用<strong>Model</strong>, 如果要完全按照<strong>MVC</strong>的方式去实现, 那么这个<strong>Cell</strong>就要放到<strong>Controller</strong>中, 但代码量相对来说就大大的增加了.</p>
+<h3 id="Massive-View-Controller"><a href="#Massive-View-Controller" class="headerlink" title="Massive View Controller"></a>Massive View Controller</h3><p>之所以叫做<strong>Massive View Controller</strong>其实也不是没有道理的, 当我们用到<a href="http://nshipster.com/unit-testing/" target="_blank" rel="noopener">单元测试</a>的时候, 这个问题就会越来越明显.</p>
+<p>因为在项目中, 我们的<strong>ViewController</strong>和<strong>View</strong>是紧密的联系在一起的, 如果要对它们进行测试, 那么这工作也是比较困难的.</p>
+<p>首先我们得要有足够的创造性来模拟它们的生命周期, 再以这种方式来写我们的<strong>ViewController</strong>的同时, 还要把业务代码分散到各个的<strong>View</strong>中.</p>
+<p>这里我们举个简单的例子:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;MVCController.h&quot;</span><br><span class="line">#import &quot;MVCModel.h&quot;</span><br><span class="line"></span><br><span class="line">@interface MVCController ()</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong) MVCModel *mvcModel;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong) UIButton *button;</span><br><span class="line">@property (nonatomic, strong) UILabel  *label;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation MVCController</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    </span><br><span class="line">    [self.view addSubview:self.button];</span><br><span class="line">    [self.view addSubview:self.label];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (MVCModel *)mvcModel &#123;</span><br><span class="line">    </span><br><span class="line">    if (!_mvcModel) &#123;</span><br><span class="line">        </span><br><span class="line">        _mvcModel = [[MVCModel alloc] init];</span><br><span class="line">        </span><br><span class="line">        _mvcModel.name = @&quot;小明&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return _mvcModel;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (UIButton *)button &#123;</span><br><span class="line">    </span><br><span class="line">    if (!_button) &#123;</span><br><span class="line">        </span><br><span class="line">        _button = [[UIButton alloc] initWithFrame:CGRectMake(100, 200, 100, 50)];</span><br><span class="line">        </span><br><span class="line">        [_button setTitle:@&quot;打招呼&quot;</span><br><span class="line">                 forState:UIControlStateNormal];</span><br><span class="line">        [_button setBackgroundColor:[UIColor blueColor]];</span><br><span class="line">        [_button addTarget:self</span><br><span class="line">                    action:@selector(buttonAction:)</span><br><span class="line">          forControlEvents:UIControlEventTouchUpInside];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return _button;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)buttonAction:(UIButton *)button &#123;</span><br><span class="line">    </span><br><span class="line">    self.label.text = [NSString stringWithFormat:@&quot;中途遇到了%@, 打了声招呼&quot;, self.mvcModel.name];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (UILabel *)label &#123;</span><br><span class="line">    </span><br><span class="line">    if (!_label) &#123;</span><br><span class="line">        </span><br><span class="line">        _label = [[UILabel alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 50)];</span><br><span class="line">        </span><br><span class="line">        _label.textColor = [UIColor blackColor];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return _label;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>其实这堆代码, 并没有什么可测试性, 但如果我们要进行测试, 就需要把和这个模块相关的东西移动到对应的<strong>Model</strong>中.</p>
+<p>但如果是酱紫的话, 我们就没办法通过<strong>Button</strong>里的<strong>Action</strong>事件来展示这个逻辑的结果, 我们都知道一旦调用了就会使整个页面进行调整, 那酱紫来操作单元测试, 简直就是差评中的差评.</p>
+<p>还有一点要注意, 尽量不要在模拟器中进行测试, 因为真机和模拟器的区别是很大的, 就算在模拟器中的UIView是正常运行的, 但到了真机设备就会出现问题了, 我比较倾向于在测试的时候把<strong>Target</strong>里的<strong>Host Application</strong>移除掉, 也尽量不要在模拟器中测试.</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><strong>MVC</strong>大概就讲到这里了, 根据我们上面所说的, 苹果味的<strong>MVC</strong>貌似不咋地, 其实并不是的, 我们可以来看看它的一些特性:</p>
+<ul>
+<li><strong>解耦:</strong> 除了<strong>View</strong>和<strong>Controller</strong>之外, <strong>View</strong>和<strong>Model</strong>的确是分开的.</li>
+<li><strong>测试:</strong> 由于比较一般的分散性, 所以我们只能对<strong>Model</strong>进行测试.</li>
+<li><strong>易用性:</strong> 与其他的设计模式比起来, 苹果味的<strong>MVC</strong>的确是比较简单, 代码量小, 熟悉的人也比较多, 即使是开发经验没那么丰富的人来维护, 也不用有太大的问题.</li>
+</ul>
+<p>如果我们不想那么折腾的话, 那么苹果优化过后的<strong>MVC</strong>的确是可以满足我们的需求, 就开发速度而言, 也是最好的选择.</p>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: <a href="https://github.com/cainluo/iOS-Project-Example/tree/master/MVC" target="_blank" rel="noopener">https://github.com/cainluo/iOS-Project-Example/tree/master/MVC</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#传统的MVC"><span class="toc-number">1.</span> <span class="toc-text">传统的MVC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#苹果味的MVC"><span class="toc-number">2.</span> <span class="toc-text">苹果味的MVC</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Massive-View-Controller"><span class="toc-number">2.1.</span> <span class="toc-text">Massive View Controller</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">2.2.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">3.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

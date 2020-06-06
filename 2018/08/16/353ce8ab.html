@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CocoaPods 1.6.0 Beta Begins! - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="CocoaPods 1.6.0版本继续关注大型项目的稳定性，性能和可扩展性。
+我们很高兴地宣布1.6.0的第一个测试版现已推出！ 在此版本中，我们更新了构建设置生成过程，以便更快，更容易地继续维护。,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">CocoaPods 1.6.0 Beta Begins!</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">CocoaPods 1.6.0 Beta Begins!</h1>
+        <div class="stuff">
+            <span>八月 16, 2018</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/CocoaPods/">CocoaPods</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>CocoaPods 1.6.0版本继续关注大型项目的稳定性，性能和可扩展性。</p>
+<p>我们很高兴地宣布1.6.0的第一个测试版现已推出！ 在此版本中，我们更新了构建设置生成过程，以便更快，更容易地继续维护。 我们还在同一个pod中增强了多个测试规范的集成。</p>
+<h2 id="修改构建设置"><a href="#修改构建设置" class="headerlink" title="修改构建设置"></a>修改构建设置</h2><p>生成的构建设置(驻留在CocoaPods生成的.xcconfig文件中)已经被完全重写。这次重写的主要目标是清理代码，使其在大型项目上的可伸缩性更好。</p>
+<p>当cocoapod的贡献者进行构建设置更改时，常常会导致大量的性能退化，并引发不寻常的边缘情况组合。这使得测试这些更改并验证每个修复程序对每个人都正确工作变得非常困难。</p>
+<p>从用户的角度来看，这种重写在编译代码时应该没有任何影响。如果有任何东西看起来不正确，请提交一个问题，提供步骤，并包括一个示例应用程序演示问题。</p>
+<p>为了证明重写的结果，我们与领英的朋友密切合作，他们在一个大型项目中使用CocoaPods。重写和其他一些性能改进将pod的安装时间从原来的3分钟缩短到大约40秒，速度提高了77%。</p>
+<p>这种变化，虽然大多是无形的，但有助于确保CocoaPods将随着应用程序的增长而扩展。我们非常感谢领英的工作人员为CocoaPods所做的贡献，以及他们为改进CocoaPods所花费的时间。</p>
+<h2 id="增强的测试规范集成"><a href="#增强的测试规范集成" class="headerlink" title="增强的测试规范集成"></a>增强的测试规范集成</h2><p>测试规范正在成为pod作者的CocoaPods的基本部分。 指定测试源并让它们通过lint执行的功能使该功能成为一个非常宝贵的工具，并允许podspec文件成为库的真实来源。 从1.6.0开始，多个test_spec条目将不再生成单个测试包目标，而是为每个目标生成单元测试包。</p>
+<p>我们以下面的例子为例：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Pod::Spec.new <span class="keyword">do</span> <span class="params">|s|</span></span><br><span class="line">  <span class="comment"># ... rest of root spec entries go here</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Unit Test Sources - Those do not require an app host to run. </span></span><br><span class="line">  <span class="comment"># They also require 'OCMock' dependency.</span></span><br><span class="line">  s.test_spec <span class="string">'Tests'</span> <span class="keyword">do</span> <span class="params">|test_spec|</span></span><br><span class="line">    test_spec.source_files = <span class="string">'Tests/**/*.&#123;h,m&#125;'</span></span><br><span class="line">    test_spec.dependency <span class="string">'OCMock'</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># SnapShot Tests Sources - Those *do* require an app host to run.</span></span><br><span class="line">  s.test_spec <span class="string">'SnapshotTests'</span> <span class="keyword">do</span> <span class="params">|test_spec|</span></span><br><span class="line">    test_spec.requires_app_host = <span class="literal">true</span></span><br><span class="line">    test_spec.source_files = <span class="string">'SnapshotTests/**/*.&#123;h,m&#125;'</span></span><br><span class="line">  <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>“测试”和“SnapshotTests”测试规范都将合并为单个单元测试包目标。 这也有使用app主机进行’测试’测试规范的不必要的影响，而没有明确地由pod作者声明。</p>
+<p>它看起来像这样：</p>
+<p><img src="http://blog.cocoapods.org/assets/blog_img/CocoaPods-1.6.0-beta/test_specs_before.png" alt="图片"></p>
+<p>这意味着pod作者不可能分割他们的测试源并以不同的方式对它们进行分类，例如使用一组不同的依赖项，资源或编译器选项。</p>
+<p>使用1.6.0，现在将生成以下内容：</p>
+<p><img src="http://blog.cocoapods.org/assets/blog_img/CocoaPods-1.6.0-beta/test_specs_after.png" alt="图片"></p>
+<p>好多了！</p>
+<p>我们强烈支持对代码进行测试的想法，我们的目标是使用CocoaPods构建支持此功能的正确工具。 将podspec作为事实的来源，再加上最近发布的cocoapods-generate插件，您的开发人员体验可以得到很大改善和简化。</p>
+<h2 id="更长的Beta周期"><a href="#更长的Beta周期" class="headerlink" title="更长的Beta周期"></a>更长的Beta周期</h2><p>我们故意不对CocoaPods的特定发布日期做出承诺。 这主要是因为CocoaPods是由全世界多个人的空闲时间维护和改进的。 做出这样的承诺很难满足，并且很可能让所有人失望。</p>
+<p>1.6.0版本将经历更长的beta周期，并且在它稳定之前将持有’beta’名称一段时间。 我们建议您使用1.6.0测试版，并通过提交您发现的任何问题来帮助我们。</p>
+<p>要安装它，请使用：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gem install cocoapods --<span class="keyword">pre</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="下一步是什么？"><a href="#下一步是什么？" class="headerlink" title="下一步是什么？"></a>下一步是什么？</h2><p>我们总是喜欢使用博客文章的最后一点作为表达我们在下一个版本（目前旨在为1.7.0）时所考虑的内容的机会。 更具体地说，我们希望扩展swift_version DSL以支持一系列Swift版本，而不仅仅是与Swift Package Manager类似的单个版本。</p>
+<p>最后，我们一直在大力改进库的内部，并研究如何使pod安装过程增量并改变它，使Xcode能够更好地应对非常大的项目以提高响应速度。</p>
+<p>感谢您让CocoaPods 1.6.0成为现实！ 我们走了很长的路。</p>
+<p>签出更改日志以获取完整的更改列表。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#修改构建设置"><span class="toc-number">1.</span> <span class="toc-text">修改构建设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#增强的测试规范集成"><span class="toc-number">2.</span> <span class="toc-text">增强的测试规范集成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更长的Beta周期"><span class="toc-number">3.</span> <span class="toc-text">更长的Beta周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#下一步是什么？"><span class="toc-number">4.</span> <span class="toc-text">下一步是什么？</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

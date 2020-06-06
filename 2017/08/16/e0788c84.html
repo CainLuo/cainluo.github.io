@@ -1,0 +1,402 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HealthKit教程的简单介绍 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="了解如何在本HealthKit教程中请求访问HealthKit数据的权限，以及向HealthKit的中央存储库读写数据。
+
+更新说明: 本教程已由Ted Bendixson更新为Swift 4、Xc,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">HealthKit教程的简单介绍</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">HealthKit教程的简单介绍</h1>
+        <div class="stuff">
+            <span>八月 16, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/HealthKit/">HealthKit</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>了解如何在本HealthKit教程中请求访问HealthKit数据的权限，以及向HealthKit的中央存储库读写数据。</p>
+<blockquote>
+<p><strong>更新说明</strong>: 本教程已由Ted Bendixson更新为Swift 4、Xcode 9和iOS 11。最初的教程是由Ernesto Garcia编写的。</p>
+</blockquote>
+<p>HealthKit是iOS 8中引入的一个API。它作为所有健康相关数据的中央存储库，让用户建立一个生物档案并存储锻炼数据。</p>
+<p>在本HealthKit教程中，您将创建一个简单的运动跟踪应用程序，并学习:</p>
+<ul>
+<li>如何申请权限和访问HealthKit数据</li>
+<li>如何读取HealthKit数据并在UITableView中显示</li>
+<li>如何将数据写入HealthKit的中央存储库</li>
+<li>准备好开始这个HealthKit练习了吗?继续读下去!</li>
+</ul>
+<p>准备好开始这个HealthKit练习了吗?继续读下去!</p>
+<blockquote>
+<p>注意:要完成本HealthKit教程，您需要一个活动的iOS开发人员帐户。没有它，您将无法启用HealthKit功能并访问HealthKit商店。</p>
+</blockquote>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>这款应用程序可以追踪名人最近推荐的锻炼计划所消耗的卡路里。对好莱坞内部人士和彬彬有礼的社交名流来说，我说的是“<strong>装模作样</strong>”，这一点应该是显而易见的。</p>
+<p>下载<a href="https://koenig-media.raywenderlich.com/uploads/2017/06/prancercise-track-star-2.zip" target="_blank" rel="noopener">启动器项目并在Xcode中打开它</a></p>
+<iframe width="560" height="500" src="https://www.youtube.com/embed/o-50GjySwew" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+构建并运行应用程序。您将看到用户界面的框架。在接下来的两篇文章中，您将慢慢地添加功能。
+
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2017/05/Simulator-Screen-Shot-May-16-2017-3.17.07-PM-281x500.png" alt="image1"></p>
+<p>##分配团队<br>HealthKit是一个特殊的框架。 除非您拥有有效的开发者帐户，否则您的应用无法使用它。 拥有开发者帐户后，您可以分配您的团队。</p>
+<p>在Project Navigator中选择PrancerciseTracker，然后选择PrancerciseTracker目标。 选择“常规”选项卡，然后单击“团队”组合框。</p>
+<p>选择与您的开发者帐户关联的团队：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2017/05/SelectTeam-1.png" alt="image2"></p>
+<p>那是小菜一碟，对吧？哎呀。 我的意思是说，这是一种低卡路里的马铃薯和用蔬菜汤炖的红扁豆汤：]。</p>
+<p>##权益</p>
+<p>HealthKit也有自己的一组权利，您需要启用它们才能构建使用该框架的应用程序。</p>
+<p>打开目标编辑器中的Capabilities选项卡，然后打开HealthKit开关，如下面的屏幕截图所示：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2017/06/UpdatedCapabilities.png" alt="image3"></p>
+<p>等待Xcode为您配置HealthKit。这里通常没有问题，但是如果忘记像上一节那样设置团队和Bundle标识符，则可能会遇到一些障碍。<br>完成了,完成了。现在，您只需要请求用户允许使用HealthKit。</p>
+<p>##权限</p>
+<p>HealthKit处理敏感和私人数据。并不是每个人都愿意让他们的应用程序访问这些信息。</p>
+<p>这就是HealthKit拥有强大隐私系统的原因。HealthKit只能访问用户同意与之共享的数据类型。要为您的Prancercise跟踪器的用户建立一个健康档案，您需要友好地请求允许首先访问每种类型的数据。</p>
+<p>##更新共享使用说明<br>首先，您需要描述为什么要求用户提供健康指标。Xcode提供了在应用程序的信息中指定这一点的方法。plist文件。</p>
+<p>Info.plist开放。然后添加以下键:<br>隐私-健康共享使用说明<br>隐私-健康状态更新使用说明</p>
+<p>这两个密钥都存储在出现HeathKit授权屏幕时显示的文本。健康共享使用描述位于从HealthKit读取数据的部分下面。健康更新使用情况描述对应于写入HealthKit的数据。</p>
+<p>你可以放任何你想放的东西进去。通常是这样的解释:“我们会利用你的健康信息来更好地跟踪健身计划。”</p>
+<p>请注意，如果没有设置这些键，应用程序在试图授权HealthKit时会崩溃。</p>
+<p>##授权HealthKit<br>打开HealthKitSetupAssistant.swift，往里面看一眼。您将发现一个带有错误类型的空类，以及用于授权HealthKit的方法的主体。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">func</span> <span class="title">authorizeHealthKit</span>(<span class="title">completion</span>: @<span class="title">escaping</span> (<span class="title">Bool</span>, <span class="title">Error</span>?) -&gt; <span class="title">Swift</span>.<span class="title">Void</span>) </span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>authorizeHealthKit(completion:)</code>方法不接受任何参数，它有一个完成处理程序，返回一个布尔值(成功或失败)和一个可选的错误，以防出错。这就是两个可能的错误。您将在两种特殊情况下将它们传递给完成处理程序。</p>
+<blockquote>
+<p>注意: </p>
+<ol>
+<li>HealthKit可能无法在该设备上使用。ipad就是这样。</li>
+<li>一些数据类型可能在当前版本的HealthKit中不可用。</li>
+</ol>
+</blockquote>
+<p>让我们把这个过程分解一下。要授权HealthKit, <code>authorizeHealthKit(completion:)</code>方法需要做以下四件事:</p>
+<ol>
+<li>检查一下这个设备上是否有Healthkit。如果不是，那就以失败和错误结束。</li>
+<li>准备类型的健康数据Prancercise跟踪将读取和写入HealthKit。</li>
+<li>将这些数据组织成要读的类型和要写的类型列表。</li>
+<li>请求授权。如果成功了，就以成功告终。</li>
+</ol>
+<p>##检查HealthKit可用性<br>先做重要的事。您将检查设备上是否有HealthKit。<br>在<code>authorizeHealthKit(completion:)</code>方法的顶部粘贴以下代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1. Check to see if HealthKit Is Available on this device</span></span><br><span class="line"><span class="keyword">guard</span> <span class="type">HKHealthStore</span>.isHealthDataAvailable() <span class="keyword">else</span> &#123;</span><br><span class="line">  completion(<span class="literal">false</span>, <span class="type">HealthkitSetupError</span>.notAvailableOnDevice)</span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>你会与<code>HKHealthStore</code>有很多互动。它代表一个储存用户健康相关数据的中央资料库。<code>HKHealthStore</code>的<code>isHealthDataAvailable()</code>方法可以帮助您确定用户当前的设备是否支持HeathKit数据。”</p>
+<p>如果设备上没有HealthKit, <code>guard</code>语句将阻止应用程序执行<code>authorizeHealthKit(completion:)</code>方法的其余逻辑。当这种情况发生时，方法将以<code>notAvailableOnDevice</code>错误结束。你的视图控制器可以用它做些什么，或者你可以把它记录到控制台。</p>
+<p>##准备数据类型<br>一旦知道用户的设备上有HealthKit可用，就应该准备从HealthKit读取和写入数据的数据类型。</p>
+<p>HealthKit使用的是一种名为HKObjectType的类型。HealthKit中央存储库中进出的每种类型都是某种HKObjectType。您还将看到HKSampleType和HKWorkoutType。两者都继承自HKObjectType，因此它们基本上是相同的。</p>
+<p>在第一个代码之后粘贴下一个代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//2. Prepare the data types that will interact with HealthKit</span></span><br><span class="line"><span class="keyword">guard</span>   <span class="keyword">let</span> dateOfBirth = <span class="type">HKObjectType</span>.characteristicType(forIdentifier: .dateOfBirth),</span><br><span class="line">        <span class="keyword">let</span> bloodType = <span class="type">HKObjectType</span>.characteristicType(forIdentifier: .bloodType),</span><br><span class="line">        <span class="keyword">let</span> biologicalSex = <span class="type">HKObjectType</span>.characteristicType(forIdentifier: .biologicalSex),</span><br><span class="line">        <span class="keyword">let</span> bodyMassIndex = <span class="type">HKObjectType</span>.quantityType(forIdentifier: .bodyMassIndex),</span><br><span class="line">        <span class="keyword">let</span> height = <span class="type">HKObjectType</span>.quantityType(forIdentifier: .height),</span><br><span class="line">        <span class="keyword">let</span> bodyMass = <span class="type">HKObjectType</span>.quantityType(forIdentifier: .bodyMass),</span><br><span class="line">        <span class="keyword">let</span> activeEnergy = <span class="type">HKObjectType</span>.quantityType(forIdentifier: .activeEnergyBurned) <span class="keyword">else</span> &#123;</span><br><span class="line">        </span><br><span class="line">        completion(<span class="literal">false</span>, <span class="type">HealthkitSetupError</span>.dataTypeNotAvailable)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>哇，这是一个很大的<code>guard</code>声明!这也是使用单个<code>guard</code>打开多个选项的一个很好的例子。</p>
+<p>要为给定的生物学特性或数量创建<code>HKObjectType</code>，您需要使用<code>HKObjectType. characteristictype (forIdentifier:)</code>或<code>HKObjectType. quantitytype (forIdentifier:)</code></p>
+<p>特征类型和数量类型都是由框架定义的枚举。HealthKit就有这些功能。你的应用程序有这么多不同的健康维度可以跟踪，这让我在考虑各种可能性的同时头晕目眩。</p>
+<p>您还会注意到，如果没有单个特征或示例类型可用，则该方法将以错误结束。这是故意的。您的应用程序应该始终准确地知道它可以与哪些HealthKit类型一起工作(如果有的话)。</p>
+<p>##准备要读写的数据类型列表<br>现在是准备要读和要写的类型列表的时候了。<br>将这第三位代码粘贴到<code>authorizeHealthKit(completion:)</code>方法中，就在第二部分之后:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//3. Prepare a list of types you want HealthKit to read and write</span></span><br><span class="line"><span class="keyword">let</span> healthKitTypesToWrite: <span class="type">Set</span>&lt;<span class="type">HKSampleType</span>&gt; = [bodyMassIndex,</span><br><span class="line">                                                activeEnergy,</span><br><span class="line">                                                <span class="type">HKObjectType</span>.workoutType()]</span><br><span class="line">    </span><br><span class="line"><span class="keyword">let</span> healthKitTypesToRead: <span class="type">Set</span>&lt;<span class="type">HKObjectType</span>&gt; = [dateOfBirth,</span><br><span class="line">                                               bloodType,</span><br><span class="line">                                               biologicalSex,</span><br><span class="line">                                               bodyMassIndex,</span><br><span class="line">                                               height,</span><br><span class="line">                                               bodyMass,</span><br><span class="line">                                               <span class="type">HKObjectType</span>.workoutType()]</span><br></pre></td></tr></table></figure>
+
+<p>HealthKit希望有一组<code>HKSampleType</code>对象，代表用户可以写入的数据类型，它还希望有一组<code>HKObjectType</code>对象供应用程序读取。</p>
+<p><code>HKObjectType. workouttype()</code>是一种特殊的<code>HKObjectType</code>。它代表任何一种锻炼。</p>
+<h2 id="授权HealthKit"><a href="#授权HealthKit" class="headerlink" title="授权HealthKit"></a>授权HealthKit</h2><p>最后一部分是最简单的。您只需要请求HealthKit的授权。将最后一段代码粘贴到第三段代码之后:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//4. Request Authorization</span></span><br><span class="line"><span class="type">HKHealthStore</span>().requestAuthorization(toShare: healthKitTypesToWrite,</span><br><span class="line">                                     read: healthKitTypesToRead) &#123; (success, error) <span class="keyword">in</span></span><br><span class="line">  completion(success, error)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这些代码行从HealthKit请求授权，然后调用完成处理程序。它们使用从<code>HKHealthStore</code>的<code>requestAuthorization(toShare: read: completion:)</code>方法传入的成功和错误变量。</p>
+<p>你可以把它看作是一个重定向。您不是在<code>HealthKitSetupAssistant</code>内部处理完成，而是将责任传递给一个视图控制器，该控制器可以显示警告或执行其他一些操作。</p>
+<p>starter项目已经为此提供了一个<strong>Authorize HealthKit</strong>按钮，它调用<code>MasterViewController</code>中的<code>authorizeHealthKit()</code>方法。这听起来是调用刚刚编写的新授权方法的最佳位置。</p>
+<p>打开<strong>MasterViewController.swift</strong>，找到<code>authorizeHealthKit()</code>并将此代码粘贴到正文中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">HealthKitSetupAssistant</span>.authorizeHealthKit &#123; (authorized, error) <span class="keyword">in</span></span><br><span class="line">      </span><br><span class="line">  <span class="keyword">guard</span> authorized <span class="keyword">else</span> &#123;</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">let</span> baseMessage = <span class="string">"HealthKit Authorization Failed"</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> error = error &#123;</span><br><span class="line">      <span class="built_in">print</span>(<span class="string">"\(baseMessage). Reason: \(error.localizedDescription)"</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">print</span>(baseMessage)</span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line">      </span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"HealthKit Successfully Authorized."</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码使用刚刚实现的<code>authorizeHealthKit(completion:)</code>方法。当它完成时，它会向控制台打印一条消息，让您知道HealthKit是否被成功授权。</p>
+<p>构建和运行。在主视图中点击<strong>Authorize HealthKit</strong>，您将看到一个授权屏幕弹出:</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2017/05/HealthKitPermissions-1-281x500.png" alt="image3"></p>
+<p>打开所有开关，滚动屏幕查看所有开关，然后单击Allow。你会在Xcode的控制台看到这样一条消息:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HealthKit Successfully Authorized.</span><br></pre></td></tr></table></figure>
+
+<p>太棒了!您的应用程序可以访问HealthKit的中央存储库。现在是时候开始跟踪了。</p>
+<h2 id="特征和样本"><a href="#特征和样本" class="headerlink" title="特征和样本"></a>特征和样本</h2><p>在本节中，您将学习:</p>
+<ul>
+<li><p>如何读取用户的生物特征。</p>
+</li>
+<li><p>如何读写不同类型的样本(体重、身高等)</p>
+</li>
+</ul>
+<p><strong>生物特征</strong>往往是那些不会改变的东西，比如你的血型。<strong>样本</strong>代表的是经常发生变化的东西，比如你的体重。</p>
+<p>为了正确地跟踪Prancercise锻炼方案的效果，Prancercise跟踪应用程序需要获取用户的体重和身高样本。综合起来，这些样本可以用来计算<strong>身体质量指数(BMI)</strong>。</p>
+<blockquote>
+<p>注:体重指数(BMI)是一种广泛使用的身体脂肪指标，它是根据一个人的体重和身高计算出来的。在这里了解<a href="(http://en.wikipedia.org/wiki/Body_mass_index)">更多</a>。</p>
+</blockquote>
+<p>##阅读的特点</p>
+<p>Prancercise追踪应用程序不写生物特征。它从HealthKit上读取。这意味着这些特性需要首先存储在HeathKit的中央存储库中。</p>
+<p>如果你还没有这样做过，是时候告诉HeathKit更多关于你自己的事情了。</p>
+<p>打开设备或模拟器上的<strong>健康应用程序</strong>。选择<strong>Health Data</strong>选项卡。然后点击右上角的<strong>个人资料图标</strong>查看您的健康状况。点击编辑，输入出生日期、性别、血型信息:</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2017/06/HealthAppProfileCombined.png" alt="image4"></p>
+<p>现在HealthKit知道了你的生日、性别和血型，是时候在Prancercise Tracker上阅读这些特征了。</p>
+<p>回到Xcode，打开<strong>ProfileDataStore.swift</strong>。<code>ProfileDataStore</code>类表示您可以为用户访问所有与健康相关的数据。</p>
+<p>粘贴以下方法到<code>ProfileDataStore</code>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">func</span> <span class="title">getAgeSexAndBloodType</span>() <span class="title">throws</span> -&gt; (<span class="title">age</span>: <span class="title">Int</span>, </span></span><br><span class="line"><span class="class">                                              <span class="title">biologicalSex</span>: <span class="title">HKBiologicalSex</span>, </span></span><br><span class="line"><span class="class">                                              <span class="title">bloodType</span>: <span class="title">HKBloodType</span>) </span>&#123;</span><br><span class="line">    </span><br><span class="line">  <span class="keyword">let</span> healthKitStore = <span class="type">HKHealthStore</span>()</span><br><span class="line">    </span><br><span class="line">  <span class="keyword">do</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//1. This method throws an error if these data are not available.</span></span><br><span class="line">    <span class="keyword">let</span> birthdayComponents =  <span class="keyword">try</span> healthKitStore.dateOfBirthComponents()</span><br><span class="line">    <span class="keyword">let</span> biologicalSex =       <span class="keyword">try</span> healthKitStore.biologicalSex()</span><br><span class="line">    <span class="keyword">let</span> bloodType =           <span class="keyword">try</span> healthKitStore.bloodType()</span><br><span class="line">      </span><br><span class="line">    <span class="comment">//2. Use Calendar to calculate age.</span></span><br><span class="line">    <span class="keyword">let</span> today = <span class="type">Date</span>()</span><br><span class="line">    <span class="keyword">let</span> calendar = <span class="type">Calendar</span>.current</span><br><span class="line">    <span class="keyword">let</span> todayDateComponents = calendar.dateComponents([.year],</span><br><span class="line">                                                        from: today)</span><br><span class="line">    <span class="keyword">let</span> thisYear = todayDateComponents.year!</span><br><span class="line">    <span class="keyword">let</span> age = thisYear - birthdayComponents.year!</span><br><span class="line">     </span><br><span class="line">    <span class="comment">//3. Unwrap the wrappers to get the underlying enum values. </span></span><br><span class="line">    <span class="keyword">let</span> unwrappedBiologicalSex = biologicalSex.biologicalSex</span><br><span class="line">    <span class="keyword">let</span> unwrappedBloodType = bloodType.bloodType</span><br><span class="line">      </span><br><span class="line">    <span class="keyword">return</span> (age, unwrappedBiologicalSex, unwrappedBloodType)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>getAgeSexAndBloodType()</code>方法访问<code>HKHealthStore</code>，询问用户的出生日期、生物性别和血型。它还使用出生日期计算用户的年龄。</p>
+<ol>
+<li><p>您可能已经注意到，此方法可能会引发错误。只要出生日期、生物性别或血型没有保存在HealthKit的中央存储库中，就会发生这种情况。由于您刚刚将此信息输入到您的健康应用程序中，因此不应该抛出任何错误。</p>
+</li>
+<li><p>使用<code>Calendar</code>类，您可以将任何给定的日期转换为一组<strong>日期组件</strong>。当你想要约会的时候，这些真的很方便。这段代码只获取您的出生年份、当前年份，然后计算差额。</p>
+</li>
+<li><p>“unwrapped”变量的命名方式是这样的，以确保必须从包装器类(<code>HKBiologicalSexObject</code>和<code>HKBloodTypeObject</code>)访问底层枚举。</p>
+</li>
+</ol>
+<p>##更新用户界面<br>如果您现在构建并运行，您不会看到UI有任何更改，因为您还没有将这个逻辑连接到UI。</p>
+<p>打开<strong>ProfileViewController.swift</strong>，找到<code>loadAndDisplayAgeSexAndBloodType()</code>方法。</p>
+<p>这个方法将使用您的<code>ProfileDataStore</code>将生物学特性加载到用户界面。</p>
+<p>将以下代码行粘贴到<code>loadAndDisplayAgeSexAndBloodType()</code>方法中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> userAgeSexAndBloodType = <span class="keyword">try</span> <span class="type">ProfileDataStore</span>.getAgeSexAndBloodType()</span><br><span class="line">  userHealthProfile.age = userAgeSexAndBloodType.age</span><br><span class="line">  userHealthProfile.biologicalSex = userAgeSexAndBloodType.biologicalSex</span><br><span class="line">  userHealthProfile.bloodType = userAgeSexAndBloodType.bloodType</span><br><span class="line">  updateLabels()</span><br><span class="line">&#125; <span class="keyword">catch</span> <span class="keyword">let</span> error &#123;</span><br><span class="line">  <span class="keyword">self</span>.displayAlert(<span class="keyword">for</span>: error)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码作为一个元组加载年龄、性别和血型。然后在<code>UserHealthProfile</code>模型的本地实例上设置这些字段。最后，它通过调用<code>updateLabels()</code>方法用<code>UserHealthProfile</code>上的新字段更新用户界面。</p>
+<p>因为<code>ProfileDataStore</code>的<code>getAgeSexAndBloodType()</code>方法会抛出错误，所以<code>ProfileViewController</code>必须处理它。在这种情况下，您只需接受错误并将其显示在带有“O.K.”的警告中”按钮。</p>
+<p>所有这些都很棒，但有一个问题。<code>updateLabels()</code>方法还没有执行任何操作。它只是一个空声明。这次让我们把它真正地连接到用户界面。</p>
+<p>定位<code>updateLabels()</code>方法并将这些代码行粘贴到它的主体中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> age = userHealthProfile.age &#123;</span><br><span class="line">  ageLabel.text = <span class="string">"\(age)"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> biologicalSex = userHealthProfile.biologicalSex &#123;</span><br><span class="line">  biologicalSexLabel.text = biologicalSex.stringRepresentation</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> bloodType = userHealthProfile.bloodType &#123;</span><br><span class="line">  bloodTypeLabel.text = bloodType.stringRepresentation</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码非常简单。如果您的用户已经设置了一个年龄，它将被格式化并放入标签中。生理性别和血型也是如此。<code>stringRepresentation</code>变量将枚举转换为字符串以便显示。</p>
+<p>创建并运行应用程序。进入<strong>个人资料和BMI</strong>页面。点击<strong>读取HealthKit</strong>数据按钮。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2017/05/Simulator-Screen-Shot-May-21-2017-1.38.37-PM-281x500.png" alt="image5"></p>
+<p>如果你之前在健康应用程序中输入了你的信息，它应该会出现在这个屏幕上的标签中。如果没有，您将得到一个错误消息。</p>
+<p>太酷了!您正在直接从HealthKit读取和显示数据。</p>
+<h2 id="查询样本"><a href="#查询样本" class="headerlink" title="查询样本"></a>查询样本</h2><p>现在是时候读取用户的体重和身高了。这将用于计算和显示他们的BMI在个人资料视图。</p>
+<p>生物学特性很容易获得，因为它们几乎从不改变。示例需要更复杂的方法。他们使用<code>HKQuery</code>，更具体地说是<code>HKSampleQuery</code>。</p>
+<p>要查询HealthKit的样本，您需要:</p>
+<ol>
+<li><p>指定要查询的示例类型(重量、高度等)</p>
+</li>
+<li><p>一些额外的参数来帮助过滤和排序数据。为此，可以传入一个可选的<code>NSPredicate</code>或一个<code>NSSortDescriptors</code>数组。</p>
+</li>
+</ol>
+<blockquote>
+<p>注意:如果您熟悉<a href="https://www.raywenderlich.com/145809/getting-started-core-data-tutorial" target="_blank" rel="noopener">Core Data</a>，您可能会注意到一些相似之处。<code>HKSampleQuery</code>非常类似于实体类型的<code>NSFetchedRequest</code>，在实体类型中指定谓词和排序描述符，然后请求对象上下文执行查询以获得结果。</p>
+</blockquote>
+<p>设置好查询后，只需调用<code>HKHealthStore</code>的<code>executeQuery()</code>方法来获取结果。</p>
+<p>对于Prancercise Tracker，您将创建一个通用函数来加载任何类型的最新示例。这样，你可以用它来表示体重和身高。</p>
+<p>打开<strong>ProfileDataStore.swift</strong>并将以下方法粘贴到类中，就在<code>getAgeSexAndBloodType()</code>方法下面:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">func</span> <span class="title">getMostRecentSample</span>(<span class="title">for</span> <span class="title">sampleType</span>: <span class="title">HKSampleType</span>,</span></span><br><span class="line"><span class="class">                               <span class="title">completion</span>: @<span class="title">escaping</span> (<span class="title">HKQuantitySample</span>?, <span class="title">Error</span>?) -&gt; <span class="title">Swift</span>.<span class="title">Void</span>) </span>&#123;</span><br><span class="line">  </span><br><span class="line"><span class="comment">//1. Use HKQuery to load the most recent samples.  </span></span><br><span class="line"><span class="keyword">let</span> mostRecentPredicate = <span class="type">HKQuery</span>.predicateForSamples(withStart: <span class="type">Date</span>.distantPast,</span><br><span class="line">                                                      end: <span class="type">Date</span>(),</span><br><span class="line">                                                      options: .strictEndDate)</span><br><span class="line">    </span><br><span class="line"><span class="keyword">let</span> sortDescriptor = <span class="type">NSSortDescriptor</span>(key: <span class="type">HKSampleSortIdentifierStartDate</span>,</span><br><span class="line">                                      ascending: <span class="literal">false</span>)</span><br><span class="line">    </span><br><span class="line"><span class="keyword">let</span> limit = <span class="number">1</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">let</span> sampleQuery = <span class="type">HKSampleQuery</span>(sampleType: sampleType,</span><br><span class="line">                                predicate: mostRecentPredicate,</span><br><span class="line">                                limit: limit,</span><br><span class="line">                                sortDescriptors: [sortDescriptor]) &#123; (query, samples, error) <span class="keyword">in</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//2. Always dispatch to the main thread when complete.</span></span><br><span class="line">    <span class="type">DispatchQueue</span>.main.async &#123;</span><br><span class="line">        </span><br><span class="line">      <span class="keyword">guard</span> <span class="keyword">let</span> samples = samples,</span><br><span class="line">            <span class="keyword">let</span> mostRecentSample = samples.first <span class="keyword">as</span>? <span class="type">HKQuantitySample</span> <span class="keyword">else</span> &#123;</span><br><span class="line">                </span><br><span class="line">            completion(<span class="literal">nil</span>, error)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">      &#125;</span><br><span class="line">        </span><br><span class="line">      completion(mostRecentSample, <span class="literal">nil</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"> </span><br><span class="line"><span class="type">HKHealthStore</span>().execute(sampleQuery)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该方法采用样本类型(身高、体重、bmi等)。然后它构建一个查询来获取该类型的最新示例。如果将示例类型传递给height，您将得到最新的height条目。</p>
+<p>这里发生了很多事情。我将停下来分解几件事。</p>
+<ol>
+<li><code>HKQuery</code>有很多方法可以帮助您过滤HealthKit样本查询。值得一看。在本例中，我们使用内置的日期窗口谓词。</li>
+<li>从HealthKit查询示例是一个“异步过程”。这就是完成处理程序中的代码出现在<a href="https://www.raywenderlich.com/60749/grand-central-dispatch-in-depth-part-1" target="_blank" rel="noopener">Dispatch block</a>内部的原因。您希望完成处理程序发生在<em>主线程</em>上，以便用户界面可以响应它。如果你不这样做，应用程序将崩溃。</li>
+</ol>
+<p>如果一切顺利，您的查询将被执行，您将得到一个漂亮而整洁的示例返回给主线程，<code>ProfileViewController</code>可以将其内容放到一个标签中。现在我们来做这部分。</p>
+<p>##在用户界面中显示示例<br>如果您还记得前面的部分，您从HealthKit加载数据，将其保存到<code>ProfileViewController</code>中的模型中，然后使用<code>ProfileViewController</code>的<code>updateLabels()</code>方法更新标签中的内容。</p>
+<p>您现在需要做的就是通过添加一个函数来扩展这个过程，该函数加载示例，为用户界面处理它们，然后调用<code>updateLabels()</code>来用文本填充标签。</p>
+<p>打开<strong>ProfileViewController</strong>。找到<code>loadAndDisplayMostRecentHeight()</code>方法，并将以下代码粘贴到正文中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1. Use HealthKit to create the Height Sample Type</span></span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> heightSampleType = <span class="type">HKSampleType</span>.quantityType(forIdentifier: .height) <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"Height Sample Type is no longer available in HealthKit"</span>)</span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="type">ProfileDataStore</span>.getMostRecentSample(<span class="keyword">for</span>: heightSampleType) &#123; (sample, error) <span class="keyword">in</span></span><br><span class="line">      </span><br><span class="line">  <span class="keyword">guard</span> <span class="keyword">let</span> sample = sample <span class="keyword">else</span> &#123;</span><br><span class="line">      </span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> error = error &#123;</span><br><span class="line">      <span class="keyword">self</span>.displayAlert(<span class="keyword">for</span>: error)</span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line">      </span><br><span class="line">  <span class="comment">//2. Convert the height sample to meters, save to the profile model,</span></span><br><span class="line">  <span class="comment">//   and update the user interface.</span></span><br><span class="line">  <span class="keyword">let</span> heightInMeters = sample.quantity.doubleValue(<span class="keyword">for</span>: <span class="type">HKUnit</span>.meter())</span><br><span class="line">  <span class="keyword">self</span>.userHealthProfile.heightInMeters = heightInMeters</span><br><span class="line">  <span class="keyword">self</span>.updateLabels()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>该方法首先创建一个高度示例类型。然后，它将该样本类型传递给您刚刚编写的方法，该方法将返回记录到HealthKit的最新高度样本。</p>
+</li>
+<li><p>一旦返回一个样本，高度就转换为米并存储在<code>UserHealthProfile</code>模型中。然后标签被更新。</p>
+</li>
+</ol>
+<blockquote>
+<p>注意:你通常想把你的数量样品转换成某种标准单位。要做到这一点，上面的代码利用了HKQuantitySample的<code>doubleValue(for:)</code>方法，该方法允许您传入与您想要的(在本例中是米)匹配的<code>HKUnit</code>。</p>
+<p>您可以使用HealthKit提供的一些常见类方法来构造各种类型的HKUnits。要获得米，您只需使用<code>meter()</code>方法在<code>HKUnit</code>上，就可以了。</p>
+</blockquote>
+<p>覆盖的高度。体重呢?它非常类似，但是您需要为<code>ProfileViewController</code>中的<code>loadAndDisplayMostRecentWeight()</code>方法填充主体。</p>
+<p>将以下代码粘贴到<code>loadAndDisplayMostRecentWeight()</code>方法体中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> weightSampleType = <span class="type">HKSampleType</span>.quantityType(forIdentifier: .bodyMass) <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"Body Mass Sample Type is no longer available in HealthKit"</span>)</span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="type">ProfileDataStore</span>.getMostRecentSample(<span class="keyword">for</span>: weightSampleType) &#123; (sample, error) <span class="keyword">in</span></span><br><span class="line">      </span><br><span class="line">  <span class="keyword">guard</span> <span class="keyword">let</span> sample = sample <span class="keyword">else</span> &#123;</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> error = error &#123;</span><br><span class="line">      <span class="keyword">self</span>.displayAlert(<span class="keyword">for</span>: error)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line">      </span><br><span class="line">  <span class="keyword">let</span> weightInKilograms = sample.quantity.doubleValue(<span class="keyword">for</span>: <span class="type">HKUnit</span>.gramUnit(with: .kilo))</span><br><span class="line">  <span class="keyword">self</span>.userHealthProfile.weightInKilograms = weightInKilograms</span><br><span class="line">  <span class="keyword">self</span>.updateLabels()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>完全一样的模式。创建想要检索的样例类型，向HealthKit请求它，执行一些单元转换，保存到模型中，并更新用户界面。</p>
+<p>在这一点上，你可能认为你已经完成了，但还有一件事你需要做。<code>updateLabels()</code>函数不知道提供给它的新数据。让我们改变这种情况。</p>
+<p>在<code>updateLabels()</code>函数中，在打开bloodType以在标签中显示它的部分下面添加以下行:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> weight = userHealthProfile.weightInKilograms &#123;</span><br><span class="line">  <span class="keyword">let</span> weightFormatter = <span class="type">MassFormatter</span>()</span><br><span class="line">  weightFormatter.isForPersonMassUse = <span class="literal">true</span></span><br><span class="line">  weightLabel.text = weightFormatter.string(fromKilograms: weight)</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> height = userHealthProfile.heightInMeters &#123;</span><br><span class="line">  <span class="keyword">let</span> heightFormatter = <span class="type">LengthFormatter</span>()</span><br><span class="line">  heightFormatter.isForPersonHeightUse = <span class="literal">true</span></span><br><span class="line">  heightLabel.text = heightFormatter.string(fromMeters: height)</span><br><span class="line">&#125;</span><br><span class="line">   </span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> bodyMassIndex = userHealthProfile.bodyMassIndex &#123;</span><br><span class="line">  bodyMassIndexLabel.text = <span class="type">String</span>(format: <span class="string">"%.02f"</span>, bodyMassIndex)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>按照<code>updateLabels()</code>函数中的原始模式，它将在<code>UserHealthProfile</code>模型上显示身高、体重和体重指数。如果这些字符串可用，它将生成适当的字符串并将它们放到标签中。<code>MassFormatter</code>和<code>LengthFormatter</code>负责将数量转换为字符串。</p>
+<p>身体质量指数实际上并不存储在<code>UserHealthProfile</code>模型中。它是一个计算性质，为你做计算。</p>
+<p>命令单击<code>bodyMassIndex</code>属性，您将看到我的意思:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> bodyMassIndex: <span class="type">Double?</span> &#123;</span><br><span class="line">    </span><br><span class="line">  <span class="keyword">guard</span> <span class="keyword">let</span> weightInKilograms = weightInKilograms,</span><br><span class="line">    <span class="keyword">let</span> heightInMeters = heightInMeters,</span><br><span class="line">    heightInMeters &gt; <span class="number">0</span> <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">  &#125;</span><br><span class="line">    </span><br><span class="line">  <span class="keyword">return</span> (weightInKilograms/(heightInMeters*heightInMeters))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>身体质量指数是一个可选属性，这意味着如果身高和体重都没有设置(或者它们被设置为一些没有任何意义的数字)，那么它可以返回nil。实际的计算就是重量除以高度的平方。</p>
+<blockquote>
+<p><strong>注意:</strong> 如果你没有在HealthKit商店中添加数据供应用程序阅读，你很快就会被卡住。如果还没有，至少需要创建一些身高和体重样本。</p>
+<p>打开<strong>健康应用程序</strong>，进入健康数据选项卡。在这里，选择<strong>Body Measurements</strong>选项，然后选择<strong>Weight</strong>，然后添加<strong>Data Point</strong>来添加一个新的<strong>Weight sample</strong>。对高度重复这个过程。</p>
+</blockquote>
+<p>此时，<strong>Prancercise Tracker</strong>应该能够读取用户最近的体重和身高样本，然后将其显示在标签中。</p>
+<p>构建和运行。导航到<strong>Profile &amp; BMI</strong>。然后点击<strong>读取HealthKit数据按钮</strong>。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2017/05/ProfileBMIComplete-281x500.png" alt="image6"></p>
+<p>真棒！ 您只需从HealthKit商店中读取您的第一批样品，并使用它们来计算BMI。</p>
+<p>##保存样品<br>Prancercise Tracker已经拥有一个方便的体重指数计算器。 让我们用它来记录用户BMI的样本。</p>
+<p>打开<strong>ProfileDataStore.swift</strong>并添加以下方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">func</span> <span class="title">saveBodyMassIndexSample</span>(<span class="title">bodyMassIndex</span>: <span class="title">Double</span>, <span class="title">date</span>: <span class="title">Date</span>) </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//1.  Make sure the body mass type exists  </span></span><br><span class="line">  <span class="keyword">guard</span> <span class="keyword">let</span> bodyMassIndexType = <span class="type">HKQuantityType</span>.quantityType(forIdentifier: .bodyMassIndex) <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">fatalError</span>(<span class="string">"Body Mass Index Type is no longer available in HealthKit"</span>)</span><br><span class="line">  &#125;</span><br><span class="line">    </span><br><span class="line">  <span class="comment">//2.  Use the Count HKUnit to create a body mass quantity</span></span><br><span class="line">  <span class="keyword">let</span> bodyMassQuantity = <span class="type">HKQuantity</span>(unit: <span class="type">HKUnit</span>.<span class="built_in">count</span>(),</span><br><span class="line">                                    doubleValue: bodyMassIndex)</span><br><span class="line">    </span><br><span class="line">  <span class="keyword">let</span> bodyMassIndexSample = <span class="type">HKQuantitySample</span>(type: bodyMassIndexType,</span><br><span class="line">                                             quantity: bodyMassQuantity,</span><br><span class="line">                                             start: date,</span><br><span class="line">                                             end: date)</span><br><span class="line">    </span><br><span class="line">  <span class="comment">//3.  Save the same to HealthKit</span></span><br><span class="line">  <span class="type">HKHealthStore</span>().save(bodyMassIndexSample) &#123; (success, error) <span class="keyword">in</span></span><br><span class="line">      </span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> error = error &#123;</span><br><span class="line">      <span class="built_in">print</span>(<span class="string">"Error Saving BMI Sample: \(error.localizedDescription)"</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">print</span>(<span class="string">"Successfully saved BMI Sample"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中一些看起来很熟悉。与其他样例类型一样，首先需要确保样例类型在HealthKit中可用。</p>
+<ol>
+<li><p>在本例中，代码检查身体质量指数是否有数量类型。如果有，它用于创建一个数量和数量样本。否则，应用程序会故意崩溃。</p>
+</li>
+<li><p><code>HKUnit</code>上的<code>count()</code>方法适用于一个特殊的情况，即没有一个明确的单元用于存储样本的类型。在将来的某个时候，可能会有一个单位分配给身体质量指数，但目前这个更通用的单位工作得很好。</p>
+</li>
+<li><p><code>HKHealthStore</code>保存了样本，并让您知道该过程是否成功。你可以做的更多，但现在应用程序只是打印到控制台。</p>
+</li>
+</ol>
+<p>几乎完成了。让我们把这个连接到用户界面。</p>
+<p>打开<strong>ProfileViewController.swift</strong>，找到<code>saveBodyMassIndexToHealthKit()</code>方法。当用户点击表视图中的Save BMI按钮时，将调用此方法。</p>
+<p>将以下代码行粘贴到方法中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> bodyMassIndex = userHealthProfile.bodyMassIndex <span class="keyword">else</span> &#123;</span><br><span class="line">  displayAlert(<span class="keyword">for</span>: <span class="type">ProfileDataError</span>.missingBodyMassIndex)</span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="type">ProfileDataStore</span>.saveBodyMassIndexSample(bodyMassIndex: bodyMassIndex,</span><br><span class="line">                                         date: <span class="type">Date</span>())</span><br></pre></td></tr></table></figure>
+
+<p>您还记得，身体质量指数是一个计算属性，当从HealthKit加载身高和体重样本时，它返回一个值。这段代码尝试计算该属性，如果可以，它将传递给刚刚编写的<code>savedBodyMassIndexSample(bodyMassIndex: date:)</code>方法。</p>
+<p>如果由于某种原因无法计算出身体质量指数，它还会显示一个方便的警告消息。</p>
+<p>最后一次构建并运行Prancercise跟踪器。进入<strong>个人资料和BMI</strong>屏幕。从HeathKit加载数据，然后点击<strong>Save BMI</strong>按钮。</p>
+<p>看看控制台。看到了吗?</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Successfully saved BMI Sample</span><br></pre></td></tr></table></figure>
+
+<p>如果你做到了，恭喜你!您的BMI样本现在存储在HealthKit的中央存储库中。我们看看能不能找到。</p>
+<p>打开健康应用程序，点击健康数据标签，点击表格视图中的身体测量数据，然后点击身体质量指数。</p>
+<p>除非你定期记录你的体重指数(就像所有高调的攀高者那样)，否则你应该会看到这样一个数据点:</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2017/06/BMISample-281x500.png" alt="image7"></p>
+<p>甜的。你可以在苹果的健康应用程序中看到你自己开发的应用程序的样本。想象一下这种可能性。</p>
+<h2 id="从这里到哪里"><a href="#从这里到哪里" class="headerlink" title="从这里到哪里?"></a>从这里到哪里?</h2><p>下面是示例<a href="https://koenig-media.raywenderlich.com/uploads/2017/06/Prancercise-Tracker-Part-1-Final-2.zip" target="_blank" rel="noopener">应用程序</a>，其中包含了我们到目前为止所做的所有修改。</p>
+<p>祝贺您，您已经获得了一些使用HealthKit的实际经验!现在，您知道了如何请求权限、读取生物学特性以及读取和写入示例。</p>
+<p>如果您想了解更多信息，请继续关注本HealthKit教程系列的<a href="https://www.raywenderlich.com/458-healthkit-tutorial-with-swift-workouts" target="_blank" rel="noopener">下一部分</a>，在那里您将了解关于更复杂类型的数据的更多信息:锻炼。</p>
+<p>同时，如果您有任何问题或意见，请加入下面的论坛讨论!</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始"><span class="toc-number">1.</span> <span class="toc-text">开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#授权HealthKit"><span class="toc-number">2.</span> <span class="toc-text">授权HealthKit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#特征和样本"><span class="toc-number">3.</span> <span class="toc-text">特征和样本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查询样本"><span class="toc-number">4.</span> <span class="toc-text">查询样本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从这里到哪里"><span class="toc-number">5.</span> <span class="toc-text">从这里到哪里?</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

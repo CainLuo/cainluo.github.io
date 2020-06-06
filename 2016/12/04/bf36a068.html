@@ -1,0 +1,250 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：7.《Core Animation》Implicit Animations - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="在上一篇文章《Core Animation》CALayer的Specialized Layers中, 我们了解了CALayer的许多子类特性, 可以为我们在遇到一些特殊的开发需求中提供一定的帮助, ,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：7.《Core Animation》Implicit Animations</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：7.《Core Animation》Implicit Animations</h1>
+        <div class="stuff">
+            <span>十二月 04, 2016</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/Core-Animation/">Core Animation</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>在上一篇文章<a href="https://cainluo.github.io/2016/11/14/79a80a40.html">《Core Animation》CALayer的Specialized Layers</a>中, 我们了解了<strong>CALayer</strong>的许多子类特性, 可以为我们在遇到一些特殊的开发需求中提供一定的帮助, 既然我们这次学的的<strong>Core Animation</strong>, 那怎么会和动画不挂钩呢? 这次让我们来初体验一下.</p>
+<blockquote>
+<p>最后: 如果你有更好的建议或者对这篇文章有不满的地方, 请联系我, 我会参考你们的意见再进行修改, 联系我时, 请备注<strong><code>Core Animation</code></strong>, 祝大家学习愉快</p>
+</blockquote>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><strong>Implicit Animations</strong>也称为隐式动画, 啥? 什么叫做隐式动画? 百度去吧~~哈哈哈(后面会讲解的), 这些问题就不在这里做解释了, 还是进入主题才比较重要.</p>
+<h2 id="Transactions"><a href="#Transactions" class="headerlink" title="Transactions"></a>Transactions</h2><p>其实在<strong>Core Animation</strong>中, 动画效果并不需要我们去手动打开, 因为系统默认就是<strong>Open</strong>状态, 相反过来, 如果我们不需要动画的话, 我们需要手动的去关闭.</p>
+<p>如果我们用一个<strong>CALayer</strong>的一个动画属性, 并且尝试去改变它, 这个效果并不会马上就显示出来, 因为它要从一个默认值平滑的过度到一个新的值, 而这些所有的内部操作我们都不需要去理会, 因为系统默认就是这么做的.</p>
+<p>我们可以先来看个<strong>Demo</strong>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">- (void)transactionsColor &#123;</span><br><span class="line">    </span><br><span class="line">    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,</span><br><span class="line">                                                            100,</span><br><span class="line">                                                            self.view.frame.size.width,</span><br><span class="line">                                                            self.view.frame.size.width)];</span><br><span class="line">    </span><br><span class="line">    view.backgroundColor = [UIColor grayColor];</span><br><span class="line">    </span><br><span class="line">    [self.view addSubview:view];</span><br><span class="line">    </span><br><span class="line">    UIButton *button = [[UIButton alloc] init];</span><br><span class="line">    </span><br><span class="line">    button.center = CGPointMake(self.view.frame.size.width / 2, 50);</span><br><span class="line">    button.bounds = CGRectMake(0, 0, 100, 50);</span><br><span class="line">    button.backgroundColor = [UIColor blueColor];</span><br><span class="line">    </span><br><span class="line">    [button setTitle:@&quot;改变颜色&quot;</span><br><span class="line">            forState:UIControlStateNormal];</span><br><span class="line">    [button addTarget:self</span><br><span class="line">               action:@selector(changeLayerColor)</span><br><span class="line">     forControlEvents:UIControlEventTouchUpInside];</span><br><span class="line">    </span><br><span class="line">    [view addSubview:button];</span><br><span class="line">    </span><br><span class="line">    self.colorLayer  = [CALayer layer];</span><br><span class="line">    self.colorLayer.position = CGPointMake(view.frame.size.width / 2, view.frame.size.height / 2);</span><br><span class="line">    self.colorLayer.bounds = CGRectMake(0, 0, 150, 150);</span><br><span class="line">    self.colorLayer.backgroundColor = [UIColor redColor].CGColor;</span><br><span class="line">    </span><br><span class="line">    [view.layer addSublayer:self.colorLayer];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)changeLayerColor &#123;</span><br><span class="line">    </span><br><span class="line">    CGFloat redColor = arc4random() / (CGFloat)INT_MAX;</span><br><span class="line">    CGFloat greenColor = arc4random() / (CGFloat)INT_MAX;</span><br><span class="line">    CGFloat blueColor = arc4random() / (CGFloat)INT_MAX;</span><br><span class="line">    </span><br><span class="line">    self.colorLayer.backgroundColor = [UIColor colorWithRed:redColor</span><br><span class="line">                                                      green:greenColor</span><br><span class="line">                                                       blue:blueColor</span><br><span class="line">                                                      alpha:1.0f].CGColor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/7.ImplicitAnimations/Images/1.gif" alt="1"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/7.ImplicitAnimations/Images/2.png" alt="2"></p>
+<p>看完这个<strong>Demo</strong>其实就已经知道神马叫做隐式动画了, 所谓的隐式动画就是我们没有给它指定任何的动画类型, 仅仅只是改变某个属性, 当然<strong>Core Animation</strong>也是支持显示动画, 不然我们就没那么多的兴趣来学习<strong>Core Animation</strong>了~</p>
+<p>那么当我们去改变一个属性的时候, <strong>Core Animation</strong>是如何去判断动画类型还有动画的持续时间呢? 这个问题其实也很简单, 动画的执行时间取决于<strong>Transactions</strong>的设置, 而动画类型是取决于<strong>CALayer</strong>的行为.</p>
+<p>其实<strong>Transactions</strong>实际上是<strong>Core Animation</strong>用来包含一堆属性动画集合的机制, 任何用指定<strong>Transactions</strong>去改变可以做动画效果的图层属性都不会马上发生变化, 而是需要<strong>Transactions</strong>在提交的一瞬间, 才会开始用一个动画效果过渡到新设置的值.</p>
+<p>而<strong>Transactions</strong>是需要通过<strong>CATransaction</strong>这个类来进行管理的, 奇怪的是, <strong>CATransaction</strong>这个类并不是管理一个简单的<strong>Transactions</strong>, 而是管理了一堆我们不能访问的<strong>Transactions</strong>, 由于<strong>CATransaction</strong>并没有属性和实例化方法, 也不能用<strong>+ (instancetype)alloc;</strong>和<strong>- (instancetype)init;</strong>方法来创建它, 只有它所提供的<strong>+ (void)begin;</strong>和<strong>+ (void)commit;</strong>来控制.</p>
+<p>虽然我们再上面的<strong>Demo</strong>里没有设置动画时间, 但<strong>Core Animation</strong>会在每一个<strong>run looop</strong>周期中自动开始一次新的<strong>Transactions</strong>, 即使我们不手动的去调用<strong>[CATransaction begin];</strong>, 但在每一次<strong>run loop</strong>的循环中, 被修改的属性都会集中起来, 然后统一做一次0.25秒的动画, 这个是系统默认的.</p>
+<p>说了那么多, 我们实际上来改改修改颜色的那个代码块, 让它有一个显示动画的效果:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">- (void)changeLayerColorAgain &#123;</span><br><span class="line">    </span><br><span class="line">    [CATransaction begin];</span><br><span class="line">    [CATransaction setAnimationDuration:2.0f];</span><br><span class="line">    </span><br><span class="line">    CGFloat redColor = arc4random() / (CGFloat)INT_MAX;</span><br><span class="line">    CGFloat greenColor = arc4random() / (CGFloat)INT_MAX;</span><br><span class="line">    CGFloat blueColor = arc4random() / (CGFloat)INT_MAX;</span><br><span class="line">    </span><br><span class="line">    self.colorLayer.backgroundColor = [UIColor colorWithRed:redColor</span><br><span class="line">                                                      green:greenColor</span><br><span class="line">                                                       blue:blueColor</span><br><span class="line">                                                      alpha:1.0f].CGColor;</span><br><span class="line">    </span><br><span class="line">    [CATransaction commit];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/7.ImplicitAnimations/Images/3.gif" alt="3"></p>
+<p>看起来的效果让人觉得是真的有动画效果了, 如果大家在之前就已经用过<strong>UIView</strong>来做过动画的话, 那么大家应该对这个动画模式不会感觉到陌生, 因为<strong>UIView</strong>就有两个类似的方法, <strong>+ (void)beginAnimations:(nullable NSString *)animationID context:(nullable void *)context;</strong>和<strong>+ (void)commitAnimations;</strong>, 其实这两个这两个方法也是因为在内部设置了<strong>CATransaction</strong>的原因.</p>
+<p>在<strong>iOS 4</strong>的时候, 苹果就已经对<strong>UIView</strong>添加了一种基于<strong>Block</strong>的动画方法, <strong>+ (void)animateWithDuration:(NSTimeInterval)duration animations:(void ()(void))animations NS_AVAILABLE_IOS(4_0);</strong>, 用起来更加的方便, 但实际上是做同样的事情, 但使用这种方法就可以避免<strong>+ (void)begin;</strong>和<strong>+ (void)commit;</strong>匹配的问题造成一些蛋疼的事情.</p>
+<h3 id="Completion-Blocks"><a href="#Completion-Blocks" class="headerlink" title="Completion Blocks"></a>Completion Blocks</h3><p>这里我们就使用一下基于<strong>UIView</strong>的<strong>Block</strong>动画方法, 我们可以在动画结束之后再对这个图层进行一些操作, 当然这里还是基于上面的<strong>Demo</strong>来做演示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">- (void)changeLayerColorWithCompletion &#123;</span><br><span class="line">    </span><br><span class="line">    [CATransaction begin];</span><br><span class="line">    [CATransaction setAnimationDuration:2.0f];</span><br><span class="line">    </span><br><span class="line">    [CATransaction setCompletionBlock:^&#123;</span><br><span class="line">        CGAffineTransform transform = self.colorLayer.affineTransform;</span><br><span class="line">        </span><br><span class="line">        transform = CGAffineTransformRotate(transform, M_PI_4);</span><br><span class="line">        </span><br><span class="line">        self.colorLayer.affineTransform = transform;</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    CGFloat redColor = arc4random() / (CGFloat)INT_MAX;</span><br><span class="line">    CGFloat greenColor = arc4random() / (CGFloat)INT_MAX;</span><br><span class="line">    CGFloat blueColor = arc4random() / (CGFloat)INT_MAX;</span><br><span class="line">    </span><br><span class="line">    self.colorLayer.backgroundColor = [UIColor colorWithRed:redColor</span><br><span class="line">                                                      green:greenColor</span><br><span class="line">                                                       blue:blueColor</span><br><span class="line">                                                      alpha:1.0f].CGColor;</span><br><span class="line">    </span><br><span class="line">    [CATransaction commit];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/7.ImplicitAnimations/Images/4.gif" alt="4"></p>
+<h3 id="Layer-Actions"><a href="#Layer-Actions" class="headerlink" title="Layer Actions"></a>Layer Actions</h3><p>开始的时候我们就用一个<strong>Demo</strong>来进行演示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">- (void)addLayerView &#123;</span><br><span class="line">    </span><br><span class="line">    self.layerView = [[UIView alloc] init];</span><br><span class="line">    self.layerView.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);</span><br><span class="line">    self.layerView.bounds = CGRectMake(0, 0, 150, 150);</span><br><span class="line">    self.layerView.backgroundColor = [UIColor redColor];</span><br><span class="line">    </span><br><span class="line">    [self.view addSubview:self.layerView];</span><br><span class="line">    </span><br><span class="line">    UIButton *button = [[UIButton alloc] init];</span><br><span class="line">    </span><br><span class="line">    button.center = CGPointMake(self.view.frame.size.width / 2, 200);</span><br><span class="line">    button.bounds = CGRectMake(0, 0, 100, 50);</span><br><span class="line">    button.backgroundColor = [UIColor blueColor];</span><br><span class="line">    </span><br><span class="line">    [button setTitle:@&quot;改变颜色&quot;</span><br><span class="line">            forState:UIControlStateNormal];</span><br><span class="line">    </span><br><span class="line">    [button addTarget:self</span><br><span class="line">               action:@selector(changeLayerViewColor)</span><br><span class="line">     forControlEvents:UIControlEventTouchUpInside];</span><br><span class="line">    </span><br><span class="line">    [self.view addSubview:button];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)changeLayerViewColor &#123;</span><br><span class="line">    </span><br><span class="line">    [CATransaction begin];</span><br><span class="line">    [CATransaction setAnimationDuration:2.0f];</span><br><span class="line">    </span><br><span class="line">    CGFloat redColor = arc4random() / (CGFloat)INT_MAX;</span><br><span class="line">    CGFloat greenColor = arc4random() / (CGFloat)INT_MAX;</span><br><span class="line">    CGFloat blueColor = arc4random() / (CGFloat)INT_MAX;</span><br><span class="line">    </span><br><span class="line">    self.layerView.layer.backgroundColor = [UIColor colorWithRed:redColor</span><br><span class="line">                                                           green:greenColor</span><br><span class="line">                                                            blue:blueColor</span><br><span class="line">                                                           alpha:1.0f].CGColor;</span><br><span class="line">    </span><br><span class="line">    [CATransaction commit];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/7.ImplicitAnimations/Images/5.gif" alt="5"></p>
+<p>看完这个<strong>Demo</strong>, 有很多人肯定会有疑问, 为啥没有了之前的那个平滑过渡效果呢? 好像是被干掉了, 这是啥回事?</p>
+<p>其实我们可以仔细想一想, 如果<strong>UIView</strong>里的属性都有动画特性的话, 那我们去修改这些属性时, 肯定会注意到的, 可为啥<strong>UIKit</strong>要把这个隐式动画给禁止呢?</p>
+<p>我们都知道<strong>Core Animation</strong>通常会对<strong>CALayer</strong>所有的可做动画的属性都赋予了动画特性, 但在<strong>UIView</strong>中就不一样了, 它会默认把所关联在一起的<strong>CALayer</strong>的这个特性给关闭掉, 这里就要了解一下隐式动画是如何实现的.</p>
+<p>当我们改变<strong>CALayer</strong>属性时, <strong>CALayer</strong>自动应用的动画, 我们可以成为<strong>CALayer</strong>的行为, 每当<strong>CALayer</strong>的属性被修改的时候, 它会去调用<strong>- (nullable id)actionForKey:(NSString *)event;</strong>这个方法去传递属性的名称, 然后就会去执行如下几步:</p>
+<ul>
+<li>首先<strong>CALayer</strong>会去检测它是否有<strong>Delegate</strong>, 并且看看这个<strong>Delegate</strong>有没有实现<strong>CALayerDelegate</strong>协议里的<strong>- (nullable id)actionForLayer:(CALayer *)layer forKey:(NSString *)event;</strong>方法, 如果有, 就直接调用并返回结果.</li>
+<li>如果<strong>CALayer</strong>没有<strong>Delegate</strong>的话, 或者<strong>Delegate</strong>没有实现<strong>- (nullable id)actionForLayer:(CALayer *)layer forKey:(NSString *)event;</strong>方法, 那么图层就会接着去检查包含属性名称对应的<strong>CALayer</strong>行为所映射的<strong>Actions</strong>字典.</li>
+<li>如果<strong>Actions</strong>字典没有包含对应的属性, 那么图层接着会在它的<strong>style</strong>字典里接着搜索属性名.</li>
+<li>最后, 在<strong>style</strong>里也找不到对应的行为, 那么图层就会直接调用<strong>+ (nullable id)defaultActionForKey:(NSString *)event;</strong>实现系统所提供的每个属性的默认行为.</li>
+</ul>
+<p>如果一轮完整的搜索结束之后, <strong>- (nullable id)actionForKey:(NSString *)event;</strong>返回为空的话, 那么肯定不会有动画效果, 如果返回<strong>CAAction</strong>协议对应的对象, <strong>CALayer</strong>会拿这个结果去对比先前和当前的值, 并且做一个动画效果.</p>
+<p>知道这个原理之后, 我们就知道<strong>UIKit</strong>是肿么把隐式动画给禁止掉了:</p>
+<ul>
+<li>每一个<strong>UIView</strong>对它所关联的图层都是充当一个<strong>Delegate</strong>对象, 并且提供了<strong>- (nullable id)actionForKey:(NSString *)event;</strong>的实现方法.</li>
+<li>当不在一个动画块的实现中, 那么<strong>UIView</strong>就会对所有<strong>CALayer</strong>的行为返回<strong>nil</strong>, 如果在动画的<strong>Block</strong>范围之内, <strong>UIView</strong>就会返回一个非空的值.</li>
+</ul>
+<p>这里我们简单的<strong>Log</strong>一下结果:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">- (void)checkViewAction &#123;</span><br><span class="line">    </span><br><span class="line">    UIView *layerView = [[UIView alloc] init];</span><br><span class="line">    </span><br><span class="line">    layerView.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);</span><br><span class="line">    layerView.bounds = CGRectMake(0, 0, 150, 150);</span><br><span class="line">    layerView.backgroundColor = [UIColor redColor];</span><br><span class="line">    </span><br><span class="line">    [self.view addSubview:layerView];</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;Before: %@&quot;, [layerView actionForLayer:layerView.layer</span><br><span class="line">                                            forKey:@&quot;backgroundColor&quot;]);</span><br><span class="line">    </span><br><span class="line">    [UIView beginAnimations:nil</span><br><span class="line">                    context:nil];</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;After: %@&quot;, [layerView actionForLayer:layerView.layer</span><br><span class="line">                                           forKey:@&quot;backgroundColor&quot;]);</span><br><span class="line">    </span><br><span class="line">    [UIView commitAnimations];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2016</span>-<span class="number">12</span>-<span class="number">04</span> <span class="number">12</span>:<span class="number">45</span>:<span class="number">28.178</span> <span class="number">7</span>.ImplicitAnimations[<span class="number">57079</span>:<span class="number">2126402</span>] Before: &lt;null</span><br><span class="line"><span class="number">2016</span>-<span class="number">12</span>-<span class="number">04</span> <span class="number">12</span>:<span class="number">45</span>:<span class="number">28.179</span> <span class="number">7</span>.ImplicitAnimations[<span class="number">57079</span>:<span class="number">2126402</span>] After: &lt;CABasicAnimation: <span class="number">0</span>x6000000327c0</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/7.ImplicitAnimations/Images/6.png" alt="6"></p>
+<p>这样子我们就可以知道, 当属性在<strong>Block</strong>之外发生改变, <strong>UIView</strong>会直接通过返回<strong>nil</strong>来禁用隐式动画, 但如果在动画块的范围之内, 就会根据动画的具体类型来返回相应的属性, 这个后续会讲到.</p>
+<p>其实除了通过返回<strong>nil</strong>并不是唯一禁止隐式动画的方法, 我们也可以通过<strong>CATransacition</strong>的<strong>+ (void)setDisableActions:(BOOL)flag;</strong>方法, 通过<strong>flag</strong>来对所有属性打开或者关闭隐式动画, 哪怕你是在<strong>[CATransaction begin];</strong>之后来添加, 也是一样可以关闭的.</p>
+<p>这里还有一个<strong>Demo</strong>, 使用<strong>CATransaction</strong>来实现的一个叫做<strong>推进过渡</strong>动画, 其实说白也就是一个<strong>Push</strong>动画:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">- (void)pushAnimation &#123;</span><br><span class="line">    </span><br><span class="line">    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,</span><br><span class="line">                                                            100,</span><br><span class="line">                                                            self.view.frame.size.width,</span><br><span class="line">                                                            self.view.frame.size.width)];</span><br><span class="line">    </span><br><span class="line">    view.backgroundColor = [UIColor grayColor];</span><br><span class="line">    </span><br><span class="line">    [self.view addSubview:view];</span><br><span class="line">    </span><br><span class="line">    UIButton *button = [[UIButton alloc] init];</span><br><span class="line">    </span><br><span class="line">    button.center = CGPointMake(self.view.frame.size.width / 2, 50);</span><br><span class="line">    button.bounds = CGRectMake(0, 0, 100, 50);</span><br><span class="line">    button.backgroundColor = [UIColor blueColor];</span><br><span class="line">    </span><br><span class="line">    [button setTitle:@&quot;改变颜色&quot;</span><br><span class="line">            forState:UIControlStateNormal];</span><br><span class="line">    </span><br><span class="line">    [button addTarget:self</span><br><span class="line">               action:@selector(pushChangeColor)</span><br><span class="line">     forControlEvents:UIControlEventTouchUpInside];</span><br><span class="line">    </span><br><span class="line">    [view addSubview:button];</span><br><span class="line">    </span><br><span class="line">    self.colorLayer  = [CALayer layer];</span><br><span class="line">    self.colorLayer.position = CGPointMake(view.frame.size.width / 2, view.frame.size.height / 2);</span><br><span class="line">    self.colorLayer.bounds = CGRectMake(0, 0, 150, 150);</span><br><span class="line">    self.colorLayer.backgroundColor = [UIColor redColor].CGColor;</span><br><span class="line">    </span><br><span class="line">    CATransition *transition = [CATransition animation];</span><br><span class="line">    </span><br><span class="line">    transition.type = kCATransitionPush;</span><br><span class="line">    transition.subtype = kCATransitionFromLeft;</span><br><span class="line">    </span><br><span class="line">    self.colorLayer.actions = @&#123;@&quot;backgroundColor&quot;: transition&#125;;</span><br><span class="line">    </span><br><span class="line">    [view.layer addSublayer:self.colorLayer];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)pushChangeColor &#123;</span><br><span class="line">    </span><br><span class="line">    [CATransaction begin];</span><br><span class="line">    [CATransaction setAnimationDuration:2.0f];</span><br><span class="line"></span><br><span class="line">    CGFloat redColor = arc4random() / (CGFloat)INT_MAX;</span><br><span class="line">    CGFloat greenColor = arc4random() / (CGFloat)INT_MAX;</span><br><span class="line">    CGFloat blueColor = arc4random() / (CGFloat)INT_MAX;</span><br><span class="line">    </span><br><span class="line">    self.colorLayer.backgroundColor = [UIColor colorWithRed:redColor</span><br><span class="line">                                                      green:greenColor</span><br><span class="line">                                                       blue:blueColor</span><br><span class="line">                                                      alpha:1.0f].CGColor;</span><br><span class="line">    [CATransaction commit];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/7.ImplicitAnimations/Images/7.gif" alt="7"></p>
+<h3 id="Presentation-Versus-Model"><a href="#Presentation-Versus-Model" class="headerlink" title="Presentation Versus Model"></a>Presentation Versus Model</h3><p>其实仔细想想, <strong>CALayer</strong>的属性行为并不太正常, 为何这么说呢, 因为当我们去改变一个图层的属性时, 我们会发现, 这个值的确是立即发生了改变, 但在屏幕上并没有马上生效, 为何呢? 因为我们在设置属性的时候, 并没有直接去调整图层的显示外观, 仅仅只是定义了图层动画结束之后即将要发生改变的外观.</p>
+<p><strong>Core Animation</strong>在这里充当了一个控制器的角色, 并且根据<strong>Layer Actions</strong>和<strong>Transactions</strong>来更新视图在屏幕上显示的状态.</p>
+<p>在于用户交互的界面中, <strong>CALayer</strong>的行为更像是保存着视图如何去显示和动画的执行数据模型.</p>
+<p>在<strong>iOS</strong>中, 屏幕会以每秒钟重绘60次, 如果动画市场比60分之一秒还要长, 那么在这段时间里, <strong>Core Animation</strong>就会对屏幕上的图层进行重新的组合, 这就意味着<strong>CALayer</strong>除了我们给予的值之外, 还必须要知道当前显示在屏幕上的属性值的记录.</p>
+<p>而每个图层属性的显示值都会被存储在一个叫做<strong>呈现图层</strong>的独立图层当中, 我们可以通过<strong>- (nullable instancetype)presentationLayer;</strong>方法来访问, 而这个所谓的<strong>呈现图层</strong>, 实际上就是模型图层的复制, 但它的好处是它的属性值代表了在任何指定时间当前所显示的外观效果, 通俗点来讲, 就是我们可以通过获取<strong>呈现图层</strong>的值来获取当前屏幕上真正显示出来的值.</p>
+<p>这里需要注意的一点就是, 如果在<strong>呈现图层</strong>仅仅当<strong>CALayer</strong>首次被提交的时候创建, 那么去调用<strong>- (nullable instancetype)presentationLayer;</strong>方法就会返回<strong>nil</strong>.</p>
+<p>这里我们或许还会注意到另一个方法<strong>- (instancetype)modelLayer;</strong>, 如果我们在呈现图层上调用这个方法, 那么就会返回一个它正在呈现所以来的<strong>CALayer</strong>, 而通常在一个图层上调用这个方法, 就会返回<strong>self</strong>.</p>
+<p>在大多数开发的场景下, 我们都不需要直接访问呈现图层, 我们可以通过和模型图层的交互, 来让<strong>Core Animation</strong>更新并且显示, 但在以下两种场景下<strong>呈现图层</strong>就非常有用了, 一个是在同步动画里, 一个是在处理用户交互的时候:</p>
+<ul>
+<li>如果我们在实现一个基于定时器的动画, 而不仅仅是基于<strong>Transactions</strong>的动画, 这个时候我们就要准确的知道在某一时刻图层显示在什么位置, 这就会对正确的布局起非常大的作用了.</li>
+<li>如果我们想让做动画的图层对于用户有交互, 我们可以使用<strong>- (nullable CALayer *)hitTest:(CGPoint)p;</strong>方法来判断指定的图层是否被点击了, 这个时候就会显示更加的友好, 因为<strong>呈现图层</strong>代表了用户当前看到的图层位置, 而不是当动画效果结束之后的位置.</li>
+</ul>
+<p>说了那么多, 还是直接上<strong>Demo</strong>比较直接:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">- (void)presentationVersusModel &#123;</span><br><span class="line">    </span><br><span class="line">    self.colorLayer  = [CALayer layer];</span><br><span class="line">    self.colorLayer.position = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);</span><br><span class="line">    self.colorLayer.bounds = CGRectMake(0, 0, 150, 150);</span><br><span class="line">    self.colorLayer.backgroundColor = [UIColor redColor].CGColor;</span><br><span class="line">    </span><br><span class="line">    [self.view.layer addSublayer:self.colorLayer];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)touchesBegan:(NSSet&lt;UITouch **)touches withEvent:(UIEvent *)event &#123;</span><br><span class="line">    </span><br><span class="line">    CGPoint point = [[touches anyObject] locationInView:self.view];</span><br><span class="line">    </span><br><span class="line">    if ([self.colorLayer.presentationLayer hitTest:point]) &#123;</span><br><span class="line">        </span><br><span class="line">        CGFloat redColor = arc4random() / (CGFloat)INT_MAX;</span><br><span class="line">        CGFloat greenColor = arc4random() / (CGFloat)INT_MAX;</span><br><span class="line">        CGFloat blueColor = arc4random() / (CGFloat)INT_MAX;</span><br><span class="line">        </span><br><span class="line">        self.colorLayer.backgroundColor = [UIColor colorWithRed:redColor</span><br><span class="line">                                                          green:greenColor</span><br><span class="line">                                                           blue:blueColor</span><br><span class="line">                                                          alpha:1.0f].CGColor;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        [CATransaction begin];</span><br><span class="line">        [CATransaction setAnimationDuration:4.0f];</span><br><span class="line">        </span><br><span class="line">        self.colorLayer.position = point;</span><br><span class="line">        </span><br><span class="line">        [CATransaction commit];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/7.ImplicitAnimations/Images/8.gif" alt="8"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总结一下:</p>
+<ul>
+<li><strong>Core Animation</strong>默认是打开动画效果的, 并且默认的动画效果是平滑过渡滴.</li>
+<li>我们知道了隐式动画的实现方式.</li>
+<li><strong>UIView</strong>关联的图层默认都禁用了隐式动画, 对这种图层做动画的唯一办法就是使用<strong>UIView</strong>的动画函数, 或者是继承与<strong>UIView</strong>并且重写<strong>- (nullable id)actionForLayer:(CALayer *)layer forKey:(NSString *)event;</strong>方法, 最直接的方法就是直接创建一个显示动画.</li>
+<li>对于一个单独存在的图层来讲, 我们可以通过实现图层的<strong>- (nullable id)actionForLayer:(CALayer *)layer forKey:(NSString *)event;</strong>方法, 或者是提供一个<strong>Actions</strong>的字典来控制隐式动画.</li>
+<li>除此之外, 我们来了解了<strong>呈现图层</strong>和<strong>模型图层</strong>, 知道了这两个家伙的一些皮毛.</li>
+</ul>
+<p>好了, 这次就到这里了, 谢谢大家~</p>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: <a href="https://github.com/CainLuo/CoreAnimation" target="_blank" rel="noopener">https://github.com/CainLuo/CoreAnimation</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Transactions"><span class="toc-number">2.</span> <span class="toc-text">Transactions</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Completion-Blocks"><span class="toc-number">2.1.</span> <span class="toc-text">Completion Blocks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Layer-Actions"><span class="toc-number">2.2.</span> <span class="toc-text">Layer Actions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Presentation-Versus-Model"><span class="toc-number">2.3.</span> <span class="toc-text">Presentation Versus Model</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">4.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

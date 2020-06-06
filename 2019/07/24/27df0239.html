@@ -1,0 +1,471 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RxSwift：2.Observables - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="现在我们已经了解到了一些基本概念, 就可以开始使用observables了.
+在这篇教程中, 我们会编写几个创建和订阅observables的例子, Observable在刚开始使用的时候可能会有一,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">RxSwift：2.Observables</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">RxSwift：2.Observables</h1>
+        <div class="stuff">
+            <span>七月 24, 2019</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/RxSwift/">RxSwift</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>现在我们已经了解到了一些基本概念, 就可以开始使用<strong>observables</strong>了.</p>
+<p>在这篇教程中, 我们会编写几个创建和订阅<strong>observables</strong>的例子, <strong>Observable</strong>在刚开始使用的时候可能会有一些抽象, 但请放心, 随着我们慢慢的深入, 并且了解<strong>RxSwift</strong>中可用的<strong>Observable</strong>对象的许多类型, 这些问题都会慢慢迎刃而解的.</p>
+<blockquote>
+<p>注意: 如转载本文章, 请联系作者, 并给出文章的源地址, 本示例的代码可以在<a href="https://github.com/CainLuo/RxSwiftLearn/tree/master/Chapter%202/Observables下载" target="_blank" rel="noopener">https://github.com/CainLuo/RxSwiftLearn/tree/master/Chapter%202/Observables下载</a></p>
+</blockquote>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>在本章中, 我们将使用一个<strong>Xcode</strong>项目, 该项目已经写好了<strong>CocoaPods</strong>所需的东西, 直接打开终端, 去到当前目录然后输入:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod install</span><br></pre></td></tr></table></figure>
+
+<p><strong>CocoaPods</strong>就会自动的把<strong>RxSwift</strong>和我们的工程关联起来了.</p>
+<blockquote>
+<p>注意: 该教程使用的是<strong>RxSwift 4.4.1</strong>版本, <strong>Xcode 10.3</strong>, 默认是<strong>Swift 5.0</strong>版本.</p>
+</blockquote>
+<h2 id="什么是Observable"><a href="#什么是Observable" class="headerlink" title="什么是Observable"></a>什么是Observable</h2><p><strong>Observable</strong>是<strong>Rx</strong>的核心, 我们将花一些事件讨论什么事Observable, 以及如何创建它们和使用它们.</p>
+<p>我们将会看到<strong>“Observable”</strong>, “<strong>Observable sequence</strong>“和<strong>“sequence”</strong>在<strong>Rx</strong>中交换使用, 但实际上它们其实都是一样的. 我们甚至偶尔会看到一个<strong>“stream”</strong>, 特别是来自<strong>RxSwift</strong>的开发人员, 他们接触过很多不同的编程环境. <strong>“Stream”</strong>其实也是指同样的东西, 但是在<strong>RxSwift</strong>中, 我们都称它为序列, 而不是<strong>“stream”</strong>, 在<strong>RxSwift</strong>中…</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%202/2.png" alt="图片"></p>
+<p>…或者与序列有关的东西. <strong>Observable</strong>只是一个序列, 有一些特殊的功能, 其中一个功能——也是最实用的功能——<strong>异步(asynchronous)</strong>. <strong>Observable</strong>对象在一段时间内产生事件, 这个过程称为<strong>发出(emitting)</strong>. <strong>Observable</strong>的事件可以包含值, 比如说基础数据类型, 自定类型的实例, 也可以是手势, 比如点击等等.</p>
+<p>最简单的表现形式就是使用时序图, 它只是在时间轴上标记而已.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%202/3.png" alt="图片"></p>
+<p>从做到右的箭头表示事件, 编号的圆圈表示序列的元素. 元素<strong>1</strong>将被释放, 经过一段时间之后, 元素<strong>2</strong>和元素<strong>3</strong>又会被释放掉, 如果要问这里大概需要多少事件.</p>
+<p>它可以是<strong>Observable</strong>对象生命周期的任何一个点, 接下来我们就看看<strong>Observable</strong>对象的声明周期.</p>
+<h2 id="Observable的生命周期"><a href="#Observable的生命周期" class="headerlink" title="Observable的生命周期"></a>Observable的生命周期</h2><p>在前面的时序图中, 我们可以看到<strong>Observable</strong>发出的三个元素, 当一个<strong>Observable</strong>对象发出一个元素时, 它会在<strong>onNext</strong>中发出这个元素.</p>
+<p>下面是另一个时序图, 这次是一个条从头到结束的<strong>Observable</strong>事件线.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%202/4.png" alt="图片"></p>
+<p>这个<strong>Observable</strong>发出了三个<strong>tap</strong>事件, 最后就结束. 这个过程我们称为<strong>completed</strong>事件, 因为它已经被终止. 例如我们可能在监听一些事件, 然后完成了.</p>
+<p>重要的是Observable对象已经被终止了, 不会再次发出任何的东西, 这是正常的结束, 当然, 有时候事情并不是我们想象的那样顺利, 也会有出错的情况.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%202/5.png" alt="图片"></p>
+<p>在这个时序图中发生了一个错误, 图里用红色的<strong>X</strong>表示, <strong>Observable</strong>发送了一个<strong>error</strong>的事件, 这与<strong>Observable</strong>在正常情况下完成了事件并且终止没有什么不同, 因为当<strong>Observable</strong>发出了一个<strong>error</strong>事件, 那么它也会终止, 并且不会再发出任何东西.</p>
+<p>下面有一个快速的介绍:</p>
+<ul>
+<li>一个<strong>Observable</strong>对象会发出一个包含了元素的<strong>onNext</strong>事件;</li>
+<li><strong>Observable</strong>会一直运行, 直到发出终止事件为止, 例如: <strong>error</strong>事件和<strong>completed</strong>事件</li>
+<li>一旦<strong>Observable</strong>对象被终止, 它就法不能再发出事件.</li>
+</ul>
+<p>以<strong>RxSwift</strong>的源代码为例, 这些事件表示为枚举:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// Represents a sequence event.</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// Sequence grammar:</span></span><br><span class="line"><span class="comment">/// **next\* (error | completed)**</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">Event</span>&lt;<span class="title">Element</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">/// Next element is produced.</span></span><br><span class="line">    <span class="keyword">case</span> next(<span class="type">Element</span>)</span><br><span class="line">     <span class="comment">/// Sequence terminated with an error.</span></span><br><span class="line">    <span class="keyword">case</span> error(<span class="type">Swift</span>.<span class="type">Error</span>)</span><br><span class="line">    <span class="comment">/// Sequence completed successfully.</span></span><br><span class="line">    <span class="keyword">case</span> completed</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里, 我们可以看到<code>.next</code>事件包含某个元素的实例, <code>.error</code>事件包含<strong>Swift .Error</strong>, <code>.completed</code>是不包含任何数据的停止事件.</p>
+<p>现在我们已经了解了什么是<strong>Observable</strong>, 以及它可以做什么, 接下来我们将创建一些<strong>Observable</strong>来看看它们的行为.</p>
+<h2 id="创建Observables"><a href="#创建Observables" class="headerlink" title="创建Observables"></a>创建Observables</h2><p>从当前文章回到我们的项目工程, 并且替换下面的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">createObservable</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"--- just, of, from ---"</span>)</span><br><span class="line">        <span class="comment">// 1</span></span><br><span class="line">        <span class="keyword">let</span> one = <span class="number">1</span></span><br><span class="line">        <span class="keyword">let</span> two = <span class="number">2</span></span><br><span class="line">        <span class="keyword">let</span> three = <span class="number">3</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 2</span></span><br><span class="line">        <span class="keyword">let</span> observable = <span class="type">Observable</span>&lt;<span class="type">Int</span>&gt;.just(one)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面是我们在上面代码中所做的:</p>
+<ol>
+<li>定义将在下面的示例中所要使用的整数常量.</li>
+<li>使用带有一个整数的<strong>just</strong>方法来创建一个<strong>Int</strong>类型的<strong>Observable</strong>对象.</li>
+</ol>
+<p><strong>just</strong>的名字和它所做的事情非常的贴切, 因为它就是创建一个只包含单个元素的<strong>Observable</strong>, 只是Observable的其中一种类型方法, 然而在<strong>Rx</strong>中, 这种方法被称为<strong>操作符(Operators)</strong>.</p>
+<p>接下来我们继续下一个操作符:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> observable2 = <span class="type">Observable</span>.of(one, two, three)</span><br></pre></td></tr></table></figure>
+
+<p>这次我们没有明确的指定类型, 在猜测它有可能是<strong>[Int]</strong>类型的<strong>Observable</strong>对象.</p>
+<p>按住<strong>option + 鼠标左键</strong>点击一下, 我们可以到它是一个<strong>Int</strong>类型的<strong>Observable</strong>对象, 不是一个数组:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%202/6.1.png" alt="图片"></p>
+<p>这是因为<strong>of</strong>操作符可以接受可变参数, <strong>Swift</strong>能够根据它推断出Observable对象的类型.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%202/7.1.png" alt="图片"></p>
+<p>如果想要创建一个<strong>Observable</strong>的数组, 我们可以简单的将一个数组传递进去, 添加下面的代码到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> observable3 = <span class="type">Observable</span>.of([one, two, three])</span><br></pre></td></tr></table></figure>
+
+<p>再次按住<strong>option + 鼠标左键</strong>点击一下, 我们就可以看到它确实是一个<strong>[Int]</strong>的<strong>Observable</strong>对象, <strong>just</strong>操作符也可以将数组作为它的单个元素, 这看起来可能有些奇怪, 然而在<strong>just</strong>操作符中, 数组只是单个元素, 不是它的内容.</p>
+<p>我们还可以用另一个操作符<strong>from</strong>来创建<strong>Observable</strong>对象, 在工程中添加下面代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> observable4 = <span class="type">Observable</span>.from([one, two, three])</span><br></pre></td></tr></table></figure>
+
+<p><strong>from</strong>操作符可以从数组中创建单个的<strong>Observable</strong>元素, 按住<strong>option + 鼠标左键</strong>点击一下, 我们会看到它是一个Int类型的<strong>Observable</strong>, 而不是<strong>[Int]</strong>, 注意一下, <strong>from</strong>操作符只接受数组. </p>
+<p>现在我们还没有进行操作, 所以<strong>Xcode</strong>中的控制台目前看起来光秃秃的, 除了介绍了上面三个操作符之后, 我们并没有实际操作什么, 接下来, 我们就来订阅一下这些<strong>Observable</strong>对象, 来点实际的.</p>
+<h3 id="订阅Observable"><a href="#订阅Observable" class="headerlink" title="订阅Observable"></a>订阅Observable</h3><p>作为一个<strong>iOS</strong>开发人员, 我们可能熟悉<strong>NotificationCenter</strong>, 它会向订阅者发送通知广播, 这和<strong>RxSwift</strong>的<strong>Observable</strong>对象不同. 下面是一个<strong>UIKeyboardDidChangeFrame</strong>通知的观察者的例子, 后面有一个处理相关操作的<strong>Block</strong>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> observer = <span class="type">NotificationCenter</span>.<span class="keyword">default</span>.addObserver(</span><br><span class="line">  forName: <span class="type">UIResponder</span>.keyboardDidChangeFrameNotification,</span><br><span class="line">  object: <span class="literal">nil</span>,</span><br><span class="line">  queue: <span class="literal">nil</span>) &#123; notification <span class="keyword">in</span></span><br><span class="line">  <span class="comment">// Handle receiving notification</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>订阅一个<strong>RxSwift</strong>的<strong>Observable</strong>对象非常的简单, 我们用观察者去订阅它就可以了, 就相当于把上面的<code>addObserver()</code>替换为<code>subscribe()</code>, 与<strong>NotificationCenter</strong>不同, <strong>Rx</strong>中的每个<strong>Observable</strong>对象都是不一样的, 开发人员通常只会用到它的<code>.default</code>单例.</p>
+<p>更重要的是, 一个<strong>Observable</strong>对象在没有订阅者的情况下是不会直接就发送事件或者执行任何操作.</p>
+<p>记住, <strong>Observable</strong>对象实际上是一个序列的定义, 订阅一个<strong>Observable</strong>对象实际上更像在<strong>Swift</strong>标准库的迭代器调用<code>next()</code>.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> sequence = <span class="number">0</span>..&lt;<span class="number">3</span></span><br><span class="line"><span class="keyword">var</span> iterator = sequence.makeIterator()</span><br><span class="line"><span class="keyword">while</span> <span class="keyword">let</span> n = iterator.next() &#123;</span><br><span class="line">    <span class="built_in">print</span>(n) </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* Prints: </span></span><br><span class="line"><span class="comment">0</span></span><br><span class="line"><span class="comment">1 </span></span><br><span class="line"><span class="comment">2 </span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<p>不过, 我们订阅<strong>Observable</strong>要比这个更加的精简, 我们还可以为<strong>Observable</strong>发出每种事件类型添加处理操作.</p>
+<p>回想一下, 一个<strong>Observable</strong>会发出的<code>.next</code>, <code>.error</code>和<code>.completed</code>事件. <code>.next</code>事件将发出的元素传递给应用程序继续处理, <code>.error</code>事件则是一个包含错误信息的实例.</p>
+<p>来点实际的代码, 将下面的代码添加到我们示例当中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">subscribe</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;        </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"\n--- subscribe ---"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> one = <span class="number">1</span></span><br><span class="line">    <span class="keyword">let</span> two = <span class="number">2</span></span><br><span class="line">    <span class="keyword">let</span> three = <span class="number">3</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> observable = <span class="type">Observable</span>.of(one, two, three)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这和前面的示例类似, 只是这次我们使用的是<strong>of</strong>操作符, 现在在这个例子的底部订阅<strong>Observable</strong>, 并且在闭包里添加一段操作代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">observable.subscribe &#123; event <span class="keyword">in</span></span><br><span class="line">	<span class="built_in">print</span>(event)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>按住<strong>option + 鼠标左键</strong>点击一下<code>subscribe</code>操作符, 我们会看到它接受一个转义的<strong>block</strong>, 该闭包接受<strong>Int</strong>类型的事件, 并且不返回任何内容, <strong>subscribe</strong>会返回一个可以丢弃的闭包, 以管理资源, 稍后我们将会涉及到<strong>Disposable</strong>.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%202/8.1.png" alt="图片"></p>
+<p>触发事件后, 我们会看到输出的结果:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">--- subscribe ---</span><br><span class="line"><span class="keyword">next</span>(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">next</span>(<span class="number">2</span>)</span><br><span class="line"><span class="keyword">next</span>(<span class="number">3</span>)</span><br><span class="line">completed</span><br></pre></td></tr></table></figure>
+
+<p><strong>Observable</strong>对象为每个元素发出<code>.next</code>事件, 然后再发出<code>.completed</code>事件表示终止, 当我们使用<strong>Observable</strong>时, 通常会对<code>.next</code>事件发出的元素比事件本身更感兴趣.</p>
+<p>那么我们如何去访问呢? 我们用下面的代码将之前的订阅代码给替换掉:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">observable.subscribe &#123; event <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> element = event.element &#123;</span><br><span class="line">        <span class="built_in">print</span>(element)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>事件是具有元素属性的, 并且是一个<strong>option</strong>, 因为<code>.next</code>事件有一个元素, 只要元素不为<strong>nil</strong>, 则可以使用<strong>option</strong>绑定来展开元素, 现在我们再次触发, 就会看到控制台上只打印元素, 并不会打印包含元素的事件, 也不会输出<code>.completed</code>事件 .</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>由于这种模式使用的非常频繁, 所以<strong>RxSwift</strong>为了让我们更加的简单使用, 还提供了一种操作符, 可以包含Observable对象发出每一种类型的事件: <strong>next</strong>, <strong>error</strong>和<strong>completed</strong>.</p>
+<p>用下面的代码来代替之前的订阅代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">observable.subscribe(onNext: &#123; element <span class="keyword">in</span></span><br><span class="line">    <span class="built_in">print</span>(element)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>现在, 我们只需要处理<code>.next</code>事件的元素, 其他的内容则会被忽略掉. <strong>onNext</strong>闭包接收<code>.next</code>事件的元素作为参数, 所以我们不用再像之前那样子手动的去检索元素.</p>
+<p>现在我们已经了解了如何创建一个或者多个元素的Observable对象, 那么零元素的Observable呢? <strong>RxSwift</strong>也考虑到了这种情况, 因为提供了一个<code>.empty</code>操作符, 它只会发出<code>.completed</code>事件.</p>
+<p>添加下面的例子到我们的工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">empty</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"\n--- empty ---"</span>)</span><br><span class="line">    <span class="keyword">let</span> observable = <span class="type">Observable</span>&lt;<span class="type">Void</span>&gt;.empty()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果我们没有办法去推断类型, 那么则必须得显式的声明<strong>Observable</strong>的特定类型, 而<strong>empty</strong>就是没有推断的内容, 所以必须显式的声明定义类型.</p>
+<p>在这种情况下我们使用<strong>Void</strong>比其他类型都要好, 将下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">observable.subscribe(</span><br><span class="line">    <span class="comment">// 1</span></span><br><span class="line">    onNext: &#123; element <span class="keyword">in</span></span><br><span class="line">        <span class="built_in">print</span>(element)</span><br><span class="line">&#125;,</span><br><span class="line">    <span class="comment">// 2</span></span><br><span class="line">    onCompleted: &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"Completed"</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>依次来解释一下:</p>
+<ol>
+<li>处理<code>.next</code>事件, 就像我们在前面的示例中那样.</li>
+<li><code>.completed</code>事件不包含任何的元素, 这里只打印一条消息</li>
+</ol>
+<p>在控制台中, 我们会看到<strong>empty</strong>只发出<code>.completed</code>事件:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--- <span class="built_in">empty</span> ---</span><br><span class="line">Completed</span><br></pre></td></tr></table></figure>
+
+<p>关于这个<code>.empty</code>有人可能会有疑问, 这个操作符能做什么? 仔细的想一下, 如果我们想返回一个立即终止或者有意为零的<strong>Observable</strong>元素时, 那么它就非常的有用了.</p>
+<p>与这个<strong>empty</strong>操作符相反的就是<strong>never</strong>操作符, 是用来创建一个永远不会发出任何东西, 也永远不会终止的<strong>Observable</strong>对象, 它可以用来表示无限的持续时间, 把下面的例子添加到工程:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">never</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"\n--- never ---"</span>)</span><br><span class="line">    <span class="keyword">let</span> observable = <span class="type">Observable</span>&lt;<span class="type">Any</span>&gt;.never()</span><br><span class="line"></span><br><span class="line">    observable.subscribe(</span><br><span class="line">        onNext: &#123; element <span class="keyword">in</span></span><br><span class="line">            <span class="built_in">print</span>(element)</span><br><span class="line">    &#125;,</span><br><span class="line">        onCompleted: &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"Completed"</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一旦我们出发这个事件, 我们只会看到标题头, 然后<code>.next</code>事件和<code>.completed</code>事件是不会输出任何信息的.</p>
+<p>到目前为止, 我们使用的都是显式元素或者有值的<strong>Observable</strong>, 除此之外, 也可以生成一个范围的<strong>Observable</strong>.</p>
+<p>把下面的例子添加到工程:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">range</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"\n--- range ---"</span>)</span><br><span class="line">    <span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">let</span> observable = <span class="type">Observable</span>&lt;<span class="type">Int</span>&gt;.range(start: <span class="number">1</span>, <span class="built_in">count</span>: <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">    observable</span><br><span class="line">        .subscribe(</span><br><span class="line">            onNext: &#123; i <span class="keyword">in</span></span><br><span class="line">                <span class="comment">// 2</span></span><br><span class="line">                <span class="keyword">let</span> n = <span class="type">Double</span>(i)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">let</span> fibonacci = <span class="type">Int</span>(((pow(<span class="number">1.61803</span>, n) - pow(<span class="number">0.61803</span>, n)) / <span class="number">2.23606</span>).rounded())</span><br><span class="line">                <span class="built_in">print</span>(fibonacci)</span><br><span class="line">        &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>继续来拆解:</p>
+<ol>
+<li>使用<strong>range</strong>操作符来创建一个从<strong>1</strong>开始, 数量为<strong>10</strong>的<strong>Int</strong>类型<strong>Observable</strong>对象</li>
+<li>计算并输出第<strong>n</strong>个斐波那契数列</li>
+</ol>
+<p>实际上, 有一个比<code>.onNext</code>更好的处理转换元素的操作符, 这个我们会在未来的教程中会学习到.</p>
+<p>到目前为止, 除了<code>never()</code>示例之外, 我们一直都在处理<strong>Observable</strong>对象, 它们会自动的发出<code>.completed</code>事件并终止<strong>Observable</strong>序列. 这会使得我们将重点放在创建和订阅<strong>Observable</strong>的机制上, 虽然这样子很方便, 但会掩盖了我们进一步了解<strong>Observable</strong>, 接下来, 我们细说一下<strong>Observable</strong>的处理和终止.</p>
+<h2 id="处理和终止"><a href="#处理和终止" class="headerlink" title="处理和终止"></a>处理和终止</h2><p>有一件事情我们需要记住, 在<strong>Observable</strong>对象未接收到订阅之前, 是不会做任何事情的, 订阅是用来触发<strong>Observable</strong>对象的工作, 然后才会使<strong>Observable</strong>发出事件, 直到它发出<code>.error</code>或<code>.completed</code>事件并终止为止, 除此之外, 我们也可以通过取消<strong>Observable</strong>对象的订阅, 然后终止<strong>Observable</strong>对象.</p>
+<p>把下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">dispose</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"\n--- dispose ---"</span>)</span><br><span class="line">    <span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">let</span> observable = <span class="type">Observable</span>.of(<span class="string">"A"</span>, <span class="string">"B"</span>, <span class="string">"C"</span>)</span><br><span class="line">    <span class="comment">// 2</span></span><br><span class="line">    <span class="keyword">let</span> subscription = observable.subscribe &#123; event <span class="keyword">in</span></span><br><span class="line">        <span class="comment">// 3</span></span><br><span class="line">        <span class="built_in">print</span>(event)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>简单的介绍:</p>
+<ol>
+<li>创建一个字符串的<strong>Observable</strong>对象.</li>
+<li>订阅<strong>Observable</strong>对象, 这次将返回的<strong>Observable</strong>对象, 然后用一个<strong>let</strong>变量保存着.</li>
+<li>在<strong>Observable</strong>的<strong>block</strong>回调中处理任务.</li>
+</ol>
+<p>如果我们要显式的取消订阅, 我们会调用<code>dispose()</code>. 再次说一下, 取消订阅或处理完订阅之后, 当前示例中的<strong>Observable</strong>将会停止发出事件.</p>
+<p>将下面的代码添加到例子中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">subscription.dispose()</span><br></pre></td></tr></table></figure>
+
+<p>但是这种单独管理每个订阅是非常的繁琐的, 所以<strong>RxSwift</strong>提供了一个统一管理的<strong>DisposeBag</strong>类型, 它可以使用添<code>.dispose(by: )</code>方法将<strong>subscribe</strong>添加到<strong>disposeBag</strong>中, 每当即将要释放<strong>Observable</strong>对象时, 都会自动的去调用<code>dispose()</code>方法.</p>
+<p>下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">disposeBag</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"\n--- DisposeBag ---"</span>)</span><br><span class="line">    <span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">let</span> disposeBag = <span class="type">DisposeBag</span>()</span><br><span class="line">    <span class="comment">// 2</span></span><br><span class="line">    <span class="type">Observable</span>.of(<span class="string">"A"</span>, <span class="string">"B"</span>, <span class="string">"C"</span>)</span><br><span class="line">        .subscribe &#123;</span><br><span class="line">            <span class="comment">// 3</span></span><br><span class="line">            <span class="built_in">print</span>($<span class="number">0</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 4</span></span><br><span class="line">        .disposed(by: disposeBag)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解释一下代码的工作流程:</p>
+<ol>
+<li>创建一个<strong>disposeBag</strong>.</li>
+<li>创建一个<strong>Observable</strong>对象</li>
+<li>订阅<strong>Observable</strong>对象, 并使用<strong>Swift</strong>标准库的默认参数$0输出内容.</li>
+<li>将<strong>subscribe</strong>的返回值添加到<strong>disposeBag</strong>中.</li>
+</ol>
+<p>这将会是我们以后最常用的模式, 创建并订阅一个<strong>Observable</strong>, 然后立即将<strong>subscribe</strong>添加到<strong>disposeBag</strong>中.</p>
+<p>为什么要那么麻烦使用<strong>disposeBag</strong>?</p>
+<p>如果我们忘了向<strong>disposeBag</strong>添加订阅, 或者在订阅完成之后忘了手动添加<strong>dispose</strong>, 那么就会造成本该结束的<strong>Observable</strong>对象没有结束, 导致内存泄漏.</p>
+<p>幸好的是, <strong>Swift</strong>编译器会提醒我们没有使用<strong>disposables</strong>.</p>
+<p>在前面的示例里, 我们都是创建<strong>Observable</strong>对象, 然后再使用<code>.next</code>来输出元素, 现在我们来点不一样的, 使用<strong>create</strong>操作符, 这个操作符允许我们将指定的<strong>Observable</strong>对象向订阅者发出所有事件的另一种方式.</p>
+<p>把下面的示例添加到代码中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">create</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"\n--- create ---"</span>)</span><br><span class="line">    <span class="keyword">let</span> disposeBag = <span class="type">DisposeBag</span>()</span><br><span class="line"></span><br><span class="line">    <span class="type">Observable</span>&lt;<span class="type">String</span>&gt;.create &#123; observer <span class="keyword">in</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>create</strong>操作符接受一个名为<strong>subscribe</strong>的参数, 它工作是提供对<strong>Observable</strong>调用<strong>subscribe</strong>的实现, 换一句话说它定义了将发送给订阅者的所有事件, <strong>option + 鼠标左键</strong>点击一下: </p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%202/9.1.png" alt="图片"></p>
+<p><strong>subscribe</strong>参数是一个转义闭包, 它接受<strong>AnyObserver</strong>并返回一个逃逸闭包. <strong>AnyObserver</strong>是一种泛型的类型, 它可以非常方便的将值添加到一个<strong>Observable</strong>序列中, 然后将该序列发送给订阅者.</p>
+<p>将<strong>create</strong>的实现更改为下面的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Observable</span>&lt;<span class="type">String</span>&gt;.create &#123; observer <span class="keyword">in</span></span><br><span class="line">  <span class="comment">// 1</span></span><br><span class="line">  observer.onNext(<span class="string">"1"</span>)</span><br><span class="line">  <span class="comment">// 2</span></span><br><span class="line">  observer.onCompleted()</span><br><span class="line">	<span class="comment">// 3</span></span><br><span class="line">  observer.onNext(<span class="string">"?"</span>)</span><br><span class="line">	<span class="comment">// 4</span></span><br><span class="line">  <span class="keyword">return</span> <span class="type">Disposables</span>.create()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码详情:</p>
+<ol>
+<li>添加一个<code>.next</code>事件到<strong>Observable</strong>, <code>.onNext(_:)</code>是<code>on(.next(_:))</code>的快捷方法.</li>
+<li>将<code>.completed</code>事件添加到<strong>Observable</strong>中, 和上面一样, <code>.onCompleted</code>是<code>on(.completed)</code>的快捷方法.</li>
+<li>再添加另一个<code>.next</code>事件到<strong>Observable</strong>.</li>
+<li>返回一个<strong>disposable</strong>.</li>
+</ol>
+<blockquote>
+<p>注意: 在最后一步, 我们返回的是<strong>disposable</strong>, 这看起来感觉会很奇怪, 请记住, subscribe操作符返回一个表示订阅的<code>Disposable.create()</code>则是一个空的<strong>disposable</strong>, 则不会有其他的影响, 但有些<strong>disposables</strong>就另外说了.</p>
+</blockquote>
+<p>这里提一个问题, 你认为第二个<code>.onNext(&quot;?&quot;)</code>元素会发给订阅者吗? 为什么呢?</p>
+<p>我们来试试, 看看你我的猜测是否是正确的, 添加下面的代码到<strong>create</strong>实现之后:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.subscribe(</span><br><span class="line">    onNext: &#123; <span class="built_in">print</span>($<span class="number">0</span>) &#125;,</span><br><span class="line">    onError: &#123; <span class="built_in">print</span>($<span class="number">0</span>) &#125;,</span><br><span class="line">    onCompleted: &#123; <span class="built_in">print</span>(<span class="string">"Completed"</span>) &#125;,</span><br><span class="line">    onDisposed: &#123; <span class="built_in">print</span>(<span class="string">"Disposed"</span>)&#125;</span><br><span class="line">)</span><br><span class="line">.disposed(by: disposeBag)</span><br></pre></td></tr></table></figure>
+
+<p>现在我们已经订阅了<strong>Observable</strong>, 并实现了所有的处理细节, onNext和onError使用了默认参数<strong>$0</strong>输出元素和错误信息, 但是我们发现结果则是<code>.next</code>的第一个事件, 接下来就是<strong>“Completed”</strong>和<strong>“Dispose”</strong>.</p>
+<p>第二个<code>.next</code>事件不会打印, 回想一下这其中的原因我们也知道, 因为<strong>Observable</strong>发出了一个<code>.onCompleted</code>事件然后就终止序列了, 所以后续的<code>.onNext</code>事件则不会再发出.</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">--- create ---</span><br><span class="line"><span class="number">1</span></span><br><span class="line">Completed</span><br><span class="line">Disposed</span><br></pre></td></tr></table></figure>
+
+<p>如果我们向<strong>Observable</strong>添加错误会发生什么样的事情呢? 在示例的顶部添加下面的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">MyError</span>: <span class="title">Error</span> </span>&#123;</span><br><span class="line">    <span class="keyword">case</span> anError</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来我们在<strong>create</strong>中将<code>observer.onCompleted</code>替换成<code>observer.onError</code>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">observer.onError(<span class="type">MyError</span>.anError)</span><br></pre></td></tr></table></figure>
+
+<p>Observable则会发出错误信息, 然后终止序列:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">--- create with error ---</span><br><span class="line"><span class="number">1</span></span><br><span class="line">anError</span><br><span class="line">Disposed</span><br></pre></td></tr></table></figure>
+
+<p>如果我们既没有发出<code>.completed</code>, <code>.error</code>事件, 也没有将<strong>subscribe</strong>添加到<strong>disposeBag</strong>中, 那么会发生什么情况呢?</p>
+<p>下面是完整的实现:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">createWithMemoryLeak</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="class"><span class="keyword">enum</span> <span class="title">MyError</span>: <span class="title">Error</span> </span>&#123;</span><br><span class="line">        <span class="keyword">case</span> anError</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"\n--- create with memory leak ---"</span>)</span><br><span class="line">    <span class="keyword">let</span> disposeBag = <span class="type">DisposeBag</span>()</span><br><span class="line"></span><br><span class="line">    <span class="type">Observable</span>&lt;<span class="type">String</span>&gt;.create &#123; observer <span class="keyword">in</span></span><br><span class="line">        observer.onNext(<span class="string">"1"</span>)</span><br><span class="line">        observer.onNext(<span class="string">"?"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="type">Disposables</span>.create()</span><br><span class="line">        &#125;</span><br><span class="line">        .subscribe(</span><br><span class="line">            onNext: &#123; <span class="built_in">print</span>($<span class="number">0</span>) &#125;,</span><br><span class="line">            onError: &#123; <span class="built_in">print</span>($<span class="number">0</span>) &#125;,</span><br><span class="line">            onCompleted: &#123; <span class="built_in">print</span>(<span class="string">"Completed"</span>) &#125;,</span><br><span class="line">            onDisposed: &#123; <span class="built_in">print</span>(<span class="string">"Disposed"</span>)&#125;</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>恭喜你, 你刚刚创建了一个无限的<strong>Observable</strong>序列, 该<strong>Observable</strong>永远都不会结束.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">--- create with memory leak ---</span><br><span class="line"><span class="number">1</span></span><br><span class="line">?</span><br></pre></td></tr></table></figure>
+
+<p>如果你没法忍受这个示例处于内容泄漏状态, 可以把刚刚我们删掉的<code>.completed</code>, <code>.error</code>事件添加回去, 并且将<strong>subscribe</strong>添加到<strong>disposeBag</strong>中.</p>
+<h2 id="创建Observable工厂"><a href="#创建Observable工厂" class="headerlink" title="创建Observable工厂"></a>创建Observable工厂</h2><p>与其创建一个等待订阅者的<strong>Observable</strong>对象, 不如创建一个<strong>Observable</strong>工厂, 为每个订阅者提供一个新的<strong>Observable</strong>对象.</p>
+<p>把这个新例子添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">deferred</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">let</span> disposeBag = <span class="type">DisposeBag</span>()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"\n--- deferred ---"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">var</span> flip = <span class="literal">false</span></span><br><span class="line">    <span class="comment">// 2</span></span><br><span class="line">    <span class="keyword">let</span> factory: <span class="type">Observable</span>&lt;<span class="type">Int</span>&gt; = <span class="type">Observable</span>.deferred &#123;</span><br><span class="line">        <span class="comment">// 3</span></span><br><span class="line">        flip.toggle()</span><br><span class="line">        <span class="comment">// 4</span></span><br><span class="line">        <span class="keyword">if</span> flip &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="type">Observable</span>.of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="type">Observable</span>.of(<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解释一下代码:</p>
+<ol>
+<li>创建了一个<strong>Bool</strong>变量来标记需要翻转返回的<strong>Observable</strong>对象.</li>
+<li>使用<strong>deferred</strong>操作符创建一个<strong>Int</strong>类型<strong>Observable</strong>对象工厂.</li>
+<li>在每次订阅<strong>Observable</strong>工厂是, 将翻转一次<strong>flip</strong>的值</li>
+<li>根据<strong>flip</strong>是<strong>true</strong>还是<strong>false</strong>返回不同的<strong>Observable</strong>的<strong>value</strong>.</li>
+</ol>
+<p>从外部看, 一个<strong>Observable</strong>对象工厂和普通的<strong>Observable</strong>没啥区别, 添加下面的代码到示例中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> <span class="number">_</span> <span class="keyword">in</span> <span class="number">0</span>...<span class="number">3</span> &#123;</span><br><span class="line">    factory.subscribe(onNext: &#123;</span><br><span class="line">        <span class="built_in">print</span>($<span class="number">0</span>, terminator: <span class="string">""</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">        .disposed(by: disposeBag)</span><br><span class="line">    <span class="built_in">print</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>每订阅一次<strong>factory</strong>就会得到相反的<strong>Observable</strong>的<strong>value</strong>, 先得到<strong>123</strong>, 然后再得到<strong>456</strong>, 每有一个新的订阅都会重复这个模式:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">--- deferred ---</span><br><span class="line"><span class="number">123</span></span><br><span class="line"><span class="number">456</span></span><br><span class="line"><span class="number">123</span></span><br><span class="line"><span class="number">456</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="使用特性"><a href="#使用特性" class="headerlink" title="使用特性"></a>使用特性</h2><p><strong>Observable</strong>的特性, 要比常规的<strong>Observable</strong>行为范围更小, 它们的使用是可选的, 我们可以在任何一个使用<strong>Observable</strong>特性的地方使用一个常规的<strong>Observable</strong>对象, 它们的目的是提供一种方式来更清楚的向代码阅读者或者是<strong>API</strong>的使用者传达我们的意图, 使用<strong>Observable</strong>的特性, 可以使得我们的代码更加的直观.</p>
+<p><strong>RxSwift</strong>有三种特性: <strong>Single</strong>, <strong>Maybe</strong>和<strong>Completable</strong>, 在不了解它们的情况下, 你能猜到它们是做什么的吗?</p>
+<p><strong>Singles</strong>只会发出<code>.success(value)</code>或<code>.error</code>事件, <code>.success(value)</code>实际上是<code>.next</code>和<code>.completed</code>事件的组合, 这对于使用一次性进程非常有用, 一次性进程要么成功输出一个<strong>value</strong>, 要么就失败, 例如下载数据或从硬盘加载数据.<br><strong>Completable</strong>只会发出<code>.completed</code>或<code>.error</code>事件, 它不会发出任何的值, 只关于某个操作成功完成或者是失败了, 例如文件的写入, 我们就可以使用<strong>completable</strong>.</p>
+<p>最后, <strong>Maybe</strong>是<strong>Single</strong>和<strong>Completable</strong>的组合, 它可以发出<code>.success(value)</code>, <code>.completed</code>或<code>.error</code>事件, 如果我们需要实现一个可能会成功或者失败的操作, 并且在成功的时候返回一个值, 那么<strong>Maybe</strong>就是我们所需要的…</p>
+<p>我们会在未来的教程中学习更多有关于<strong>RxSwift</strong>的特性, 现在我们来运行一个基本的示例, 在工程中, 我们有一个<strong>hello.text</strong>文件, 我们将使用<strong>Observable</strong>的特性来加载并输出这个文本内容.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%202/10.1.png" alt="图片"></p>
+<p>把下面的例子添加到我们的工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">FileReadError</span>: <span class="title">Error</span> </span>&#123;</span><br><span class="line">    <span class="keyword">case</span> fileNotFound, unreadable, encodingFailed</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">loadText</span><span class="params">(from name: String)</span></span> -&gt; <span class="type">Single</span>&lt;<span class="type">String</span>&gt; &#123;</span><br><span class="line">    <span class="comment">// 3</span></span><br><span class="line">    <span class="keyword">return</span> <span class="type">Single</span>.create &#123; single <span class="keyword">in</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解释一下我们要在代码中做的事情:</p>
+<ol>
+<li>创建一个错误类型的枚举, 用来对从磁盘中读取文件可能会发生失败的一些情况</li>
+<li>创建一个函数, 该函数返回一个从磁盘中加载的文本内容.</li>
+<li>创建并返回<strong>Single</strong></li>
+</ol>
+<p>在<strong>create</strong>闭包中添加下面的代码来实现我们需要的操作:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1.</span></span><br><span class="line"><span class="keyword">let</span> disposable = <span class="type">Disposables</span>.create ()</span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> path = <span class="type">Bundle</span>.main.path(forResource: name, ofType: <span class="string">"txt"</span>) <span class="keyword">else</span> &#123;</span><br><span class="line">    single(.error(<span class="type">FileReadError</span>.fileNotFound))</span><br><span class="line">    <span class="keyword">return</span> disposable</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> data = <span class="type">FileManager</span>.<span class="keyword">default</span>.contents(atPath: path) <span class="keyword">else</span> &#123;</span><br><span class="line">    single(.error(<span class="type">FileReadError</span>.unreadable))</span><br><span class="line">    <span class="keyword">return</span> disposable</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 4</span></span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> contents = <span class="type">String</span>(data: data, encoding: .utf8) <span class="keyword">else</span> &#123;</span><br><span class="line">    single(.error(<span class="type">FileReadError</span>.encodingFailed))</span><br><span class="line">    <span class="keyword">return</span> disposable</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 5</span></span><br><span class="line">single(.success(contents))</span><br><span class="line"><span class="keyword">return</span> disposable</span><br></pre></td></tr></table></figure>
+
+<p>我们解释一下这段代码:</p>
+<ol>
+<li><strong>create</strong>方法的<strong>subscribe</strong>闭包必须返回一个<strong>disposable</strong>, 因为我们需要在不同的地方返回它, 所以另外抽出来声明</li>
+<li>获取文件名的路径, 如果获取失败, 则返回<code>.fileNotFound</code>和<strong>disposable</strong></li>
+<li>获取该路径中的数据, 如果获取失败则返回<code>.unreadable</code>和<strong>disposable</strong></li>
+<li>将数据转换为字符串, 如果编码失败则返回<code>..encodingFailed</code>和<strong>disposable</strong></li>
+<li>如果都通过了上面四步,  那就成功了, 并且将内容添加到<strong>single</strong>中, 然后返回<strong>disposable</strong>.</li>
+</ol>
+<p>现在我们可以来使用这个函数了, 将下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line">loadText(from: <span class="string">"hello"</span>)</span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line">.subscribe &#123;</span><br><span class="line">  <span class="comment">// 3</span></span><br><span class="line">    <span class="keyword">switch</span> $<span class="number">0</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> .success(<span class="keyword">let</span> string):</span><br><span class="line">        <span class="built_in">print</span>(string)</span><br><span class="line">    <span class="keyword">case</span> .error(<span class="keyword">let</span> error):</span><br><span class="line">        <span class="built_in">print</span>(error)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">    .disposed(by: disposeBag)</span><br></pre></td></tr></table></figure>
+
+<p>在这里我们做的操作是:</p>
+<ol>
+<li>调用<code>loadText(from:)</code>, 然后传递你要读取的文件名.</li>
+<li>订阅函数返回的<strong>single</strong>.</li>
+<li>这里我们使用<strong>switch</strong>来进行下一步操作, 成功则输出文本内容, 失败则打印错误信息.</li>
+</ol>
+<p>现在我们应该可以看到控制台中输出的文本内容:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--- single ---</span><br><span class="line">Hello RxSwift</span><br></pre></td></tr></table></figure>
+
+<p>如果我们将文件名换成其他的话, 应该会打印出未找到文件的错误信息.</p>
+<p>剩下<strong>Completable</strong>和<strong>Maybe</strong>这里就不做介绍了, 工程中有对应的代码:</p>
+<h2 id="挑战"><a href="#挑战" class="headerlink" title="挑战"></a>挑战</h2><p>熟能生巧, 我们将实践在本章中所学到的只是来完成这些挑战, 并且获得更多关于使用<strong>Observable</strong>对象的知识.</p>
+<h3 id="挑战1-产生附加效果"><a href="#挑战1-产生附加效果" class="headerlink" title="挑战1: 产生附加效果"></a>挑战1: 产生附加效果</h3><p>在前面的<strong>never</strong>操作符实例中, 没有输出任何的内容, 那是因为我们输出的内容是添加到<strong>subscribe</strong>之中, 如果我们能添加到在这之前, 并且再将<strong>subscribe</strong>添加到<strong>disposeBag</strong>, 那我们就可以看到消息的输出了.</p>
+<p>还有一个非常实用的操作符, 它允许我们在不印象<strong>Observable</strong>对象的情况额外添加一些我们想做的事情.</p>
+<p><strong>do</strong>操作符将允许我们添加<strong>附加效果</strong>, 也就是说, 不管这个<strong>Observable</strong>对象会发出什么样的事件, <strong>do</strong>只是将事件传递链接到下一个操作符中, <strong>do</strong>这个操作符还包含一个<strong>onSubscribe</strong>的闭包, 我们将会在这里处理额外的事情.</p>
+<p>使用<strong>do</strong>操作符的方法是<code>do(onNext:onError:onCompleted:onSubscribe:onDispose)</code>, 你可以在这里实现任何你想做的事情.</p>
+<p>我们将使用<strong>do</strong>操作符改造一下我们的<strong>never</strong>示例, 在改造的时候, 千万别忘了把<strong>subscribe</strong>添加到<strong>disposeBag</strong>中.</p>
+<h3 id="挑战2-打印调试信息"><a href="#挑战2-打印调试信息" class="headerlink" title="挑战2: 打印调试信息"></a>挑战2: 打印调试信息</h3><p>除了刚刚我们提过的<strong>do</strong>操作符可以作为<strong>Rx</strong>的调试方式之外, 还有一种操作符叫做<strong>debug</strong>操作符, 它将为一个<strong>Observable</strong>对象打印出每个事件信息.</p>
+<p>它有几个可选参数, 可能最有用的就是包含一个标识符字符串, 该字符串会打印出来, 在复杂的<strong>Rx</strong>链中, 我们可以在多个位置添加<strong>debug</strong>操作符, 这可以帮助我们区分打印出来的源<strong>subscribe</strong>.</p>
+<p>通过使用<strong>debug</strong>操作符替换<strong>do</strong>操作符, 并为其提供一个字符串作为标识符.</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h3 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期:"></a>生命周期:</h3><p>1.当<strong>Observable</strong>事件完成时会发出<strong>Completed</strong>事件, 代表事件结束;</p>
+<p>2.当<strong>Observable</strong>在未完成事件前发生了错误, 该事件也会结束, 并且抛出<strong>error</strong>事件;</p>
+<p>3.当<strong>Observable</strong>的事件完成了之后就不会再发出任何事件了.</p>
+<h3 id="注意点"><a href="#注意点" class="headerlink" title="注意点:"></a>注意点:</h3><ul>
+<li><strong>Observable</strong>不会发送任何事件, 也不会执行任何工作, 直到它拥有了一个订阅者为止.</li>
+<li>使用<code>subscribe()</code>函数订阅<strong>Observable</strong></li>
+<li>如果订阅的事件具有元素性, 则可以通过使用<strong>element</strong>展开元素, 并且是会打印元素, 不会打印<strong>completed</strong>事件.</li>
+<li>如果使用<code>.create()</code>操作符创建的<strong>Observable</strong>, 在处理完事件之后, 一定要调用一下<code>.onCompleted()</code>或者是<code>.onError()</code>, 并且在<strong>subscribe</strong>时一定要调用<code>disposed(by: DisposeBag)</code>, 否则Observable永远不会被释放, 造成内存泄漏.</li>
+</ul>
+<h3 id="RxSwift的三种特性"><a href="#RxSwift的三种特性" class="headerlink" title="RxSwift的三种特性"></a>RxSwift的三种特性</h3><ol>
+<li><strong>Single</strong>:<ul>
+<li>将发出<code>.success(value)</code>或<code>.error</code>事件, 而<code>.success(value)</code>实际上是<code>.next</code>和<code>.completed</code>事件的组合</li>
+<li>常用在下载数据, 或者从磁盘读取数据这种一次性的操作.</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>不会共享附加效果</li>
+</ul>
+<ol start="2">
+<li><strong>Completable</strong>:<ul>
+<li>只会发出<code>.completed</code>或<code>.error</code>事件, 不会发出任何值</li>
+<li>可用在文件写入或者是某个操作</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>不会共享附加效果</li>
+</ul>
+<ol start="3">
+<li><strong>Maybe</strong>:<ul>
+<li>是<strong>Single</strong>和<strong>Compleable</strong>的组合, 它会发出<code>.success(value)</code>, <code>.completed</code>或者<code>.error</code>事件</li>
+<li>常用在在进行某个操作时, 并且在成功时可以返回一个值</li>
+<li>不会共享附加效果</li>
+</ul>
+</li>
+</ol>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始"><span class="toc-number">1.</span> <span class="toc-text">开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是Observable"><span class="toc-number">2.</span> <span class="toc-text">什么是Observable</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Observable的生命周期"><span class="toc-number">3.</span> <span class="toc-text">Observable的生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Observables"><span class="toc-number">4.</span> <span class="toc-text">创建Observables</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#订阅Observable"><span class="toc-number">4.1.</span> <span class="toc-text">订阅Observable</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#处理和终止"><span class="toc-number">5.</span> <span class="toc-text">处理和终止</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Observable工厂"><span class="toc-number">6.</span> <span class="toc-text">创建Observable工厂</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用特性"><span class="toc-number">7.</span> <span class="toc-text">使用特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#挑战"><span class="toc-number">8.</span> <span class="toc-text">挑战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#挑战1-产生附加效果"><span class="toc-number">8.1.</span> <span class="toc-text">挑战1: 产生附加效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#挑战2-打印调试信息"><span class="toc-number">8.2.</span> <span class="toc-text">挑战2: 打印调试信息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">9.</span> <span class="toc-text">总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#生命周期"><span class="toc-number">9.1.</span> <span class="toc-text">生命周期:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注意点"><span class="toc-number">9.2.</span> <span class="toc-text">注意点:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RxSwift的三种特性"><span class="toc-number">9.3.</span> <span class="toc-text">RxSwift的三种特性</span></a></li></ol></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

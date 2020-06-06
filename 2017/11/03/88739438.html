@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：iOS 11 新特性《Xcode 9》 (一) - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="随着iOS 11的发布, Xcode 9也随之发布, 这次的Xcode 9更新了一大堆的东西, 对于写Swfit的同鞋们来说是一个大好的消息, 因为在Xcode 9上, 添加了对Swift的重构支持,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：iOS 11 新特性《Xcode 9》 (一)</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：iOS 11 新特性《Xcode 9》 (一)</h1>
+        <div class="stuff">
+            <span>十一月 03, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/Xcode/">Xcode</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>随着<strong>iOS 11</strong>的发布, <strong>Xcode 9</strong>也随之发布, 这次的<strong>Xcode 9</strong>更新了一大堆的东西, 对于写<strong>Swfit</strong>的同鞋们来说是一个大好的消息, 因为在<strong>Xcode 9</strong>上, 添加了对<strong>Swift</strong>的重构支持, 因为<strong>Xcode 9</strong>的代码编辑器在<strong>Swift</strong>中重写了, 所以在支持Swift上更加的友好, 比如滚动, 搜索, 重构等等.</p>
+<p>除此之外, <strong>Xcode 9</strong>也加入了对<strong>MarkDown</strong>文件的支持, 也就是说我们可以在<strong>Xcode 9</strong>上编辑<strong>MarkDown</strong>文件, 还有<strong>Xcode 9</strong>首次加入了无线连接设备的功能, 在使用模拟器<strong>Debug</strong>的时候, 也可以同时打开多个模拟器.</p>
+<p>说了这么多, 肯定口水都流出来了, 那我们就进入正题吧.</p>
+<p>这次我们随便写写一个小东西, 结合<strong>Objective-C</strong>和<strong>Swift</strong>两个语言来看看<strong>Xcode 9</strong>的一些新东西.</p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="Swift的快捷方式"><a href="#Swift的快捷方式" class="headerlink" title="Swift的快捷方式"></a>Swift的快捷方式</h2><p>我们可以按住<strong>Command</strong>键移动鼠标在<strong>func</strong>和<strong>var</strong>的关键字上, 发现有一些不同的变化, 在<strong>func</strong>中, 鼠标是可点击的, 而在<strong>let</strong>和<strong>var</strong>的关键字上是没反应的:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/1.Xcode%209/Images/1.png" alt="1"></p>
+<p>再继续移动到<strong>Double</strong>, 发现也可以点击, 点击进去就可以里面的一些方法和属性:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/1.Xcode%209/Images/2.png" alt="2"></p>
+<p>还有一种情况, 在我们写<strong>if-else</strong>的时候, 由于判断写的太多, 有时候搞得自己都有些懵逼了, 这个时候, 我们也可以按着<strong>Command</strong>移动到关键字if里, 这样子我们就可以看得到整个<strong>if-else</strong>的结构了:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/1.Xcode%209/Images/3.png" alt="3"></p>
+<p>除了我们可以用<strong>Command</strong>查看<strong>if</strong>的整个结构, 我们还可以通过<strong>Control+Command</strong>呼出一个小菜单:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/1.Xcode%209/Images/4.png" alt="4"></p>
+<p>还有在<strong>Xcode 9</strong>的使用<strong>Command</strong>点击方法的呼叫方式也改变了, 它默认会弹出一个小框框, 而不是直接跳到函数的内部:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/1.Xcode%209/Images/5.png" alt="5"></p>
+<p>如果我们需要去修改的话, 可以在<strong>Xcode</strong>的<strong>Navigation</strong>项里设置为<strong>Jumps to Definition</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/1.Xcode%209/Images/6.png" alt="6"></p>
+<p>除了去设置这个, 我们也可以点击一下函数名, 并且用<strong>Command + Control + J</strong>进行跳转.</p>
+<h2 id="重构又肥来了"><a href="#重构又肥来了" class="headerlink" title="重构又肥来了~"></a>重构又肥来了~</h2><p>之前在<strong>Xcode 8</strong>的时候, 是不支持Swift的重构, 在<strong>Xcode 9</strong>的时候这个功能又回来了, 而且更加好用, 并且支持<strong>Objective-C</strong>和<strong>Swift</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/1.Xcode%209/Images/7.png" alt="7"></p>
+<p>修改完之后记得回车确认或者是点击右上角的<strong>Done</strong>.</p>
+<p>这里却有一个问题, 就是我在使用这个<strong>Refactor</strong>的时候, <strong>Xcode 9</strong>经常给我报错, 不知道各位老铁们有没有遇到这个问题.</p>
+<h2 id="补全"><a href="#补全" class="headerlink" title="补全"></a>补全</h2><p>有时候我们用<strong>Swift</strong>声明一个结构体的时候往往都会声明一些协议, 但有时候我们在声明的时候会发生一些事, 比如忘记写协议方法, 但在<strong>Xcode 9</strong>的话就没有这个问题.</p>
+<p>当我们忘记写协议的时候, <strong>Xcode 9</strong>会提示我们, 然后我们可以点击对应的提示去补全:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/1.Xcode%209/Images/8.png" alt="8"></p>
+<p>补全后的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">let</span> name: <span class="type">String</span></span><br><span class="line">    <span class="keyword">let</span> height: <span class="type">Double</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">init</span>(name: <span class="type">String</span>, height: <span class="type">Double</span>) &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">self</span>.name = name</span><br><span class="line">        <span class="keyword">self</span>.height = height</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">Person</span>: <span class="title">Equatable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> ==<span class="params">(lhs: Person, rhs: Person)</span></span> -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> lhs.name == rhs.name</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当然, 除了这个之外, 还有Switch的case, 还有补全””, []这些的都有.</p>
+<p>还有就是当我们遇到一些比较复杂的判断条件时, 为了可以更好的看清逻辑, 我们可以用这个补全方式:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> latitudeString = latitudeTextField.text == <span class="string">"1"</span> ? <span class="string">"100"</span> : <span class="string">"23"</span></span><br></pre></td></tr></table></figure>
+
+<p>选中latitudeTextField.text == “1”, 然后再用shift + (, 就可以括起来:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> latitudeString = (latitudeTextField.text == <span class="string">"1"</span>) ? <span class="string">"100"</span> : <span class="string">"23"</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="字体缩放"><a href="#字体缩放" class="headerlink" title="字体缩放"></a>字体缩放</h2><p>在之前, 如果我们要去调节字体的大小, 是需要到<strong>Xcode</strong>的设置里, 然后通过设置<strong>Font</strong>才能够调节, 但在<strong>Xcode 9</strong>里就不需要了.</p>
+<p>我们可以通过<strong>Command + <code>+</code></strong>或者是<strong>Command + <code>-</code></strong>来缩小和放大代码的字体大小.</p>
+<h2 id="代码缩放"><a href="#代码缩放" class="headerlink" title="代码缩放"></a>代码缩放</h2><p>在之前的<strong>Xocde</strong>里, 我们都可以通过边线去收缩代码块, 但现在在<strong>Xcode 9</strong>里, 已经取消了这个操作(至少我是没有发现, 如果有朋友发现在哪里可以调出来, 麻烦告知一声~).</p>
+<p>在<strong>Xcode 9</strong>里, 只要是在函数的内部, 或者是结构体什么的, 总之是在{}内的, 操作<strong>Command + option + 键盘左键</strong>, 就可以缩放了, 如果要释放的话, 那么就是<strong>Command + option + 键盘右键</strong>.</p>
+<h2 id="代码间的行距"><a href="#代码间的行距" class="headerlink" title="代码间的行距"></a>代码间的行距</h2><p>用惯之前的<strong>Xcode</strong>的同鞋在用<strong>Xcode 9</strong>的, 会发现一个问题, 那就是代码与代码之间的行距宽了不少, 其实在<strong>Xcode 9</strong>里提供了三种间距的方式:</p>
+<ul>
+<li><strong>Tight Spacing</strong></li>
+<li><strong>Normal Spacing</strong></li>
+<li><strong>Relaxed Spacing</strong></li>
+</ul>
+<p>包括光标的样式也有三种, 我们只要在<strong>Xcode</strong>的设置就能看到了:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/1.Xcode%209/Images/9.png" alt="9"></p>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: <a href="https://github.com/cainluo/iOS-11-Characteristic/tree/master/1.Xcode%209" target="_blank" rel="noopener">https://github.com/cainluo/iOS-11-Characteristic/tree/master/1.Xcode%209</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Swift的快捷方式"><span class="toc-number">1.</span> <span class="toc-text">Swift的快捷方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#重构又肥来了"><span class="toc-number">2.</span> <span class="toc-text">重构又肥来了~</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#补全"><span class="toc-number">3.</span> <span class="toc-text">补全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字体缩放"><span class="toc-number">4.</span> <span class="toc-text">字体缩放</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码缩放"><span class="toc-number">5.</span> <span class="toc-text">代码缩放</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码间的行距"><span class="toc-number">6.</span> <span class="toc-text">代码间的行距</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">7.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

@@ -1,0 +1,191 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CocoaPods 1.5.0  -  Swift静态库 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="CocoaPods 1.5.0附带本机支持，可将Swift pod作为静态库构建。
+在CocoaPods 1.4.0发布几个月后，我们发布了一个新版本，专注于让每个人都能采用Swift。
+Swift,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">CocoaPods 1.5.0  -  Swift静态库</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">CocoaPods 1.5.0  -  Swift静态库</h1>
+        <div class="stuff">
+            <span>四月 04, 2018</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/CocoaPods/">CocoaPods</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>CocoaPods 1.5.0附带本机支持，可将Swift pod作为静态库构建。</p>
+<p>在CocoaPods 1.4.0发布几个月后，我们发布了一个新版本，专注于让每个人都能采用Swift。</p>
+<h2 id="Swift静态库"><a href="#Swift静态库" class="headerlink" title="Swift静态库"></a>Swift静态库</h2><p>直到Xcode 9，支持将Swift构建到静态库中是不存在的，并且需要使用动态框架。 对于一些开发人员来说，这是一个交易破坏者，特别是担心链接许多动态二进制文件的启动性能影响。</p>
+<p>使用CocoaPods 1.5.0，开发人员不再局限于指定use_frameworks！ 在他们的Podfile中安装使用Swift的pod。 与Objective-C互操作应该正常工作。 但是，如果您的Swift pod依赖于Objective-C pod，则需要为该Objective-C pod启用“模块化头”（见下文）。</p>
+<h2 id="模块化标题"><a href="#模块化标题" class="headerlink" title="模块化标题"></a>模块化标题</h2><p>当CocoaPods多年前首次问世时，它专注于使尽可能多的现有库被打包为pod。这意味着做出一些权衡，其中一个与CocoaPods设置标题搜索路径的方式有关。 CocoaPods允许任何pod使用非命名空间的引用导入导入任何其他pod。</p>
+<p>例如，pod B可能具有#import“A.h”语句的代码，CocoaPods将创建允许此类导入成功的构建设置。但是，如果您尝试将模块映射添加到这些窗格，则这些导入将不起作用。我们多年前尝试为静态库自动生成模块映射，它打破了一些pod，所以我们不得不还原。</p>
+<p>在此版本中，您将能够选择更严格的标题搜索路径（以及Objective-C pod的模块映射生成）。作为pod作者，您可以在pod_target_xcconfig中添加“DEFINES_MODULE”=&gt;“YES”。或者，在您的Podfile中，您可以添加use_modular_headers！为所有pod启用更严格的搜索路径和模块映射生成，或者您可以将：modular_headers =&gt; true添加到单个pod声明中以仅启用该Pod。</p>
+<h2 id="跟踪安装源"><a href="#跟踪安装源" class="headerlink" title="跟踪安装源"></a>跟踪安装源</h2><p>这种变化发生在幕后，并开辟了一些令人兴奋的可能性。 CocoaPods现在将存储Pod来自的规格报告：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SPEC <span class="symbol">REPOS:</span></span><br><span class="line">  <span class="symbol">https:</span>/<span class="regexp">/github.com/</span>CocoaPods/Specs.<span class="symbol">git:</span></span><br><span class="line">    - Alamofire</span><br><span class="line">    - Moya</span><br><span class="line">  <span class="symbol">https:</span>/<span class="regexp">/github.com/</span>Private/Internal.<span class="symbol">git:</span></span><br><span class="line">    - InteralPod</span><br></pre></td></tr></table></figure>
+
+<p>这将使CocoaPods能够告诉你pod的源何时发生了变化，并且还会在Podfile.lock中强制显示一个明显的git diff，确保你知道Pod何时来自不同的源。 例如，这可以审核您的私人货币的使用情况，而不是公共规格。 我们认为这是一个有用的安全增强功能，特别是对于那些安全工程师盯着他们的团队。</p>
+<h2 id="进一步改进"><a href="#进一步改进" class="headerlink" title="进一步改进"></a>进一步改进</h2><ul>
+<li>CocoaPods将不再为生成的每个xcconfig添加所有标头搜索路径，而是仅添加pod的依赖关系的标头搜索路径</li>
+<li>静态框架允许混合Objective-C和Swift</li>
+<li>在pod验证期间，当使用–verbose时，xcodebuild的任何输出现在都会流式传输</li>
+<li>对于具有许多子规的pod，以及指定精确文件路径而不是globs的pod，pod安装性能都得到了改进</li>
+<li>CocoaPods使用的脚本阶段现在断言所有预期的构建设置（和环境变量）都已设置</li>
+<li>将静态库pod集成到静态库目标中不会导致运行复制脚本阶段</li>
+</ul>
+<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>CocoaPods 1.5.0是一个激动人心的版本。 我们非常高兴您尝试一下，并建议您升级：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gem install cocoapods</span><br></pre></td></tr></table></figure>
+
+<p>在经历了所有这些兴奋之后，这里的味道可以激发您对下一个CocoaPods版本的兴趣。 对于1.6.0，我们专注于重新设计库的核心部分，以提高CocoaPods在大型应用程序中的性能。 所以，如果你觉得pod安装比你想要的时间稍长，请继续关注😉</p>
+<p>与往常一样，我们要感谢所有贡献者使CocoaPods 1.5.0成为现实！</p>
+<p>签出更改日志以获取完整的更改列表。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Swift静态库"><span class="toc-number">1.</span> <span class="toc-text">Swift静态库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模块化标题"><span class="toc-number">2.</span> <span class="toc-text">模块化标题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#跟踪安装源"><span class="toc-number">3.</span> <span class="toc-text">跟踪安装源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#进一步改进"><span class="toc-number">4.</span> <span class="toc-text">进一步改进</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#摘要"><span class="toc-number">5.</span> <span class="toc-text">摘要</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

@@ -1,0 +1,220 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：装逼技术RunTime的应用(三) - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="在上一章节里晓得了怎么在Category里关联对象, 以及利用RunTime转换模型的时候预防了三种转换时的情况, 如果没有去看的朋友可以到玩转iOS开发：装逼技术RunTime的应用(二)看看.
+,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：装逼技术RunTime的应用(三)</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：装逼技术RunTime的应用(三)</h1>
+        <div class="stuff">
+            <span>十月 08, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/iOS进阶/">iOS进阶</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>在上一章节里晓得了怎么在<strong>Category</strong>里关联对象, 以及利用<strong>RunTime</strong>转换模型的时候预防了三种转换时的情况, 如果没有去看的朋友可以到<a href="https://cainluo.github.io/2017/10/02/1e6e74c1.html">玩转iOS开发：装逼技术RunTime的应用(二)</a>看看.</p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="利用Runtime归档"><a href="#利用Runtime归档" class="headerlink" title="利用Runtime归档"></a>利用Runtime归档</h2><p>在以前我们在使用归档的时候都会有一个烦恼, 就是写的太多, 不信? 我们来声明一个对象:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@interface RunTimeCoderModel : NSObject &lt;NSCoding&gt;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, copy) NSString *cl_name;</span><br><span class="line">@property (nonatomic, copy) NSString *cl_height;</span><br><span class="line">@property (nonatomic, copy) NSString *cl_age;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>常规归档的写法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (void)encodeWithCoder:(NSCoder *)aCoder &#123;</span><br><span class="line">    </span><br><span class="line">    [aCoder encodeObject:_cl_name</span><br><span class="line">                  forKey:@&quot;name&quot;];</span><br><span class="line">    [aCoder encodeObject:_cl_height</span><br><span class="line">                  forKey:@&quot;height&quot;];</span><br><span class="line">    [aCoder encodeObject:_cl_age</span><br><span class="line">                  forKey:@&quot;age&quot;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>常规解档的写法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- (instancetype)initWithCoder:(NSCoder *)aDecoder &#123;</span><br><span class="line">    </span><br><span class="line">    self = [super init];</span><br><span class="line">    </span><br><span class="line">    if (self) &#123;</span><br><span class="line">        </span><br><span class="line">        self.cl_name   = [aDecoder decodeObjectForKey:@&quot;name&quot;];</span><br><span class="line">        self.cl_height = [aDecoder decodeObjectForKey:@&quot;height&quot;];</span><br><span class="line">        self.cl_age    = [aDecoder decodeObjectForKey:@&quot;age&quot;];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在看着好像也不怎么样, 但在实际开发中, 我们要写的属性可不是只有这三个, 如果遇到变态的, 有上百个那怎么办呢? </p>
+<p>逐个逐个去写么? 万一写完之后突然要改属性怎么办? 逐个去改? 这样子就会大量的浪费我们的时间, 这是不明智的写法.</p>
+<p>回想一下, 每个类都有一个isa的结构体指针, 里面可以拿到所有的每个类的信息, 那我们是否可以通过这个特性, 来给归档解档操作一番呢? 试试看:</p>
+<p><strong>RunTime</strong>归档的写法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">- (void)cl_runtimeEncoderWithCoder:(NSCoder *)coder &#123;</span><br><span class="line">    </span><br><span class="line">    unsigned int count = 0;</span><br><span class="line">    </span><br><span class="line">    Ivar *ivarList = class_copyIvarList([self class], &amp;count);</span><br><span class="line">    </span><br><span class="line">    for (int i = 0; i &lt; count; i++) &#123;</span><br><span class="line">        </span><br><span class="line">        Ivar ivar = ivarList[i];</span><br><span class="line">        </span><br><span class="line">        const char *name = ivar_getName(ivar);</span><br><span class="line">        </span><br><span class="line">        NSString *key = [NSString stringWithUTF8String:name];</span><br><span class="line">        </span><br><span class="line">        id value = [self valueForKey:key];</span><br><span class="line">        </span><br><span class="line">        [coder encodeObject:value</span><br><span class="line">                     forKey:key];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    free(ivarList);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>RunTime</strong>解档写法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">- (void)cl_runtimeDecideWithCoder:(NSCoder *)decoder &#123;</span><br><span class="line">    </span><br><span class="line">    unsigned int count = 0;</span><br><span class="line">    </span><br><span class="line">    Ivar *ivarList = class_copyIvarList([self class], &amp;count);</span><br><span class="line">    </span><br><span class="line">    for (int i = 0; i &lt; count; i++) &#123;</span><br><span class="line">        </span><br><span class="line">        Ivar ivar = ivarList[i];</span><br><span class="line">        </span><br><span class="line">        const char *name = ivar_getName(ivar);</span><br><span class="line">        </span><br><span class="line">        NSString *key = [NSString stringWithUTF8String:name];</span><br><span class="line">        </span><br><span class="line">        id value = [decoder decodeObjectForKey:key];</span><br><span class="line">        </span><br><span class="line">        [self setValue:value</span><br><span class="line">                forKey:key];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    free(ivarList);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最终的使用:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">- (void)encodeWithCoder:(NSCoder *)aCoder &#123;</span><br><span class="line">        </span><br><span class="line">    [self cl_runtimeEncoderWithCoder:aCoder];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (instancetype)initWithCoder:(NSCoder *)aDecoder &#123;</span><br><span class="line">    </span><br><span class="line">    self = [super init];</span><br><span class="line">    </span><br><span class="line">    if (self) &#123;</span><br><span class="line">    </span><br><span class="line">        [self cl_runtimeDecideWithCoder:aDecoder];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最终的效果:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-Project-Example/master/RunTime/Six/Images/1.png" alt="1"></p>
+<p>这的确是可行的, 这样子我们就把这个写成一个通用的类, 并且遵守<code>&lt;NSCoding&gt;</code>协议, 就可以把所有继承与<strong>NSObject</strong>的类全部一次性归档.</p>
+<p>在这里我就不对归档和解档的方法进行封装了, 都写在<strong>RunTimeCoderController</strong>这个控制器上, 有想法的朋友可以自行进行封装, 这样子就可以抽成一个通用类.</p>
+<h2 id="RunTime黑魔法"><a href="#RunTime黑魔法" class="headerlink" title="RunTime黑魔法"></a>RunTime黑魔法</h2><p>前段时间搜了一下关于<strong>RunTime</strong>的一些博客, 发现有很多人都说<strong>RunTime</strong>黑魔法, 那什么是黑魔法?</p>
+<ul>
+<li>简单的来说, 其实就是进行方法交换.</li>
+<li>我们都知道, 在<strong>Objective-C</strong>中调用一个方法, 其实是向一个对象发送消息, 而查找消息的唯一依据就是<strong>selector</strong>的名字, 利用<strong>Objective-C</strong>的动态特性, 我们可以实现在运行时偷偷的换掉<strong>selector</strong>对应的方法实现.</li>
+<li>而我们也逗知道, 每一个类都有一个方法列表, 存放着方法的名字和方法实现的映射关系, <strong>selector</strong>其实就是方法名, 而<strong>IMP</strong>类似函数指针, 指向具体的<strong>Method</strong>实现, 通过<strong>selector</strong>就可以找到对应的<strong>IMP</strong>.</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-Project-Example/master/RunTime/Six/Images/2.png" alt="2"></p>
+<ul>
+<li>交换方法的实现方式</li>
+<li>利用<strong>method_exchangeImplementations</strong>来交换两个方法的实现</li>
+<li>利用<strong>class_replaceMethod</strong>替换方法的实现</li>
+<li>利用<strong>method_setImplementation</strong>来直接设置某个方法的<strong>IMP</strong></li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-Project-Example/master/RunTime/Six/Images/3.png" alt="3"></p>
+<p>除了我们在演示里写过的代码, 在实际上又是怎么运用呢? 这里收集到了几种场景:</p>
+<ul>
+<li>替换<strong>ViewController</strong>的生命周期方法</li>
+<li>解决集合类的获取索引, 添加, 删除元素越界崩溃的问题</li>
+<li>防止按钮重复暴力点击</li>
+<li>全局更换控件初始化的效果</li>
+<li><strong>App</strong>的热修复</li>
+<li><strong>App</strong>空数据时的占位图工具类封装</li>
+<li>全局修改<strong>UINavigationBar</strong>的<strong>BackButtonItem</strong></li>
+</ul>
+<p>代码这里就不写了, 想详细了解的朋友可以到下面的文章去了解.</p>
+<p><a href="http://www.jianshu.com/p/f6dad8e1b848" target="_blank" rel="noopener">Runtime Method Swizzling开发实例汇总</a></p>
+<h2 id="推荐文章"><a href="#推荐文章" class="headerlink" title="推荐文章"></a>推荐文章</h2><p><a href="http://www.jianshu.com/p/6b905584f536" target="_blank" rel="noopener">runtime 完整总结</a><br><a href="http://www.jianshu.com/p/9e1bc8d890f9" target="_blank" rel="noopener">objc_msgSend</a><br><a href="http://www.jianshu.com/p/46dd81402f63" target="_blank" rel="noopener">runtime详解</a><br><a href="http://www.jianshu.com/p/e071206103a4" target="_blank" rel="noopener">让你快速上手Runtime</a><br><a href="http://www.jianshu.com/p/bd24c3f3cd0a" target="_blank" rel="noopener">利用Runtime 实现自动化归档</a><br><a href="http://www.jianshu.com/p/f6300eb3ec3d" target="_blank" rel="noopener">runtime那些事（消息机制）</a><br><a href="http://www.jianshu.com/p/ab966e8a82e2" target="_blank" rel="noopener">OC最实用的runtime总结，面试、工作你看我就足够了！</a><br><a href="http://www.jianshu.com/p/851b21870d91" target="_blank" rel="noopener">Runtime在实际开发中的应用</a></p>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: <a href="https://github.com/CainLuo/iOS-Project-Example/tree/master/RunTime/Five" target="_blank" rel="noopener">https://github.com/CainLuo/iOS-Project-Example/tree/master/RunTime/Five</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#利用Runtime归档"><span class="toc-number">1.</span> <span class="toc-text">利用Runtime归档</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RunTime黑魔法"><span class="toc-number">2.</span> <span class="toc-text">RunTime黑魔法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#推荐文章"><span class="toc-number">3.</span> <span class="toc-text">推荐文章</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">4.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

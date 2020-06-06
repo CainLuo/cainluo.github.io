@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：iOS 10 新特性《Notification Content Extensions》 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="在之前我们就讲过苹果在iOS 10推出了一个新的UserNotification框架, 但苹果的野心不小, 不单单推出框架那么简单, 而且连Extension都给你搞了一个, 哼哼, 我看还有谁~
+,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：iOS 10 新特性《Notification Content Extensions》</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：iOS 10 新特性《Notification Content Extensions》</h1>
+        <div class="stuff">
+            <span>六月 15, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/iOS-10/">iOS 10</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>在之前我们就讲过苹果在<code>iOS 10</code>推出了一个新的<code>UserNotification</code>框架, 但苹果的野心不小, 不单单推出框架那么简单, 而且连<code>Extension</code>都给你搞了一个, 哼哼, 我看还有谁~</p>
+<p>这里所演示的项目是和之前一样的, 如果找不到的盆友可以到<a href="https://cainluo.github.io/2017/06/15/玩转iOS开发：iOS%2010%20新特性《UserNotifications》/">这里</a>去看看.</p>
+<p><strong>注意: 本文的项目是在<code>Xcode 8.3.3</code>, <code>iOS 10</code>, <code>Mac OS 10.12.5</code>环境下运行的.</strong></p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="添加Notification-Extension"><a href="#添加Notification-Extension" class="headerlink" title="添加Notification Extension"></a>添加Notification Extension</h2><p>回到我们的项目, 拷贝一份新的, 然后添加<code>Notification Extension</code>:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/6.Notification%20Content%20Extension/Images/1.png" alt="1"></p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/6.Notification%20Content%20Extension/Images/2.png" alt="2"></p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/6.Notification%20Content%20Extension/Images/3.png" alt="3"></p>
+<h3 id="配置Notification-Extension-Info"><a href="#配置Notification-Extension-Info" class="headerlink" title="配置Notification Extension Info"></a>配置Notification Extension Info</h3><p>添加完<strong>Extension</strong>之后, 我们需要来配置一下<strong>Info.plist</strong>文件, 这里我们要添加点东西:</p>
+<ul>
+<li><strong>UNNotificationExtensionDefaultContentHidden</strong><ul>
+<li>设置成为<strong>YES</strong></li>
+</ul>
+</li>
+<li><strong>UNNotificationExtensionCategory</strong><ul>
+<li>和我们之前项目的<strong>AppDelegate.m</strong>文件所添加的<strong>Category</strong>保持一致, 我这里是<strong>reminder</strong></li>
+</ul>
+</li>
+<li><strong>UNNotificationExtensionInitialContentSizeRatio</strong><ul>
+<li>这个东东我改为<strong>0.5</strong></li>
+</ul>
+</li>
+</ul>
+<p>修改完成后的结果:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/6.Notification%20Content%20Extension/Images/4.png" alt="4"></p>
+<p>来通知的效果:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/6.Notification%20Content%20Extension/Images/5.png" alt="5"></p>
+<h3 id="自定义一个小方法"><a href="#自定义一个小方法" class="headerlink" title="自定义一个小方法"></a>自定义一个小方法</h3><p>上面的东西都搞定了之后, 那么接下来就是要自定义一个小方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">- (void)addShakeAnimation &#123;</span><br><span class="line">    </span><br><span class="line">    CAKeyframeAnimation *frameAnimation = [CAKeyframeAnimation animation];</span><br><span class="line"></span><br><span class="line">    frameAnimation.keyPath        = @&quot;transform.translation.x&quot;;</span><br><span class="line">    frameAnimation.duration       = 1;</span><br><span class="line">    frameAnimation.repeatCount    = MAXFLOAT;</span><br><span class="line">    frameAnimation.values         = @[@-20.0, @20.0, @-20.0, @20.0, @-10.0, @10.0, @-5.0, @5.0, @0.0];</span><br><span class="line">    frameAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];</span><br><span class="line">    </span><br><span class="line">    [self.view.layer addAnimation:frameAnimation</span><br><span class="line">                           forKey:@&quot;shake&quot;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)removeShakeAnimation &#123;</span><br><span class="line">    </span><br><span class="line">    [self.view.layer removeAnimationForKey:@&quot;shake&quot;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>addShakeAnimation</strong>添加摇摆动画的方法</p>
+</li>
+<li><p><strong>removeShakeAnimation</strong>删除摇摆动画的方法</p>
+</li>
+</ul>
+<p>效果:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/6.Notification%20Content%20Extension/Images/6.gif" alt="6"></p>
+<h3 id="didReceiveNotificationResponse-completionHandler-方法"><a href="#didReceiveNotificationResponse-completionHandler-方法" class="headerlink" title="- didReceiveNotificationResponse:completionHandler:方法"></a>- didReceiveNotificationResponse:completionHandler:方法</h3><p>在<code>Notification Extension</code>里, 有这么一个方法叫做: <code>- didReceiveNotificationResponse:completionHandler:</code>, 这个方法可以获取通知里的<code>Action</code>事件, 我这里是这么写的:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">- (void)didReceiveNotificationResponse:(UNNotificationResponse *)response</span><br><span class="line">                     completionHandler:(void (^)(UNNotificationContentExtensionResponseOption))completion &#123;</span><br><span class="line">    </span><br><span class="line">    if ([response.actionIdentifier isEqualToString:@&quot;cancel&quot;]) &#123;</span><br><span class="line">        </span><br><span class="line">        UNNotificationRequest *request = response.notification.request;</span><br><span class="line">        </span><br><span class="line">        NSArray *identifiers = @[request.identifier];</span><br><span class="line">        </span><br><span class="line">        // 根据标识符删除等待通知</span><br><span class="line">        [[UNUserNotificationCenter currentNotificationCenter] removePendingNotificationRequestsWithIdentifiers:identifiers];</span><br><span class="line">        </span><br><span class="line">        // 根据标识符删除发送通知</span><br><span class="line">        [[UNUserNotificationCenter currentNotificationCenter] removeDeliveredNotificationsWithIdentifiers:identifiers];</span><br><span class="line">        </span><br><span class="line">        self.label.text = @&quot;点击了取消按钮&quot;;</span><br><span class="line">        </span><br><span class="line">        // 删除动画效果</span><br><span class="line">        [self removeShakeAnimation];</span><br><span class="line">        </span><br><span class="line">        // 不隐藏通知页面</span><br><span class="line">        completion(UNNotificationContentExtensionResponseOptionDoNotDismiss);</span><br><span class="line">        </span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        </span><br><span class="line">        // 隐藏通知页面</span><br><span class="line">        completion(UNNotificationContentExtensionResponseOptionDismiss);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果不懂这个动画应用的话, 我在度娘里看到了一篇文章, 可以来看看<a href="http://www.tuicool.com/articles/jeYfIv" target="_blank" rel="noopener">IOS 核心动画之CAKeyframeAnimation</a></p>
+<p>整体的运行效果:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/6.Notification%20Content%20Extension/Images/7.gif" alt="7"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>文章里只是简单的讲解, 如果还想了解更多的话, 可以自行去查看<a href="https://developer.apple.com/videos/play/wwdc2016/708/" target="_blank" rel="noopener">WWDC 2016</a>的视频讲解.</p>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: <a href="https://github.com/CainRun/iOS-10-Characteristic/tree/master/6.Notification%20Content%20Extension" target="_blank" rel="noopener">https://github.com/CainRun/iOS-10-Characteristic/tree/master/6.Notification%20Content%20Extension</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#添加Notification-Extension"><span class="toc-number">1.</span> <span class="toc-text">添加Notification Extension</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#配置Notification-Extension-Info"><span class="toc-number">1.1.</span> <span class="toc-text">配置Notification Extension Info</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义一个小方法"><span class="toc-number">1.2.</span> <span class="toc-text">自定义一个小方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#didReceiveNotificationResponse-completionHandler-方法"><span class="toc-number">1.3.</span> <span class="toc-text">- didReceiveNotificationResponse:completionHandler:方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">2.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">3.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

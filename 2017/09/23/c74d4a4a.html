@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：实战开发中的GCD Tips小技巧 (一) - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="这篇文章主要是给之前的GCD文章作为一个补充, 顺便讲讲一些在实际开发中遇到的问题和一些解决的办法, 如果没有看过之前文章的朋友可以去看看:
+
+玩转iOS开发：iOS中的GCD开发(一)
+玩转iOS,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：实战开发中的GCD Tips小技巧 (一)</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：实战开发中的GCD Tips小技巧 (一)</h1>
+        <div class="stuff">
+            <span>九月 23, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/多线程/">多线程</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>这篇文章主要是给之前的<strong>GCD</strong>文章作为一个补充, 顺便讲讲一些在实际开发中遇到的问题和一些解决的办法, 如果没有看过之前文章的朋友可以去看看:</p>
+<ul>
+<li><a href="https://cainluo.github.io/2017/08/04/c74d0c1e.html">玩转iOS开发：iOS中的GCD开发(一)</a></li>
+<li><a href="https://cainluo.github.io/2017/08/05/687c977c.html">玩转iOS开发：iOS中的GCD开发(二)</a></li>
+<li><a href="https://cainluo.github.io/2017/08/05/168fb757.html">玩转iOS开发：iOS中的GCD开发(三)</a></li>
+</ul>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="线程死锁与解决办法"><a href="#线程死锁与解决办法" class="headerlink" title="线程死锁与解决办法"></a>线程死锁与解决办法</h2><h3 id="不恰当的使用线程造成的死锁"><a href="#不恰当的使用线程造成的死锁" class="headerlink" title="不恰当的使用线程造成的死锁"></a>不恰当的使用线程造成的死锁</h3><p>在我们实际开发中, 什么时候会遇到线程死锁呢? 估计有很多小伙伴就可以想到了, 就是在主队列里同步执行不同线程的时候:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">- (void)mineQueueLockThread &#123;</span><br><span class="line">    </span><br><span class="line">    dispatch_queue_t queue = dispatch_queue_create(&quot;mineQueue&quot;, DISPATCH_QUEUE_SERIAL);</span><br><span class="line">    </span><br><span class="line">    dispatch_sync(queue, ^&#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;第一次执行, %@&quot;, [NSThread currentThread]);</span><br><span class="line">        </span><br><span class="line">        dispatch_sync(queue, ^&#123;</span><br><span class="line">            </span><br><span class="line">            NSLog(@&quot;第二次执行, %@&quot;, [NSThread currentThread]);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印结果:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">23</span> <span class="number">17</span>:<span class="number">40</span>:<span class="number">05.147</span> GCD-Tips[<span class="number">56843</span>:<span class="number">3169265</span>] 开始执行</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">23</span> <span class="number">17</span>:<span class="number">40</span>:<span class="number">05.147</span> GCD-Tips[<span class="number">56843</span>:<span class="number">3169265</span>] 第一次执行, &lt;NSThread: <span class="number">0</span>x60000007c8c0&#123;<span class="keyword">number</span> = <span class="number">1</span>, name = main&#125;</span><br><span class="line">(lldb)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-Project-Example/master/Multithreading/GCD-Tips/GCD-Tips-One/Images/1.png" alt="1"></p>
+<p>看到上面的图, 我们就可以看到任务执行到这里就死掉了, 也就是我们所说的卡线程, 那我们改改吧, 有的朋友会想到, 我把里面的那个任务改成异步不就好了么? 那我们来看看:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">- (void)mineQueueLockThread &#123;</span><br><span class="line">    </span><br><span class="line">    dispatch_queue_t queue = dispatch_queue_create(&quot;mineQueue&quot;, DISPATCH_QUEUE_SERIAL);</span><br><span class="line">    </span><br><span class="line">    dispatch_sync(queue, ^&#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;第一次执行, %@&quot;, [NSThread currentThread]);</span><br><span class="line">        </span><br><span class="line">        dispatch_async(queue, ^&#123;</span><br><span class="line">            </span><br><span class="line">            NSLog(@&quot;第二次执行, %@&quot;, [NSThread currentThread]);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印结果:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">23</span> <span class="number">17</span>:<span class="number">44</span>:<span class="number">12.488</span> GCD-Tips[<span class="number">56903</span>:<span class="number">3176227</span>] 开始执行</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">23</span> <span class="number">17</span>:<span class="number">44</span>:<span class="number">12.488</span> GCD-Tips[<span class="number">56903</span>:<span class="number">3176227</span>] 第一次执行, &lt;NSThread: <span class="number">0</span>x60000006ac40&#123;<span class="keyword">number</span> = <span class="number">1</span>, name = main&#125;</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">23</span> <span class="number">17</span>:<span class="number">44</span>:<span class="number">12.489</span> GCD-Tips[<span class="number">56903</span>:<span class="number">3176345</span>] 第二次执行, &lt;NSThread: <span class="number">0</span>x600000075ec0&#123;<span class="keyword">number</span> = <span class="number">3</span>, name = (null)&#125;</span><br></pre></td></tr></table></figure>
+
+<p>事实告诉我们这是正常的, 那还有另一种呢? 直接改外部的任务为异步执行怎么样? </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">- (void)mineQueueLockThread &#123;</span><br><span class="line">    </span><br><span class="line">    dispatch_queue_t queue = dispatch_queue_create(&quot;mineQueue&quot;, DISPATCH_QUEUE_SERIAL);</span><br><span class="line">    </span><br><span class="line">    dispatch_async(queue, ^&#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;第一次执行, %@&quot;, [NSThread currentThread]);</span><br><span class="line">        </span><br><span class="line">        dispatch_sync(queue, ^&#123;</span><br><span class="line">            </span><br><span class="line">            NSLog(@&quot;第二次执行, %@&quot;, [NSThread currentThread]);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">23</span> <span class="number">17</span>:<span class="number">45</span>:<span class="number">52.740</span> GCD-Tips[<span class="number">56936</span>:<span class="number">3178609</span>] 开始执行</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">23</span> <span class="number">17</span>:<span class="number">45</span>:<span class="number">52.741</span> GCD-Tips[<span class="number">56936</span>:<span class="number">3178739</span>] 第一次执行, &lt;NSThread: <span class="number">0</span>x600000070640&#123;<span class="keyword">number</span> = <span class="number">3</span>, name = (null)&#125;</span><br><span class="line">(lldb)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-Project-Example/master/Multithreading/GCD-Tips/GCD-Tips-One/Images/2.png" alt="2"></p>
+<p>看到结果, 挂了, 为什么呢? 按道理来说, 外部是异步, 而里面是同步是不会卡死的, 其实在之前的文章里我们就提到过.</p>
+<p>首先, 我们知道第一个是异步执行的, 这是没有问题的, 问题就是在第二个任务, 我们都知道这里是在主线程中执行, 但是别忘了, 主线程正在执行着任务, 所以这时候我们再去执行, 那问题就出现了, 所以就卡死了啦~</p>
+<p>解决的办法, 有两个:</p>
+<ul>
+<li>1.要么把第二个任务变成异步执行.</li>
+<li>2.要么把两个任务都变成异步执行.</li>
+</ul>
+<p><strong>PS: 这里不要在同步执行嵌套串行队列, 哪怕你是分开小方法里也是一样的.</strong></p>
+<h3 id="使用dispatch-apply造成的死锁"><a href="#使用dispatch-apply造成的死锁" class="headerlink" title="使用dispatch_apply造成的死锁"></a>使用dispatch_apply造成的死锁</h3><p>当我们不恰当的时候<strong>dispatch_apply</strong>的时候也会造成死锁的情况:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">- (void)applyLockThread &#123;</span><br><span class="line">    </span><br><span class="line">    dispatch_queue_t queue = dispatch_queue_create(&quot;applyQueue&quot;, DISPATCH_QUEUE_SERIAL);</span><br><span class="line">    </span><br><span class="line">    dispatch_apply(3, queue, ^(size_t i) &#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;延迟添加一&quot;);</span><br><span class="line">        </span><br><span class="line">        dispatch_apply(3, queue, ^(size_t j) &#123;</span><br><span class="line">            </span><br><span class="line">            NSLog(@&quot;延迟添加二&quot;);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印的结果:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">13</span>:<span class="number">10.760</span> GCD-Tips[<span class="number">57745</span>:<span class="number">3330022</span>] 开始执行</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">13</span>:<span class="number">10.761</span> GCD-Tips[<span class="number">57745</span>:<span class="number">3330022</span>] 延迟添加一</span><br><span class="line">(lldb)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-Project-Example/master/Multithreading/GCD-Tips/GCD-Tips-One/Images/3.png" alt="3"></p>
+<p>这里我们是串行队列, 所以大致道理和上面的差不多, 那怎么解决呢? 我们可以把串行队列, 改成并行队列:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">- (void)applyLockThread &#123;</span><br><span class="line">    </span><br><span class="line">    dispatch_queue_t queue = dispatch_queue_create(&quot;applyQueue&quot;, DISPATCH_QUEUE_CONCURRENT);</span><br><span class="line">    </span><br><span class="line">    dispatch_apply(3, queue, ^(size_t i) &#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;延迟添加一&quot;);</span><br><span class="line">        </span><br><span class="line">        dispatch_apply(3, queue, ^(size_t j) &#123;</span><br><span class="line">            </span><br><span class="line">            NSLog(@&quot;延迟添加二&quot;);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">13</span>:<span class="number">58.238</span> GCD-Tips[<span class="number">57777</span>:<span class="number">3331061</span>] 开始执行</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">13</span>:<span class="number">58.239</span> GCD-Tips[<span class="number">57777</span>:<span class="number">3331061</span>] 延迟添加一</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">13</span>:<span class="number">58.239</span> GCD-Tips[<span class="number">57777</span>:<span class="number">3331183</span>] 延迟添加一</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">13</span>:<span class="number">58.239</span> GCD-Tips[<span class="number">57777</span>:<span class="number">3331061</span>] 延迟添加二</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">13</span>:<span class="number">58.239</span> GCD-Tips[<span class="number">57777</span>:<span class="number">3331198</span>] 延迟添加一</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">13</span>:<span class="number">58.239</span> GCD-Tips[<span class="number">57777</span>:<span class="number">3331061</span>] 延迟添加二</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">13</span>:<span class="number">58.239</span> GCD-Tips[<span class="number">57777</span>:<span class="number">3331183</span>] 延迟添加二</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">13</span>:<span class="number">58.240</span> GCD-Tips[<span class="number">57777</span>:<span class="number">3331061</span>] 延迟添加二</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">13</span>:<span class="number">58.240</span> GCD-Tips[<span class="number">57777</span>:<span class="number">3331198</span>] 延迟添加二</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">13</span>:<span class="number">58.240</span> GCD-Tips[<span class="number">57777</span>:<span class="number">3331183</span>] 延迟添加二</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">13</span>:<span class="number">58.240</span> GCD-Tips[<span class="number">57777</span>:<span class="number">3331198</span>] 延迟添加二</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">13</span>:<span class="number">58.240</span> GCD-Tips[<span class="number">57777</span>:<span class="number">3331183</span>] 延迟添加二</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">13</span>:<span class="number">58.240</span> GCD-Tips[<span class="number">57777</span>:<span class="number">3331198</span>] 延迟添加二</span><br></pre></td></tr></table></figure>
+
+<h2 id="队列组的等待"><a href="#队列组的等待" class="headerlink" title="队列组的等待"></a>队列组的等待</h2><p>之前我们在文章里有提过使用<strong>dispatch_apply</strong>, 这是一个延迟提交任务到线程中执行的方法, 除了这个任务延迟提交之外, 在队列组当中也有一个对应的方法, 叫做<strong>dispatch_after</strong>.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">- (void)groupQueueAfter &#123;</span><br><span class="line">    </span><br><span class="line">    dispatch_time_t timeOne = dispatch_time(DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC);</span><br><span class="line">    dispatch_time_t timeTwo = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);</span><br><span class="line">    </span><br><span class="line">    dispatch_queue_t mainQueue = dispatch_get_main_queue();</span><br><span class="line"></span><br><span class="line">    dispatch_after(timeOne, mainQueue, ^&#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;延迟添加一&quot;);</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    dispatch_after(timeTwo, mainQueue, ^&#123;</span><br><span class="line"></span><br><span class="line">        NSLog(@&quot;延迟添加二&quot;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印的结果:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">28</span>:<span class="number">35.205</span> GCD-Tips[<span class="number">57882</span>:<span class="number">3349738</span>] 开始执行</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">28</span>:<span class="number">37.405</span> GCD-Tips[<span class="number">57882</span>:<span class="number">3349738</span>] 延迟添加一</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">28</span>:<span class="number">38.504</span> GCD-Tips[<span class="number">57882</span>:<span class="number">3349738</span>] 延迟添加二</span><br></pre></td></tr></table></figure>
+
+<p>从打印中, 我们可以看得出的确是延迟添加了, 但这里需要注意一点, <strong>dispatch_after</strong>只是延迟提交<strong>Block</strong>而已, 并不是延后立即执行, 不能做到精准控制的.</p>
+<p>这里解释一下<strong>dispatch_time</strong>的第二个参数:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#define NSEC_PER_SEC 1000000000ull</span><br><span class="line">#define NSEC_PER_MSEC 1000000ull</span><br><span class="line">#define USEC_PER_SEC 1000000ull</span><br><span class="line">#define NSEC_PER_USEC 1000ull</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>NSEC_PER_SEC</strong>，每秒有多少纳秒。</li>
+<li><strong>USEC_PER_SEC</strong>，每秒有多少毫秒。（注意是指在纳秒的基础上）</li>
+<li><strong>NSEC_PER_USEC</strong>，每毫秒有多少纳秒。</li>
+</ul>
+<p>如果我们要延迟1秒的话, 可以有几种写法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC);</span><br><span class="line"></span><br><span class="line">dispatch_time(DISPATCH_TIME_NOW, 1000 * USEC_PER_SEC);</span><br><span class="line"></span><br><span class="line">dispatch_time(DISPATCH_TIME_NOW, USEC_PER_SEC * NSEC_PER_USEC);</span><br></pre></td></tr></table></figure>
+
+<p>最后一个<strong>USEC_PER_SEC * NSEC_PER_USEC</strong>，翻译过来就是每秒的毫秒数乘以每毫秒的纳秒数，也就是每秒的纳秒数，所以，延时<strong>500</strong>毫秒之类的，也就不难了吧~</p>
+<h3 id="dispatch-after的嵌套"><a href="#dispatch-after的嵌套" class="headerlink" title="dispatch_after的嵌套"></a>dispatch_after的嵌套</h3><p>在这里, <strong>dispatch_after</strong>是可以嵌套使用的, 但需要注意的是, 虽然并不会造成锁线程, 但会导致延迟提交<strong>Block</strong>提前:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">- (void)groupQueueAfterNested &#123;</span><br><span class="line">    </span><br><span class="line">    dispatch_time_t timeOne = dispatch_time(DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC);</span><br><span class="line">    dispatch_time_t timeTwo = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);</span><br><span class="line">    </span><br><span class="line">    dispatch_queue_t mainQueue = dispatch_get_main_queue();</span><br><span class="line">    </span><br><span class="line">    dispatch_after(timeOne, mainQueue, ^&#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;延迟添加一&quot;);</span><br><span class="line">        </span><br><span class="line">        dispatch_after(timeTwo, mainQueue, ^&#123;</span><br><span class="line">            </span><br><span class="line">            NSLog(@&quot;延迟添加二&quot;);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">31</span>:<span class="number">16.810</span> GCD-Tips[<span class="number">57923</span>:<span class="number">3354999</span>] 开始执行</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">31</span>:<span class="number">19.010</span> GCD-Tips[<span class="number">57923</span>:<span class="number">3354999</span>] 延迟添加一</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">31</span>:<span class="number">19.885</span> GCD-Tips[<span class="number">57923</span>:<span class="number">3354999</span>] 延迟添加二</span><br></pre></td></tr></table></figure>
+
+<p>所以我们在这里使用<strong>dispatch_after</strong>的时候, 要注意延迟添加的时机了.</p>
+<h3 id="dispatch-apply的注意"><a href="#dispatch-apply的注意" class="headerlink" title="dispatch_apply的注意"></a>dispatch_apply的注意</h3><p>在之前的文章里, 我们有提过<strong>dispatch_apply</strong>, 这里补充一点就是它在使用的时候, 无论是串行还是并行队列都一样, 它将会阻塞主线程, 我们来看代码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">- (void)queueApply &#123;</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;开始执行, 当前线程为:%@&quot;, [NSThread currentThread]);</span><br><span class="line">    </span><br><span class="line">    dispatch_queue_t queueOne = dispatch_queue_create(&quot;applyQueue&quot;, DISPATCH_QUEUE_SERIAL);</span><br><span class="line">    dispatch_queue_t queueTwo = dispatch_queue_create(&quot;applyQueue&quot;, DISPATCH_QUEUE_CONCURRENT);</span><br><span class="line"></span><br><span class="line">    dispatch_apply(3, queueOne, ^(size_t i) &#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;延迟执行一: %zu, 当前线程为:%@&quot;, i, [NSThread currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    dispatch_apply(3, queueTwo, ^(size_t i) &#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;延迟执行二: %zu, 当前线程为:%@&quot;, i, [NSThread currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;结束执行, 当前线程为:%@&quot;, [NSThread currentThread]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">44</span>:<span class="number">04.704</span> GCD-Tips[<span class="number">58065</span>:<span class="number">3373668</span>] 开始执行</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">44</span>:<span class="number">04.705</span> GCD-Tips[<span class="number">58065</span>:<span class="number">3373668</span>] 开始执行, 当前线程为:&lt;NSThread: <span class="number">0</span>x600000067880&#123;<span class="keyword">number</span> = <span class="number">1</span>, name = main&#125;</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">44</span>:<span class="number">04.705</span> GCD-Tips[<span class="number">58065</span>:<span class="number">3373668</span>] 延迟执行一: <span class="number">0</span>, 当前线程为:&lt;NSThread: <span class="number">0</span>x600000067880&#123;<span class="keyword">number</span> = <span class="number">1</span>, name = main&#125;</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">44</span>:<span class="number">04.706</span> GCD-Tips[<span class="number">58065</span>:<span class="number">3373668</span>] 延迟执行一: <span class="number">1</span>, 当前线程为:&lt;NSThread: <span class="number">0</span>x600000067880&#123;<span class="keyword">number</span> = <span class="number">1</span>, name = main&#125;</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">44</span>:<span class="number">04.706</span> GCD-Tips[<span class="number">58065</span>:<span class="number">3373668</span>] 延迟执行一: <span class="number">2</span>, 当前线程为:&lt;NSThread: <span class="number">0</span>x600000067880&#123;<span class="keyword">number</span> = <span class="number">1</span>, name = main&#125;</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">44</span>:<span class="number">04.706</span> GCD-Tips[<span class="number">58065</span>:<span class="number">3373668</span>] 延迟执行二: <span class="number">0</span>, 当前线程为:&lt;NSThread: <span class="number">0</span>x600000067880&#123;<span class="keyword">number</span> = <span class="number">1</span>, name = main&#125;</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">44</span>:<span class="number">04.706</span> GCD-Tips[<span class="number">58065</span>:<span class="number">3373784</span>] 延迟执行二: <span class="number">1</span>, 当前线程为:&lt;NSThread: <span class="number">0</span>x60800006f440&#123;<span class="keyword">number</span> = <span class="number">3</span>, name = (null)&#125;</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">44</span>:<span class="number">04.706</span> GCD-Tips[<span class="number">58065</span>:<span class="number">3373786</span>] 延迟执行二: <span class="number">2</span>, 当前线程为:&lt;NSThread: <span class="number">0</span>x60800006f380&#123;<span class="keyword">number</span> = <span class="number">4</span>, name = (null)&#125;</span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">44</span>:<span class="number">04.707</span> GCD-Tips[<span class="number">58065</span>:<span class="number">3373668</span>] 结束执行, 当前线程为:&lt;NSThread: <span class="number">0</span>x600000067880&#123;<span class="keyword">number</span> = <span class="number">1</span>, name = main&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>好了, 这次就讲到这里, 一下子讲太多也不好消化, 剩下的留着之后再讲吧.</p>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: <a href="https://github.com/CainLuo/iOS-Project-Example/tree/master/GCD-Tips/GCD-Tips-One" target="_blank" rel="noopener">https://github.com/CainLuo/iOS-Project-Example/tree/master/GCD-Tips/GCD-Tips-One</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#线程死锁与解决办法"><span class="toc-number">1.</span> <span class="toc-text">线程死锁与解决办法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#不恰当的使用线程造成的死锁"><span class="toc-number">1.1.</span> <span class="toc-text">不恰当的使用线程造成的死锁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用dispatch-apply造成的死锁"><span class="toc-number">1.2.</span> <span class="toc-text">使用dispatch_apply造成的死锁</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#队列组的等待"><span class="toc-number">2.</span> <span class="toc-text">队列组的等待</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#dispatch-after的嵌套"><span class="toc-number">2.1.</span> <span class="toc-text">dispatch_after的嵌套</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dispatch-apply的注意"><span class="toc-number">2.2.</span> <span class="toc-text">dispatch_apply的注意</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">4.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

@@ -1,0 +1,512 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dart基础知识 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="
+翻译自: https://www.raywenderlich.com/4482551-dart-basics
+
+介绍Dart编程语言的基础知识，用于使用Flutter SDK进行移动，Web及更高,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">Dart基础知识</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">Dart基础知识</h1>
+        <div class="stuff">
+            <span>八月 30, 2019</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/Dart/">Dart</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <blockquote>
+<p>翻译自: <a href="https://www.raywenderlich.com/4482551-dart-basics" target="_blank" rel="noopener">https://www.raywenderlich.com/4482551-dart-basics</a></p>
+</blockquote>
+<p>介绍<strong>Dart</strong>编程语言的基础知识，用于使用<strong>Flutter SDK</strong>进行移动，<strong>Web</strong>及更高版本的开发。</p>
+<p>您正在寻求开始<strong>Flutter</strong>开发，但刚刚发现<strong>Flutter</strong>使用<strong>Dart</strong>编程语言？ 本教程将向您介绍一些<strong>Dart</strong>基础知识，以便您可以使用<strong>Flutter</strong>开发语言启动和运行。</p>
+<p><strong>Dart</strong>于<strong>2011</strong>年由<strong>Google</strong>发布，最初被设计为<strong>JavaScript</strong>的替代品。 从那时起，用于<strong>iOS</strong>，<strong>Android</strong>和<strong>Web</strong>开发的<strong>Flutter SDK</strong>的发布为<strong>Dart</strong>语言带来了新的亮点。 此次录制时最新版本的<strong>Dart</strong>是<strong>2.4</strong>。</p>
+<p><strong>Dart</strong>与您可能已经熟悉的其他语言有许多相似之处，例如<strong>Java</strong>，<strong>C＃</strong>，<strong>Swift</strong>和<strong>Kotlin</strong>。 <strong>Dart</strong>具有以下语言特征：</p>
+<ul>
+<li>静态类型</li>
+<li>类型推断</li>
+<li>字符串表达式</li>
+<li>多范式包括OOP和功能</li>
+<li>可以使用动态模仿动态类型</li>
+</ul>
+<p>除了用于移动和<strong>Web</strong>开发外，<strong>Flutter</strong>还是<a href="https://fuchsia.dev/" target="_blank" rel="noopener">Fuchsia</a>的开发套件，<strong>Fuchsia</strong>是<strong>Google</strong>正在开发的实验性操作系统。</p>
+<p>本教程将向您介绍<strong>Dart</strong>基础知识，例如：</p>
+<ul>
+<li>变量，数据类型和运算符</li>
+<li>条件和循环</li>
+<li>函数，匿名函数和闭包</li>
+<li>箭头函数语法</li>
+</ul>
+<p>您可以在本简短教程所基于的<a href="https://www.raywenderlich.com/4921688-programming-in-dart-fundamentals" target="_blank" rel="noopener">Dart  -  Fundamentals编程课程</a>中，了解有关Dart中面向对象编程以及Dart集合类型（如列表，集合和映射）的更多信息。</p>
+<p>完成本教程后，您应该准备好使用<strong>Dart</strong>直接进入<strong>Flutter</strong>开发。 你可以在<a href="https://www.raywenderlich.com/4529993-getting-started-with-flutter" target="_blank" rel="noopener">这里</a>开始使用<strong>Flutter</strong>。</p>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>要快速启动并运行<strong>Dart</strong>，最好使用位于<a href="https://dartpad.dartlang.org的**DartPad**编辑器：" target="_blank" rel="noopener">https://dartpad.dartlang.org的**DartPad**编辑器：</a></p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2020/08/dartpad-650x375.png" alt="图片"></p>
+<p><strong>DartPad</strong>的设置就像一个典型的<strong>IDE</strong>。 有：</p>
+<ul>
+<li>左侧的编辑器窗格</li>
+<li>一个Run按钮，用于在编辑器中运行代码</li>
+<li>右上角显示输出的控制台</li>
+<li>右下方的“信息”面板显示突出显示代码的信息</li>
+<li>样本下拉列表显示一些示例代码</li>
+<li>共享按钮，可用于共享您创建的<strong>DartPad</strong>文件</li>
+</ul>
+<p>在右下方的右下方，有一个复选框，显示与使用<strong>Dart</strong>进行<strong>Web</strong>编程相关的更多面板，以及一些显示<strong>DartPad</strong>中使用的<strong>Dart</strong>当前版本的文本。</p>
+<p>如果您愿意，可以在计算机上本地安装<strong>Dart SDK</strong>。 一种方法是安装<a href="https://flutter.dev/docs/get-started/install/macos" target="_blank" rel="noopener">Flutter SDK</a>。 安装<strong>flutter</strong>也会安装<strong>Dart SDK</strong>。</p>
+<p>您也可以通过访问<a href="https://dart.dev/tutorials/server/get-started#2-install-dart" target="_blank" rel="noopener">此处</a>直接安装<strong>Dart SDK</strong>。</p>
+<h2 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h2><p><strong>Dart</strong>程序首先调用<strong>main</strong>函数，<strong>main</strong>的语法看起来非常类似于其他语言（如<strong>C</strong>，<strong>Swift</strong>或<strong>Kotlin</strong>）中<strong>main</strong>的语法。</p>
+<p>清除默认<strong>DartPad</strong>中的所有代码，并向编辑器添加一个<strong>main</strong>函数：</p>
+<p><strong>main</strong>函数前面有一个返回类型，它在<strong>Dart</strong>中为<strong>void</strong>，表示不返回任何内容。 <strong>main</strong>之后的括号表示这是一个函数定义，花括号包含函数的主体。 在<strong>main</strong>中，您可以为程序添加<strong>Dart</strong>代码。</p>
+<h2 id="变量，注释和数据类型"><a href="#变量，注释和数据类型" class="headerlink" title="变量，注释和数据类型"></a>变量，注释和数据类型</h2><p>我们要添加到<strong>main</strong>的第一件事是变量赋值语句。 变量保存程序将处理的数据。 您可以将计算机内存中的变量视为一个包含值的变量。 每个框都有一个名称，即变量的名称。 您在<strong>Dart</strong>中使用<strong>var</strong>关键字来表示变量。</p>
+<p>向<strong>main</strong>添加一个新变量：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myAge = <span class="number">35</span>;</span><br></pre></td></tr></table></figure>
+
+<p>与<strong>C</strong>和<strong>Java</strong>一样，每个<strong>Dart</strong>语句以分号结尾。 你创建了一个<strong>myAge</strong>变量，设置它等于<strong>35</strong>。</p>
+<p>您可以使用<strong>Dart</strong>中的内置<code>print()</code>函数将变量打印到控制台，因此在变量之后添加该调用：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(myAge); <span class="comment">// 35</span></span><br></pre></td></tr></table></figure>
+
+<p>单击<strong>DartPad</strong>中的“运行”按钮以运行代码，您将在右上角的控制台中看到打印出的变量。</p>
+<p><strong>Dart</strong>中的注释看起来就像其他语言中的<strong>C</strong>语言：文本跟在一行上的//或/ * … * / blocks中的文本。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// This is a comment.</span></span><br><span class="line"><span class="built_in">print</span>(myAge); <span class="comment">// This is also a comment.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> And so is this.</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+
+<p>如果你把光标放在编辑器上的<strong>myAge</strong>名称上，你会在右下方的面板中看到<strong>Dart</strong>推断出<strong>myAge</strong>是一个<strong>int</strong>变量，这要归功于用整数值<strong>35</strong>初始化。就像<strong>Swift</strong>和<strong>Kotlin</strong>一样，<strong>Dart</strong>使用 如果您不直接指定日期，则键入推断以尝试确定日期类型。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2020/08/typeinference-650x272.png" alt="图片"></p>
+<p>使用类型推断的替代方法是将<strong>var</strong>关键字替换为您要使用的特定类型：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> yourAge = <span class="number">27</span>;</span><br><span class="line"><span class="built_in">print</span>(yourAge); <span class="comment">// 27</span></span><br></pre></td></tr></table></figure>
+
+<p>与许多语言类似，如<strong>C</strong>，<strong>Java</strong>，<strong>Swift</strong>和<strong>Kotlin</strong>，<strong>Dart</strong>是静态类型的。 这意味着<strong>Dart</strong>中的每个变量都有一个在编译代码时必须知道的类型，并且在运行程序时变量的类型不能改变。</p>
+<p>这与动态类型的<strong>Python</strong>和<strong>Javascript</strong>等语言形成对比，这意味着变量在运行时可以容纳不同类型的数据，并且在编译代码时不需要知道类型。</p>
+<h3 id="基本Dart类型"><a href="#基本Dart类型" class="headerlink" title="基本Dart类型"></a>基本Dart类型</h3><p><strong>Dart</strong>使用<strong>int</strong>表示整数，<strong>double</strong>表示浮点数，<strong>bool</strong>表示布尔值。 整数和双精度都是从名为<strong>num</strong>的类型派生的。 您使用<strong>String</strong>类型来表示字符序列。 <strong>Dart</strong>还有一个关键字动态，可以让你模仿静态类型的<strong>Dart</strong>中的动态类型。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2020/08/datatypes-650x314.png" alt="图片"></p>
+<p>您还可以对<strong>int</strong>以外的类型使用类型推断。 输入等于<strong>3.14</strong>的变量<strong>pi</strong>，如下所示：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> pi = <span class="number">3.14</span>;</span><br><span class="line"><span class="built_in">print</span>(pi); <span class="comment">// 3.14</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>pi</strong>被推断为双精度，因为您使用浮点值来初始化它。 您可以在<strong>Dart</strong>信息面板中看到它.</p>
+<p>您也可以使用<strong>double</strong>作为类型而不是<strong>var</strong>：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">double</span> c = <span class="number">299792458</span>;</span><br><span class="line"><span class="built_in">print</span>(c); <span class="comment">// 299792458</span></span><br></pre></td></tr></table></figure>
+
+<p>在这种情况下，您已使用<strong>int</strong>初始化<strong>c</strong>（光速符号），但由于您将类型指定为<strong>double</strong>，因此<strong>c</strong>实际上是<strong>double</strong>。 <strong>Dart</strong>会将<strong>int</strong>转换为<strong>double</strong>以初始化<strong>c</strong>。 因此与<strong>Swift</strong>不同，<strong>Dart</strong>具有隐式类型转换。</p>
+<h3 id="动态关键字"><a href="#动态关键字" class="headerlink" title="动态关键字"></a>动态关键字</h3><p>如果使用<strong>dynamic</strong>关键字而不是<strong>var</strong>，则可以获得有效的动态类型变量：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">dynamic</span> numberOfKittens;</span><br></pre></td></tr></table></figure>
+
+<p>您可以使用引号将<strong>numberOfKittens</strong>设置为<strong>String</strong>（有关<strong>String</strong>类型的更多信息，请参见下文）.</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">numberOfKittens = <span class="string">'There are no kittens!'</span>;</span><br><span class="line"><span class="built_in">print</span>(numberOfKittens); <span class="comment">// There are no kittens!</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>numberOfKittens</strong>有一个类型，因为<strong>Dart</strong>具有静态类型。 但该类型是动态的，这意味着您可以为其分配其他类型的其他值。 因此，您可以在<strong>print</strong>语句下面指定一个<strong>int</strong>值。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">numberOfKittens = <span class="number">0</span>;</span><br><span class="line"><span class="built_in">print</span>(numberOfKittens); <span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
+
+<p>或者如果你在<a href="https://en.wikipedia.org/wiki/Schrödinger%27s_cat" target="_blank" rel="noopener"><strong>Schrödinger</strong>的盒子</a>里有一只小猫，你可以指定一个双倍值：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">numberOfKittens = <span class="number">0.5</span>;</span><br><span class="line"><span class="built_in">print</span>(numberOfKittens); <span class="comment">// 0.5</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2020/08/schrodingers-cat-650x437.png" alt="图片"></p>
+<p>继续并单击“运行”以查看在控制台中打印出的<strong>numberOfKittens</strong>的三个不同值。 在每种情况下，<strong>numberOfKittens</strong>的类型仍然是动态的，即使变量本身包含不同类型的值。</p>
+<p><strong>bool</strong>类型用于保存<strong>true</strong>或<strong>false</strong>的值。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bool</span> areThereKittens = <span class="keyword">false</span>;</span><br><span class="line"><span class="built_in">print</span>(areThereKittens); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<p>但是，如果你看看<strong>Schrödinger</strong>盒子，你可能会转而拥有一只真正的小猫：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">numberOfKittens = <span class="number">1</span>;</span><br><span class="line">areThereKittens = <span class="keyword">true</span>;</span><br><span class="line"><span class="built_in">print</span>(areThereKittens); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>再次运行代码以在控制台中查看布尔值。 你在盒子里看起来是件好事! :]</p>
+<h2 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h2><p><strong>Dart</strong>拥有您熟悉的所有常用操作符，如<strong>C</strong>，<strong>Swift</strong>和<strong>Kotlin</strong>等其他语言。</p>
+<p>有算术运算符，相等，递增和递减，比较和逻辑运算符。</p>
+<p><strong>Dart</strong>还允许像<strong>C++</strong>和<strong>Kotlin</strong>这样的运算符重载，但这超出了本教程的范围。</p>
+<p>算术运算符的工作就像你期望的那样。 在<strong>DartPad</strong>中添加一堆操作：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="number">40</span> + <span class="number">2</span>); <span class="comment">// 42</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">44</span> - <span class="number">2</span>); <span class="comment">// 42</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">21</span> * <span class="number">2</span>); <span class="comment">// 42</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">84</span> / <span class="number">2</span>); <span class="comment">// 42</span></span><br></pre></td></tr></table></figure>
+
+<p>在这里查看更多<a href="https://en.wikipedia.org/wiki/Phrases_from_The_Hitchhiker's_Guide_to_the_Galaxy#Answer_to_the_Ultimate_Question_of_Life,_the_Universe,_and_Everything_(42)" target="_blank" rel="noopener">42</a>。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2020/08/atltuae-557x500.png" alt="图片"></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> atltuae = <span class="number">84.0</span> / <span class="number">2</span>;</span><br><span class="line"><span class="built_in">print</span>(atltuae); <span class="comment">// 42</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Dart</strong>在操作之前将<strong>int</strong>转换为<strong>double</strong>，以便将结果变量推断为<strong>double</strong>。</p>
+<p><strong>Dart</strong>具有双等于等于和非等于运算符：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="number">42</span> == <span class="number">43</span>); <span class="comment">// false</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">42</span> != <span class="number">43</span>); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>有修复前和修复后的增量和减量运算符：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(atltuae++); <span class="comment">// 42</span></span><br><span class="line"><span class="built_in">print</span>(--atltuae); <span class="comment">// 42</span></span><br></pre></td></tr></table></figure>
+
+<p>因为增量的使用是后缀，所以在增量发生之前打印<strong>42</strong>。 减量是前缀，因此<strong>43</strong>减少到<strong>42</strong>然后打印值<strong>42</strong>。</p>
+<p><strong>Dart</strong>具有典型的比较运算符，例如小于或大于或等于。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="number">42</span> &lt; <span class="number">43</span>); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">42</span> &gt;= <span class="number">43</span>); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<p>还有通常的复合算术/赋值运算符:</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">atltuae += <span class="number">1</span>; <span class="built_in">print</span>(atltuae); <span class="comment">// 43</span></span><br><span class="line">atltuae -= <span class="number">1</span>; <span class="built_in">print</span>(atltuae); <span class="comment">// 42</span></span><br><span class="line">atltuae *= <span class="number">2</span>; <span class="built_in">print</span>(atltuae); <span class="comment">// 84</span></span><br><span class="line">atltuae /= <span class="number">2</span>; <span class="built_in">print</span>(atltuae); <span class="comment">// 42</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Dart</strong>还有取模的运算符:</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="number">392</span> % <span class="number">50</span>); <span class="comment">// 42</span></span><br></pre></td></tr></table></figure>
+
+<p>逻辑运算符，例如<strong>&amp;&amp;</strong> <strong>for</strong>和<strong>and</strong> <strong>||</strong> 或者看起来像其他语言的那些。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>((<span class="number">41</span> &lt; atltuae) &amp;&amp; (atltuae &lt; <span class="number">43</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">print</span>((<span class="number">41</span> &lt; atltuae) || (atltuae &gt; <span class="number">43</span>)); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>而否定运算符是<strong>“!”</strong>，将<strong>false</strong>变为<strong>true</strong>，将<strong>true</strong>变为<strong>false</strong>。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(!(<span class="number">41</span> &lt; atltuae)); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><p><strong>Dart</strong>字符串类型是<strong>String</strong>。 字符串使用由单引号或双引号括起的文本以<strong>Dart</strong>表示。</p>
+<p>与我们见过的其他类型一样，您可以使用<strong>var</strong>和<strong>type</strong>推理或<strong>String</strong>来创建字符串变量：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> firstName = <span class="string">'Albert'</span>;</span><br><span class="line"><span class="built_in">String</span> lastName = <span class="string">"Einstein"</span>;</span><br></pre></td></tr></table></figure>
+
+<p>与<strong>Kotlin</strong>和<strong>Swift</strong>等语言类似，您可以使用美元符号符号<strong>“$”</strong>在字符串中嵌入值和表达式来创建新字符串。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> physicist = <span class="string">"<span class="subst">$firstName</span> <span class="subst">$lastName</span>"</span>;</span><br><span class="line"><span class="built_in">print</span>(physicist); <span class="comment">// Albert Einstein</span></span><br></pre></td></tr></table></figure>
+
+<p>您可以组合相邻的字符串，例如，多行的长字符串，只需将字符串放在另一个字符串旁边或单独的行上：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> quote = <span class="string">'If you can\'t'</span> <span class="string">' explain it simply\n'</span></span><br><span class="line">  <span class="string">"you don't understand it well enough."</span>;</span><br><span class="line"><span class="built_in">print</span>(quote);</span><br><span class="line"><span class="comment">// If you can't explain it simply</span></span><br><span class="line"><span class="comment">// you don't understand it well enough.</span></span><br></pre></td></tr></table></figure>
+
+<p>在第一个字符串中，您使用了单引号，因此使用转义序列来嵌入不能引入字符串的引号。 <strong>Dart</strong>中使用的转义序列与其他类<strong>C</strong>语言中使用的转义序列类似，例如，<strong>\n</strong>表示换行符。</p>
+<p>由于您使用双引号来分隔第二个字符串，因此您不需要单引号的转义序列。</p>
+<p>您还可以使用<strong>“+”</strong>运算符组合字符串：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> energy = <span class="string">"Mass"</span> + <span class="string">" times "</span> + <span class="string">"c squared"</span>;</span><br><span class="line"><span class="built_in">print</span>(energy); <span class="comment">// Mass times c squared</span></span><br></pre></td></tr></table></figure>
+
+<p>您可以使用三引号使字符串运行多行并保留格式：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> model = <span class="string">"""</span></span><br><span class="line"><span class="string">I'm not creating the universe.</span></span><br><span class="line"><span class="string">I'm creating a model of the universe,</span></span><br><span class="line"><span class="string">which may or may not be true."""</span>;</span><br><span class="line"><span class="built_in">print</span>(model);</span><br><span class="line"><span class="comment">// I'm not creating the universe.</span></span><br><span class="line"><span class="comment">// I'm creating a model of the universe,</span></span><br><span class="line"><span class="comment">// which may or may not be true.</span></span><br></pre></td></tr></table></figure>
+
+<p>如果需要在字符串中显示转义序列，则可以使用以<strong>r</strong>为前缀的原始字符串。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> rawString = <span class="string">r"If you can't explain it simply\nyou don't understand it well enough."</span>;</span><br><span class="line"><span class="built_in">print</span>(rawString); </span><br><span class="line"><span class="comment">// If you can't explain it simply\nyou don't understand it well enough.</span></span><br></pre></td></tr></table></figure>
+
+<p>继续在<strong>DartPad</strong>中单击“运行”在控制台中查看所有字符串。</p>
+<h2 id="不变性"><a href="#不变性" class="headerlink" title="不变性"></a>不变性</h2><p>对于不会更改的值，<strong>Dart</strong>具有关键字<strong>const</strong>和<strong>final</strong>。 <strong>const</strong>用于编译时已知的值，<strong>final</strong>用于在编译时不必知道但在初始化后无法重新赋值的值。 最后的行为就像在<strong>Kotlin</strong>的<strong>val</strong>或者在<strong>Swift</strong>中。</p>
+<p>您可以使用<strong>const</strong>和<strong>final</strong>代替<strong>var</strong>，并让类型推断确定类型：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> speedOfLight = <span class="number">299792458</span>;</span><br><span class="line"><span class="built_in">print</span>(speedOfLight); <span class="comment">// 299792458</span></span><br></pre></td></tr></table></figure>
+
+<p>因此，您可以在<strong>DartPad</strong>的信息面板中看到<strong>speedOfLight</strong>被推断为<strong>int</strong>。</p>
+<p><strong>final</strong>表示不可变，最终值不能重新赋值。 您还可以使用<strong>final</strong>或<strong>const</strong>显式声明类型：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> planet = <span class="string">'Jupiter'</span>;</span><br><span class="line"><span class="comment">// final planet = 'Mar'; // error: planet is immutable</span></span><br><span class="line"><span class="keyword">final</span> <span class="built_in">String</span> moon = <span class="string">'Europa'</span>;</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'<span class="subst">$planet</span> has a moon <span class="subst">$moon</span>'</span>);</span><br><span class="line"><span class="comment">// Jupiter has a moon Europa</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="可空"><a href="#可空" class="headerlink" title="可空"></a>可空</h2><p>对于任何变量，无论类型如何，如果不初始化变量，变量将被赋予值<strong>null</strong>，这意味着变量中不存储任何内容。</p>
+<p>这与<strong>Swift</strong>和<strong>Kotlin</strong>等语言形成对比，你必须明确地将变量声明为可空（在<strong>Swift</strong>中也是可选的）。 这些语言中的默认类型是不可为空的。</p>
+<p>事实证明，所有<strong>Dart</strong>类型，甚至是<strong>int</strong>和<strong>double</strong>等基本类型，都是从名为<strong>Object</strong>的类型派生的。 如果不初始化对象，则它将采用空值。</p>
+<p>你会在这里看到一些在<strong>Dart</strong>中安全地处理<strong>null</strong>值的方法，但它并没有像<strong>Swift</strong>中的选项或<strong>Kotlin</strong>中的<strong>nullables</strong>那样。</p>
+<p>创建三个不同类型的变量，然后立即打印它们。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> age;</span><br><span class="line"><span class="built_in">double</span> height;</span><br><span class="line"><span class="built_in">String</span> err;</span><br><span class="line"><span class="built_in">print</span>(age); <span class="comment">// null</span></span><br><span class="line"><span class="built_in">print</span>(height); <span class="comment">// null</span></span><br><span class="line"><span class="built_in">print</span>(err); <span class="comment">// null</span></span><br></pre></td></tr></table></figure>
+
+<p>您将在控制台中看到每个变量都为<strong>null</strong>。</p>
+<p><strong>Dart</strong>有一些可识别的操作符，可用于处理空值。</p>
+<p>双问号运算符”<strong>??</strong>“就像<strong>Kotlin</strong>中的“<strong>Elvis</strong>运算符”一样: 如果它不是<strong>null</strong>，它将返回左侧操作数，否则返回右侧值：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> error = err ?? <span class="string">"No error"</span>;</span><br><span class="line"><span class="built_in">print</span>(error); <span class="comment">// No error</span></span><br></pre></td></tr></table></figure>
+
+<p>有一个相应的赋值运算符 “<strong>?? =</strong>“类似的：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">err ??= error;</span><br><span class="line"><span class="built_in">print</span>(err); <span class="comment">// No error</span></span><br></pre></td></tr></table></figure>
+
+<p>由于您刚刚使用值<strong>“No error”</strong>创建了非空值错误，因此错误值现在会在此分配上获取该非空值。</p>
+<p>还有一个运算符<strong>“?.”</strong>保护您不要访问<strong>null</strong>对象的属性。 如果对象本身为<strong>null</strong>，它将返回<strong>null</strong>。 否则，它返回右侧属性的值：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(age?.isEven); <span class="comment">// null</span></span><br></pre></td></tr></table></figure>
+
+<p>如果你只是尝试<code>age.isEven</code>和<strong>age</strong>为<strong>null</strong>，你将获得一个<strong>Uncaught</strong>异常。</p>
+<h2 id="控制流"><a href="#控制流" class="headerlink" title="控制流"></a>控制流</h2><p>控制流程允许您指定执行，跳过或重复某些代码行。 使用条件和循环在Dart中处理控制流。</p>
+<h3 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h3><p>控制流的最基本形式是决定是执行还是跳过代码的某些部分，具体取决于程序运行时发生的条件。 处理条件的语言结构是<strong>if / else</strong>语句。 <strong>Dart</strong>中的<strong>if / else</strong>看起来几乎与其他类<strong>C</strong>语言中的使用相同。</p>
+<p>假设你有一个目前是狐狸的动物变量。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> animal = <span class="string">'fox'</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2020/08/creature-head-fox-500x500.png" alt="图片"></p>
+<p>您可以使用<strong>“if”</strong>语句来检查动物是猫还是狗，如果是，则运行一些相应的代码。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (animal == <span class="string">'cat'</span> || animal == <span class="string">'dog'</span>) &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">'Animal is a house pet.'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这里，您使用了相等和或运算符在<strong>if</strong>语句的条件内创建了一个<strong>bool</strong>值。</p>
+<p>如果条件为<strong>false</strong>，则可以使用<strong>else</strong>子句运行备用代码：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">'Animal is NOT a house pet.'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Animal is NOT a house pet.</span></span><br></pre></td></tr></table></figure>
+
+<p>您还可以将多个<strong>if / else</strong>语句组合到<strong>if / else if / else</strong>构造中:</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (animal == <span class="string">'cat'</span> || animal == <span class="string">'dog'</span>) &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">'Animal is a house pet.'</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (animal == <span class="string">'rhino'</span>) &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">'That\'s a big animal.'</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">'Animal is NOT a house pet.'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Animal is NOT a house pet.</span></span><br></pre></td></tr></table></figure>
+
+<p>如果需要，您可以根据需要使用其他多个分支。</p>
+<h3 id="循环时"><a href="#循环时" class="headerlink" title="循环时"></a>循环时</h3><p>循环允许您重复代码一定次数或基于某些条件。 后者由<strong>while</strong>循环处理。</p>
+<p><strong>Dart</strong>中有两种形式的<strong>while</strong>循环，而<strong>do-while</strong>。 不同之处在于，对于<strong>while</strong>，循环条件位于代码块之前，而<strong>do-while</strong>条件位于之后。 因此，对于<strong>do-while</strong>，代码块保证至少运行一次。</p>
+<p>创建一个初始化为<strong>1</strong>的变量：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> i = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>您可以使用<strong>while</strong>循环在递增时打印<strong>i</strong>，并将条件设置为<strong>i</strong>小于<strong>10</strong>:</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (i &lt; <span class="number">10</span>) &#123;</span><br><span class="line">  <span class="built_in">print</span>(i);</span><br><span class="line">  i++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line"><span class="comment">// 4</span></span><br><span class="line"><span class="comment">// 5</span></span><br><span class="line"><span class="comment">// 6</span></span><br><span class="line"><span class="comment">// 7</span></span><br><span class="line"><span class="comment">// 8</span></span><br><span class="line"><span class="comment">// 9</span></span><br></pre></td></tr></table></figure>
+
+<p>运行代码，您会看到<strong>while</strong>循环打印出的数字<strong>1</strong>到<strong>9</strong>。</p>
+<p>在<strong>DartPad</strong>中重置<strong>i</strong>，然后添加<strong>do-while</strong>循环：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">i = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">  <span class="built_in">print</span>(i);</span><br><span class="line">  ++i;</span><br><span class="line">&#125; <span class="keyword">while</span> (i &lt; <span class="number">10</span>);</span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line"><span class="comment">// 4</span></span><br><span class="line"><span class="comment">// 5</span></span><br><span class="line"><span class="comment">// 6</span></span><br><span class="line"><span class="comment">// 7</span></span><br><span class="line"><span class="comment">// 8</span></span><br><span class="line"><span class="comment">// 9</span></span><br></pre></td></tr></table></figure>
+
+<p>这里的结果与之前相同，就在这一次，循环体在检查循环退出条件之前运行一次。</p>
+<h3 id="continue和break"><a href="#continue和break" class="headerlink" title="continue和break"></a>continue和break</h3><p><strong>Dart</strong>具有通常的<strong>continue</strong>和<strong>break</strong>关键字，可用于循环和其他地方。 <strong>continue</strong>将跳过循环内的剩余代码并立即转到下一次迭代。 <strong>break</strong>会停止循环并在循环体后继续执行。</p>
+<p>在代码中使用<strong>continue</strong>时必须小心。 例如，如果从上面执行<strong>do-while</strong>循环，并且假设您希望在<strong>i</strong>等于<strong>5</strong>时继续，则可能导致无限循环继续运行，具体取决于您放置<strong>continue</strong>语句的位置：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">  <span class="built_in">print</span>(i);</span><br><span class="line">  <span class="keyword">if</span> (i == <span class="number">5</span>) &#123;</span><br><span class="line">    <span class="keyword">continue</span>;</span><br><span class="line">  &#125;            </span><br><span class="line">  ++i;</span><br><span class="line">&#125; <span class="keyword">while</span> (i &lt; <span class="number">10</span>);</span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line"><span class="comment">// 4</span></span><br><span class="line"><span class="comment">// 5</span></span><br><span class="line"><span class="comment">// 5</span></span><br><span class="line"><span class="comment">// 5</span></span><br><span class="line"><span class="comment">// 5</span></span><br><span class="line"><span class="comment">// 5</span></span><br><span class="line"><span class="comment">// 5</span></span><br><span class="line"><span class="comment">// 5</span></span><br><span class="line"><span class="comment">// 5</span></span><br><span class="line"><span class="comment">// 5</span></span><br><span class="line"><span class="comment">// 5</span></span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+
+<p>无限循环发生，因为一旦我是<strong>5</strong>，你永远不会增加<strong>i</strong>，并且条件总是保持为真。</p>
+<p>如果你在<strong>DartPad</strong>中运行它，无限循环将导致浏览器挂起。 而是使用<strong>break</strong>，以便在我达到<strong>5</strong>之后循环结束：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">  <span class="built_in">print</span>(i);</span><br><span class="line">  <span class="keyword">if</span> (i == <span class="number">5</span>) &#123;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  ++i;</span><br><span class="line">&#125; <span class="keyword">while</span> (i &lt; <span class="number">10</span>);</span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line"><span class="comment">// 4</span></span><br><span class="line"><span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
+
+<p>现在运行代码，看看循环在5次迭代后结束。</p>
+<h3 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h3><p>循环预定次数的循环用于<strong>Dart</strong>中的循环，这再次与来自其他语言的循环非常相似。</p>
+<p><strong>Dart</strong>既具有类似<strong>C</strong>形式的<strong>for</strong>循环，具有初始化，循环条件和动作，以及用于迭代对象集合的<strong>for-in</strong>循环。 在第一种形式中，初始化在第一次循环迭代之前运行。 在进入每次迭代时检查条件，并在开始下一次迭代之前运行该操作。</p>
+<p>对于<strong>for-in</strong>形式，对于循环的每个后续迭代，将变量设置为<strong>Dart</strong>对象集合中的每个元素。 假设你想要总结前<strong>10</strong>个整数的值。</p>
+<p>为总和创建变量：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sum = <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
+<p>然后使用<strong>for</strong>循环，在其中将循环计数器<strong>i</strong>初始化为<strong>1</strong>，检查<strong>i</strong>是否小于或等于<strong>10</strong>，并在每次循环后递增<strong>i</strong>。 在循环内部使用复合赋值将<strong>i</strong>添加到运行总和：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i &lt;= <span class="number">10</span>; i++) &#123;</span><br><span class="line">  sum += i;  </span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"The sum is <span class="subst">$sum</span>"</span>); <span class="comment">// The sum is 55</span></span><br></pre></td></tr></table></figure>
+
+<p>在<strong>DartPad</strong>中运行您的代码以查看总和。</p>
+<p><strong>Dart</strong>集合的一个示例是使用方括号制作的简单数字列表：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];</span><br></pre></td></tr></table></figure>
+
+<p>您可以使用<strong>for-in</strong>循环遍历列表：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> number <span class="keyword">in</span> numbers) &#123;</span><br><span class="line">  <span class="built_in">print</span>(number);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line"><span class="comment">// 4</span></span><br></pre></td></tr></table></figure>
+
+<p>在循环中迭代时，变量号采用数字的每个元素的值。</p>
+<p>像数字这样的列表也有一个你可以在它们上面调用名为<strong>forEach</strong>的函数，它将前一个循环简化为一行：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">numbers.forEach((number) =&gt; <span class="built_in">print</span>(<span class="built_in">num</span>));</span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line"><span class="comment">// 4</span></span><br></pre></td></tr></table></figure>
+
+<p>在这里，您使用了<strong>匿名函数</strong>和<strong>箭头语法</strong>，稍后您将在函数部分中看到这两种语法。</p>
+<p>最后，与<strong>while</strong>循环一样，<strong>for</strong>循环也可以使用<strong>continue</strong>和<strong>break</strong>来控制循环内的流。 例如，如果要跳过打印数字<strong>3</strong>，可以在<strong>for-in</strong>循环中使用<strong>continue</strong>语句：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> number <span class="keyword">in</span> numbers) &#123;</span><br><span class="line">  <span class="keyword">if</span> (number == <span class="number">3</span>) &#123;</span><br><span class="line">    <span class="keyword">continue</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">print</span>(number);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="comment">// 4</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="switch和enum"><a href="#switch和enum" class="headerlink" title="switch和enum"></a>switch和enum</h3><p><strong>Dart</strong>还支持使用枚举的<strong>switch</strong>语句和枚举。 有关两者的更多信息，请参阅<strong>Dart</strong>文档。 像你见过的其他大多数<strong>Dart</strong>结构一样，它们与其他语言（如<strong>C</strong>和<strong>Java</strong>）的工作方式类似。</p>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p>函数允许您将多个相关的代码行打包到一个可以召唤的单体中，以避免在Dart应用程序中重复这些代码行：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2020/08/functions-650x200.png" alt="图片"></p>
+<p>函数由返回类型，函数名称，括号中的参数列表，以及括在括号中的函数体组成。 你转变成函数的代码进入括号内。 调用函数时，传入与函数参数类型匹配的参数。</p>
+<blockquote>
+<p>注意：在函数上指定返回类型是可选的。 如果不使用返回类型，则从函数返回的值将具有推断类型，或者如果无法推断类型，则为动态值。 这允许您从函数返回不同类型的值。 通常你会想要避免这种情况，而是从函数中指定一个返回类型。</p>
+</blockquote>
+<p>通常，函数在其他函数之外或在<strong>Dart</strong>类中定义，但您也可以将<strong>Dart</strong>函数嵌套在另一个函数中。 例如，您可以在<strong>main</strong>中添加此部分中的函数。</p>
+<p>在<strong>DartPad</strong>中编写一个新函数，只检查给定的字符串是否为<strong>banana</strong>。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bool</span> isBanana(<span class="built_in">String</span> fruit) &#123;</span><br><span class="line">  <span class="keyword">return</span> fruit == <span class="string">'banana'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该函数使用<strong>return</strong>返回由传递给函数的参数确定的<strong>bool</strong>值。 对于任何给定的输入，此函数将始终返回相同的值。 如果函数不需要返回值，则可以将返回类型设置为<strong>void</strong>，例如<strong>main</strong>函数。</p>
+<p>您可以通过传入一个字符串来调用该函数。 然后你可以将该调用的结果传递给<strong>print</strong>：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fruit = <span class="string">'apple'</span>;</span><br><span class="line"><span class="built_in">print</span>(isBanana(fruit)); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<p>您可以更改传递给函数的参数，并使用新参数再次调用它们：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fruit = <span class="string">'banana'</span>;</span><br><span class="line"><span class="built_in">print</span>(isBanana(fruit));  <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>调用函数的结果完全取决于传入的参数。</p>
+<h3 id="可选参数"><a href="#可选参数" class="headerlink" title="可选参数"></a>可选参数</h3><p>如果函数的参数是可选的，则可以用方括号括起来：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">String</span> fullName(<span class="built_in">String</span> first, <span class="built_in">String</span> last, [<span class="built_in">String</span> title]) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">"<span class="subst">$&#123;title == <span class="keyword">null</span> ? <span class="string">""</span> : <span class="string">"<span class="subst">$title</span> "</span>&#125;</span><span class="subst">$first</span> <span class="subst">$last</span>"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果函数调用中未包含可选参数，则函数体内的参数使用的值为<strong>null</strong>。</p>
+<p>然后你可以使用或不使用可选参数调用该函数：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(fullName(<span class="string">"Joe"</span>, <span class="string">"Howard"</span>));</span><br><span class="line"><span class="comment">// Joe Howard</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(fullName(<span class="string">"Albert"</span>, <span class="string">"Einstein"</span>, <span class="string">"Professor"</span>));</span><br><span class="line"><span class="comment">// Professor Albert Einstein</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="可选的命名参数"><a href="#可选的命名参数" class="headerlink" title="可选的命名参数"></a>可选的命名参数</h3><p>使用<strong>Dart</strong>函数，您可以通过使用大括号包围参数列表来使用可选的命名参数：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bool</span> withinTolerance(&#123;<span class="built_in">int</span> value, <span class="built_in">int</span> min, <span class="built_in">int</span> max&#125;) &#123;</span><br><span class="line">  <span class="keyword">return</span> min &lt;= value &amp;&amp; value &lt;= max;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后，您可以通过为冒号提供参数名称以不同的顺序传入参数：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(withinTolerance(min: <span class="number">1</span>, max: <span class="number">10</span>, value: <span class="number">11</span>)); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<p>与可选参数一样，带有可选名称的参数不需要添加到函数调用中，并且相应的参数将在函数中赋值为<strong>null</strong>。</p>
+<h3 id="默认值"><a href="#默认值" class="headerlink" title="默认值"></a>默认值</h3><p>您还可以使用<strong>equals</strong>为一个或多个参数指定默认值：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bool</span> withinTolerance(&#123;<span class="built_in">int</span> value, <span class="built_in">int</span> min = <span class="number">0</span>, <span class="built_in">int</span> max = <span class="number">10</span>&#125;) &#123;</span><br><span class="line">  <span class="keyword">return</span> min &lt;= value &amp;&amp; value &lt;= max;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后，您可以在调用函数时使用默认值保留参数。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(withinTolerance(value: <span class="number">5</span>)); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>运行您的代码以查看您的新功能。</p>
+<h3 id="First-Class函数"><a href="#First-Class函数" class="headerlink" title="First-Class函数"></a>First-Class函数</h3><p><strong>Dart</strong>支持所谓的<strong>First-Class</strong>函数。 该术语表示函数被视为与任何其他数据类型一样，也就是说，它们可以分配给变量，作为参数传递，并从其他函数返回。</p>
+<p>您可以使用<strong>Function</strong>类型指定名为<strong>op</strong>的参数本身是一个函数：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> applyTo(<span class="built_in">int</span> value, <span class="built_in">int</span> <span class="built_in">Function</span>(<span class="built_in">int</span>) op) &#123;</span><br><span class="line">  <span class="keyword">return</span> op(value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>所以如果你有一个名为<strong>square</strong>的函数：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> square(<span class="built_in">int</span> n) &#123;</span><br><span class="line">  <span class="keyword">return</span> n * n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>您可以传递<strong>square</strong>给<strong>applyTo</strong>作为参数：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(applyTo(<span class="number">3</span>, square)); <span class="comment">// 9</span></span><br></pre></td></tr></table></figure>
+
+<p>您可以为变量分配函数：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> op = square;</span><br></pre></td></tr></table></figure>
+
+<p>然后你可以在变量上调用函数，就像它是原始函数的别名一样：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(op(<span class="number">5</span>)); <span class="comment">// 25</span></span><br></pre></td></tr></table></figure>
+
+<p>稍后您将看到有关从其他函数返回函数的更多信息。</p>
+<h3 id="匿名函数和闭包"><a href="#匿名函数和闭包" class="headerlink" title="匿名函数和闭包"></a>匿名函数和闭包</h3><p>到目前为止，您看到的函数已被命名为函数，具有名称的函数。 匿名函数正是您所期望的，没有名称的函数。 您也可以省略将被推断的返回类型。 所以你只需要一个参数列表和一个匿名函数的函数体。</p>
+<p>您可以为变量分配匿名函数：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> multiply = (<span class="built_in">int</span> a, <span class="built_in">int</span> b) &#123;</span><br><span class="line">  <span class="keyword">return</span> a * b;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>右侧由参数列表和函数体组成。</p>
+<p>由于<strong>multiply</strong>现在拥有一个匿名函数，你可以像调用任何其他函数一样调用它：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(multiply(<span class="number">14</span>, <span class="number">3</span>)); <span class="comment">// 42</span></span><br></pre></td></tr></table></figure>
+
+<p>您已经看过早期的列表和<strong>forEach</strong>函数的预览。 <strong>forEach</strong>是使用匿名函数的一个很好的例子。</p>
+<p>所以如果你有一个数字列表：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br></pre></td></tr></table></figure>
+
+<p>您可以在列表中调用<strong>forEach</strong>并传入一个匿名函数，该函数将列表中的每个数字增加三倍并打印出该值：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">numbers.forEach((number) &#123; </span><br><span class="line">  <span class="keyword">var</span> tripled = number * <span class="number">3</span>;  </span><br><span class="line">  <span class="built_in">print</span>(tripled);</span><br><span class="line">  <span class="comment">// 3</span></span><br><span class="line">  <span class="comment">// 6</span></span><br><span class="line">  <span class="comment">// 9</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>您可以从另一个函数返回匿名函数：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span> applyMultiplier(<span class="built_in">num</span> multiplier) &#123;</span><br><span class="line">  <span class="keyword">return</span> (<span class="built_in">num</span> value) &#123; </span><br><span class="line">    <span class="keyword">return</span> value * multiplier;    </span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这对于生成具有给定行为但具有不同输入参数值的函数很有用。 所以这里的返回值是一个函数，它接受一个<strong>num</strong>参数并将其乘以用于生成函数的倍数。</p>
+<p>一个例子是创建一个名为<strong>triple</strong>的变量，它将输入乘以<strong>3</strong>：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> triple = applyMultiplier(<span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+
+<p>您可以使用任一类型的<strong>num</strong>调用<strong>triple</strong>：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(triple(<span class="number">6</span>)); <span class="comment">// 18</span></span><br><span class="line"><span class="built_in">print</span>(triple(<span class="number">14.0</span>)); <span class="comment">// 42</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Dart</strong>中的匿名函数充当闭包，这意味着它们在自身之外定义的“近似”变量。 例如，上面的<strong>applyMultiplier</strong>函数的返回值是一个闭包，它可以访问其他地方定义的乘数变量，在本例中是<strong>applyMultiplier</strong>本身的参数列表。</p>
+<h3 id="箭头语法"><a href="#箭头语法" class="headerlink" title="箭头语法"></a>箭头语法</h3><p>如果命名或匿名组合的<strong>Dart</strong>函数只包含一行代码，则可以使用<strong>Dart</strong>箭头语法缩减函数体。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span> applyMultiplier(<span class="built_in">num</span> multiplier) =&gt;</span><br><span class="line">  (<span class="built_in">num</span> value) =&gt; value * multiplier;</span><br></pre></td></tr></table></figure>
+
+<p>例如，乘以上变为：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> multiply = (<span class="built_in">int</span> a, <span class="built_in">int</span> b) =&gt; a * b;</span><br></pre></td></tr></table></figure>
+
+<p>您已删除大括号和<strong>return</strong>语句。</p>
+<p>您还可以使用带有<strong>applyMultiplier</strong>的箭头语法：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span> applyMultiplier(<span class="built_in">num</span> multiplier) =&gt;</span><br><span class="line">  (<span class="built_in">num</span> value) =&gt; value * multiplier;</span><br></pre></td></tr></table></figure>
+
+<p>你在这里使用了箭头语法两次：第一个是表示<strong>applyMultiplier</strong>函数的返回值，第二个是返回值本身，这是一个匿名函数。</p>
+<p>在上面使用<strong>forEach</strong>的示例中，您不能使用箭头语法，因为您传递给<strong>forEach</strong>的函数体具有多行代码。</p>
+<h2 id="然后去哪儿？"><a href="#然后去哪儿？" class="headerlink" title="然后去哪儿？"></a>然后去哪儿？</h2><p>最后简要介绍了<strong>Dart</strong>的基础知识。您现在应该更好地了解在学习如何构建<strong>Flutter</strong>应用程序时看到的<strong>Dart</strong>代码。</p>
+<p>您可以通过单击页面顶部或底部的<strong>“下载素材”</strong>按钮下载本教程的所有代码。您可以将<strong>main.dart</strong>文件中的代码粘贴到<strong>DartPad</strong>中，也可以使用<strong>Dart SDK</strong>运行该文件。</p>
+<p>正如在简介中所提到的，你可以超越基础知识，在<a href="https://www.raywenderlich.com/4921688-programming-in-dart-fundamentals" target="_blank" rel="noopener">Dart-Fundamentals编程课程</a>中学习更多关于<strong>Dart</strong>中面向对象编程以及<strong>Dart</strong>集合类型（如列表，集合和地图）的更多信息。教程是基于。</p>
+<p>查看<a href="https://dart.dev/" target="_blank" rel="noopener">官方Dart文档</a>，了解<strong>Dart</strong>的中间和高级部分：</p>
+<ul>
+<li><strong>Iterables</strong>和<strong>Generators</strong></li>
+<li>例外</li>
+<li>符文和符号</li>
+<li>具有隔离，流，期货和异步/等待的异步<strong>Dart</strong></li>
+</ul>
+<p>我们将在未来的教程和视频课程中介绍这些和其他<strong>Dart</strong>主题。</p>
+<p>我希望你喜欢<strong>Dart</strong>基础知识的简要介绍。如果您有任何问题或意见，请在下面的论坛中写信给我们！</p>
+<p>项目资料: <a href="https://koenig-media.raywenderlich.com/uploads/2020/08/DartBasics.zip" target="_blank" rel="noopener">https://koenig-media.raywenderlich.com/uploads/2020/08/DartBasics.zip</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始"><span class="toc-number">1.</span> <span class="toc-text">开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#核心概念"><span class="toc-number">2.</span> <span class="toc-text">核心概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#变量，注释和数据类型"><span class="toc-number">3.</span> <span class="toc-text">变量，注释和数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本Dart类型"><span class="toc-number">3.1.</span> <span class="toc-text">基本Dart类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#动态关键字"><span class="toc-number">3.2.</span> <span class="toc-text">动态关键字</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#运算符"><span class="toc-number">4.</span> <span class="toc-text">运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串"><span class="toc-number">5.</span> <span class="toc-text">字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#不变性"><span class="toc-number">6.</span> <span class="toc-text">不变性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#可空"><span class="toc-number">7.</span> <span class="toc-text">可空</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#控制流"><span class="toc-number">8.</span> <span class="toc-text">控制流</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#条件语句"><span class="toc-number">8.1.</span> <span class="toc-text">条件语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#循环时"><span class="toc-number">8.2.</span> <span class="toc-text">循环时</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#continue和break"><span class="toc-number">8.3.</span> <span class="toc-text">continue和break</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#for循环"><span class="toc-number">8.4.</span> <span class="toc-text">for循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#switch和enum"><span class="toc-number">8.5.</span> <span class="toc-text">switch和enum</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#函数"><span class="toc-number">9.</span> <span class="toc-text">函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#可选参数"><span class="toc-number">9.1.</span> <span class="toc-text">可选参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可选的命名参数"><span class="toc-number">9.2.</span> <span class="toc-text">可选的命名参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#默认值"><span class="toc-number">9.3.</span> <span class="toc-text">默认值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#First-Class函数"><span class="toc-number">9.4.</span> <span class="toc-text">First-Class函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#匿名函数和闭包"><span class="toc-number">9.5.</span> <span class="toc-text">匿名函数和闭包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#箭头语法"><span class="toc-number">9.6.</span> <span class="toc-text">箭头语法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#然后去哪儿？"><span class="toc-number">10.</span> <span class="toc-text">然后去哪儿？</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

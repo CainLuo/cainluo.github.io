@@ -1,0 +1,370 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RxSwift：7.Transforming Operators - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="在你决定要致力学习RxSwift之前, 你可能会觉得RxSwift是一个非常深奥的库, 难以捉摸, 但是好奇心迫使你去学习它, 这也许让你想起你刚开始学习iOS或Swift的时候.
+现在我们已经学到,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">RxSwift：7.Transforming Operators</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">RxSwift：7.Transforming Operators</h1>
+        <div class="stuff">
+            <span>八月 06, 2019</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/RxSwift/">RxSwift</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>在你决定要致力学习<strong>RxSwift</strong>之前, 你可能会觉得<strong>RxSwift</strong>是一个非常深奥的库, 难以捉摸, 但是好奇心迫使你去学习它, 这也许让你想起你刚开始学习<strong>iOS</strong>或<strong>Swift</strong>的时候.</p>
+<p>现在我们已经学到了第七章了, 而且我们都意识到了<strong>RxSwift</strong>并不是魔法, 它是一个精心打造的<strong>API</strong>库, 为我们做了大量繁重的工作, 并且简化了代码, 到目前为止, 我们应该对自己学到的东西感到满意.</p>
+<p>在本章中, 我们将:</p>
+<ul>
+<li>了解<strong>RxSwift</strong>中最重要的操作符之一: <strong>转换操作符</strong></li>
+<li>我们将为<strong>Observable</strong>对象提供的元素使用<strong>转换操作符</strong>来进行转换, 然后供给订阅者们使用, 同样, 在<strong>RxSwift</strong>和<strong>Swift</strong>标准库中的转换操作符工作流程也有相似的地方, 比如<code>map(_ :)</code>和<code>flatMap(_ :)</code>.</li>
+</ul>
+<p>在本章结束的时候, 我们将掌握<strong>RxSwift</strong>的转换操作符.</p>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>在本章中, 我们将使用一个<strong>Xcode</strong>项目, 该项目已经写好了<strong>CocoaPods</strong>所需的东西, 直接打开终端, 去到当前目录然后输入:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod install</span><br></pre></td></tr></table></figure>
+
+<p><strong>CocoaPods</strong>就会自动的把<strong>RxSwift</strong>和我们的工程关联起来了.</p>
+<blockquote>
+<p>注意: 该教程使用的是<strong>RxSwift 4.4.1</strong>版本, <strong>Xcode 10.3</strong>, 默认是<strong>Swift 5.0</strong>版本.</p>
+</blockquote>
+<h2 id="改变元素"><a href="#改变元素" class="headerlink" title="改变元素"></a>改变元素</h2><p><strong>Observable</strong>对象是单独的发出元素的, 但如果我们希望这些元素可以转换成一个集合体, 例如我们将一个<strong>Observable</strong>对象绑定到一个<strong>UITableView</strong>或<strong>UICollectionView</strong>时, 那么我们就可以使用<code>toArray()</code>来转换.</p>
+<p>如下图所示, 在<strong>Observable</strong>的元素序列完成之后<strong>toArray</strong>将这些元素转换成数组, 并向订阅者发出包含该数组的<code>.next</code>事件.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%207/1.png" alt="图片"></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">toArray</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"--- toArray ---"</span>)</span><br><span class="line">		<span class="comment">// 1</span></span><br><span class="line">    <span class="type">Observable</span>.of(<span class="string">"A"</span>, <span class="string">"B"</span>, <span class="string">"C"</span>)</span><br><span class="line">        <span class="comment">// 2</span></span><br><span class="line">        .toArray()</span><br><span class="line">        .subscribe(onNext: &#123;</span><br><span class="line">            <span class="built_in">print</span>($<span class="number">0</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">        .disposed(by: disposedBag)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们来讲解一下代码:</p>
+<ol>
+<li>创建一个纯字母的<strong>Observable</strong>对象.</li>
+<li>使用<code>toArray()</code>将元素转换成数组.</li>
+</ol>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--- toArray ---</span><br><span class="line">[<span class="string">"A"</span>, <span class="string">"B"</span>, <span class="string">"C"</span>]</span><br></pre></td></tr></table></figure>
+
+<p>在<strong>RxSwift</strong>中也有一个名为<strong>map</strong>的操作符, 它的工作原理和<strong>Swift</strong>标准库的里<strong>map</strong>是一样的, 只是它操作的对象是<strong>Observable</strong>对象, 在下面时序图中, <strong>map</strong>操作符接受一个闭包, 在闭包里将每个元素都乘以<strong>2</strong>.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%207/2.png" alt="图片"></p>
+<p>将下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">map</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">  	<span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">let</span> formatter = <span class="type">NumberFormatter</span>()</span><br><span class="line">    formatter.numberStyle = .spellOut</span><br><span class="line">		<span class="comment">// 2</span></span><br><span class="line">    <span class="type">Observable</span>&lt;<span class="type">Int</span>&gt;.of(<span class="number">123</span>, <span class="number">45</span>, <span class="number">67</span>)</span><br><span class="line">  			<span class="comment">// 3</span></span><br><span class="line">        .<span class="built_in">map</span> &#123;</span><br><span class="line">            formatter.string(<span class="keyword">for</span>: $<span class="number">0</span>) ?? <span class="string">""</span></span><br><span class="line">        &#125;</span><br><span class="line">        .subscribe(onNext: &#123;</span><br><span class="line">            <span class="built_in">print</span>($<span class="number">0</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">        .disposed(by: disposedBag)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们来看看上面的代码:</p>
+<ol>
+<li>创建一个<strong>NumberFormatter</strong>用来格式化每个数字</li>
+<li>创建一个<strong>Int</strong>类型的<strong>Observable</strong>对象</li>
+<li>使用<strong>map</strong>操作符, 在闭包里将输出的元素使用<strong>NumberFormatter</strong>转成字符串, 如果成功则输出字符串, 否则就输出空的字符串.</li>
+</ol>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">--- <span class="keyword">map</span> ---</span><br><span class="line">one hundred twenty-three</span><br><span class="line">forty-five</span><br><span class="line">sixty-seven</span><br></pre></td></tr></table></figure>
+
+<p>在第五章中, 我们了解了如何使用枚举和带有过滤操作符的<strong>map</strong>, 为了让印象更深刻, 现在我们再写一个枚举和<strong>map</strong>的示例, 将下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">enumeratedAndMap</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"--- enumerated And Map ---"</span>)</span><br><span class="line">		<span class="comment">// 1</span></span><br><span class="line">    <span class="type">Observable</span>.of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>)</span><br><span class="line">  			<span class="comment">// 2</span></span><br><span class="line">        .enumerated()</span><br><span class="line">  			<span class="comment">// 3</span></span><br><span class="line">        .<span class="built_in">map</span> &#123; index, integer <span class="keyword">in</span></span><br><span class="line">            index &gt; <span class="number">2</span> ? integer * <span class="number">2</span> : integer</span><br><span class="line">        &#125;</span><br><span class="line">  			<span class="comment">// 4</span></span><br><span class="line">        .subscribe(onNext: &#123;</span><br><span class="line">            <span class="built_in">print</span>($<span class="number">0</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">        .disposed(by: disposedBag)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一步一步的来:</p>
+<ol>
+<li>创建一个<strong>Int</strong>类型的<strong>Observable</strong>对象</li>
+<li>使用<code>enumerated()</code>将元素转成一个带索引的元组</li>
+<li>使用<strong>map</strong>操作符, 进行元组的元素筛选, 如果元素的<strong>index</strong>大于<strong>2</strong>, 那么就将<strong>value</strong>乘以二再返回, 否则就不作处理直接返回.</li>
+<li>使用<strong>subscribe</strong>和<strong>print</strong>将元素输出</li>
+</ol>
+<p>现在我们看到的结果是, 只有在第四个元素之后才会做乘法运算:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">--- enumerated <span class="built_in">and</span> <span class="keyword">map</span> ---</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="number">12</span></span><br></pre></td></tr></table></figure>
+
+<p>我们在想着, 该如何Observable的结构, 并且它里面的元素也是Observable的? 接下来我们会继续学习.</p>
+<h2 id="改变内部的Observable"><a href="#改变内部的Observable" class="headerlink" title="改变内部的Observable"></a>改变内部的Observable</h2><p>将下面的代码添加到工程中, 我们将会使用它来讲解:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Student</span> </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> score: <span class="type">BehaviorSubject</span>&lt;<span class="type">Int</span>&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Student</strong>是有一个名为<strong>score</strong>属性的结构, 而<strong>score</strong>是一个<code>BehaviorSubject&lt;Int&gt;</code>, 在<strong>RxSwift</strong>中有一种操作符族群叫做<strong>flatMap</strong>, 它允许我们我们在一个<strong>Observable</strong>的内部使用它的属性, 这是我们非常常用的操作操作符之一.</p>
+<blockquote>
+<p>注意: 在我们开始之前需要注意一下, 这些操作符在<strong>RxSwift</strong>中入门的开发者并不友好, 因为它们刚开始使用的时候挺复杂的, 所以我们在学习的时候尽量详细讲解, 然后掌握它.</p>
+</blockquote>
+<p>首先我们第一个学习的就是<strong>flatMap</strong>, 它的官方介绍是:”将一个<strong>Observable</strong>对象的每一个元素映射到另一个<strong>Observable</strong>对象中”. 听起来都特别的高大上.</p>
+<p>但是这个描述不足以让我们理解, 我们看下面的时序图就可以更加的清晰:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%207/3.png" alt="图片"></p>
+<p>要理解这个时序图的意思, 最好的办法就是从第一行的源<strong>Observable</strong>对象开始, 然后依次往下, 最后将元素发送给订阅者为止.</p>
+<p>从图上所示, 源<strong>Observable</strong>对象它的<strong>value</strong>属性本身就是一个<strong>Int</strong>类型, 图里的<strong>O1</strong>的初值就是<strong>1</strong>, <strong>O2</strong>的初值就是<strong>2</strong>, <strong>O3</strong>的初值就是<strong>3</strong>.</p>
+<p>之后将<strong>O1</strong>的<strong>value</strong>属性更改为<strong>4</strong>, 在时序图中并没有直观的显示出来, 不然上面的图标将会变得非常的拥挤. 但是<strong>O1</strong>值的变化正根据是, 它被映射到<strong>O1</strong>现有的<strong>Value</strong>上, 然后再整合到另一个<strong>Observable</strong>对象中, 这一切都是随着时间线性的方式发展的.</p>
+<p>同样的<strong>O2</strong>最新改变的值也是由<strong>flatMap</strong>所接收, 然后映射到<strong>O2</strong>新的值中再发送给订阅者.</p>
+<p>最后<strong>flatMap</strong>接收到<strong>O3</strong> , 然后再将<strong>O3</strong>的值发送给订阅者.</p>
+<p><strong>flatMap</strong>将一个<strong>Observable</strong>的值转换后再映射到另一个<strong>Observable</strong>中, 现在我们是时候去实践一下<strong>flatMap</strong>了, 看看它到底如何工作, 将下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">flatMap</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"--- flatMap ---"</span>)</span><br><span class="line"></span><br><span class="line">  	<span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">let</span> laura = <span class="type">Student</span>(score: <span class="type">BehaviorSubject</span>(value: <span class="number">80</span>))</span><br><span class="line">    <span class="keyword">let</span> charlotte = <span class="type">Student</span>(score: <span class="type">BehaviorSubject</span>(value: <span class="number">90</span>))</span><br><span class="line">		<span class="comment">// 2</span></span><br><span class="line">    <span class="keyword">let</span> student = <span class="type">PublishSubject</span>&lt;<span class="type">Student</span>&gt;()</span><br><span class="line">		<span class="comment">// 3</span></span><br><span class="line">    student</span><br><span class="line">        .flatMap &#123;</span><br><span class="line">            $<span class="number">0</span>.score</span><br><span class="line">        &#125;</span><br><span class="line">  			<span class="comment">// 4</span></span><br><span class="line">        .subscribe(onNext: &#123;</span><br><span class="line">            <span class="built_in">print</span>($<span class="number">0</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">        .disposed(by: disposedBag)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码详情: </p>
+<ol>
+<li>创建名为<strong>laura</strong>和<strong>charlotte</strong>的两个<strong>Student</strong>实例</li>
+<li>创建一个名为<strong>student</strong>的<strong>PublishSubject</strong>实例</li>
+<li>使用<strong>flatMap</strong>来映射学生的分数.</li>
+<li>在<strong>subscribe</strong>中使用<code>.next</code>操作符来输出元素.</li>
+</ol>
+<p>现在我们并没有事件, 所以没法打印, 将下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">student.onNext(laura)</span><br></pre></td></tr></table></figure>
+
+<p>触发事件后, 我们就会在控制台里看到输出结果:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--- flatMap ---</span><br><span class="line"><span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<p>接下来我们给<strong>student</strong>添加一个<code>.next</code>事件:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">student.onNext(charlotte)</span><br></pre></td></tr></table></figure>
+
+<p>再次触发事件, 我们就会看到<strong>charlotte</strong>的成绩:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">90</span></span><br></pre></td></tr></table></figure>
+
+<p>有趣的是, 我们直接使用<strong>laura</strong>来更改分数, 也是可以行的:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">laura.score.onNext(<span class="number">85</span>)</span><br></pre></td></tr></table></figure>
+
+<p>触发事件, <strong>laura</strong>的新分数就出来了:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">85</span></span><br></pre></td></tr></table></figure>
+
+<p>这是因为<strong>flatMap</strong>与它创建的每一个<strong>Observable</strong>对象保持了一致性, 没添加一个元素到源<strong>Observable</strong>则会对应一个, 现在我们来更改一下<strong>charlotte</strong>的分数, 就可以证明是否如此:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">charlotte.score.onNext(<span class="number">95</span>)</span><br></pre></td></tr></table></figure>
+
+<p>触发事件后, <strong>charlotte</strong>的新分数果然打印出来了:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">95</span></span><br></pre></td></tr></table></figure>
+
+<p>总而言之, <strong>flatMap</strong>可以不断的从每个<strong>Observable</strong>对象变化元素里映射出变化的元素, 有时候我们可能需要这种方式, 还有一种情况就是, 我们只想或者<strong>Observable</strong>对象中最新的元素, 那么还有什么操作符吗?</p>
+<p>答案是肯定的, <strong>flatMapLatest</strong>就可以做到, 它实际是<strong>map</strong>和<strong>switchLatest</strong>两个操作符的组合, 我们将会在后面的教程中了解到<strong>switchLatest</strong>操作符, 现在只是简单略过, <strong>switchLatest</strong>将会获取<strong>Observable</strong>对象最新生成的值后就会取消订阅.</p>
+<p>根据文档介绍<strong>flatMapLatest</strong>: “将<strong>Observable</strong>序列最新生成的元素映射到一个新的<strong>Observable</strong>序列中, 然后再将一个只从最新的<strong>Observable</strong>序列转换成一个可以产生<strong>value</strong>的<strong>Observable</strong>序列.” 这看起来非常的拗口, 那么我们来看看<strong>flatMapLatest</strong>的时序图:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%207/4.png" alt="图片"></p>
+<p><strong>flatMapLatest</strong>的工作原理和<strong>flatMap</strong>一样, 将其他元素合并后再转换成一个<strong>Observable</strong>, 然后将其映射到源<strong>Observable</strong>每一个新序列的元素上. 这些元素都被整合成一个<strong>Observable</strong>对象, 订阅者订阅的话, 就会得到这些最新的元素. 与<strong>flatMap</strong>的不同之处在于它会自动切换到最新的<strong>Observable</strong>对象, 并取消前一个<strong>Observable</strong>的订阅.</p>
+<p>在上面的时序图中, <strong>O1</strong>被<strong>flatMapLatest</strong>接收, 它将<strong>O1</strong>的值发送到订阅者中, 就像之前一样, 然后<strong>flatMapLatest</strong>接收到<strong>O2</strong>, 那么久会切换到<strong>O2</strong>中, 并把值给发送到订阅者中, 因为<strong>O2</strong>现在是最新的.</p>
+<p>当接收到<strong>O3</strong>时, 这个过程就会被重复, 最新的序列就会切换到<strong>O3</strong>, 忽略前一个<strong>O2</strong>, 最终的目标<strong>Observable</strong>对象只会接收到<strong>O3</strong>最新的值.</p>
+<p>将下面的例子添加到代码中, 这是之前<strong>flatMap</strong>的例子, 这里我们改成用<strong>flatMapLatest</strong>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">flatMapLatest</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"--- flatMapLatest ---"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> laura = <span class="type">Student</span>(score: <span class="type">BehaviorSubject</span>(value: <span class="number">80</span>))</span><br><span class="line">    <span class="keyword">let</span> charlotte = <span class="type">Student</span>(score: <span class="type">BehaviorSubject</span>(value: <span class="number">90</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> student = <span class="type">PublishSubject</span>&lt;<span class="type">Student</span>&gt;()</span><br><span class="line"></span><br><span class="line">    student</span><br><span class="line">        .flatMapLatest &#123;</span><br><span class="line">            $<span class="number">0</span>.score</span><br><span class="line">        &#125;</span><br><span class="line">        .subscribe(onNext: &#123;</span><br><span class="line">            <span class="built_in">print</span>($<span class="number">0</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">        .disposed(by: disposedBag)</span><br><span class="line"></span><br><span class="line">    student.onNext(laura)</span><br><span class="line">    laura.score.onNext(<span class="number">85</span>)</span><br><span class="line">    student.onNext(charlotte)</span><br><span class="line">		<span class="comment">// 1</span></span><br><span class="line">    laura.score.onNext(<span class="number">95</span>)</span><br><span class="line">    charlotte.score.onNext(<span class="number">100</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里有一点不同的就是, 与之前的<strong>flatMao</strong>例子不同:</p>
+<ol>
+<li>当我们切换了<strong>Observable</strong>之后, 再次修改<strong>laura</strong>的分数值是不会有任何效果的, 因为<strong>flatMapLatest</strong>已经切换成最新的<strong>Observable</strong>对象<strong>charlote</strong>了.</li>
+</ol>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">--- flatMapLatest ---</span><br><span class="line"><span class="number">80</span></span><br><span class="line"><span class="number">85</span></span><br><span class="line"><span class="number">90</span></span><br><span class="line"><span class="number">100</span></span><br></pre></td></tr></table></figure>
+
+<p>现在你可能最想知道的是, 什么时候使用<strong>flatMapLatest</strong>和<strong>flatMap</strong>? 当我们进行网络请求的时候, 常用的是<strong>flatMapLatest</strong>, 这将会在后面的教程中会看到这方面的例子.</p>
+<p>在我们现在能看到最简单的例子就是, 当我们做一个筛选功能的时候, 每当用户输入一个字母时, 就会忽略前一个搜索结果, 那么用<strong>flatMapLatest</strong>就可以满足你.</p>
+<h2 id="Observable事件"><a href="#Observable事件" class="headerlink" title="Observable事件"></a>Observable事件</h2><p>有时候我们想将Observable的元素转成它的事件, 这在Observable无属性时 并且还希望处理错误事件以避免终止外部序列时非常有用.</p>
+<p>我们在工程中添加下面的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">MyError</span>: <span class="title">Error</span> </span>&#123;</span><br><span class="line">    <span class="keyword">case</span> anError</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">materializeAndDematerialize</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"--- materialize and dematerialize ---"</span>)</span><br><span class="line">  	<span class="comment">// 2</span></span><br><span class="line">    <span class="keyword">let</span> laura = <span class="type">Student</span>(score: <span class="type">BehaviorSubject</span>&lt;<span class="type">Int</span>&gt;(value: <span class="number">80</span>))</span><br><span class="line">    <span class="keyword">let</span> charlotte = <span class="type">Student</span>(score: <span class="type">BehaviorSubject</span>&lt;<span class="type">Int</span>&gt;(value: <span class="number">100</span>))</span><br><span class="line">    <span class="keyword">let</span> student = <span class="type">BehaviorSubject</span>(value: laura)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们的准备工作: </p>
+<ol>
+<li>创建一个名为<strong>MyError</strong>的错误类型</li>
+<li>创建两个学生的<strong>BehaviorSubject</strong>和一个初始值是<strong>laura</strong>的<strong>Student</strong>实例.</li>
+</ol>
+<p>与前面两个示例类似, 我们希望订阅<strong>Student</strong>内部的<strong>score</strong>属性, 将下面的代码添加到示例中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="keyword">let</span> studentScore = student</span><br><span class="line">  .flatMapLatest &#123;</span><br><span class="line">      $<span class="number">0</span>.score</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line">studentScore</span><br><span class="line">    .subscribe(onNext: &#123;</span><br><span class="line">        <span class="built_in">print</span>($<span class="number">0</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">    .disposed(by: disposedBag)</span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line">laura.score.onNext(<span class="number">85</span>)</span><br><span class="line">laura.score.onError(<span class="type">MyError</span>.anError)</span><br><span class="line">laura.score.onNext(<span class="number">90</span>)</span><br><span class="line"><span class="comment">// 4</span></span><br><span class="line">student.onNext(charlotte)</span><br></pre></td></tr></table></figure>
+
+<p>我们来继续看这个例子:</p>
+<ol>
+<li>我们使用<strong>flatMapLatest</strong>创建一个名为<strong>studentScore</strong>的<strong>Observable</strong>对象来访问<strong>student</strong>的<strong>score</strong>属性</li>
+<li>订阅并输出学生的分数</li>
+<li>向当前的学生添加一个新的分数, 一个错误消和另一个新的分数</li>
+<li>将第二个学生<strong>charlotte</strong>添加到<strong>student</strong>上, 因为我们使用的是<strong>flatMapLatest</strong>, 所以这将会切换到这个新的学生并订阅她的分数.</li>
+</ol>
+<p>但是, 因为我们的<strong>error</strong>事件并没有处理, 结果导致<strong>studentScore</strong>终止, 外部的<strong>student</strong>也终止了.</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">--- materialize <span class="built_in">and</span> dematerialize ---</span><br><span class="line"><span class="number">80</span></span><br><span class="line"><span class="number">85</span></span><br><span class="line">Unhandled error happened: anError</span><br><span class="line"> subscription called from:</span><br></pre></td></tr></table></figure>
+
+<p>我们使用<strong>materialize</strong>操作符, 可以将<strong>Observable</strong>对象发出的每个事件都封装到一个<strong>Observable</strong>中:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%207/5.png" alt="图片"></p>
+<p>我们将<strong>studentScore</strong>的实现更改为以下的内容:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> studentScore = student</span><br><span class="line">    .flatMapLatest &#123;</span><br><span class="line">        $<span class="number">0</span>.score.materialize()</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个时候我们使用<strong>option + 点击</strong>查看<strong>studentScore</strong>, 那么你就会发现它现在是一个<code>Observable&lt;Event&lt;Int&gt;&gt;</code>, 这个时候我们订阅它发出的事件, 就算它发出了<strong>error</strong>事件, 也不会导致外部的<strong>student</strong>终止, 因此当我们切换<strong>Observable</strong>对象时, 新的<strong>Observable</strong>元素是会正常输出的:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">--- materialize <span class="built_in">and</span> dematerialize ---</span><br><span class="line"><span class="keyword">next</span>(<span class="number">80</span>)</span><br><span class="line"><span class="keyword">next</span>(<span class="number">85</span>)</span><br><span class="line">error(anError)</span><br><span class="line"><span class="keyword">next</span>(<span class="number">100</span>)</span><br></pre></td></tr></table></figure>
+
+<p>但现我们需要处理的东西已经从元素变成了事件, 这个时候我们将使用<strong>dematerialize</strong>操作符将<strong>Observable</strong>对象的事件转换成原来的形式, 这时候就会正常的输出元素了.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%207/6.png" alt="图片"></p>
+<p>我们将订阅内容修改为下面的样子:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">studentScore</span><br><span class="line">		<span class="comment">// 1</span></span><br><span class="line">    .<span class="built_in">filter</span> &#123;</span><br><span class="line">        <span class="keyword">guard</span> $<span class="number">0</span>.error == <span class="literal">nil</span> <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">print</span>($<span class="number">0</span>.error!)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 2</span></span><br><span class="line">    .dematerialize()</span><br><span class="line">    .subscribe(onNext: &#123;</span><br><span class="line">        <span class="built_in">print</span>($<span class="number">0</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">    .disposed(by: disposedBag)</span><br></pre></td></tr></table></figure>
+
+<p>修改的步骤:</p>
+<ol>
+<li>我们将过滤出所有的<strong>error</strong>事件, 如果有错误则输出</li>
+<li>使用<strong>dematerialize</strong>操作符将<strong>studentScore</strong>转换成原来的形式, 并订阅发出<code>.next</code>和<strong>stop</strong>事件.</li>
+</ol>
+<p>因此, 我们的<strong>student</strong>订阅后遇到了<strong>error</strong>事件则会输出, 而这个错误也会被打印出来, 那么<strong>laura</strong>的分数就会被终止, 之后我们在怎么往<strong>laura</strong>添加新的分数也是没有作用的, 但是当我们切换到<strong>charlotte</strong>, 那么它的分数就会正常输出:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">--- materialize <span class="built_in">and</span> dematerialize ---</span><br><span class="line"><span class="number">80</span></span><br><span class="line"><span class="number">85</span></span><br><span class="line">anError</span><br><span class="line"><span class="number">100</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="挑战"><a href="#挑战" class="headerlink" title="挑战"></a>挑战</h2><p>完成挑战有助于我们巩固新学习到的东西, 在文件夹中有该挑战的未完成和已完成版本.</p>
+<h3 id="挑战-修改第5章中的挑战-使它可以接受字母和数字"><a href="#挑战-修改第5章中的挑战-使它可以接受字母和数字" class="headerlink" title="挑战: 修改第5章中的挑战, 使它可以接受字母和数字"></a>挑战: 修改第5章中的挑战, 使它可以接受字母和数字</h3><p>在第五章的挑战中, 我们使用了<strong>filter</strong>创建了一个电话号码的查询, 我们根据用户输出的11个数字查找联系人号码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">input</span><br><span class="line">    .skipWhile &#123; $<span class="number">0</span> == <span class="number">0</span>&#125;.debug()</span><br><span class="line">    .<span class="built_in">filter</span> &#123; $<span class="number">0</span> &lt; <span class="number">10</span> &#125;.debug()</span><br><span class="line">    .take(<span class="number">11</span>).debug()</span><br><span class="line">    .toArray().debug()</span><br><span class="line">    .subscribe(onNext: &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] numbers <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">self</span>?.phone = <span class="keyword">self</span>?.phoneNumber(from: numbers)</span><br><span class="line">    &#125;)</span><br><span class="line">    .disposed(by: disposeBag)</span><br></pre></td></tr></table></figure>
+
+<p>现在我们这个挑战就是, 使得它也可以接收字母, 并根据九宫格键盘的格式来将它们转换成数字(abc是2, def是3, 以此类推):</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> convert: (<span class="type">String</span>) -&gt; <span class="type">Int?</span> = &#123; value <span class="keyword">in</span></span><br><span class="line">  <span class="keyword">if</span> <span class="keyword">let</span> number = <span class="type">Int</span>(value),</span><br><span class="line">number &lt; <span class="number">10</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> number</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">let</span> convert: [<span class="type">String</span>: <span class="type">Int</span>] = [</span><br><span class="line">    <span class="string">"abc"</span>: <span class="number">2</span>, <span class="string">"def"</span>: <span class="number">3</span>, <span class="string">"ghi"</span>: <span class="number">4</span>,</span><br><span class="line">    <span class="string">"jkl"</span>: <span class="number">5</span>, <span class="string">"mno"</span>: <span class="number">6</span>, <span class="string">"pqrs"</span>: <span class="number">7</span>,</span><br><span class="line">    <span class="string">"tuv"</span>: <span class="number">8</span>, <span class="string">"wxyz"</span>: <span class="number">9</span></span><br><span class="line">]</span><br><span class="line">  <span class="keyword">let</span> converted = keyMap</span><br><span class="line">    .<span class="built_in">filter</span> &#123; $<span class="number">0</span>.key.<span class="built_in">contains</span>(value.lowercased()) &#125;</span><br><span class="line">    .<span class="built_in">map</span> &#123; $<span class="number">0</span>.value &#125;</span><br><span class="line">    .first</span><br><span class="line">                                 </span><br><span class="line">  <span class="keyword">return</span> converted</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后找到了联系人之后, 还可以使用<strong>format</strong>模拟拨号, 将手机号码输出:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> format: ([<span class="type">Int</span>]) -&gt; <span class="type">String</span> = &#123;</span><br><span class="line">  <span class="keyword">var</span> phone = $<span class="number">0</span>.<span class="built_in">map</span>(<span class="type">String</span>.<span class="keyword">init</span>).joined()</span><br><span class="line">  phone.insert(<span class="string">"-"</span>, at: phone.index(</span><br><span class="line">    phone.startIndex,</span><br><span class="line">    offsetBy: <span class="number">3</span>)</span><br><span class="line">  )</span><br><span class="line">  phone.insert(<span class="string">"-"</span>, at: phone.index(</span><br><span class="line">    phone.startIndex,</span><br><span class="line">    offsetBy: <span class="number">8</span>)</span><br><span class="line">  )</span><br><span class="line">  <span class="keyword">return</span> phone</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> dial: (<span class="type">String</span>) -&gt; <span class="type">String</span> = &#123;</span><br><span class="line">  <span class="keyword">if</span> <span class="keyword">let</span> contact = contacts[$<span class="number">0</span>] &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"Dialing \(contact) (\($0))..."</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"Contact not found"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这些逻辑代码是我们从<strong>subscribe</strong>闭包中移除出来的, 那我们现在需要做些什么呢? 接下来, 我们将使用多个<strong>map</strong>操作符来进行元素转换, 就像我们在第5章中那样使用<strong>skipWhile</strong>来跳过开头元素为<strong>0</strong>的.</p>
+<p>我们还需要处理<strong>convert</strong>所返回的内容, 这里我们可以使用在<strong>RxSwiftExt</strong>中拿取得一个函数名为<strong>unwrap</strong>操作符, <strong>RxSwiftExt</strong>里面包含了更多的方便操作符, 但是它们并不是<strong>RxSwift</strong>核心库里的一部分.</p>
+<p>在没有使用<strong>unwrap</strong>的时候, 我们通常都是这么处理元素的:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Observable</span>.of(<span class="number">1</span>, <span class="number">2</span>, <span class="literal">nil</span>, <span class="number">3</span>)</span><br><span class="line">  .<span class="built_in">filter</span> &#123; $<span class="number">0</span> != <span class="literal">nil</span> &#125;</span><br><span class="line">  .<span class="built_in">map</span> &#123; $<span class="number">0</span>! &#125;</span><br><span class="line">  .subscribe(onNext: &#123;</span><br><span class="line">		<span class="built_in">print</span>($<span class="number">0</span>) </span><br><span class="line">  &#125;)</span><br><span class="line">  .disposed(by: disposeBag)</span><br></pre></td></tr></table></figure>
+
+<p>当我们使用了<strong>unwrap</strong>的时候, 我们就可以这么做:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Observable</span>.of(<span class="number">1</span>, <span class="number">2</span>, <span class="literal">nil</span>, <span class="number">3</span>)</span><br><span class="line">  .unwrap()</span><br><span class="line">  .subscribe(onNext: &#123;</span><br><span class="line">		<span class="built_in">print</span>($<span class="number">0</span>) </span><br><span class="line">  &#125;)</span><br><span class="line">  .disposed(by: disposeBag</span><br></pre></td></tr></table></figure>
+
+<p>这种方式可以让我们省略了一些繁琐的代码, 在稍后的章节里, 我们用完整的章节去介绍<strong>RxSwiftExt</strong>.</p>
+<p>现在我们就来开始这个挑战吧.</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li><strong>toArray</strong>: 该操作符可以将单个或多个的元素转换成一个数组</li>
+</ul>
+<ul>
+<li><strong>map</strong>: 该操作符和<strong>Swift</strong>自带的<strong>map</strong>函数功能一样, 可以将<strong>Observable</strong>的元素映射并转换成所需的类型</li>
+</ul>
+<ul>
+<li><strong>enumerated</strong>: 该操作符是<strong>RxSwift</strong>中的迭代操作符, 它可以迭代<strong>Observable</strong>里的每一个函数, 可以使用<strong>map</strong>配合使用</li>
+</ul>
+<ul>
+<li><strong>flatMap</strong>: 该操作符可以将多个<strong>Observable</strong>合并, 并将所有的<strong>Observable</strong>的元素合并成一个<strong>Observable</strong></li>
+</ul>
+<ul>
+<li><strong>flatMapLatest</strong>: 和<strong>flatMap</strong>工作原理一样, 但是该操作符只会监听最新的<strong>Observable</strong>, 旧的<strong>Observable</strong>则会被释放</li>
+</ul>
+<ul>
+<li><strong>materialize</strong>: 该操作符可以将<strong>Observable</strong>的元素包装成<code>Observable&lt;Event&gt;</code>事件</li>
+</ul>
+<ul>
+<li><strong>dematerialize</strong>: 该操作符可以将<strong>materialize</strong>操作符包装好的<code>Observable&lt;Event&gt;</code>事件还原成原来<strong>Observable</strong>对象形式</li>
+</ul>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始"><span class="toc-number">1.</span> <span class="toc-text">开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#改变元素"><span class="toc-number">2.</span> <span class="toc-text">改变元素</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#改变内部的Observable"><span class="toc-number">3.</span> <span class="toc-text">改变内部的Observable</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Observable事件"><span class="toc-number">4.</span> <span class="toc-text">Observable事件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#挑战"><span class="toc-number">5.</span> <span class="toc-text">挑战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#挑战-修改第5章中的挑战-使它可以接受字母和数字"><span class="toc-number">5.1.</span> <span class="toc-text">挑战: 修改第5章中的挑战, 使它可以接受字母和数字</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

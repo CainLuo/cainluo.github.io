@@ -1,0 +1,255 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：iOS 11 新特性《基于文档管理的App》 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="众所周知iOS是一个封闭的系统, 每个App都有一个属于它们自己的沙盒, App与App之间是不可以互相访问的, 也由于这一点, iOS也可以被称为安全的系统.
+但这又会带来另一个问题, 就是在管理,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：iOS 11 新特性《基于文档管理的App》</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：iOS 11 新特性《基于文档管理的App》</h1>
+        <div class="stuff">
+            <span>十二月 14, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/iOS-11/">iOS 11</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>众所周知<strong>iOS</strong>是一个封闭的系统, 每个App都有一个属于它们自己的沙盒, <strong>App</strong>与<strong>App</strong>之间是不可以互相访问的, 也由于这一点, <strong>iOS</strong>也可以被称为安全的系统.</p>
+<p>但这又会带来另一个问题, 就是在管理文件的方式上比较复杂, 用户无法自由的浏览文件, 我们需要专门的工具与流程才能在<strong>iOS</strong>上的应用程序之间共享文件.</p>
+<p>为了解决这个问题, 苹果在<strong>iOS 11</strong>里加入了一个用于管理文件的新工具: <strong>UIDocumentBrowserViewController</strong>.</p>
+<p>这个全新的视图控制器可以让我们创建文档浏览器的<strong>App</strong>, 就像<strong>iOS 11</strong>上的新的文件<strong>App</strong>一样, 可以让我们自由管理所有可用位置上的文档.</p>
+<blockquote>
+<p>PS: 这篇文章所演示的<strong>Demo</strong>在模拟器上是不能正常工作的, 最好备好<strong>iOS 11</strong>的设备来构建和测试该<strong>App</strong>.</p>
+</blockquote>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="开始前的知识补充"><a href="#开始前的知识补充" class="headerlink" title="开始前的知识补充"></a>开始前的知识补充</h2><p>在开始创建这个项目之前, 我们要了解<strong>iOS Document</strong>的工作原理, <strong>UIDocument</strong>是一个几乎运行在所有基于文档的应用的强大类.</p>
+<p><strong>UIDocument</strong>是一个物理文件的包装, 它可以在我们的设备, <strong>iCloud</strong>上异步读取/写入文件, 自动保存, 文件版本控制等等.</p>
+<p>虽然我们可以不用强制性使用<strong>UIDocument</strong>, 但我还是强烈建议去使用, 因为它可以帮我们省下很多事情, 比如我们需要在<strong>iPhone</strong>和<strong>MacBook</strong>上使用同一个<strong>iCloud</strong>文件, <strong>UIDocument</strong>就可以帮我们处理所有的事情.</p>
+<h3 id="文档提供者"><a href="#文档提供者" class="headerlink" title="文档提供者"></a>文档提供者</h3><p>提供文档的<strong>App</strong>扩展允许其他<strong>App</strong>在你的文件上进行修改, 避免沙盒化.</p>
+<p>而<strong>UIDocumentPickerViewController</strong>就是该扩展的一部分, 这是其他App将显示你的App中选择文档的可视化界面.</p>
+<p>提供文档的<strong>App</strong>允许其他<strong>App</strong>从它本身内导入文件, 这也就说明这个文件会被拷贝一份, 而原始文件则会保持不变.</p>
+<p>当然我们也可以允许其他<strong>App</strong>直接打开提供文档的<strong>App</strong>, 直接选择文件进行处理并覆盖源文件.</p>
+<h3 id="文档浏览器"><a href="#文档浏览器" class="headerlink" title="文档浏览器"></a>文档浏览器</h3><p>这里我们就讲<strong>UIDocumentBrowserViewController</strong>, 它是一种App的类型, 并不是我们所写的<strong>App</strong>的扩展名.</p>
+<p>我们定制的<strong>UIDocumentBrowserViewController</strong>子类必须是App的根视图, 换一句话说, 这就是<strong>iOS 11</strong>文档类型App的自定义实现.</p>
+<h2 id="开始写代码"><a href="#开始写代码" class="headerlink" title="开始写代码"></a>开始写代码</h2><p>这里我们就拿颜色管理来作为场景, 在文件浏览器上去管理这些RGB颜色值, 它的扩展名也定义为<strong>.color</strong>.</p>
+<p>我们在创建好工程之后, 需要在<strong>Info.plist</strong>里把<strong>UISupportsDocumentBrowser</strong>设置为YES.</p>
+<h2 id="自定义扩展"><a href="#自定义扩展" class="headerlink" title="自定义扩展"></a>自定义扩展</h2><p>我们在使用<strong>.color</strong>扩展名的文件时, 需要用逗号分隔RGB颜色值, 比如白色的话, 我们就会声明为<strong>255</strong>, <strong>255</strong>, <strong>255</strong>.</p>
+<p>在此, 如果要使得文档浏览器中支持自定义的.color扩展名, 我们需要注册一个新的同意类型标识符(<strong>UTI</strong>这个东西在上一章文章的末尾就有介绍, ), 然后我们需要将新的文件与我们的App关联.</p>
+<p>打开我们的项目找到<strong>Info</strong>这个选项, 然后把我们自定义的内容填好:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-11-Characteristic/master/6.Document/Images/1.png" alt="1"></p>
+<p><strong>Exported UTIs</strong>所填写的内容:</p>
+<ul>
+<li><strong>Description</strong>: 文件名的描述, 这里输入<strong>RGB Color File</strong></li>
+<li><strong>Identifier</strong>: 文件唯一标识符, 这里我们输入为<strong>com.cainluo.colorExtension</strong></li>
+<li><strong>Conforms To</strong>: <strong>UTI</strong>可以符合其他类型, 就好像父类子类一样, 这里我们就写<strong>public.text</strong>, 因为我们的<strong>.color</strong>也是简单的文本类型, 如果你是<strong>HTML</strong>的话, 那你可以写成<strong>public.html</strong>.</li>
+</ul>
+<p>写完这个之后, 我们还需要指定扩展名, 展开<strong>Additional exported UTI properties</strong>, 填入一个<strong>UTTypeTagSpecification</strong>字典, 然后在这个字典里创建一个名为<strong>public.filename-extension</strong>的数组, 最后再填入一个<strong>color</strong>对象.</p>
+<p>定义好这个<strong>UTI</strong>之后, 我们需要在<strong>Document Types</strong>填入对应的<strong>Name</strong>和<strong>Types</strong>, <strong>Name</strong>就填入<strong>Color Extension</strong>, <strong>Types</strong>就填入<strong>com.razeware.colorExtension</strong>.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-11-Characteristic/master/6.Document/Images/2.png" alt="2"></p>
+<p>如果你想了解更多关于<strong>UTI</strong>的内容, 可以去<a href="http://apple.co/2v0FiHO" target="_blank" rel="noopener">http://apple.co/2v0FiHO</a>看看.</p>
+<h2 id="开始写代码-1"><a href="#开始写代码-1" class="headerlink" title="开始写代码"></a>开始写代码</h2><p>创建好对应的控制器之后, 我们要设置一下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">self.delegate = self;</span><br><span class="line">self.allowsDocumentCreation = YES;</span><br></pre></td></tr></table></figure>
+
+<p>然后遵守<strong>UIDocumentBrowserViewControllerDelegate</strong>和<strong>UIViewControllerTransitioningDelegate</strong>两个协议, 并且实现它们的代理方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">#pragma mark - UIViewControllerTransitioningDelegate</span><br><span class="line">- (nullable id &lt;UIViewControllerAnimatedTransitioning&gt;)animationControllerForPresentedController:(UIViewController *)presented</span><br><span class="line">                                                                            presentingController:(UIViewController *)presenting</span><br><span class="line">                                                                                sourceController:(UIViewController *)source &#123;</span><br><span class="line"></span><br><span class="line">    return self.documentBrowserTransitionController;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma mark - UIDocumentBrowserViewControllerDelegate</span><br><span class="line">- (void)documentBrowser:(UIDocumentBrowserViewController *)controller</span><br><span class="line">didRequestDocumentCreationWithHandler:(void(^)(NSURL *_Nullable urlToImport, UIDocumentBrowserImportMode importMode))importHandler &#123;</span><br><span class="line">    </span><br><span class="line">    NSURL *url = [[NSBundle mainBundle] URLForResource:@&quot;ColorFile&quot;</span><br><span class="line">                                         withExtension:@&quot;color&quot;];</span><br><span class="line">    </span><br><span class="line">    importHandler(url, UIDocumentBrowserImportModeCopy);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)documentBrowser:(UIDocumentBrowserViewController *)controller</span><br><span class="line"> didImportDocumentAtURL:(NSURL *)sourceURL</span><br><span class="line">       toDestinationURL:(NSURL *)destinationURL &#123;</span><br><span class="line"> </span><br><span class="line">    [self presentColorControllerWithDocument:[[ColorDocument alloc] initWithFileURL:destinationURL]];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)documentBrowser:(UIDocumentBrowserViewController *)controller</span><br><span class="line">failedToImportDocumentAtURL:(NSURL *)documentURL</span><br><span class="line">                  error:(NSError * _Nullable)error &#123;</span><br><span class="line">    </span><br><span class="line">    [self showAlertViewControllerWithTitle:@&quot;Failed&quot; message:@&quot;Failed to import&quot;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)documentBrowser:(UIDocumentBrowserViewController *)controller</span><br><span class="line">    didPickDocumentURLs:(NSArray &lt;NSURL *&gt; *)documentURLs &#123;</span><br><span class="line"> </span><br><span class="line">    [self presentColorControllerWithDocument:[[ColorDocument alloc] initWithFileURL:documentURLs[0]]];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSArray&lt;__kindof UIActivity *&gt; *)documentBrowser:(UIDocumentBrowserViewController *)controller</span><br><span class="line">               applicationActivitiesForDocumentURLs:(NSArray &lt;NSURL *&gt; *)documentURLs &#123;</span><br><span class="line">  </span><br><span class="line">    ColorDocument *colorDocument = [[ColorDocument alloc] initWithFileURL:documentURLs[0]];</span><br><span class="line">    </span><br><span class="line">    return @[[[DocumentActivity alloc] initDocumentActivityWithColorDocument:colorDocument]];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>另外我们还需要配置一些东西, 并且使得可以跳转到我们需要跳转的编辑页面:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#pragma mark - Present Controller</span><br><span class="line">- (void)presentColorControllerWithDocument:(ColorDocument *)colorDocument &#123;</span><br><span class="line">    </span><br><span class="line">    UIStoryboard *mineStoryboard = [UIStoryboard storyboardWithName:@&quot;Main&quot; bundle:nil];</span><br><span class="line">    </span><br><span class="line">    ColorController *colorController = [mineStoryboard instantiateViewControllerWithIdentifier:@&quot;ColorController&quot;];</span><br><span class="line">    </span><br><span class="line">    colorController.colorDocument = colorDocument;</span><br><span class="line">    colorController.transitioningDelegate = self;</span><br><span class="line">    </span><br><span class="line">    self.documentBrowserTransitionController = [self transitionControllerForDocumentURL:colorDocument.fileURL];</span><br><span class="line">    </span><br><span class="line">    [self presentViewController:colorController animated:YES completion:nil];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解释一下代理方法:</p>
+<ol>
+<li><p>在成功导入新文档的时候会调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)documentBrowser:(UIDocumentBrowserViewController *)controller</span><br><span class="line">     didImportDocumentAtURL:(NSURL *)sourceURL</span><br><span class="line">           toDestinationURL:(NSURL *)destinationURL;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>这是在将要呈现新文档时会调用, 它接受一个<strong>ColorDocument</strong>对象, 而<strong>ColorDocument</strong>又是<strong>UIDocument</strong>的子类, 负责保存和加载色彩文件, 待会我们就会<strong>ColorController</strong>里预览和编辑颜色文件.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- (void)documentBrowser:(UIDocumentBrowserViewController *)controller</span><br><span class="line">    didRequestDocumentCreationWithHandler:(void(^)(NSURL *_Nullable urlToImport, UIDocumentBrowserImportMode importMode))importHandler;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在新文档无法导入时的时候就会调用, 比如当我们无权访问importHandler回调中传递的文件时.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)documentBrowser:(UIDocumentBrowserViewController *)controller</span><br><span class="line">    failedToImportDocumentAtURL:(NSURL *)documentURL</span><br><span class="line">                      error:(NSError * _Nullable)error;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当用户选择要在文档浏览器中打开文件时, 就会调用该方法, <strong>UIDocumentBrowserViewController</strong>支持打开多个文件, 但我们这里只需要使用一个, 所以就只去第一个.</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- (void)documentBrowser:(UIDocumentBrowserViewController *)controller</span><br><span class="line">        didPickDocumentURLs:(NSArray &lt;NSURL *&gt; *)documentURLs;</span><br></pre></td></tr></table></figure>
+
+<h2 id="预览与编辑界面"><a href="#预览与编辑界面" class="headerlink" title="预览与编辑界面"></a>预览与编辑界面</h2><p>打开<strong>ColorController</strong>之后, 我们需要设置一下, 看看是否可以读取对应的文件:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewWillAppear:(BOOL)animated &#123;</span><br><span class="line">    [super viewWillAppear:animated];</span><br><span class="line">    </span><br><span class="line">    ColorDocument *colorDocument = self.colorDocument;</span><br><span class="line">    </span><br><span class="line">    if (!colorDocument) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    if (colorDocument.documentState == UIDocumentStateNormal) &#123;</span><br><span class="line">        </span><br><span class="line">        [self configControllerUI];</span><br><span class="line">        </span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        </span><br><span class="line">        [colorDocument openWithCompletionHandler:^(BOOL success) &#123;</span><br><span class="line">            </span><br><span class="line">            if (success) &#123;</span><br><span class="line">                </span><br><span class="line">                [self configControllerUI];</span><br><span class="line"></span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                </span><br><span class="line">                [self showAlertViewControllerWithTitle:@&quot;Error&quot;</span><br><span class="line">                                               message:@&quot;Can&amp;#39;t Open Document&quot;];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>为了可以保存修改后的内容, 这里用了一个保存的方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">- (IBAction)saveColorModel:(UIButton *)sender &#123;</span><br><span class="line">    </span><br><span class="line">    ColorDocument *colorDocument = self.colorDocument;</span><br><span class="line">    </span><br><span class="line">    if (!colorDocument) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    colorDocument.colorModel = [[ColorModel alloc] initColorModelWithRedValue:self.redSlider.value</span><br><span class="line">                                                                   greenValue:self.greenSlider.value</span><br><span class="line">                                                                    blueValue:self.blueSlider.value];</span><br><span class="line">    </span><br><span class="line">    [colorDocument saveToURL:colorDocument.fileURL</span><br><span class="line">            forSaveOperation:UIDocumentSaveForOverwriting</span><br><span class="line">           completionHandler:^(BOOL success) &#123;</span><br><span class="line">        </span><br><span class="line">               if (success) &#123;</span><br><span class="line">                   </span><br><span class="line">                   [self showAlertViewControllerWithTitle:@&quot;Success&quot;</span><br><span class="line">                                                  message:@&quot;Saved file&quot;];</span><br><span class="line"></span><br><span class="line">               &#125; else &#123;</span><br><span class="line">                   </span><br><span class="line">                   [self showAlertViewControllerWithTitle:@&quot;Error&quot;</span><br><span class="line">                                                  message:@&quot;Failed to save file&quot;];</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="从其他App中打开"><a href="#从其他App中打开" class="headerlink" title="从其他App中打开"></a>从其他App中打开</h2><p>如果我们直接从文件<strong>App</strong>中打开颜色文件, 你会发现我们的<strong>App</strong>是打开了, 但不会工作.</p>
+<p>那是因为我们的<strong>App</strong>和<strong>.color</strong>扩展名关联, 但我们的编辑页面并没有显示.</p>
+<p>由于这个文件是在别的<strong>App</strong>里打开的, 所以我们需要在<strong>AppDelegate</strong>里处理这个事情:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)application:(UIApplication *)app</span><br><span class="line">            openURL:(NSURL *)url</span><br><span class="line">            options:(NSDictionary&lt;UIApplicationOpenURLOptionsKey,id&gt; *)options &#123;</span><br><span class="line">    </span><br><span class="line">    if (!url.isFileURL) &#123;</span><br><span class="line">        </span><br><span class="line">        return NO;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    DocumentBrowserController *documentBrowserController = (DocumentBrowserController *)self.window.rootViewController;</span><br><span class="line">    </span><br><span class="line">    if (!documentBrowserController) &#123;</span><br><span class="line">        return NO;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    [documentBrowserController revealDocumentAtURL:url</span><br><span class="line">                                    importIfNeeded:YES</span><br><span class="line">                                        completion:^(NSURL * _Nullable revealedDocumentURL, NSError * _Nullable error) &#123;</span><br><span class="line">                                            </span><br><span class="line">                                            if (error) &#123;</span><br><span class="line">                                                return;</span><br><span class="line">                                            &#125;</span><br><span class="line">    </span><br><span class="line">                                            [documentBrowserController presentColorControllerWithDocument:[[ColorDocument alloc] initWithFileURL:revealedDocumentURL]];</span><br><span class="line">                                        &#125;];</span><br><span class="line">    </span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="自定义文档浏览器"><a href="#自定义文档浏览器" class="headerlink" title="自定义文档浏览器"></a>自定义文档浏览器</h2><p>在这里面我们还可以自定义一下我们的文档浏览器样式:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">#pragma mark - Custom Document Browser Controller</span><br><span class="line">- (void)customDocumentBrowserController &#123;</span><br><span class="line">    </span><br><span class="line">    self.view.tintColor = [UIColor colorNamed:@&quot;MarineBlue&quot;];</span><br><span class="line">    </span><br><span class="line">    self.browserUserInterfaceStyle = UIDocumentBrowserUserInterfaceStyleLight;</span><br><span class="line">    </span><br><span class="line">    UIDocumentBrowserAction *documentBrowserAction = [[UIDocumentBrowserAction alloc] initWithIdentifier:@&quot;com.cainluo.action&quot;</span><br><span class="line">                                                                                          localizedTitle:@&quot;Lighter Color&quot;</span><br><span class="line">                                                                                            availability:UIDocumentBrowserActionAvailabilityMenu</span><br><span class="line">                                                                                                 handler:^(NSArray&lt;NSURL *&gt; * _Nonnull urls) &#123;</span><br><span class="line">        </span><br><span class="line">                                                                                                     ColorDocument *colorDocument = [[ColorDocument alloc] initWithFileURL:urls[0]];</span><br><span class="line">                                                                                                     </span><br><span class="line">                                                                                                     [colorDocument openWithCompletionHandler:^(BOOL success) &#123;</span><br><span class="line">                                                                                                         </span><br><span class="line">                                                                                                         if (success) &#123;</span><br><span class="line">                                                                                                             </span><br><span class="line">                                                                                                             colorDocument.colorModel = [colorDocument.colorModel lighterColorWithToAdd:60];</span><br><span class="line">                                                                                                             </span><br><span class="line">                                                                                                             [self presentColorControllerWithDocument:colorDocument];</span><br><span class="line">                                                                                                         &#125;</span><br><span class="line">                                                                                                     &#125;];</span><br><span class="line">                                                                                                 &#125;];</span><br><span class="line">    </span><br><span class="line">    documentBrowserAction.supportedContentTypes = @[@&quot;com.cainluo.colorExtension&quot;];</span><br><span class="line">    </span><br><span class="line">    self.customActions = @[documentBrowserAction];</span><br><span class="line">    </span><br><span class="line">    UIBarButtonItem *aboutButtonItem = [[UIBarButtonItem alloc] initWithTitle:@&quot;About&quot;</span><br><span class="line">                                                                        style:UIBarButtonItemStylePlain</span><br><span class="line">                                                                       target:self</span><br><span class="line">                                                                       action:@selector(openAbout)];</span><br><span class="line">    </span><br><span class="line">    self.additionalTrailingNavigationBarButtonItems = @[aboutButtonItem];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)openAbout &#123;</span><br><span class="line">    </span><br><span class="line">    [self showAlertViewControllerWithTitle:@&quot;关于我们&quot; message:@&quot;Color Document 1.0 by Cain Luo&quot;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个颜色值是设置在<strong>Assets.xcassets</strong>中.</p>
+<h2 id="动画控制器"><a href="#动画控制器" class="headerlink" title="动画控制器"></a>动画控制器</h2><p>我们可以为演示文稿添加一个动画:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, strong) UIDocumentBrowserTransitionController *documentBrowserTransitionController;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#pragma mark - UIViewControllerTransitioningDelegate</span><br><span class="line">- (nullable id &lt;UIViewControllerAnimatedTransitioning&gt;)animationControllerForPresentedController:(UIViewController *)presented</span><br><span class="line">                                                                            presentingController:(UIViewController *)presenting</span><br><span class="line">                                                                                sourceController:(UIViewController *)source &#123;</span><br><span class="line"></span><br><span class="line">    return self.documentBrowserTransitionController;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们刚刚的那个<strong>present</strong>方法里就写好了对应的配置:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">colorController.transitioningDelegate = self;</span><br><span class="line"></span><br><span class="line">self.documentBrowserTransitionController = [self transitionControllerForDocumentURL:colorDocument.fileURL];</span><br></pre></td></tr></table></figure>
+
+<h2 id="自定义活动"><a href="#自定义活动" class="headerlink" title="自定义活动"></a>自定义活动</h2><p>最后面我们还可以添加多一个活动列表, 这个时候我们就需要定义一个<strong>UIActivity</strong>的自雷, 并且将<strong>.color</strong>文件以字符串的形式复制到粘贴板上:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">- (instancetype)initDocumentActivityWithColorDocument:(ColorDocument *)colorDocument &#123;</span><br><span class="line">    </span><br><span class="line">    self = [super init];</span><br><span class="line"></span><br><span class="line">    if (self) &#123;</span><br><span class="line">        </span><br><span class="line">        self.colorDocument = colorDocument;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (UIActivityCategory)activityCategory &#123;</span><br><span class="line">    </span><br><span class="line">    return UIActivityCategoryAction;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (UIActivityType)activityType &#123;</span><br><span class="line">    return @&quot;ColorBrowserCopy&quot;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSString *)activityTitle &#123;</span><br><span class="line">    </span><br><span class="line">    return @&quot;Color Copy&quot;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (UIImage *)activityImage &#123;</span><br><span class="line">    </span><br><span class="line">    return [UIImage imageNamed:@&quot;copy_activity_icon&quot;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (BOOL)canPerformWithActivityItems:(NSArray *)activityItems &#123;</span><br><span class="line">    </span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)performActivity &#123;</span><br><span class="line">    </span><br><span class="line">    [self.colorDocument openWithCompletionHandler:^(BOOL success) &#123;</span><br><span class="line">        </span><br><span class="line">        if (success) &#123;</span><br><span class="line">            </span><br><span class="line">            NSString *string = [self.colorDocument stringRepresentation];</span><br><span class="line">            </span><br><span class="line">            if (string) &#123;</span><br><span class="line">                </span><br><span class="line">                [UIPasteboard generalPasteboard].string = string;</span><br><span class="line">                </span><br><span class="line">                [self activityDidFinish:YES];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后我们用一个代理方法设置对应的活动事件:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#pragma mark - Custom Activity</span><br><span class="line">- (NSArray&lt;__kindof UIActivity *&gt; *)documentBrowser:(UIDocumentBrowserViewController *)controller</span><br><span class="line">               applicationActivitiesForDocumentURLs:(NSArray &lt;NSURL *&gt; *)documentURLs &#123;</span><br><span class="line">  </span><br><span class="line">    ColorDocument *colorDocument = [[ColorDocument alloc] initWithFileURL:documentURLs[0]];</span><br><span class="line">    </span><br><span class="line">    return @[[[DocumentActivity alloc] initDocumentActivityWithColorDocument:colorDocument]];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="最终效果"><a href="#最终效果" class="headerlink" title="最终效果"></a>最终效果</h2><p><img src="https://raw.githubusercontent.com/CainLuo/iOS-11-Characteristic/master/6.Document/Images/3.gif" alt="3"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-11-Characteristic/master/6.Document/Images/4.gif" alt="4"></p>
+<h2 id="工程"><a href="#工程" class="headerlink" title="工程"></a>工程</h2><p><a href="https://github.com/CainLuo/iOS-11-Characteristic/tree/master/6.Document" target="_blank" rel="noopener">https://github.com/CainLuo/iOS-11-Characteristic/tree/master/6.Document</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始前的知识补充"><span class="toc-number">1.</span> <span class="toc-text">开始前的知识补充</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文档提供者"><span class="toc-number">1.1.</span> <span class="toc-text">文档提供者</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文档浏览器"><span class="toc-number">1.2.</span> <span class="toc-text">文档浏览器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开始写代码"><span class="toc-number">2.</span> <span class="toc-text">开始写代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自定义扩展"><span class="toc-number">3.</span> <span class="toc-text">自定义扩展</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开始写代码-1"><span class="toc-number">4.</span> <span class="toc-text">开始写代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#预览与编辑界面"><span class="toc-number">5.</span> <span class="toc-text">预览与编辑界面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从其他App中打开"><span class="toc-number">6.</span> <span class="toc-text">从其他App中打开</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自定义文档浏览器"><span class="toc-number">7.</span> <span class="toc-text">自定义文档浏览器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动画控制器"><span class="toc-number">8.</span> <span class="toc-text">动画控制器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自定义活动"><span class="toc-number">9.</span> <span class="toc-text">自定义活动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最终效果"><span class="toc-number">10.</span> <span class="toc-text">最终效果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程"><span class="toc-number">11.</span> <span class="toc-text">工程</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

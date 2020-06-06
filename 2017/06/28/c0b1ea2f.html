@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：iOS中的Socket编程(一) - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="Socket的解释Socket翻译过来中文称为套接字, 这里我找到了一段比较官方的解释Socket是什么东西: 
+
+Socket是通信的基石，是支持TCP/IP协议的网络通信的基本操作单元，包含进行,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：iOS中的Socket编程(一)</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：iOS中的Socket编程(一)</h1>
+        <div class="stuff">
+            <span>六月 28, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/网络编程/">网络编程</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <h2 id="Socket的解释"><a href="#Socket的解释" class="headerlink" title="Socket的解释"></a>Socket的解释</h2><p><strong>Socket</strong>翻译过来中文称为套接字, 这里我找到了一段比较官方的解释<strong>Socket</strong>是什么东西: </p>
+<blockquote>
+<p>Socket是通信的基石，是支持TCP/IP协议的网络通信的基本操作单元，包含进行网络通信必须的五种信息：连接使用的协议，本地主机的IP地址，本地进程的协议端口，远地主机的IP地址，远地进程的协议端口。</p>
+</blockquote>
+<p>在实际当中, 肯定是不止一个<strong>TCP/IP</strong>或者是一个应用程序进程在传输数据, 为了可以区分开来, 系统提供了一套<strong>API</strong>, 方便<strong>TCP/IP</strong>与应用程序交互, 一般把这个称为<strong>Socket API</strong>.</p>
+<p>酱紫应用层可以和传输层通过这个<strong>Socket API</strong>, 区分来自不同的应用程序进程或者是网络通信, 使得数据可以并发传输.</p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="Socket的C-S端"><a href="#Socket的C-S端" class="headerlink" title="Socket的C/S端"></a>Socket的C/S端</h2><p><strong>Socket</strong>的使用其实也没有我们想象中那么难, 只是这里需要有一个前提条件, 因为建立<strong>Socket</strong>通信是至少需要一对套接字, 其中一个是运行在我们的客户端上, 称为<strong>Client Socket</strong>, 还有一个是运行在服务器上, 称为<strong>Service Socket</strong>.</p>
+<p><strong>Socket</strong>之间的连接过程分为三个过程: </p>
+<ul>
+<li>服务器监听</li>
+<li>客户端请求</li>
+<li>连接确认</li>
+</ul>
+<p><strong>Socket</strong>同时支持<strong>TCP</strong>和<strong>UDP</strong>两种传输协议, 啥意思呢?</p>
+<p>当<strong>Socket</strong>使用<strong>TCP</strong>协议通信的时候, <strong>Socket</strong>就是一个<strong>TCP</strong>的连接, 那么如果<strong>Socket</strong>使用的是<strong>UDP</strong>协议通信, 那么这时候的<strong>Socket</strong>就是<strong>UDP</strong>连接.</p>
+<p>如果要有图的话, 大概就这样了:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-NetWork/master/Socket%E7%BC%96%E7%A8%8B(%E4%B8%80)/1.png" alt="1"></p>
+<h2 id="网络的协议"><a href="#网络的协议" class="headerlink" title="网络的协议"></a>网络的协议</h2><p>既然降到<strong>Socket</strong>, 那么就要说说网络里面的协议, 这里就要普及一下网络里面的到底都有啥, 首先我们要知道, 在网络里面一共有七层协议.</p>
+<p>从上往下分的话:</p>
+<ul>
+<li>应用层</li>
+<li>表达层</li>
+<li>会话层</li>
+<li>传输层</li>
+<li>网络层</li>
+<li>数据链路层</li>
+<li>物理层</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-NetWork/master/Socket%E7%BC%96%E7%A8%8B(%E4%B8%80)/2.png" alt="2"></p>
+<p>但我们通常会把底下三层(网络层, 数据链路层, 物理层)统称为媒体层, 一般都是专门搞网络的网络工程师大神们研究的对象.</p>
+<p>而上面四层(传输层, 会话层, 表示层, 应用层)被称为主机层, 也是广大用户所面向和关心的内容.</p>
+<p>说到协议, 我们就不得不提一下<strong>HTTP</strong>:</p>
+<ul>
+<li><strong>HTTP</strong>协议: 它是对应着应用层.</li>
+<li><strong>TCP</strong>协议: 它是对应着传输层.</li>
+<li><strong>IP</strong>协议: 则对应着网络层.</li>
+</ul>
+<p>而<strong>HTTP</strong>协议是基于<strong>TCP</strong>连接的, 所以三者根本就没啥可比性.</p>
+<ul>
+<li><strong>TCP/IP协议</strong>: 属于传输层协议, 主要解决数据如何在网络中传输.</li>
+<li><strong>HTTP协议</strong>: 属于应用层, 主要解决如何包装数据.</li>
+</ul>
+<p>而<strong>Socket</strong>是应用层与<strong>TCP/IP协议</strong>族通信中间的软件抽象层, 是它的一组接口.</p>
+<h2 id="TCP-IP五层模型"><a href="#TCP-IP五层模型" class="headerlink" title="TCP/IP五层模型"></a>TCP/IP五层模型</h2><p>既然都提到了<strong>TCP/IP</strong>这个协议, 那么就来讲讲, <strong>TCP/IP</strong>里的五层模型.</p>
+<p>这里面的五层模型分别为:</p>
+<ul>
+<li>应用层</li>
+<li>传输层</li>
+<li>网络层</li>
+<li>数据链路层</li>
+<li>物理层</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-NetWork/master/Socket%E7%BC%96%E7%A8%8B(%E4%B8%80)/3.png" alt="3"></p>
+<p>那么我们日常生活中所接触到的网络器材有哪些? 分别处于哪个模型?</p>
+<ul>
+<li>物理层: 中继器, 集线器, 双绞线</li>
+<li>数据链路层: 以太网交换机(Modem), 网卡(网卡有一半是工作在物理层)</li>
+<li>网络层: 路由器, 三层交换机</li>
+<li>传输层: 四层交换机, 路由器(也有一些特殊的路由器在传输层中工作)</li>
+</ul>
+<p>其中<strong>TCP/IP</strong>的应用层比较特殊, 它是包含了会话层, 表达层, 应用层等功能, 这里要说一点, <strong>TCP/IP</strong>协议并不能在传输层总是保证可靠的传输数据包, 但七层模型可以做到.</p>
+<p><strong>TCP/IP</strong>还提供了另一种传输模式, 叫做<strong>UDP</strong>(用户数据报协议), 但这种协议不能保证可靠的数据包传输.</p>
+<p>这里再解释一下:</p>
+<ul>
+<li><strong>TCP</strong>: 面向连接, 提供可靠的数据传输, 用于传输大量数据, 使用数据流模式, 速度慢, 建立连接时开销较大</li>
+<li><strong>UDP</strong>: 非面向连接, 传输不可靠, 用于传输少量的数据, 速度快</li>
+</ul>
+<p>总的来说<strong>TCP</strong>是一个数据流的模式协议, 而<strong>UDP</strong>是一种数据报模式的协议.</p>
+<p>刚刚说了<strong>Socket</strong>是基于<strong>TCP/IP</strong>协议上的抽象, 也就是说<strong>Socket</strong>只是对<strong>TCP/IP</strong>的封装, 本身是没有协议的, 只有通过<strong>Socket API</strong>, 我们才能够使用<strong>TCP/IP</strong>协议.</p>
+<p>大概的关系图就是酱紫吧:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-NetWork/master/Socket%E7%BC%96%E7%A8%8B(%E4%B8%80)/4.png" alt="4"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这篇文章虽然不涉及任何的代码, 但都是一些必备的基础知识, 如果想更详细的了解或者是找更官方的文档, 可以去看看苹果提供的<a href="https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/NetworkingOverview/Introduction/Introduction.html" target="_blank" rel="noopener">Networking Overview</a>这篇文章.</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Socket的解释"><span class="toc-number">1.</span> <span class="toc-text">Socket的解释</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Socket的C-S端"><span class="toc-number">2.</span> <span class="toc-text">Socket的C/S端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网络的协议"><span class="toc-number">3.</span> <span class="toc-text">网络的协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP-IP五层模型"><span class="toc-number">4.</span> <span class="toc-text">TCP/IP五层模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

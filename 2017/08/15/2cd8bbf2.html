@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：iOS架构之MVP - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="在前面一章, 我们了解iOS最直观和最快速的架构MVC, 如果没有看的朋友可以去玩转iOS开发：iOS架构之MVC看看.
+虽然说MVC的架构直观和快速, 但随着发展, 会导致ViewControll,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：iOS架构之MVP</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：iOS架构之MVP</h1>
+        <div class="stuff">
+            <span>八月 15, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/iOS架构/">iOS架构</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>在前面一章, 我们了解<strong>iOS</strong>最直观和最快速的架构<strong>MVC</strong>, 如果没有看的朋友可以去<a href="https://cainluo.github.io/2017/08/13/a866fa2c.html">玩转iOS开发：iOS架构之MVC</a>看看.</p>
+<p>虽然说<strong>MVC</strong>的架构直观和快速, 但随着发展, 会导致<strong>ViewController</strong>越来越庞大, 所以我们不得不寻找其他方法去解决, 或者说寻找其他架构去代替臃肿的<strong>MVC</strong>, 这次我们可以来了解一下<strong>MVP</strong>.</p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="MVP简介"><a href="#MVP简介" class="headerlink" title="MVP简介"></a>MVP简介</h2><p><strong>MVP</strong>整体的架构和<strong>MVC</strong>有些相似, 唯独就是多了一个<strong>Presenter</strong>, 我们可以来看看结构图:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-Project-Example/master/MVP/Images/1.png" alt="1"></p>
+<p>从图里, 我们感觉好像这是把之前的苹果所想的<strong>MVC</strong>给实现了似得, 但实际上并不是的咧, 回头想想, 在<strong>MVC</strong>里的<strong>View</strong>和<strong>ViewController</strong>是紧密的联系在一起.</p>
+<p>但在<strong>MVP</strong>里的<strong>Presenter</strong>的<strong>ViewController</strong>做出什么有关于生命周期的改变, 虽然<strong>Presenter</strong>里面没有任何相关的<strong>View</strong>布局代码, 但却是负责了<strong>View</strong>的数据更新和状态更新.</p>
+<h2 id="UIViewController也是View层"><a href="#UIViewController也是View层" class="headerlink" title="UIViewController也是View层"></a>UIViewController也是View层</h2><p>在<strong>MVP</strong>的架构中, <strong>UIViewController</strong>实际上也是<strong>View</strong>层, 并不属于<strong>Presenter</strong>, 这样子做的话, 可测试性就会大大的提高, 但相对而言, 开发的速度就没有<strong>MVC</strong>那么快.</p>
+<p>我们可以来看看代码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;MVPPresenter.h&quot;</span><br><span class="line"></span><br><span class="line">@interface MVPPresenter ()</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong) MVPController *mvpController;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation MVPPresenter</span><br><span class="line"></span><br><span class="line">- (instancetype)initPresenterWithController:(MVPController *)controller &#123;</span><br><span class="line">    </span><br><span class="line">    self = [super init];</span><br><span class="line">    </span><br><span class="line">    if (self) &#123;</span><br><span class="line">        </span><br><span class="line">        self.mvpController = controller;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)reloadData &#123;</span><br><span class="line">    </span><br><span class="line">    self.mvpController.label.text = @&quot;看到小明, 和他打了声招呼&quot;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;MVPController.h&quot;</span><br><span class="line">#import &quot;MVPPresenter.h&quot;</span><br><span class="line"></span><br><span class="line">@interface MVPController ()</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong) MVPPresenter *presenter;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong, readwrite) UIButton *button;</span><br><span class="line">@property (nonatomic, strong, readwrite) UILabel  *label;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation MVPController</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    </span><br><span class="line">    [self.view addSubview:self.button];</span><br><span class="line">    [self.view addSubview:self.label];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (MVPPresenter *)presenter &#123;</span><br><span class="line">    </span><br><span class="line">    if (!_presenter) &#123;</span><br><span class="line">        </span><br><span class="line">        _presenter = [[MVPPresenter alloc] initPresenterWithController:self];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return _presenter;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (UIButton *)button &#123;</span><br><span class="line">    </span><br><span class="line">    if (!_button) &#123;</span><br><span class="line">        </span><br><span class="line">        _button = [[UIButton alloc] init];</span><br><span class="line">        </span><br><span class="line">        _button.frame = CGRectMake(100, 200, 100, 50);</span><br><span class="line">        </span><br><span class="line">        [_button setTitle:@&quot;打招呼&quot;</span><br><span class="line">                 forState:UIControlStateNormal];</span><br><span class="line">        [_button addTarget:self</span><br><span class="line">                    action:@selector(hello)</span><br><span class="line">          forControlEvents:UIControlEventTouchUpInside];</span><br><span class="line">        </span><br><span class="line">        [_button setBackgroundColor:[UIColor blueColor]];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return _button;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)hello &#123;</span><br><span class="line">    </span><br><span class="line">    [self.presenter reloadData];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (UILabel *)label &#123;</span><br><span class="line">    </span><br><span class="line">    if (!_label) &#123;</span><br><span class="line">        </span><br><span class="line">        _label = [[UILabel alloc] init];</span><br><span class="line">        </span><br><span class="line">        _label.frame     = CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 50);</span><br><span class="line">        _label.textColor = [UIColor blackColor];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return _label;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>最终效果这里就不演示了, 回头可以自己看看项目里的运行效果.</p>
+<h2 id="MVP的特点"><a href="#MVP的特点" class="headerlink" title="MVP的特点"></a>MVP的特点</h2><ul>
+<li><strong>任务分工</strong> 在<strong>MVP</strong>模式中, 我们主要把任务都划分到了<strong>Presenter</strong>和<strong>Model</strong>中, 相对于View<strong>来说</strong>, 任务都是比较少的.</li>
+<li><strong>可测试性: ** **MVP</strong>的可测试性相对于<strong>MVC</strong>来说, 要好很多, 页面和业务逻辑的分离, 使得我们可以再测试的时候专注于业务逻辑的测试.</li>
+<li><strong>易用性:</strong> <strong>MVP</strong>的代码量相对于<strong>MVC</strong>来说大概要多了<strong>2</strong>倍左右(视情况而定), 但好处就是<strong>MVP</strong>的概念非常的清晰.</li>
+</ul>
+<p><strong>MVP</strong>是第一个考虑到如何协调整体三层上分离的架构模式, 它不希望<strong>View</strong>涉及到<strong>Model</strong>, 如果我们是在<strong>ViewController</strong>来处理这些问题的话, 那就会违反了<strong>MVP</strong>的概念.</p>
+<p>我们应该找其他地方来实现这些事情, 比如我们可以在<strong>App</strong>的范围内做一个路由类, 让它去负责执行并协调各个人物, 以<strong>View</strong>的形式来展示, 当然这些问题并不单单存在于<strong>MVP</strong>中.</p>
+<h2 id="MVP的其他形态"><a href="#MVP的其他形态" class="headerlink" title="MVP的其他形态"></a>MVP的其他形态</h2><p>除了我们刚刚所提到的<strong>MVP</strong>之外, 还有其他形态的<strong>MVP</strong>.</p>
+<p>这种形态就是将<strong>View</strong>和<strong>Model</strong>直接绑定起来, <strong>Presenter</strong>仍然管理来自<strong>View</strong>的用户行为操作, 同时也负责<strong>View</strong>的更新.</p>
+<p>但酱紫的话, 会出现一个问题, 职责划分的太过模糊, 而且如果直接把<strong>View</strong>和<strong>Model</strong>绑定起来的话, 那和传统的<strong>MVC</strong>没啥区别了, 这里就不多说了, 有兴趣的朋友可以自行去搜搜资料吧.</p>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: <a href="https://github.com/cainluo/iOS-Project-Example/tree/master/MVP" target="_blank" rel="noopener">https://github.com/cainluo/iOS-Project-Example/tree/master/MVP</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MVP简介"><span class="toc-number">1.</span> <span class="toc-text">MVP简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UIViewController也是View层"><span class="toc-number">2.</span> <span class="toc-text">UIViewController也是View层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MVP的特点"><span class="toc-number">3.</span> <span class="toc-text">MVP的特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MVP的其他形态"><span class="toc-number">4.</span> <span class="toc-text">MVP的其他形态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">5.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

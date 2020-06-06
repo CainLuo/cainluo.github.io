@@ -1,0 +1,332 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single" class="page">
+    <div id="top">
+        <a class="icon-left image-icon" href="javascript:history.back()"></a>
+    </div>
+    <div class="section">
+        <div class="article">
+            <div class="main">
+                <div class="content">
+                
+                        <h1 id="在iOS中使用Vision和Metal进行照片堆叠"><a href="#在iOS中使用Vision和Metal进行照片堆叠" class="headerlink" title="在iOS中使用Vision和Metal进行照片堆叠"></a>在iOS中使用Vision和Metal进行照片堆叠</h1><p>2019年7月22日</p>
+<p>在本教程中，您将使用Metal和Vision框架从iOS中的图片中删除移动对象。 您将学习如何堆叠，对齐和处理多个图像，以便任何移动对象消失。</p>
+<blockquote>
+<p>注意: 本教程使用的是Swift 5, iOS 12, Xcode 10.</p>
+</blockquote>
+<p>什么是照片堆叠？ 好吧，想象一下。 你在度假，某个神奇的地方。 你正在英国各地游览所有哈利波特拍摄地点！</p>
+<p>现在是时候看到网站并拍摄最精彩的照片了。 你怎么还要在你朋友的脸上蹭它？ 只有一个问题：有这么多人。：[</p>
+<p>啊! 你拍的每一张照片都充满了它们。 只要你能像哈利一样施放一个简单的咒语，并让所有这些人消失。Evanesco！ 噗！ 他们走了。 那太棒了。 这将是[a] st。]</p>
+<p>也许你可以做些什么。 照片堆叠是所有酷孩子都在谈论的新兴计算摄影趋势。 你想知道如何使用它吗？</p>
+<p>在本教程中，您将使用Vision框架来学习如何：</p>
+<ul>
+<li>使用VNTranslationalImageRegistrationRequest对齐捕获的图像。</li>
+<li>使用Metal内核创建自定义CIFilter。</li>
+<li>使用此过滤器组合多个图像以删除任何移动的对象。</li>
+</ul>
+<p>令人兴奋，对吗？ 那么，你还等什么呢？ 继续阅读！</p>
+<h2 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h2><p>单击本教程顶部或底部的“下载材质”按钮。 打开入门项目并在您的设备上运行它。</p>
+<blockquote>
+<p>注意：由于您需要在本教程中使用相机和Metal，因此您必须在实际设备而不是模拟器上运行它。</p>
+</blockquote>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/06/evanesco-startup-screenshot-231x500.jpg" alt="图片"></p>
+<p>你应该看到一些看起来像一个简单的相机应用程序。 有一个红色的记录按钮，周围有一个白色的环，它显示了全屏的摄像头输入。</p>
+<p>当然你已经注意到相机看起来有点紧张。 那是因为它设置为每秒五帧捕获。 要查看代码中定义的位置，请打开CameraViewController.swift并在configureCaptureSession（）中找到以下两行：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">camera.activeVideoMaxFrameDuration = <span class="type">CMTime</span>(value: <span class="number">1</span>, timescale: <span class="number">5</span>)</span><br><span class="line">camera.activeVideoMinFrameDuration = <span class="type">CMTime</span>(value: <span class="number">1</span>, timescale: <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<p>第一行强制最大帧速率为每秒五帧。 第二行将最小帧速率定义为相同。 这两条线一起要求摄像机以所需的帧速率运行。</p>
+<p>如果点击录制按钮，您应该看到外部白色环顺时针填满。 但是，当它完成时，没有任何反应。</p>
+<p>你现在必须要做些什么。</p>
+<h2 id="将图像保存到文件应用程序"><a href="#将图像保存到文件应用程序" class="headerlink" title="将图像保存到文件应用程序"></a>将图像保存到文件应用程序</h2><p>为了帮助您在进行中调试应用程序，将您正在使用的图像保存到“文件”应用程序会很不错。 幸运的是，这比听起来容易得多。</p>
+<p>将以下两个键添加到Info.plist：</p>
+<ol>
+<li>应用程序支持iTunes文件共享。</li>
+<li>支持打开文档。</li>
+</ol>
+<p>将它们的值都设置为YES。 完成后，文件应如下所示：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/06/Screenshot-2019-06-13-at-09.11.24.png" alt="图片"></p>
+<p>第一个密钥为Documents目录中的文件启用文件共享。 第二个让您的应用程序从文件提供程序打开原始文档，而不是接收副本。 启用这两个选项后，存储在应用程序文档目录中的所有文件都将显示在“文件”应用程序中。 这也意味着其他应用可以访问这些文件。</p>
+<p>既然您已经授予了“文件”应用程序访问“文档”目录的权限，那么就可以在那里保存一些图像了。</p>
+<p>与starter项目捆绑在一起的是一个名为ImageSaver的辅助结构。 实例化时，它会生成通用唯一标识符（UUID）并使用它在Documents目录下创建目录。 这是为了确保您不会覆盖以前保存的图像。 您将在应用中使用ImageSaver将图像写入文件。</p>
+<p>在CameraViewController.swift中，在类的顶部定义一个新变量，如下所示：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> saver: <span class="type">ImageSaver?</span></span><br></pre></td></tr></table></figure>
+
+<p>然后，滚动到recordTapped（_ :)并将以下内容添加到方法的末尾：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">saver = <span class="type">ImageSaver</span>()</span><br></pre></td></tr></table></figure>
+
+<p>每次点击录制按钮时，您都可以在此处创建新的ImageSaver，从而确保每个录制会话都将图像保存到新目录。</p>
+<p>接下来，滚动到captureOutput（_：didOutput：from :)并在初始if语句后添加以下代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="keyword">guard</span> </span><br><span class="line">  <span class="keyword">let</span> imageBuffer = <span class="type">CMSampleBufferGetImageBuffer</span>(sampleBuffer),</span><br><span class="line">  <span class="keyword">let</span> cgImage = <span class="type">CIImage</span>(cvImageBuffer: imageBuffer).cgImage() </span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="keyword">let</span> image = <span class="type">CIImage</span>(cgImage: cgImage)</span><br><span class="line"><span class="comment">// 3 </span></span><br><span class="line">saver?.write(image)</span><br></pre></td></tr></table></figure>
+
+<p>使用此代码，您：</p>
+<ol>
+<li>从捕获的样本缓冲区中提取CVImageBuffer并将其转换为CGImage。</li>
+<li>将CGImage转换为CIImage。</li>
+<li>将图像写入Documents目录。</li>
+</ol>
+<blockquote>
+<p>注意：为什么你必须将样本缓冲区转换为CIImage，然后转换为CGImage，最后再转换回CIImage？ 这与谁拥有数据有关。 将样本缓冲区转换为CIImage时，图像会存储对样本缓冲区的强引用。 不幸的是，对于视频捕获，这意味着在几秒钟之后，它将开始丢弃帧，因为它耗尽了分配给样本缓冲区的内存。 通过使用CIIContext将CIImage渲染为CGImage，可以复制图像数据，并且可以释放样本缓冲区以便再次使用。</p>
+</blockquote>
+<p>现在，构建并运行应用程序。 点击录制按钮，完成后，切换到“文件”应用。 在Evanesco文件夹下，您应该看到一个UUID命名的文件夹，其中包含20个项目。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/06/evanesco-uuid-named-folder-1-231x500.png" alt="图片"></p>
+<p>如果您查看此文件夹，您将找到在录制的4秒内捕获的20帧。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/06/evanesco-captured-frames-231x500.jpg" alt="图片"></p>
+<blockquote>
+<p>注意：如果您没有立即看到该文件夹，请使用“文件”应用程序顶部的搜索栏。</p>
+</blockquote>
+<p>好的。 那么你可以用20张几乎相同的图像做什么呢？</p>
+<h2 id="照片堆叠"><a href="#照片堆叠" class="headerlink" title="照片堆叠"></a>照片堆叠</h2><p>在计算摄影中，照片堆叠是一种捕获，对齐和组合多个图像以产生不同所需效果的技术。</p>
+<p>例如，通过拍摄不同曝光等级的若干图像并将每个图像的最佳部分组合在一起来获得HDR图像。这就是你如何在iOS中同时在阴影和明亮的天空中看到细节。</p>
+<p>天文摄影也大量使用照片堆叠。图像曝光越短，传感器拾取的噪声越少。因此，天文摄影师通常会拍摄一堆短曝光图像并将它们叠加在一起以增加亮度。</p>
+<p>在微距摄影中，难以立即获得整个图像。使用照片堆叠，摄影师可以拍摄不同焦距的一些图像并将它们组合在一起，以产生非常小的物体的极其清晰的图像。</p>
+<p>要将图像组合在一起，首先需要对齐它们。怎么样？ iOS提供了一些有趣的API，可以帮助您。</p>
+<h2 id="使用视觉来对齐图像"><a href="#使用视觉来对齐图像" class="headerlink" title="使用视觉来对齐图像"></a>使用视觉来对齐图像</h2><p>Vision框架有两个用于对齐图像的不同API：VNTranslationalImageRegistrationRequest和VNHomographicImageRegistrationRequest。 前者更容易使用，如果你认为应用程序的用户将相对静止地保持iPhone，它应该足够好。</p>
+<blockquote>
+<p>注意：如果您从未使用过Vision框架，请查看<a href="https://www.raywenderlich.com/1163620-face-detection-tutorial-using-the-vision-framework-for-ios" target="_blank" rel="noopener">使用Vision Framework for iOS的人脸检测教程</a>，了解有关Vision请求如何工作的一些信息。</p>
+</blockquote>
+<p>为了使您的代码更具可读性，您将创建一个新类来处理捕获图像的对齐和最终组合。</p>
+<p>创建一个新的空Swift文件并将其命名为ImageProcessor.swift。</p>
+<p>删除任何提供的import语句并添加以下代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> CoreImage</span><br><span class="line"><span class="keyword">import</span> Vision</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ImageProcessor</span> </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> frameBuffer: [<span class="type">CIImage</span>] = []</span><br><span class="line">  <span class="keyword">var</span> alignedFrameBuffer: [<span class="type">CIImage</span>] = []</span><br><span class="line">  <span class="keyword">var</span> completion: ((<span class="type">CIImage</span>) -&gt; <span class="type">Void</span>)?</span><br><span class="line">  <span class="keyword">var</span> isProcessingFrames = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> frameCount: <span class="type">Int</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> frameBuffer.<span class="built_in">count</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这里，您导入Vision框架并定义ImageProcessor类以及一些必要的属性：</p>
+<ul>
+<li>frameBuffer将存储原始捕获的图像。</li>
+<li>alignedFrameBuffer将在对齐后包含图像。</li>
+<li>completion是在对齐和组合图像后调用的处理程序。</li>
+<li>isProcessingFrames将指示图像当前是否正在对齐和组合。</li>
+<li>frameCount是捕获的图像数。</li>
+</ul>
+<p>接下来，将以下方法添加到ImageProcessor类：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">add</span><span class="params">(<span class="number">_</span> frame: CIImage)</span></span> &#123;</span><br><span class="line">  <span class="keyword">if</span> isProcessingFrames &#123;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line">  frameBuffer.append(frame)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此方法将捕获的帧添加到帧缓冲区，但前提是您当前未处理帧缓冲区中的帧。</p>
+<p>仍然在课堂上，添加处理方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">processFrames</span><span class="params">(completion: <span class="params">(<span class="params">(CIImage)</span></span></span></span> -&gt; <span class="type">Void</span>)?) &#123;</span><br><span class="line">  <span class="comment">// 1</span></span><br><span class="line">  isProcessingFrames = <span class="literal">true</span>  </span><br><span class="line">  <span class="keyword">self</span>.completion = completion</span><br><span class="line">  <span class="comment">// 2</span></span><br><span class="line">  <span class="keyword">let</span> firstFrame = frameBuffer.removeFirst()</span><br><span class="line">  alignedFrameBuffer.append(firstFrame)</span><br><span class="line">  <span class="comment">// 3</span></span><br><span class="line">  <span class="keyword">for</span> frame <span class="keyword">in</span> frameBuffer &#123;</span><br><span class="line">    <span class="comment">// 4</span></span><br><span class="line">    <span class="keyword">let</span> request = <span class="type">VNTranslationalImageRegistrationRequest</span>(targetedCIImage: frame)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">      <span class="comment">// 5      </span></span><br><span class="line">      <span class="keyword">let</span> sequenceHandler = <span class="type">VNSequenceRequestHandler</span>()</span><br><span class="line">      <span class="comment">// 6</span></span><br><span class="line">      <span class="keyword">try</span> sequenceHandler.perform([request], on: firstFrame)</span><br><span class="line">    &#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">      <span class="built_in">print</span>(error.localizedDescription)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 7</span></span><br><span class="line">    alignImages(request: request, frame: frame)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 8</span></span><br><span class="line">  cleanup()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这似乎是很多步骤，但这种方法相对简单。添加完所有捕获的帧后，您将调用此方法。它将处理每个帧并使用Vision框架对齐它们。具体来说，在此代码中，您：</p>
+<ol>
+<li>设置isProcessingFrames布尔变量以防止添加更多帧。您还要保存完成处理程序以供日后使用。</li>
+<li>从帧缓冲区中删除第一帧，并将其添加到帧缓冲区以获得对齐的图像。所有其他帧将与此对齐。</li>
+<li>循环遍历帧缓冲区中的每个帧。</li>
+<li>使用框架创建新的Vision请求以确定简单的平移对齐。</li>
+<li>创建序列请求处理程序，它将处理您的对齐请求。</li>
+<li>执行Vision请求以将帧对齐到第一帧并捕获任何错误。</li>
+<li>使用请求和当前帧调用alignImages（request：frame :)。此方法尚不存在，您很快就会解决这个问题。</li>
+<li>清理。这种方法还需要编写。</li>
+</ol>
+<p>准备解决alignImages（请求：帧:)？</p>
+<p>在processFrames（完成:)下面添加以下代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">alignImages</span><span class="params">(request: VNRequest, frame: CIImage)</span></span> &#123;</span><br><span class="line">  <span class="comment">// 1</span></span><br><span class="line">  <span class="keyword">guard</span> </span><br><span class="line">    <span class="keyword">let</span> results = request.results <span class="keyword">as</span>? [<span class="type">VNImageTranslationAlignmentObservation</span>],</span><br><span class="line">    <span class="keyword">let</span> result = results.first </span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 2</span></span><br><span class="line">  <span class="keyword">let</span> alignedFrame = frame.transformed(by: result.alignmentTransform)</span><br><span class="line">  <span class="comment">// 3</span></span><br><span class="line">  alignedFrameBuffer.append(alignedFrame)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这里你：</p>
+<ol>
+<li>从processFrames（completion :)中for循环中的对齐请求中打开第一个结果。</li>
+<li>使用Vision框架计算的仿射变换矩阵变换帧。</li>
+<li>将此已转换的帧附加到对齐的帧缓冲区。</li>
+</ol>
+<p>最后两种方法是您的应用程序所需的Vision代码的核心。 您执行请求，然后使用结果来修改图像。 现在剩下的就是自己清理。</p>
+<p>将以下方法添加到ImageProcessor类的末尾：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">cleanup</span><span class="params">()</span></span> &#123;</span><br><span class="line">  frameBuffer = []</span><br><span class="line">  alignedFrameBuffer = []</span><br><span class="line">  isProcessingFrames = <span class="literal">false</span></span><br><span class="line">  completion = <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在cleanup（）中，您只需清除两个帧缓冲区，重置标志以指示您不再处理帧并将完成处理程序设置为nil。</p>
+<p>在构建和运行应用程序之前，需要在CameraViewController中使用ImageProcessor。</p>
+<p>打开CameraViewController.swift。 在类的顶部，定义以下属性：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> imageProcessor = <span class="type">ImageProcessor</span>()</span><br></pre></td></tr></table></figure>
+
+<p>接下来，找到captureOutput（_：didOutput：from :)。 您将对此方法进行两处小改动。</p>
+<p>在let image = …行下方添加以下行：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">imageProcessor.add(image)</span><br></pre></td></tr></table></figure>
+
+<p>在调用stopRecording（）之后，仍然在if语句中添加:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">imageProcessor.processFrames(completion: displayCombinedImage)</span><br></pre></td></tr></table></figure>
+
+<p>构建并运行您的应用程序……没有任何反应。 不用担心，波特先生。 您仍然需要将所有这些图像组合成一个杰作。 要了解如何做到这一点，你必须继续阅读！</p>
+<blockquote>
+<p>注意：如果要查看对齐图像与原始捕获的比较，可以在ImageProcessor中实例化ImageSaver。 这将允许您将对齐的图像保存到Documents文件夹，并在Files应用程序中查看它们。</p>
+</blockquote>
+<h2 id="照片堆叠的工作原理"><a href="#照片堆叠的工作原理" class="headerlink" title="照片堆叠的工作原理"></a>照片堆叠的工作原理</h2><p>将图像组合或堆叠在一起有几种不同的方法。 到目前为止，最简单的方法是将图像中每个位置的像素平均在一起。</p>
+<p>例如，如果要堆叠20个图像，则可以将所有20个图像的坐标（13,37）处的像素平均在一起，以获得堆叠图像的平均像素值（13,37）。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/06/evanesco-pixel-stacking-diagram-365x500.png" alt="图片"></p>
+<p>如果对每个像素坐标执行此操作，则最终图像将是所有图像的平均值。 您拥有的图像越多，平均值与背景像素值越接近。 如果有东西在相机前面移动，它只会出现在几张图像中的相同位置，因此它对整体平均值的贡献不大。 这就是移动物体消失的原因。</p>
+<p>这就是您实现堆叠逻辑的方法。</p>
+<h2 id="堆叠图像"><a href="#堆叠图像" class="headerlink" title="堆叠图像"></a>堆叠图像</h2><p>现在来了真正有趣的部分！ 您将把所有这些图像组合成一个梦幻般的图像。 您将使用Metal Shading Language（MSL）创建自己的Core Image内核。</p>
+<p>您的简单内核将计算两个图像的像素值的加权平均值。 当你将一堆图像平均在一起时，任何移动的物体都应该消失。 背景像素将更频繁地出现并且支配平均像素值。</p>
+<h2 id="创建核心映像内核"><a href="#创建核心映像内核" class="headerlink" title="创建核心映像内核"></a>创建核心映像内核</h2><p>您将从实际内核开始，该内核是用MSL编写的。 MSL与C ++非常相似。</p>
+<p>将新的Metal File添加到项目中，并将其命名为AverageStacking.metal。 保留模板代码并将以下代码添加到文件末尾：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;<span class="type">CoreImage</span>/<span class="type">CoreImage</span>.h&gt;</span><br><span class="line"></span><br><span class="line">extern <span class="string">"C"</span> &#123; namespace coreimage &#123;</span><br><span class="line">  <span class="comment">// 1</span></span><br><span class="line">  float4 avgStacking(sample_t currentStack, sample_t newImage, float stackCount) &#123;</span><br><span class="line">    <span class="comment">// 2</span></span><br><span class="line">    float4 avg = ((currentStack * stackCount) + newImage) / (stackCount + <span class="number">1.0</span>);</span><br><span class="line">    <span class="comment">// 3</span></span><br><span class="line">    avg = float4(avg.rgb, <span class="number">1</span>);</span><br><span class="line">    <span class="comment">// 4</span></span><br><span class="line">    <span class="keyword">return</span> avg;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用此代码，您：</p>
+<ol>
+<li>定义一个名为avgStacking的新函数，它将返回一个包含4个浮点值的数组，表示像素颜色红色，绿色和蓝色以及alpha通道。 该功能将一次应用于两个图像，因此您需要跟踪所有图像的当前平均值。 currentStack参数表示此平均值，而stackCount是表示如何使用图像创建currentStack的数字。</li>
+<li>计算两幅图像的加权平均值。 由于currentStack可能已包含来自多个图像的信息，因此您将其乘以stackCount以赋予其适当的权重。</li>
+<li>将Alpha值添加到平均值以使其完全不透明。</li>
+<li>返回平均像素值。</li>
+</ol>
+<blockquote>
+<p>注意：理解为两个图像之间的每对相应像素调用此函数非常重要。 sample_t数据类型是来自图像的像素样本。</p>
+</blockquote>
+<p>好了，既然你有一个内核函数，你需要创建一个CIFilter来使用它！ 将新的Swift文件添加到项目中，并将其命名为AverageStackingFilter.swift。 删除import语句并添加以下内容：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> CoreImage</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AverageStackingFilter</span>: <span class="title">CIFilter</span> </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> kernel: <span class="type">CIBlendKernel</span></span><br><span class="line">  <span class="keyword">var</span> inputCurrentStack: <span class="type">CIImage?</span></span><br><span class="line">  <span class="keyword">var</span> inputNewImage: <span class="type">CIImage?</span></span><br><span class="line">  <span class="keyword">var</span> inputStackCount = <span class="number">1.0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这里，您将定义新的CIFilter类以及它所需的一些属性。 注意三个输入变量如何对应于内核函数中的三个参数。 巧合？]</p>
+<p>到目前为止，Xcode可能会抱怨此类缺少初始化程序。 所以，是时候解决这个问题。 将以下内容添加到类中：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="keyword">init</span>() &#123;</span><br><span class="line">  <span class="comment">// 1</span></span><br><span class="line">  <span class="keyword">guard</span> <span class="keyword">let</span> url = <span class="type">Bundle</span>.main.url(forResource: <span class="string">"default"</span>, </span><br><span class="line">                                  withExtension: <span class="string">"metallib"</span>) <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">fatalError</span>(<span class="string">"Check your build settings."</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="comment">// 2</span></span><br><span class="line">    <span class="keyword">let</span> data = <span class="keyword">try</span> <span class="type">Data</span>(contentsOf: url)</span><br><span class="line">    <span class="comment">// 3</span></span><br><span class="line">    kernel = <span class="keyword">try</span> <span class="type">CIBlendKernel</span>(</span><br><span class="line">      functionName: <span class="string">"avgStacking"</span>, </span><br><span class="line">      fromMetalLibraryData: data)</span><br><span class="line">  &#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(error.localizedDescription)</span><br><span class="line">    <span class="built_in">fatalError</span>(<span class="string">"Make sure the function names match"</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 4</span></span><br><span class="line">  <span class="keyword">super</span>.<span class="keyword">init</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用此初始化程序，您：</p>
+<ol>
+<li>获取已编译和链接的Metal文件的URL。</li>
+<li>阅读文件的内容。</li>
+<li>尝试从Metal文件中的avgStacking函数创建一个CIBlendKernel，如果失败则会发生混乱。</li>
+<li>调用super init。</li>
+</ol>
+<p>等一下……你什么时候编译并链接你的Metal文件？ 不幸的是，你还没有。 不过，好消息是你可以让Xcode为你做到！</p>
+<h2 id="编译你的内核"><a href="#编译你的内核" class="headerlink" title="编译你的内核"></a>编译你的内核</h2><p>要编译和链接Metal文件，需要在Build Settings中添加两个标志。 所以前往那边。</p>
+<p>搜索其他金属编译器标志并添加-fcikernel：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/06/evanesco-metal-compiler-flag-650x170.png" alt="图片"></p>
+<p>接下来，单击+按钮并选择添加用户定义的设置：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/06/evanesco-add-user-defined-setting-650x155.png" alt="图片">)</p>
+<p>调用设置MTLLINKER_FLAGS并将其设置为-cikernel：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/06/evanesco-metal-linker-flag-650x202.png" alt="图片"></p>
+<p>现在，下次构建项目时，Xcode将编译您的Metal文件并自动链接它们。</p>
+<p>但是，在您可以执行此操作之前，您仍需要对Core Image过滤器进行一些工作。</p>
+<p>回到AverageStackingFilter.swift，添加以下方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">outputImage</span><span class="params">()</span></span> -&gt; <span class="type">CIImage?</span> &#123;</span><br><span class="line">  <span class="keyword">guard</span> </span><br><span class="line">    <span class="keyword">let</span> inputCurrentStack = inputCurrentStack,</span><br><span class="line">    <span class="keyword">let</span> inputNewImage = inputNewImage</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> kernel.apply(</span><br><span class="line">    extent: inputCurrentStack.extent,</span><br><span class="line">    arguments: [inputCurrentStack, inputNewImage, inputStackCount])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种方法非常重要。 也就是说，它会将您的内核函数应用于输入图像并返回输出图像！ 如果没有这样做，它将是一个无用的过滤器。</p>
+<p>呃，Xcode还在抱怨！ 精细。 将以下代码添加到类中以使其平静下来：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">required</span> <span class="keyword">init</span>?(coder aDecoder: <span class="type">NSCoder</span>) &#123;</span><br><span class="line">  <span class="built_in">fatalError</span>(<span class="string">"init(coder:) has not been implemented"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>您无需从unarchiver初始化此Core Image过滤器，因此您只需实现最低限度即可使Xcode满意。</p>
+<h2 id="使用过滤器"><a href="#使用过滤器" class="headerlink" title="使用过滤器"></a>使用过滤器</h2><p>打开ImageProcessor.swift并将以下方法添加到ImageProcessor：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">combineFrames</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="comment">// 1</span></span><br><span class="line">  <span class="keyword">var</span> finalImage = alignedFrameBuffer.removeFirst()</span><br><span class="line">  <span class="comment">// 2</span></span><br><span class="line">  <span class="keyword">let</span> <span class="built_in">filter</span> = <span class="type">AverageStackingFilter</span>()</span><br><span class="line">  <span class="comment">//3 </span></span><br><span class="line">  <span class="keyword">for</span> (i, image) <span class="keyword">in</span> alignedFrameBuffer.enumerated() &#123;</span><br><span class="line">    <span class="comment">// 4</span></span><br><span class="line">    <span class="built_in">filter</span>.inputCurrentStack = finalImage</span><br><span class="line">    <span class="built_in">filter</span>.inputNewImage = image</span><br><span class="line">    <span class="built_in">filter</span>.inputStackCount = <span class="type">Double</span>(i + <span class="number">1</span>)</span><br><span class="line">    <span class="comment">// 5</span></span><br><span class="line">    finalImage = <span class="built_in">filter</span>.outputImage()!</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 6</span></span><br><span class="line">  cleanup(image: finalImage)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这里你：</p>
+<ol>
+<li>使用对齐的成帧器缓冲区中的第一个初始化最终图像，并在此过程中将其删除。</li>
+<li>初始化自定义Core Image过滤器。</li>
+<li>循环遍历对齐的帧缓冲区中的每个剩余图像。</li>
+<li>设置过滤器参数。 注意将最终图像设置为当前堆栈图像。 不交换输入图像很重要！ 堆栈计数也设置为数组索引加1。 这是因为您在方法开头从对齐的帧缓冲区中删除了第一个图像。</li>
+<li>使用新的滤镜输出图像覆盖最终图像。</li>
+<li>在所有图像合并后，使用最终图像调用清理（图像:)。</li>
+</ol>
+<p>您可能已经注意到cleanup（）不接受任何参数。 通过使用以下内容替换cleanup（）来解决此问题：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">cleanup</span><span class="params">(image: CIImage)</span></span> &#123;</span><br><span class="line">  frameBuffer = []</span><br><span class="line">  alignedFrameBuffer = []</span><br><span class="line">  isProcessingFrames = <span class="literal">false</span></span><br><span class="line">  <span class="keyword">if</span> <span class="keyword">let</span> completion = completion &#123;</span><br><span class="line">    <span class="type">DispatchQueue</span>.main.async &#123;</span><br><span class="line">      completion(image)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  completion = <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>唯一的更改是新添加的参数和在主线程上调用完成处理程序的if语句。 其余的仍然保持原样。</p>
+<p>在processFrames（完成:)的底部，将对cleanup（）的调用替换为：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">combineFrames()</span><br></pre></td></tr></table></figure>
+
+<p>这样，图像处理器将在对齐后将所有捕获的帧组合在一起，然后将最终图像传递给完成功能。</p>
+<p>唷！ 构建并运行这个应用程序，让那些人，汽车和任何在你的镜头中移动的东西消失！</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/06/evanesco-final-demo.gif" alt="图片"></p>
+<p>为了更多的乐趣，挥动魔杖，大喊Evanesco！ 当你使用该应用程序。 其他人绝对不会认为你很奇怪。：]</p>
+<h2 id="然后去哪儿？"><a href="#然后去哪儿？" class="headerlink" title="然后去哪儿？"></a>然后去哪儿？</h2><p>恭喜！您已经完成了本教程中的许多概念。你现在已准备好在现实世界中发挥你的魔力！</p>
+<p>但是，如果您想尝试改进您的应用，有几种方法可以做到：</p>
+<ol>
+<li>使用VNHomographicImageRegistrationRequest计算透视扭曲矩阵以对齐捕获的帧。这应该在两个帧之间创建更好的匹配，使用起来有点复杂。</li>
+<li>计算模式像素值而不是平均值。该模式是最常出现的值。这样做会消除图像中移动物体的所有影响，因为它们不会被平均。这应该创建一个更清晰的输出图像。提示：将RGB转换为HSL，并根据色调（H）值的小范围计算模式。</li>
+</ol>
+<p>如果您对有关Metal的更多信息感兴趣，请查看<a href="https://www.raywenderlich.com/7475-metal-tutorial-getting-started" target="_blank" rel="noopener">Metal Tutorial：Getting Started</a>和<a href="https://store.raywenderlich.com/products/metal-by-tutorials" target="_blank" rel="noopener">Metal by Tutorials</a>一书。</p>
+<p>我们希望您喜欢本教程，如果您有任何问题或意见，请加入以下论坛讨论！</p>
+<p>项目工程: <a href="https://koenig-media.raywenderlich.com/uploads/2019/07/Evanesco.zip" target="_blank" rel="noopener">https://koenig-media.raywenderlich.com/uploads/2019/07/Evanesco.zip</a></p>
+
+                
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

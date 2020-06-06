@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：iOS中的Socket编程(二) - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="在之前的那篇文章, 我们了解了一些关于Socket的基础知识, 如果没有去看的朋友, 可以去看看玩转iOS开发：iOS中的Socket编程(一).
+那么现在我们继续来讲讲剩下的一丢丢知识, 然后就开,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：iOS中的Socket编程(二)</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：iOS中的Socket编程(二)</h1>
+        <div class="stuff">
+            <span>六月 29, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/网络编程/">网络编程</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>在之前的那篇文章, 我们了解了一些关于Socket的基础知识, 如果没有去看的朋友, 可以去看看<a href="https://cainluo.github.io/2017/06/28/c0b1ea2f.html">玩转iOS开发：iOS中的Socket编程(一)</a>.</p>
+<p>那么现在我们继续来讲讲剩下的一丢丢知识, 然后就开始来写我们的代码~</p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="建立TCP连接"><a href="#建立TCP连接" class="headerlink" title="建立TCP连接"></a>建立TCP连接</h2><p>上一讲也说了, <strong>Socket</strong>是基于<strong>TCP/IP</strong>上的封装, 如果要了解<strong>Socket</strong>的连接, 就要从<strong>TPC/IP</strong>的连接入手.</p>
+<p>我们日夜不分离的手机之所以能联网, 也是因为手机的底层实现了<strong>TCP/IP</strong>协议, 可以让手机通过<strong>WiFi</strong>, <strong>4G</strong>等无线网络进行通信.</p>
+<p>建立起一个<strong>TCP</strong>连接, 需要通过三次的验证, 我们这里称为三次握手:</p>
+<ul>
+<li>第一次握手: 由客户端发送一个叫做<strong>SYN(SYN=J)</strong>包到服务器, 并且进入<strong>SYN_SEND</strong>状态, 然后就翘着二郎腿等服务器回应.</li>
+<li>第二次握手: 服务器接收到了<strong>SYN</strong>包, 必须确认客户端的<strong>SYN(ACK=J+1)</strong>, 同时也会发送一个<strong>SYN(SYN=K)</strong>包, 也就是<strong>SYN+ACK</strong>, 此时轮到服务器跷二郎腿, 并且进入<strong>SYN_RECV</strong>状态.</li>
+<li>第三次握手: 接收到了服务器发来的<strong>SYN+ACK</strong>包, 并向服务器发送确认包<strong>ACK(ACK=K+1)</strong>, 发完之后, 客户端和服务器就会收起二郎腿并且进入<strong>ESTABLISHED</strong>状态, 完成了三次握手</li>
+</ul>
+<p>大概的情况就是酱紫:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-NetWork/master/Socket%E7%BC%96%E7%A8%8B(%E4%BA%8C)/1.png" alt="1"></p>
+<p>这里注意一下, 在进行握手的时候, 所传送的包并不包含数据.</p>
+<p>只有在完成三次握手之后, 客户端和服务器才会正式开始传输数据, 一般在TCP连接建立成功后, 除非有一方主动关闭连接之前, TCP连接是会一直保持下去的, 比如我们的微信, QQ这些即时聊天App.</p>
+<h2 id="关闭TCP连接"><a href="#关闭TCP连接" class="headerlink" title="关闭TCP连接"></a>关闭TCP连接</h2><p>刚刚说完了如何建立起<strong>TCP</strong>的连接, 现在我们来看看怎么关闭.</p>
+<p>客户端和服务器都可以发起关闭<strong>TCP</strong>连接的请求, 但是需要通过四次验证, 我们这里称为四次挥手, 这里我们演示由客户端发起关闭<strong>TCP</strong>连接: </p>
+<ul>
+<li>第一次挥手: 客户端会发送一个<strong>FIN</strong>的报文给服务器之后就会进入等待服务器的响应.</li>
+<li>第二次挥手: 服务器接收到了<strong>FIN</strong>之后, 并确认是由客户端发起的, 同时也会发送一条<strong>ACK=X+1</strong>的报文.</li>
+<li>第三次挥手: 等到客户端接受到<strong>ACK</strong>报文之后, 服务器关闭了与客户端的连接, 会发送一条<strong>FIN</strong>的报文给客户端.</li>
+<li>第四次挥手: 客户端接收到了由服务器发送过来的FIN报文, 就会关闭与服务端的连接, 并且发送<strong>ACK</strong>给服务器.</li>
+</ul>
+<p>关系图:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-NetWork/master/Socket%E7%BC%96%E7%A8%8B(%E4%BA%8C)/2.png" alt="2"></p>
+<p>有人或许有疑问说为啥<strong>TCP</strong>建立连接的时候是三次握手, 而断开连接的时候却是四次挥手呢?</p>
+<p>因为连接时服务端收到了客户端的<strong>SYN</strong>连接请求的报文后, 可以直接发送<strong>SYN+ACK</strong>报文, 其中的<strong>ACK</strong>报文是用来响应, <strong>SYN</strong>报文是用来同步的.</p>
+<p>而当关闭连接时, 服务端收到FIN报文后, 很可能并不会马上就关闭<strong>Socket</strong>连接, 所以只能先回复一个<strong>ACK</strong>报文, 告诉客户端, 你发的<strong>FIN</strong>报文我收到了, 只有等到服务器的所有报文发送完了, 服务端才会发送FIN报文, 所以才需要四次挥手.</p>
+<h2 id="HTTP连接"><a href="#HTTP连接" class="headerlink" title="HTTP连接"></a>HTTP连接</h2><p>本来并不打算把<strong>HTTP/HTTPS</strong>也讲了, 但既然都说到这, 还是补上吧.</p>
+<p><strong>HTTP</strong>是一个超文本传输协议, 全名叫做<strong>Hyper Text Transfer Protocol</strong>, 是<strong>Web</strong>互联网的基础, 也是我们手机联网常用的协议之一, 顺便说说, <strong>HTTP</strong>协议是建立在TCP协议之上的一种应用.</p>
+<p>用过<strong>HTTP</strong>请求的都知道, <strong>HTTP</strong>最显著的一个特点就是客户端每次发送的网络请求都需要服务端的响应, 在请求结束后, 会主动的关闭连接.</p>
+<p>由于建立连接到关闭连接是一次性连接, 所以<strong>HTTP/HTTPS</strong>会被称为短连接, 如果要保持长期在线的话, 需要不停的像服务器发送请求, 如果服务器长时间没有接收到客户端的请求, 就会认为客户端下线了, 反过来, 如果客户端长时间没有接收到服务器的响应, 则认为网络断开.</p>
+<p>在<strong>HTTP 1.0</strong>中, 客户端的每次请求都要求建立一次单独的连接, 在处理完本次请求后, 就自动释放连接. 而<strong>HTTP 1.1</strong>中则可以在一次连接中处理多个请求，并且多个请求可以重叠进行, 不需要等待一个请求结束后再发送下一个请求, 现在最新的<strong>HTTP 2.0</strong>是兼容<strong>HTTP 1.1</strong>的, 虽然说是新版, 但我个人感觉好像是优化版本, 只是提高了<strong>Web</strong>的性能.</p>
+<h2 id="HTTPS连接"><a href="#HTTPS连接" class="headerlink" title="HTTPS连接"></a>HTTPS连接</h2><p><strong>HTTPS</strong>全名叫做<strong>Hyper Text Transfer Protocol over Secure Socket Layer,</strong> 是HTTP的安全版本, 主要是在<strong>HTTP</strong>加了一层<strong>SSL</strong>, 所以加密的时候就要用到<strong>SSL</strong>加密.</p>
+<p><strong>HTTPS</strong>存在于<strong>HTTP</strong>与<strong>TCP</strong>之间, <strong>HTTP</strong>是以明文发送的, 不提供任何方式的数据加密, 所以非常容易受到攻击, 因为<strong>HTTP</strong>协议不方便用来传输敏感信息, 但HTTPS比较麻烦, 因为需要去申请一个<strong>CA</strong>证书. </p>
+<p><strong>HTTP</strong>和<strong>HTTPS</strong>的区别:</p>
+<ul>
+<li><strong>HTTP</strong>是超文本传输协议, 信息是明文传输, <strong>HTTPS</strong>则是具有安全性的<strong>SSL</strong>加密传输协议.</li>
+<li><strong>HTTP</strong>和<strong>HTTPS</strong>使用的是完全不同的连接方式, 用的端口也不一样, 前者是<strong>80</strong>, 后者是<strong>443</strong>.</li>
+<li><strong>HTTP</strong>的连接很简单, 是无状态的, <strong>HTTPS</strong>协议是由<strong>HTTP + SSL</strong>协议构建的可进行加密传输、身份认证的网络协议.</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-NetWork/master/Socket%E7%BC%96%E7%A8%8B(%E4%BA%8C)/3.png" alt="3"></p>
+<h2 id="Socket与HTTP的区别"><a href="#Socket与HTTP的区别" class="headerlink" title="Socket与HTTP的区别"></a>Socket与HTTP的区别</h2><p>虽然说<strong>Socket</strong>和<strong>HTTP</strong>都是基于<strong>TCP</strong>, 但通常情况下<strong>Socket</strong>连接就是<strong>TCP</strong>连接, 一旦建立了<strong>Socket</strong>连接, 双方就可以相互发送数据, 直到双方连接断开为止.</p>
+<p>但在实际应用中，客户端到服务器之间的通信防火墙默认会关闭长时间处于非活跃状态的连接, 从而而导致<strong>Socket</strong>连接断连，因此需要通过轮询告诉网络，该<strong>Socket</strong>连接处于活跃状态。</p>
+<p>而<strong>HTTP</strong>刚刚也说了, 它的连接方式是<strong>请求 -&gt; 响应</strong>, 不仅要在请求的时候需要先建立好连接, 而且需要客户端向服务器发送请求后, 服务器才能回复数据.</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#建立TCP连接"><span class="toc-number">1.</span> <span class="toc-text">建立TCP连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关闭TCP连接"><span class="toc-number">2.</span> <span class="toc-text">关闭TCP连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP连接"><span class="toc-number">3.</span> <span class="toc-text">HTTP连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTPS连接"><span class="toc-number">4.</span> <span class="toc-text">HTTPS连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Socket与HTTP的区别"><span class="toc-number">5.</span> <span class="toc-text">Socket与HTTP的区别</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

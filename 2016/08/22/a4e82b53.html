@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：《iOS设计模式 — 代理模式》 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="上次我们知道了单例模式是怎么回事, 现在我们来探讨一下什么叫做代理模式.
+其实所谓的代理模式在我们日常生活中非常的常见, 比如买车, 各式各样的牌子都有, 但这些汽车生产商又不可能自己掏钱在每个城市,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：《iOS设计模式 — 代理模式》</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：《iOS设计模式 — 代理模式》</h1>
+        <div class="stuff">
+            <span>八月 22, 2016</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>上次我们知道了<strong>单例模式</strong>是怎么回事, 现在我们来探讨一下什么叫做<strong>代理模式</strong>.</p>
+<p>其实所谓的代理模式在我们日常生活中非常的常见, 比如买车, 各式各样的牌子都有, 但这些汽车生产商又不可能自己掏钱在每个城市的每个角落都开一家自己的直营店, 所以他们会去招一些第三方的代理商进行分销, 而这个就是我们今天所要说的<strong>代理模式</strong>.</p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><img src="https://raw.githubusercontent.com/cainluo/DesignPattern/master/ProxyPattern/ProxyPattern%E8%AF%B4%E6%98%8E/ProxyPatternUML.png" alt="ProxyPatternUM"></p>
+<p>这是一张<strong>代理模式</strong>的UML图, 同样也很简单的讲解了<strong>代理模式</strong>到底是怎么回事</p>
+<p>顺序如下: </p>
+<ul>
+<li>1.<strong>Client(客户)</strong>向<strong>Subject(代理店)</strong>发起购买汽车的请求</li>
+<li>2.<strong>Subject(代理店)</strong>会向<strong>Proxy(生产商)</strong>进行提单</li>
+<li>3.<strong>Proxy(生产商)</strong>按照提单进行交货给<strong>Subject(代理店)</strong></li>
+<li>4.<strong>Subject(代理点)</strong>再交付给<strong>Client(客户)</strong>, </li>
+</ul>
+<h2 id="创建工程"><a href="#创建工程" class="headerlink" title="创建工程"></a>创建工程</h2><p>打开我们自己创建的<strong>DesignPatternWork</strong>文件夹, 里面有我们之前所创建的<strong>DesignPatternWorkSpace</strong></p>
+<p><img src="https://raw.githubusercontent.com/cainluo/DesignPattern/master/ProxyPattern/ProxyPattern%E8%AF%B4%E6%98%8E/1.png" alt="1"></p>
+<p>添加我们所要创建的新工程, 命名为<strong>ProxyPattern</strong></p>
+<p><img src="https://raw.githubusercontent.com/cainluo/DesignPattern/master/ProxyPattern/ProxyPattern%E8%AF%B4%E6%98%8E/2.png" alt="2"></p>
+<p><img src="https://raw.githubusercontent.com/cainluo/DesignPattern/master/ProxyPattern/ProxyPattern%E8%AF%B4%E6%98%8E/3.png" alt="3"></p>
+<h2 id="创建代理类"><a href="#创建代理类" class="headerlink" title="创建代理类"></a>创建代理类</h2><h3 id="声明代理类"><a href="#声明代理类" class="headerlink" title="声明代理类"></a>声明代理类</h3><p>这里我们就拿奥迪这个汽车生产商来进行演示, 原谅我是个奥迪控~~</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/DesignPattern/master/ProxyPattern/ProxyPattern%E8%AF%B4%E6%98%8E/4.png" alt="4"></p>
+<h3 id="声明代理方法"><a href="#声明代理方法" class="headerlink" title="声明代理方法"></a>声明代理方法</h3><p>在这里声明两个代理方法, 但他们有所区别, 一个是必须实现, 一个是可选类型的, 由于方法名自注释, 我这里就不添加注释了.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@required</span><br><span class="line">- (void)audiManufacturer:(AudiManufacturer *)audiManufacturer</span><br><span class="line">           orderQuantity:(NSInteger)orderQuantity;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@optional</span><br><span class="line">- (void)audiManufacturer:(AudiManufacturer *)audiManufacturer</span><br><span class="line">            audiDelegateInfo:(NSString *)audiDelegateInfo;</span><br></pre></td></tr></table></figure>
+
+<p>解释一下, 为什么我们需要在代理方法中提供代理类, 其实这个很好理解, 打个比方, 就拿奥迪来说吧, 一个品牌的车子, 肯定有不同的型号, 而每个型号不一定都是在同一家工厂里生产的, 这个时候我们就需要区分生产地, 所以我们为了提供外部去区分, 就需要在代理方法中提供代理类<strong>(个人理解, 不是官方语言哈)</strong>.</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/DesignPattern/master/ProxyPattern/ProxyPattern%E8%AF%B4%E6%98%8E/5.png" alt="5"></p>
+<h3 id="内部实现代理方法"><a href="#内部实现代理方法" class="headerlink" title="内部实现代理方法"></a>内部实现代理方法</h3><p>在内部实现两个对方开放的方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- (void)buyCarCount:(NSInteger)count;</span><br><span class="line">- (void)buyCarModel:(NSString *)model;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/cainluo/DesignPattern/master/ProxyPattern/ProxyPattern%E8%AF%B4%E6%98%8E/6.png" alt="6"></p>
+<h3 id="外部调用代理"><a href="#外部调用代理" class="headerlink" title="外部调用代理"></a>外部调用代理</h3><p>代理类以及代理方法我们已经完成了, 接下来我们就要在外部去实现了</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/DesignPattern/master/ProxyPattern/ProxyPattern%E8%AF%B4%E6%98%8E/7.png" alt="7"></p>
+<p><img src="https://raw.githubusercontent.com/cainluo/DesignPattern/master/ProxyPattern/ProxyPattern%E8%AF%B4%E6%98%8E/8.png" alt="8"></p>
+<h2 id="代理与协议的区别"><a href="#代理与协议的区别" class="headerlink" title="代理与协议的区别"></a>代理与协议的区别</h2><h3 id="代理与协议"><a href="#代理与协议" class="headerlink" title="代理与协议"></a>代理与协议</h3><p>到这里, 我们已经完成了整个代理模式的所有要求了, 但还有一些小细节需要提提.</p>
+<ul>
+<li><strong>代理职能:</strong>降低对象与对象之间的耦合度</li>
+<li><strong>协议职能:</strong>主要是用来约束对象或筛选对象</li>
+<li><strong>代理与协议的相似:</strong>代理与协议都是使用<strong>@protocol</strong>来进行声明, 并且提供方法的一种模式, 看起来没啥不一样.</li>
+<li><strong>代理与协议的不同:</strong>其实就如同它们的职能所说, <strong>代理</strong>是为了降低对象与对象之间的耦合度, <strong>协议</strong>是用来约束对象或筛选对象</li>
+</ul>
+<h3 id="创建协议"><a href="#创建协议" class="headerlink" title="创建协议"></a>创建协议</h3><p>这里我们用代码演示一下吧, 这样子更加的简单明了, 不过这里要注意一下, <strong>Protocol</strong>是没有<strong>.m</strong>文件的</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/DesignPattern/master/ProxyPattern/ProxyPattern%E8%AF%B4%E6%98%8E/9.png" alt="9"></p>
+<h3 id="创建顾客类"><a href="#创建顾客类" class="headerlink" title="创建顾客类"></a>创建顾客类</h3><p>创建完协议就要创建顾客了, 并且这个顾客类是必须遵守我们创建的<strong>Protocol</strong>, 然后在这个<strong>Protocol</strong>里加个判断.</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/DesignPattern/master/ProxyPattern/ProxyPattern%E8%AF%B4%E6%98%8E/10.png" alt="10"></p>
+<p><img src="https://raw.githubusercontent.com/cainluo/DesignPattern/master/ProxyPattern/ProxyPattern%E8%AF%B4%E6%98%8E/11.png" alt="11"></p>
+<p>现在我们来初始化一下这个顾客类, 并且校验一下我们所写的<strong>Protocol</strong>是否生效.</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/DesignPattern/master/ProxyPattern/ProxyPattern%E8%AF%B4%E6%98%8E/12.png" alt="12"></p>
+<p>先输入<strong>10000</strong></p>
+<p><img src="https://raw.githubusercontent.com/cainluo/DesignPattern/master/ProxyPattern/ProxyPattern%E8%AF%B4%E6%98%8E/13.png" alt="13"></p>
+<p>再输入<strong>1000000</strong></p>
+<p><img src="https://raw.githubusercontent.com/cainluo/DesignPattern/master/ProxyPattern/ProxyPattern%E8%AF%B4%E6%98%8E/14.png" alt="14"></p>
+<h2 id="补充一点"><a href="#补充一点" class="headerlink" title="补充一点"></a>补充一点</h2><p>其实在<strong>iOS</strong>中, 就有一个类叫做<strong>NSProxy</strong>, 它也可以用来实现<strong>代理模式</strong>, 但在这里先不做介绍, 后面有时间再另外写一篇文章去讲解怎么用<strong>NSProxy</strong>去实现代理模式, 如果有好奇心特别重的朋友, 也可以自行去翻查一下资料~</p>
+<h2 id="最后总结"><a href="#最后总结" class="headerlink" title="最后总结"></a>最后总结</h2><p>经过上面的演示, 就知道<strong>代理模式</strong>并没有想象中那么复杂, 说白了, 所谓的<strong>代理模式</strong>就是为了降低对象与对象之间的耦合度, 为了方便维护罢了, 同时我们也知道了<strong>代理</strong>与<strong>协议</strong>之间的区别, 这篇文章就到了, 谢谢大家的观看~</p>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: <a href="https://github.com/cainluo/DesignPattern" target="_blank" rel="noopener">https://github.com/cainluo/DesignPattern</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建工程"><span class="toc-number">2.</span> <span class="toc-text">创建工程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建代理类"><span class="toc-number">3.</span> <span class="toc-text">创建代理类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#声明代理类"><span class="toc-number">3.1.</span> <span class="toc-text">声明代理类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#声明代理方法"><span class="toc-number">3.2.</span> <span class="toc-text">声明代理方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内部实现代理方法"><span class="toc-number">3.3.</span> <span class="toc-text">内部实现代理方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#外部调用代理"><span class="toc-number">3.4.</span> <span class="toc-text">外部调用代理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代理与协议的区别"><span class="toc-number">4.</span> <span class="toc-text">代理与协议的区别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#代理与协议"><span class="toc-number">4.1.</span> <span class="toc-text">代理与协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建协议"><span class="toc-number">4.2.</span> <span class="toc-text">创建协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建顾客类"><span class="toc-number">4.3.</span> <span class="toc-text">创建顾客类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#补充一点"><span class="toc-number">5.</span> <span class="toc-text">补充一点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最后总结"><span class="toc-number">6.</span> <span class="toc-text">最后总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">7.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

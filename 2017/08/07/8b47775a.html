@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：iOS中的NSThread开发 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="前面我们已经把常用的GCD, NSOperation, NSOperationQueue讲完了, 现在我们继续来看看, 另一个不常用的多线程(其实是我自己不常用), 它就是NSThread.
+说到N,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：iOS中的NSThread开发</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：iOS中的NSThread开发</h1>
+        <div class="stuff">
+            <span>八月 07, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/多线程/">多线程</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>前面我们已经把常用的<strong>GCD</strong>, <strong>NSOperation</strong>, <strong>NSOperationQueue</strong>讲完了, 现在我们继续来看看, 另一个不常用的多线程(其实是我自己不常用), 它就是<strong>NSThread</strong>.</p>
+<p>说到<strong>NSThread</strong>的话, 我么那就不得不提到它的底层叫做<strong>Pthread</strong>, 这是一个由<strong>C</strong>语言写的多线程技术, 可以在<strong>Unix</strong>, <strong>Linux</strong>和<strong>Windows</strong>上使用.</p>
+<p>但由于是用<strong>C</strong>语言所写的, 所以需要自己管理线程生命周期, 开发难度比较大(不得不佩服一下搞<strong>C</strong>语言的大佬们), 这里我们简单了解一下就好了, 想深入了解的话, 可以自行去谷歌一下.</p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="Pthread的介绍"><a href="#Pthread的介绍" class="headerlink" title="Pthread的介绍"></a>Pthread的介绍</h2><p>这里引用一段来自维基百科的<a href="https://zh.wikipedia.org/wiki/POSIX%E7%BA%BF%E7%A8%8B" target="_blank" rel="noopener">Pthread介绍</a>:</p>
+<blockquote>
+<p>POSIX线程（英语：POSIX Threads，常被缩写为Pthreads）是POSIX的线程标准，定义了创建和操纵线程的一套API。</p>
+<p>实现POSIX线程标准的库常被称作Pthreads，一般用于Unix-like POSIX系统，如Linux、Solaris。</p>
+<p>但是Microsoft Windows上的实现也存在，例如直接使用Windows API实现的第三方库pthreads-w32；</p>
+<p>而利用Windows的SFU/SUA子系统，则可以使用微软提供的一部分原生POSIX API。</p>
+</blockquote>
+<h2 id="Pthread的使用"><a href="#Pthread的使用" class="headerlink" title="Pthread的使用"></a>Pthread的使用</h2><p>在举例子🌰之前, 我们得分析一下使用<strong>Pthread</strong>的几个步骤:</p>
+<ul>
+<li>首先要引入头文件<code>#import &lt;pthread.h&gt;</code></li>
+<li>其次要创建线程，并开启线程执行任务</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- (void)cratePthread &#123;</span><br><span class="line"></span><br><span class="line">    pthread_t thread;</span><br><span class="line"></span><br><span class="line">    pthread_create(&amp;thread, NULL, run, NULL);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void *run(void *param) &#123;</span><br><span class="line"></span><br><span class="line">    NSLog(@&quot;执行任务, 当前的线程为: %@&quot;, [NSThread currentThread]);</span><br><span class="line"></span><br><span class="line">    return NULL;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">06</span> <span class="number">20</span>:<span class="number">33</span>:<span class="number">42.496</span> NSThread-Example[<span class="number">4008</span>:<span class="number">314745</span>] 执行任务, 当前的线程为: &lt;NSThread: <span class="number">0</span>x60800007cb40&gt;&#123;<span class="keyword">number</span> = <span class="number">3</span>, name = (null)&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里要解释一下<code>pthread_create(&amp;thread, NULL, run, NULL)</code>括号里的四个属性:</p>
+<ul>
+<li>第一个是线程对象, 一般是用&amp;号加线程对象名.</li>
+<li>第二个和第四个是可以给线程添加属性.</li>
+<li>第三个表示的是, 指向函数的指针, 代码中的<strong>run</strong>其实就是我们之前讲到的任务.</li>
+</ul>
+<h2 id="NSThread的介绍"><a href="#NSThread的介绍" class="headerlink" title="NSThread的介绍"></a>NSThread的介绍</h2><p><strong>NSThread</strong>是苹果针对<strong>Pthread</strong>而封装的<strong>Objective-C</strong>对象, 有啥好处?</p>
+<ul>
+<li>中间省略了需要<strong>Pthread</strong>管理线程生命周期代码.</li>
+<li>更加的面向对象, 简单易懂, 而且还可以直接操作线程对象.</li>
+</ul>
+<p>之前我们经常看到<code>[NSThread currentThread]</code>这句代码, 就是获取当前线程信息的.</p>
+<h3 id="NSThread的使用"><a href="#NSThread的使用" class="headerlink" title="NSThread的使用"></a>NSThread的使用</h3><p>现在我们来看看<strong>NSThread</strong>的简单使用:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- (void)nsthread &#123;</span><br><span class="line"></span><br><span class="line">    NSThread *thread = [[NSThread alloc] initWithTarget:self</span><br><span class="line">                                               selector:@selector(runTheThread)</span><br><span class="line">                                                 object:nil];</span><br><span class="line"></span><br><span class="line">    [thread start];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)runTheThread &#123;</span><br><span class="line"></span><br><span class="line">    NSLog(@&quot;执行任务, 当前的线程为: %@&quot;, [NSThread currentThread]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">06</span> <span class="number">20</span>:<span class="number">53</span>:<span class="number">32.129</span> NSThread-Example[<span class="number">4108</span>:<span class="number">332154</span>] 执行任务, 当前的线程为: &lt;NSThread: <span class="number">0</span>x600000265900&gt;&#123;<span class="keyword">number</span> = <span class="number">3</span>, name = (null)&#125;</span><br></pre></td></tr></table></figure>
+
+<p>除此之外, 我们还可以在创建隐式线程并启动它:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- (void)backgroundThread &#123;</span><br><span class="line"></span><br><span class="line">    [self performSelectorOnMainThread:@selector(runTheBackgroundThread)</span><br><span class="line">                           withObject:nil</span><br><span class="line">                        waitUntilDone:YES];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)runTheBackgroundThread &#123;</span><br><span class="line"></span><br><span class="line">    NSLog(@&quot;执行任务, 当前的线程为: %@&quot;, [NSThread currentThread]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">06</span> <span class="number">20</span>:<span class="number">57</span>:<span class="number">35.971</span> NSThread-Example[<span class="number">4159</span>:<span class="number">338649</span>] 执行任务, 当前的线程为: &lt;NSThread: <span class="number">0</span>x608000067300&gt;&#123;<span class="keyword">number</span> = <span class="number">1</span>, name = main&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="NSThread的其他方法"><a href="#NSThread的其他方法" class="headerlink" title="NSThread的其他方法"></a>NSThread的其他方法</h3><p>获取主线程</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ (NSThread *)mainThread;</span><br></pre></td></tr></table></figure>
+
+<p>上面有获取主线程咯, 那这里也有一个判断是否是主线程的方法了, 区别在于, 一个是实例方法, 一个是类方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@property (readonly) BOOL isMainThread NS_AVAILABLE(10_5, 2_0);</span><br><span class="line"></span><br><span class="line">@property (class, readonly) BOOL isMainThread NS_AVAILABLE(10_5, 2_0); // reports whether current thread is main</span><br></pre></td></tr></table></figure>
+
+<p>还有我们之前经常看到的获取线程方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@property (class, readonly, strong) NSThread *currentThread;</span><br><span class="line"></span><br><span class="line">[NSThread currentThread];</span><br></pre></td></tr></table></figure>
+
+<p>如果你想和<strong>GCD</strong>那样设置线程的名字或者是获取线程的名字, 那么你可以用这个:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nullable, copy) NSString *name NS_AVAILABLE(10_5, 2_0);</span><br></pre></td></tr></table></figure>
+
+<h2 id="控制线程的状态"><a href="#控制线程的状态" class="headerlink" title="控制线程的状态"></a>控制线程的状态</h2><p>在上面的代码里, 我们可以看到和<strong>NSOperation</strong>一样, 有一个<code>- (void)start</code>方法, 用途是一样的, 就是启动线程:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)start NS_AVAILABLE(10_5, 2_0);</span><br></pre></td></tr></table></figure>
+
+<p>除了这个之外还有暂停当前线程的方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">+ (void)sleepUntilDate:(NSDate *)date;</span><br><span class="line">+ (void)sleepForTimeInterval:(NSTimeInterval)ti;</span><br></pre></td></tr></table></figure>
+
+<p>最后还有一个终止当前线程的方法和取消当前线程的方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+ (void)exit;</span><br><span class="line"></span><br><span class="line">- (void)cancel NS_AVAILABLE(10_5, 2_0);</span><br></pre></td></tr></table></figure>
+
+<p>既然这里提到了操控线程的状态, 那就得讲讲, 线程状态的切换.</p>
+<p>当我们用<strong>NSThread</strong>创建一条信线程的时候, 内存中会占用一块内存, 如下图:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-Project-Example/master/Multithreading/NSThread/Images/1.png" alt="1"></p>
+<p>一旦我们通过调用<code>- (void)start</code>之后, 就会把当前的线程对象, 加入到线程池中, 如下图:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-Project-Example/master/Multithreading/NSThread/Images/2.png" alt="2"></p>
+<p>如果还有其他线程对象添加进来或者是其他线程, 就会如下图所示:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-Project-Example/master/Multithreading/NSThread/Images/3.png" alt="3"></p>
+<p>这里举几个线程切换状态时的几个例子:</p>
+<ul>
+<li>当<strong>CPU</strong>去调用当前线程对象的时候, 那么当前线程就会进入一个运行状态, 否则就是准备就绪状态(比如<strong>CPU</strong>去调用其他线程对象), 如下图:</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-Project-Example/master/Multithreading/NSThread/Images/4.png" alt="4"></p>
+<ul>
+<li>如果<strong>CPU</strong>在运行当前线程对象的时候调用<strong>sleep</strong>方法或者是同步锁, 那么当前线程就会进入一个线程阻塞状态, 等到<strong>sleep</strong>方法到时间之后, 或者得到同步锁, 就会回到就绪状态.</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-Project-Example/master/Multithreading/NSThread/Images/5.png" alt="5"></p>
+<ul>
+<li>如果<strong>CPU</strong>在运行当前线程对象的时候, 任务执行完成或者是强制退出, 那么当前线程对象就会进入一个终止状态.</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-Project-Example/master/Multithreading/NSThread/Images/6.png" alt="6"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>虽然通过苹果封装的<strong>NSThread</strong>或者是用<strong>C</strong>写的<strong>Pthread</strong>可以更加直接的操作线程, 但我们一般不会直接用到<strong>NSThread</strong>和<strong>Pthread</strong>去操作线程.</p>
+<p>直接操作线程的话可以一不小心就<strong>GG</strong>了, 什么意思呢?</p>
+<p>比如我们在一个大项目里直接操作了线程, 给你个<strong>8</strong>核<strong>CPU</strong>, 我们为了完全使用<strong>CPU</strong>的性能, 可能会创建<strong>8</strong>条, 或者是<strong>16</strong>条线程, 然而在我们代码调用的框架里, 又做了类似的操作(代码不会知道我们创建了线程), 那么这时候就会造成上百条, 上千条线程了.</p>
+<p>其实代码本身是没有问题的, 但由于我们的操作不当, 最终就出现了问题, 使用线程都会有消耗一些内存和内核资源, 所以为了安全起见, 还是不要直接操作线程了.</p>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: [<a href="https://github.com/CainLuo/iOS-Project-Example/tree/master/Multithreading/NSThread/NSThread-Example" target="_blank" rel="noopener">https://github.com/CainLuo/iOS-Project-Example/tree/master/Multithreading/NSThread/NSThread-Example</a>)</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Pthread的介绍"><span class="toc-number">1.</span> <span class="toc-text">Pthread的介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pthread的使用"><span class="toc-number">2.</span> <span class="toc-text">Pthread的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSThread的介绍"><span class="toc-number">3.</span> <span class="toc-text">NSThread的介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#NSThread的使用"><span class="toc-number">3.1.</span> <span class="toc-text">NSThread的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NSThread的其他方法"><span class="toc-number">3.2.</span> <span class="toc-text">NSThread的其他方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#控制线程的状态"><span class="toc-number">4.</span> <span class="toc-text">控制线程的状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">6.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

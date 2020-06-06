@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CocoaPods 1.8 Beta新改进 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="CocoaPods 1.8将CDN切换为默认的spec repo源，并附带一些增强功能！
+
+注意: 如转载本文章, 请联系作者, 并给出文章的源地址
+
+CDN为默认值CDN支持最初是在1.7版本中引,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">CocoaPods 1.8 Beta新改进</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">CocoaPods 1.8 Beta新改进</h1>
+        <div class="stuff">
+            <span>八月 05, 2019</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/CocoaPods/">CocoaPods</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p><strong>CocoaPods 1.8</strong>将<strong>CDN</strong>切换为默认的<strong>spec repo</strong>源，并附带一些增强功能！</p>
+<blockquote>
+<p>注意: 如转载本文章, 请联系作者, 并给出文章的源地址</p>
+</blockquote>
+<h2 id="CDN为默认值"><a href="#CDN为默认值" class="headerlink" title="CDN为默认值"></a>CDN为默认值</h2><p><strong>CDN</strong>支持最初是在<strong>1.7</strong>版本中引入的，最终在<strong>1.7.2</strong>中完成。 它旨在大大加快初始设置和依赖性分析。 使用<strong>1.8</strong>，<strong>CocoaPods</strong>不再需要克隆现在巨大的主规格<strong>repo</strong>才能运行，用户几乎可以立即将他们的项目与<strong>CocoaPods</strong>集成。</p>
+<p>这是在不到一分钟的时间内用新安装的<strong>CocoaPods 1.8</strong>集成和构建<strong>iOS</strong>项目的视频演示：</p>
+<p>&lt;video src=”<a href="http://blog.cocoapods.org/assets/blog_img/CocoaPods-1.8.0/cocoapods-cdn-video.mp4&quot;type=&quot;video/mp4&quot;" target="_blank" rel="noopener">http://blog.cocoapods.org/assets/blog_img/CocoaPods-1.8.0/cocoapods-cdn-video.mp4&quot;type=&quot;video/mp4&quot;</a> controls=”controls”&gt;<br>Your browser does not support the video tag.<br></p>
+<p>您可以使用以下步骤安全地删除主规格库：</p>
+<p>首先，编辑<strong>Podfile</strong>以将<strong>CDN</strong>设置为主要来源：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- source <span class="string">'https://github.com/CocoaPods/Specs.git'</span></span><br><span class="line">+ source <span class="string">'https://cdn.cocoapods.org/'</span></span><br></pre></td></tr></table></figure>
+
+<p>然后，运行以下命令将其从托管存储库列表中删除：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod repo <span class="built_in">remove</span> master</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：如果您希望继续使用基于<strong>git</strong>的源，则必须确保通过源<strong>DSL</strong>在<strong>Podfile</strong>中明确指定它，否则<strong>CocoaPods</strong>将自动使用<strong>CDN</strong>进行依赖性解析。</p>
+</blockquote>
+<p>就是这样！ 有关<strong>CDN</strong>的更多信息，请阅读之前的<a href="https://github.com/CocoaPods/CocoaPods/issues/8753" target="_blank" rel="noopener">博客文章</a>！</p>
+<h2 id="info-plist-Podspec-DSL"><a href="#info-plist-Podspec-DSL" class="headerlink" title="info_plist Podspec DSL"></a>info_plist Podspec DSL</h2><p><strong>CocoaPods</strong>在适当的时候自动为<strong>pod</strong>，<strong>app</strong>规范和测试规范生成<strong>Info.plist</strong>文件，例如当<strong>Podfile</strong>通过指定<strong>use_frameworks</strong>需要动态框架时！ 选项。</p>
+<p><strong>Podspecs</strong>现在支持通过<strong>info_plist DSL</strong>修改生成的<strong>Info.plist</strong>文件的内容。 虽然我们预计这将最常用于修改框架的包标识符，但可以包含任何键值对。 指定的值将覆盖<strong>CocoaPods</strong>包含的任何默认值。</p>
+<p>这是一个例子：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Pod::Spec.new <span class="keyword">do</span> <span class="params">|s|</span></span><br><span class="line">  s.name         = <span class="string">'NetworkingLib'</span></span><br><span class="line">  s.version      = <span class="string">'1.0.0'</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># ...rest of attributes here</span></span><br><span class="line"></span><br><span class="line">  s.info_plist = &#123;</span><br><span class="line">    <span class="string">'CFBundleIdentifier'</span> =&gt; <span class="string">'com.awesomecompany.networking'</span>,</span><br><span class="line">    <span class="string">'SERVER_URL'</span> =&gt; <span class="string">'https://example.com/api'</span></span><br><span class="line">  &#125;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>随着<strong>1.7</strong>中引入的<strong>app</strong>规范，<strong>pod</strong>作者能够为他们的<strong>pod</strong>描述一个应用程序，例如演示应用程序。 新的<strong>info_plist DSL</strong>通过允许<strong>podspecs</strong>自定义生成的<strong>Info.plist</strong>来增强应用程序规范的功能，<strong>Info.plist</strong>包含重要的设置，例如包标识符，<strong>iOS</strong>安全和隐私设置，设备方向支持等。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Pod::Spec.new <span class="keyword">do</span> <span class="params">|s|</span></span><br><span class="line">  s.name         = <span class="string">'ToastLib'</span></span><br><span class="line">  s.version      = <span class="string">'1.0.0'</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># ...rest of attributes here</span></span><br><span class="line"></span><br><span class="line">  s.app_spec <span class="string">'ToastCatalog'</span> <span class="keyword">do</span> <span class="params">|app_spec|</span></span><br><span class="line">    app_spec.info_plist = &#123;</span><br><span class="line">      <span class="string">'CFBundleIdentifier'</span> =&gt; <span class="string">'com.bakery.ToastCatalog'</span>,</span><br><span class="line">      <span class="string">'UISupportedInterfaceOrientations'</span> =&gt; [</span><br><span class="line">        <span class="string">'UIInterfaceOrientationPortrait'</span>,</span><br><span class="line">        <span class="string">'UIInterfaceOrientationLandscapeLeft'</span>,</span><br><span class="line">        <span class="string">'UIInterfaceOrientationLandscapeRight'</span>,</span><br><span class="line">      ],</span><br><span class="line">      <span class="string">'UILaunchStoryboardName'</span> =&gt; <span class="string">'LaunchScreen'</span>,</span><br><span class="line">      <span class="string">'UIMainStoryboardFile'</span> =&gt; <span class="string">'AppStoryboard'</span>,</span><br><span class="line">      <span class="string">'NSLocationWhenInUseUsageDescription'</span> =&gt; <span class="string">'ToastCatalog uses your location to find nearby Toast!'</span></span><br><span class="line">    &#125;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>请务必注意，<strong>info_plist</strong>属性在未生成<strong>Info.plist</strong>文件的情况下不起作用，例如将<strong>pod</strong>集成为静态库时。 如果您的库需要始终存在<strong>Info.plist</strong>中包含的数据，我们建议您将其作为资源包含在内。</p>
+<p>有关其工作原理及其背后的理性的更多详细信息，请在此处查看RFC。</p>
+<h2 id="project-name-Podfile-DSL"><a href="#project-name-Podfile-DSL" class="headerlink" title="project_name Podfile DSL"></a>project_name Podfile DSL</h2><p><strong>CocoaPods 1.7</strong>引入了<strong>generate_multiple_pod_projects</strong>选项，该选项将每个<strong>pod</strong>安装到自己的<strong>Xcode</strong>项目中。 <strong>CocoaPods 1.8</strong>通过引入<strong>project_name DSL</strong>进一步扩展，允许<strong>pod</strong>使用者指定项目名称以集成给定的<strong>pod</strong>。</p>
+<p>这为消费者开辟了许多新的可能性，将某些豆荚分组在一起，这在逻辑上是有意义的。 请考虑以下示例：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">install! <span class="string">'cocoapods'</span>, <span class="symbol">:generate_multiple_pod_projects</span> =&gt; <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">target <span class="string">'MyApp'</span> <span class="keyword">do</span></span><br><span class="line">  use_frameworks!</span><br><span class="line"></span><br><span class="line">  pod <span class="string">'Moya'</span>, <span class="symbol">:project_name</span> =&gt; <span class="string">'Networking'</span></span><br><span class="line">  pod <span class="string">'Alamofire'</span>, <span class="symbol">:project_name</span> =&gt; <span class="string">'Networking'</span></span><br><span class="line">  pod <span class="string">'Result'</span>, <span class="symbol">:project_name</span> =&gt; <span class="string">'Networking'</span></span><br><span class="line"></span><br><span class="line">  target <span class="string">'MyAppTests'</span> <span class="keyword">do</span></span><br><span class="line">    inherit! <span class="symbol">:search_paths</span></span><br><span class="line">    pod <span class="string">'OCMock'</span>, <span class="symbol">:project_name</span> =&gt; <span class="string">'Testing'</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>会产生以下结果：</p>
+<p><img src="http://blog.cocoapods.org/assets/blog_img/CocoaPods-1.8.0/project_name.png" alt="图片"></p>
+<p>消费者可以选择自己的分组，并在其<strong>Podfile</strong>中提供自动应用项目名称的辅助方法。 例如，另一个分组想法是通过其平台（如<strong>iOS</strong>或<strong>macOS</strong>）对<strong>pod</strong>进行分组。</p>
+<blockquote>
+<p>注意：<strong>project_name</strong>选项当前还需要启用<strong>generate_multiple_pod_projects</strong>安装选项才能使其正常工作。 增量安装也已更新，以考虑每个<strong>pod</strong>使用的项目名称，并将继续按预期工作。</p>
+</blockquote>
+<h2 id="测试规格增强功能"><a href="#测试规格增强功能" class="headerlink" title="测试规格增强功能"></a>测试规格增强功能</h2><p>测试规范已成为<strong>CocoaPods</strong>的一个组成部分，并添加了一些新功能。</p>
+<h3 id="UI测试包支持"><a href="#UI测试包支持" class="headerlink" title="UI测试包支持"></a>UI测试包支持</h3><p>现在可以支持“<strong>UI测试包</strong>”，您现在可以指定要用于给定<strong>test_spec</strong>的<strong>test_type</strong>。 默认值为: <strong>unit</strong>，用于创建单元测试包。 考虑我们最喜欢的<strong>pod CannonPodder</strong>的以下示例：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Pod::Spec.new <span class="keyword">do</span> <span class="params">|s|</span></span><br><span class="line">  s.name         = <span class="string">'CannonPodder'</span></span><br><span class="line">  s.version      = <span class="string">'1.0.0'</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># ...rest of attributes here</span></span><br><span class="line"></span><br><span class="line">  s.test_spec <span class="string">'UITests'</span> <span class="keyword">do</span> <span class="params">|test_spec|</span></span><br><span class="line">    test_spec.requires_app_host = <span class="literal">true</span></span><br><span class="line">    test_spec.test_type = <span class="symbol">:ui</span></span><br><span class="line">    test_spec.source_files = <span class="string">'UITests/**/*.swift'</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>这将在安装时成功集成<strong>CannonPodder-UI-UITests UI</strong>测试包，并将自动创建要用于它的应用程序主机。</p>
+<blockquote>
+<p> 注意：<strong>UI</strong>测试包需要应用程序主机才能运行，因此如果您选择将测试规范集成为<strong>UI</strong>测试包，则必须始终指定<strong>requires_app_host</strong>。</p>
+</blockquote>
+<h3 id="可定制的应用主机"><a href="#可定制的应用主机" class="headerlink" title="可定制的应用主机"></a>可定制的应用主机</h3><p>对于大多数情况，生成的测试规范应用程序主机应足以在其中执行测试。 但是，有些情况下<strong>pod</strong>作者可能希望进一步自定义用于<strong>test_spec</strong>的<strong>app</strong>主机。</p>
+<p>例如，<strong>pod</strong>作者可能希望为其应用程序主机或资源包指定其他依赖项，以便在测试期间使用。 应用程序规范是一个很好的候选者，因为它们提供了大多数脚手架和<strong>1.8</strong>，现在可以通过<strong>app_host_name DSL</strong>将<strong>app_spec</strong>设置为<strong>test_spec</strong>的<strong>app</strong>主机。</p>
+<p>这是一个例子：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Pod::Spec.new <span class="keyword">do</span> <span class="params">|s|</span></span><br><span class="line">  s.name         = <span class="string">'CannonPodder'</span></span><br><span class="line">  s.version      = <span class="string">'1.0.0'</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># ...rest of attributes here</span></span><br><span class="line"></span><br><span class="line">  s.app_spec <span class="string">'DemoApp'</span> <span class="keyword">do</span> <span class="params">|app_spec|</span></span><br><span class="line">    app_spec.source_files = <span class="string">'DemoApp/**/*.swift'</span></span><br><span class="line">    <span class="comment"># Dependency used only by this app spec.</span></span><br><span class="line">    app_spec.dependency <span class="string">'Alamofire'</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  s.test_spec <span class="string">'Tests'</span> <span class="keyword">do</span> <span class="params">|test_spec|</span></span><br><span class="line">    test_spec.requires_app_host = <span class="literal">true</span></span><br><span class="line">    <span class="comment"># Use 'DemoApp' as the app host.</span></span><br><span class="line">    test_spec.app_host_name = <span class="string">'CannonPodder/DemoApp'</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># ...rest of attributes here</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># This is required since 'DemoApp' is specified as the app host.</span></span><br><span class="line">    test_spec.dependency <span class="string">'CannonPodder/DemoApp'</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>会产生以下结果：</p>
+<p><img src="http://blog.cocoapods.org/assets/blog_img/CocoaPods-1.8.0/app_host_name.png" alt="图片"></p>
+<p>这一强大的新功能为<strong>pod</strong>作者提供了新的可能性，他们希望对用于测试规范的<strong>app</strong>主机进行更精细的控制。</p>
+<h3 id="下一步是什么？"><a href="#下一步是什么？" class="headerlink" title="下一步是什么？"></a>下一步是什么？</h3><p><strong>CocoaPods 1.8</strong>是一个非常令人兴奋的版本，我们非常高兴您试用它，并建议您升级：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gem install cocoapods --<span class="keyword">pre</span></span><br></pre></td></tr></table></figure>
+
+<p>对于未来版本，我们将继续探索允许<strong>pod</strong>作者和<strong>pod</strong>使用者将集成<strong>pod</strong>配置到其项目中的新方法，例如通过指定单个包或链接设置。 我们已经发布了一份我们正在探索的提案，欢迎您提出意见！</p>
+<p>与往常一样，我们要感谢所有贡献者让这个版本成为现实！</p>
+<p>签出更改日志以获取完整的更改列表。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#CDN为默认值"><span class="toc-number">1.</span> <span class="toc-text">CDN为默认值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#info-plist-Podspec-DSL"><span class="toc-number">2.</span> <span class="toc-text">info_plist Podspec DSL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#project-name-Podfile-DSL"><span class="toc-number">3.</span> <span class="toc-text">project_name Podfile DSL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#测试规格增强功能"><span class="toc-number">4.</span> <span class="toc-text">测试规格增强功能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#UI测试包支持"><span class="toc-number">4.1.</span> <span class="toc-text">UI测试包支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可定制的应用主机"><span class="toc-number">4.2.</span> <span class="toc-text">可定制的应用主机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#下一步是什么？"><span class="toc-number">4.3.</span> <span class="toc-text">下一步是什么？</span></a></li></ol></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

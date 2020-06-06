@@ -1,0 +1,389 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RxSwift：1.初识RxSwift - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="本教程在向读者介绍RxSwift库以及如何使用Swift编写响应式的iOS App.
+问题来了, 什么是RxSwift呢? 这里有一段介绍:
+
+RxSwift是一个库，通过使用可观察序列和函数式操作,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">RxSwift：1.初识RxSwift</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">RxSwift：1.初识RxSwift</h1>
+        <div class="stuff">
+            <span>七月 15, 2019</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/RxSwift/">RxSwift</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>本教程在向读者介绍<strong>RxSwift</strong>库以及如何使用<strong>Swift</strong>编写响应式的<strong>iOS App</strong>.</p>
+<p>问题来了, 什么是<strong>RxSwift</strong>呢? 这里有一段介绍:</p>
+<blockquote>
+<p>RxSwift是一个库，通过使用可观察序列和函数式操作符组合异步和基于事件的代码，允许通过调度程序参数化执行。</p>
+</blockquote>
+<p><img src="https://media1.tenor.com/images/56fac68e17a5b69d3dd7762266d70d01/tenor.gif?itemid=10268620" alt="1"></p>
+<p>听起来好像很复杂, 但是请别担心, 如果我们一开始就要去了解编写响应式的程序, 理解程序背后的概念, 以及查看大量的常用术语, 那肯定是让人很头疼的.</p>
+<p>但是本教程的目标是: 通过解释如果使用每一个<strong>API</strong>, 并且简单的介绍它们在<strong>iOS app</strong>中的实际使用, 然后再慢慢介绍<strong>RxSwift</strong>的各种<strong>API</strong>以及<strong>Rx</strong>的概念.</p>
+<p>现在我们将从<strong>RxSwift</strong>的基本特性开始, 然后逐渐学习中级以及高级的课题, 在学习的过程中, 我们会花大量的时间练习新概念, 让你可以更加容易的掌握<strong>RxSwift</strong>, <strong>Rx</strong>是一个非常广泛的课题, 不可能所有东西都包含在本教程中, 刚开始的目的是让你对库有一个坚实的了解, 然后你在根据所学的<strong>Rx</strong>知识再扩展自己得<strong>Rx</strong>技能.</p>
+<p>现在, 我们从一个简单, 可理解的定义开始, 并在本章节后面讨论反应时编程的课题是, 逐步发展到一个更好更宽广的解释.</p>
+<blockquote>
+<p><strong>RxSwift</strong>本质上简化了异步程序的开发, 它允许代码对新数据作出反应, 并且以顺序的, 隔离的方式处理它.</p>
+</blockquote>
+<p>作为一个<strong>iOS App</strong>开发人员, 这样子的解释更加通俗易懂, 而且可以明确的告诉你<strong>RxSwift</strong>的作用.</p>
+<p>即使现在你仍然不清楚细节, 也可以知道<strong>RxSwift</strong>就帮助你来编写异步代码, 而且我们都知道要开一个好的, 确定性的异步代码是非常困难的, 如果有其他库可以帮助我们的话, 那肯定是非常受欢迎的.</p>
+<blockquote>
+<p>注意: 如转载本文章, 请联系作者, 并给出文章的源地址</p>
+</blockquote>
+<h2 id="异步编程的介绍"><a href="#异步编程的介绍" class="headerlink" title="异步编程的介绍"></a>异步编程的介绍</h2><p>如果我们试图用一种简单, 实际的语言来解释什么是异步编程, 可能会得到以下内容.</p>
+<p><strong>iOS App</strong>, 在任何时候都可能在做以下的任何事情, 甚至更多:</p>
+<ul>
+<li>对按钮点击做出反应</li>
+<li>显示键盘或者是隐藏键盘</li>
+<li>从网上下载一张大的照片</li>
+<li>将数据存储在本地的磁盘中</li>
+<li>播放音频</li>
+</ul>
+<p>所有的这些事情几乎都是在同一时间发生, 当键盘隐藏键盘的时候, 一直到键盘完全的隐藏, 应用程序中的音频是不会暂停的, 是吧?</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%201/2.png" alt="图片"></p>
+<p>并且程序中的所有不同的部分都不会互相阻塞执行, 因为<strong>iOS</strong>提供了各种的<strong>API</strong>, 允许我们在不同的线程上执行不同的工作, 并在设备不同的<strong>CPU</strong>核心上执行它们.</p>
+<p>然而, 当我们真正去编写这部分异步代码的时候是非常困难的, 尤其是当不同的代码需要处理相同的数据时, 很难想象哪段代码先更新数据, 或者是哪段代码读取最新的值.</p>
+<h3 id="Cocoa和UIKit的异步API"><a href="#Cocoa和UIKit的异步API" class="headerlink" title="Cocoa和UIKit的异步API"></a>Cocoa和UIKit的异步API</h3><p>苹果在iOS SDK中提供了很多API来帮助我们编写异步代码, 并且我们在项目中也已经使用过这些工具库, 但可能我们并没有考虑过这些工具库对编写移动应用程序是如此的重要.</p>
+<p>我们常用的工具库:</p>
+<ul>
+<li><strong>NotificationCenter</strong>: 通知中心, 可以在任何地方对任何感兴趣的事件发生时执行一段代码, 比如用户更改了屏幕的方向, 或者是让键盘显示或隐藏.</li>
+<li><strong>Delegate</strong>: 允许你定义一个对象代表另一个对象与另一个对象协作. 比如在我们的App委托中, 你定义了一个当新的远程通知到达时应该要做什么, 但是我们并不知道这段代码在什么时候执行, 也不知道它要执行多少次.</li>
+<li><strong>Grand Centeral Dispatch</strong>: 帮助我们执行抽象的工作, 我们可以在串行队列中安排顺序执行的代码, 或者在具有不同优先级的不同队列上运行大量的并发任务.</li>
+<li><strong>Closures</strong>: 创建可以在代码中传递独立代码片段, 这样其他对象就可以决定是否执行它, 执行多少次以及在什么地方执行它.</li>
+</ul>
+<p>由于大多数典型代码都是异步执行某些工作的, 而且所有的UI事件本质上都是异步的, 所以不可能假设整个应用程序代码的执行顺序.</p>
+<p>毕竟应用程序的代码根据不同的外部因素, 代码运行的顺序可能完全不同, 比如用户的输入, 网络活动或其他的系统事件(除非有一群机器人没日没夜的在测试我们的应用程序, 这样子我们就可以方方面面都可以考虑到了)</p>
+<p>当然, 并不是说编写好的异步代码是不可能的, 毕竟上面所列出来苹果API都是非常先进, 非常专业的, 与其他平台相比, 它们的功能都非常强大.</p>
+<p>但问题是, 复杂的异步代码变得非常的难写, 部分原因也是因为苹果的SDK提供了多种API:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%201/3.png" alt="图片"></p>
+<p>如果我们单独的使用<strong>Delegate</strong>, 或者是<strong>Closures</strong>, <strong>NotificationCenter</strong>等等, 由于异步API之间并没有共同的语言, 这样子我们阅读和理解代码并对其执行进行推理都是非常困难的.</p>
+<p>为了结束这个话题并将讨论放到更大的话题中, 我们来看看两段不同的代码: 一段是同步代码和一段异步代码.</p>
+<h3 id="同步代码"><a href="#同步代码" class="headerlink" title="同步代码"></a>同步代码</h3><p>为数组的每个元素执行操作, 这是我们在开发中经常都会遇到的, 它是一个非常简单但很可靠的应用程序逻辑构建块, 因为它保证了两件事:</p>
+<ul>
+<li>同步执行</li>
+<li>当我们在数组上迭代时, 集合是不可变的</li>
+</ul>
+<p>花点时间想想这意味着什么, 当我们迭代一个集合时, 我们不需要检查所有元素是否存在, 也不需要回滚以防止另一个现成在集合的开始插入一个元素.</p>
+<p>如果你想在<strong>for</strong>循环的这些方面玩得更多一些, 可以在<strong>Playground</strong>上试试这个:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> array = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="keyword">for</span> number <span class="keyword">in</span> array &#123;</span><br><span class="line">  <span class="built_in">print</span>(number)</span><br><span class="line">  array = [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(array)</span><br></pre></td></tr></table></figure>
+
+<p>数组在<strong>for</strong>循环中是可变的吗? 循环遍历的集合是否会更改? 所有命令的执行顺序是怎么样的? 如果需要, 可以修改号码吗?</p>
+<h3 id="异步代码"><a href="#异步代码" class="headerlink" title="异步代码"></a>异步代码</h3><p>假设每次迭代都是对按钮点击的反应, 也就是说用户每次点击按钮时, 应用程序都会打印出数组中的下一个元素:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> array = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="keyword">var</span> currentIndex = <span class="number">0</span></span><br><span class="line"><span class="comment">// This method is connected in Interface Builder to a button</span></span><br><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">printNext</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">  <span class="built_in">print</span>(array[currentIndex])</span><br><span class="line">  <span class="keyword">if</span> currentIndex != array.<span class="built_in">count</span> - <span class="number">1</span> &#123;</span><br><span class="line">    currentIndex += <span class="number">1</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>请与前面的代码相同的上下文中考虑这段代码, 当用户点击按钮时, 会打印出数组的所有元素吗? 答案是不确定的.</p>
+<p>或者, 另一段代码可能会在继续之后再集合的开头插入一个新元素?</p>
+<p>假设只有<code>printNext(_:)</code>才会更改<strong>currentIndex</strong>, 但是另一段代码也可能修改<strong>currentIndex</strong>, 有可能是你同事给你在后面补的刀.</p>
+<p>讲到这里, 你可能已经意识到编写异步代码的核心问题:</p>
+<ul>
+<li>执行工作的顺序</li>
+<li>共享可变的数据</li>
+</ul>
+<p>幸好, 这些都是<strong>RxSwift</strong>的强项!</p>
+<p>接下来, 你将开始了解<strong>RxSwift</strong>是如何工作的, 以及它解决了哪些问题.</p>
+<h2 id="异步编程的术语表"><a href="#异步编程的术语表" class="headerlink" title="异步编程的术语表"></a>异步编程的术语表</h2><p><strong>RxSwift</strong>中的有些术语与异步, 响应式和函数式编程紧密的绑定在一起, 如果你先理解以下的基本术语, 就会更加容易理解.</p>
+<p>一般来说, RxSwift试图解决一下的问题:</p>
+<h3 id="状态-可共享的可变状态"><a href="#状态-可共享的可变状态" class="headerlink" title="状态, 可共享的可变状态"></a>状态, 可共享的可变状态</h3><p>状态是比较难定义的, 要理解状态, 可以从一下的实际示例去理解.</p>
+<p>当我们启动电脑的时候, 它可以运行的很好, 但是在我们使用了几天或者是几周之后, 它可能会表现得奇怪, 有时候还会耍小脾气, 突然不工作了, 但是电脑的硬件和软件是保持不变的, 一旦我们重启了电脑之后, 同样的硬件和软件又开始正常工作了.</p>
+<p>内存中的数据, 存储在磁盘的数据, 响应用户的输入, 从云服务获取数据后留下的所有追踪, 这些所有的东西都是电脑上的状态.</p>
+<p>管理应用程序的状态, 特别是在多个异步组件之间共享状态, 是我们在本教程中要去学会处理的问题之一.</p>
+<h3 id="命令式编程"><a href="#命令式编程" class="headerlink" title="命令式编程"></a>命令式编程</h3><p>命令式编程是一种使用语句改变程序状态的编程规范, 就好像我们逗狗时使用的命令语言一样, “去拿XX”, “坐下”, “躺下”等等, 使用命令代码告诉应用程序确切的时间和怎么做.</p>
+<p>命令式代码与计算机能够理解的代码类似, <strong>CPU</strong>所做的就是遵循冗长的指令序列, 问题来了, 对于人类来说, 为复杂的异步应用程序编写命令式代码是非常具有挑战性的, 尤其是涉及到共享可变状态时.</p>
+<p>例如, 以<strong>iOS</strong>的<strong>ViewController</strong>的<code>viewDidAppear(_:)</code>中的代码为例:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidAppear</span><span class="params">(<span class="number">_</span> animated: Bool)</span></span> &#123;</span><br><span class="line">  <span class="keyword">super</span>.viewDidAppear(animated)</span><br><span class="line">  setupUI()</span><br><span class="line">  connectUIControls()</span><br><span class="line">  createDataSource()</span><br><span class="line">  listenForChanges()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们不知道这些方法是做什么的, 它们是否要更新<strong>ViewController</strong>本身的属性? 让人更加不解的是, 它们的调用顺序是否正确, 如果有人无意中交换了这些方法的调用顺序, 并将更改的代码提交了<strong>Pull Request</strong>, 那么现在所看到的应用程序行为可能就会有所不同.</p>
+<h3 id="副作用"><a href="#副作用" class="headerlink" title="副作用"></a>副作用</h3><p>既然我们队可变状态和命令式编程有了更多的了解, 那么我们就可以将这两件事的大多数问题归结为副作用.</p>
+<p>副作用用来表示对代码当前范围之外的状态的任何更改. 例如, 参考上面示例中的最后一段代码<code>connectUIControls()</code>可能将某种事情处理程序附加到某些<strong>UI</strong>组件当中, 这会产生一个副作用, 因为它改变了View的状态, 应用程序在执行<code>connectUIControls()</code>之前以一种方式执行, 之后又以另一种方式执行.</p>
+<p>每当修改存储在磁盘上的数据或者更新屏幕上的<strong>UILabel</strong>文本时, 都会产生副作用.</p>
+<p>副作用本身其实并不算是坏事, 毕竟产生副作用是任何程序的最终目标, 我们需要在程序执行完成后以某种方式更改世界的状态.</p>
+<p>运行一段时间, 什么都不做, 会使应用程序变得非常的无用.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%201/4.png" alt="图片"></p>
+<p>我们要以一种可控的方式去产生副作用, 需要能够确定哪些代码片段会导致副作用, 以及哪些代码片段只处理和输出数据.</p>
+<p><strong>RxSwift</strong>试图通过处理以下几个概念来解决上面列出的问题.</p>
+<h3 id="声明式代码"><a href="#声明式代码" class="headerlink" title="声明式代码"></a>声明式代码</h3><p>在命令式编程中, 可以随意改变状态, 在函数式编程中, 我们的目标是最小化引起副作用的代码. 但是我们没有生活在一个完美的世界里, 那么平衡就在两者之间. <strong>RxSwift</strong>结合了命令式代码和函数式代码的一些最佳方面.</p>
+<p>声明式代码允许我们定义行为片段, 只要有相关事件, <strong>RxSwift</strong>就会运行这些行为, 并且提供一个不可变的, 独立的数据块来处理这些行为事件.</p>
+<p>通过这种方式, 我们可以使用异步代码, 但是我们的目标是做出与简单的<strong>for</strong>循环相同的假设: 我们正在处理不可变的数据, 并且可以以顺序说的, 确定性的方式执行代码.</p>
+<h3 id="反应系统"><a href="#反应系统" class="headerlink" title="反应系统"></a>反应系统</h3><p>反应系统是一个相当抽象的数据, 涵盖了web或iOS应用程序, 这些应用程序大多都具备以下特性:</p>
+<ul>
+<li><strong>响应性</strong>: 始终保持最新的UI, 表示应用程序最新的状态.</li>
+<li><strong>弹性</strong>: 每个行为都是独立定义的, 提供灵活的错误恢复.</li>
+<li><strong>灵活性:</strong> 代码处理不同的工作负载, 通常实现一些特性, 如延迟驱动数据的收集, 事件节流和资源共享.</li>
+<li><strong>消息驱动</strong>: 使用消息通信来驱动来提高组件的可重用性和隔离性, 解耦类的生命周期和实现.</li>
+</ul>
+<p>现在我们已经很好的理解了<strong>RxSwift</strong>可以帮助我们解决什么问题和如何的去解决这些问题, 那么现在可以讨论<strong>Rx</strong>的构建快以及它们何如协同工作了.</p>
+<h2 id="RxSwift基础"><a href="#RxSwift基础" class="headerlink" title="RxSwift基础"></a>RxSwift基础</h2><p>响应式变成不是一个新概念, 它已经存在了相当长的时间, 但它的核心概念在十年中有了明显的回归.</p>
+<p>在此期间, web应用程序变得更加的复杂, 并面临着管理复杂异步UI的问题, 在服务端, 响应式系统(如上所述)已经成为了必须.</p>
+<p>微软的一个团队承担了解决我们在本章中讨论的异步, 可伸缩, 实时应用程序开发问题的挑战. 他们开发了一个独立于公司核心团队的库, 并在2009年前后提供了一个新的客户端与服务端的框架, 称为<code>.net</code>的响应式扩展Reactive Extensions for .NET(Rx).</p>
+<p>在<code>.NET</code>的<strong>3.5</strong>版本中是可选的插件, 后来在4.0版本之后称为核心库, 自2012年以来, 它一直都是一个开源的组件, 开源代码允许其他语言和平台重新实现相同的功能, 这使得<strong>Rx</strong>成为扩平台的标准.</p>
+<p>今天有<strong>RxJS, RxKotlin, Rx.NET, RxScala, RxSwift</strong>等等, 所有这些苦都努力实现基于响应式扩展标准的相同行为和相同表达性的API, 最终, 使用<strong>RxSwift</strong>创建<strong>iOS</strong>应用程序的开发人员也可以在<strong>Web</strong>上自由的与使用了<strong>RxJS</strong>的其他开发人员讨论应用程序的逻辑.</p>
+<p>与最初的<strong>Rx</strong>一样, <strong>RxSwift</strong>也可以处理目前为止所涉及的所有概念: 处理可变装, 允许我们组合事件的序列, 并改进代码的隔离, 可重用性和解耦等体系结构概念.</p>
+<p>让我们重温一下这个定义:</p>
+<blockquote>
+<p><strong>RxSwift</strong>找到了传统命令式<strong>Cocoa</strong>代码和纯粹函数式代码之间的最佳平衡点, 它允许我们通过使用不可变的代码定义确定的, 可组合的方式处理异步输入片段来响应事件.</p>
+</blockquote>
+<p>我们可以通过<a href="http://reactivex.io" target="_blank" rel="noopener">ReactiveX</a>阅读关于<strong>Rx</strong>实现家族的更多信息. 这是关于<strong>Rx</strong>操作符和核心类的文档的中心存储库. 这也可能是你第一个注意到<strong>Rx</strong>电鳗标志的地方.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%201/5.png" alt="图片"></p>
+<p>在本教程中, 我们将涵盖使用<strong>RxSwift</strong>开发的基本该你拿, 以及如何在应用程序中使用它们的实际示例.</p>
+<p><strong>Rx</strong>代码的三个构建快是<strong>Observable</strong>, <strong>Operator</strong>和<strong>Schedulers</strong>, 下面的小节将详细介绍这些内容.</p>
+<h3 id="Observables"><a href="#Observables" class="headerlink" title="Observables"></a>Observables</h3><p><code>Observable&lt;T&gt;</code>类提供了<strong>Rx</strong>的基础代码: 拥有异步产生事件的能力, 可以”装载”不可变类型<code>&lt;T&gt;</code>的通用数据, 它允许其他对象订阅该事件, 或者是<strong>values</strong>, 然后发出另一个对象.</p>
+<p><code>Observable&lt;T&gt;</code>类允许一个或多个观察者实时响应任何事件, 并更新应用程序的UI, 或者处理和利用新传入的数据.</p>
+<p><strong>ObservableType</strong>协议(<code>Observable&lt;T&gt;</code>符合该协议)非常简单. 一个可观察对象只能发射(和观察者可以接收)三种类型的事件:</p>
+<ul>
+<li><strong>A next event</strong>: “<strong>carries</strong>“(或”<strong>next</strong>“)最新的数据事件, 这是观察者”接收”的方式, 在发出终止事件之前, 可以发出不确定数量的值.</li>
+<li><strong>A completed event</strong>: 此事件成功终止事件序列. 它意味着<strong>Observable</strong>对象成功的完成了它的生命周期, 并且不会发出额外的事件.</li>
+<li><strong>An error event</strong>: <strong>Observable</strong>对象以错误的事件结束, 不会发出额外的事件.</li>
+</ul>
+<p>当讨论异步事件随着事件的推移而发出时, 我们可以在时间轴上可视化一个<strong>Observable</strong>的整数序列, 如下所示:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%201/6.png" alt="图片"></p>
+<p>一个<strong>Observable</strong>可以发出三个可能事件的简单契约可以是Rx中的任何事情, 因为它非常的普遍, 我们可以用它来创建非常复杂的应用逻辑.</p>
+<p>由于<strong>Observable</strong>契约没有对<strong>Observable</strong>对象或者观察者的本质做出任何的假设, 因为使用事件序列是最终解耦的实践.</p>
+<p>我们永远不需要使用<strong>Delegate</strong>或者<strong>Block</strong>来允许类与类之间的通信:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%201/7.png" alt="图片"></p>
+<p>为了了解一些实际情况, 我们将研究两种不同的<strong>Observable</strong>序列: 有限序列和无限序列.</p>
+<h3 id="有序的Observable序列"><a href="#有序的Observable序列" class="headerlink" title="有序的Observable序列"></a>有序的Observable序列</h3><p>一些Observable的序列发出零个, 一个或者是多个值, 在稍后的时刻, 要么成功后终止序列, 要么就发生错误后终止序列.</p>
+<p>在iOS应用程序中, 考虑从网上下载文件的代码:</p>
+<ul>
+<li>首先, 开始下载并开始观察传入的数据.</li>
+<li>然后, 当文件的一部分进入时, 我们将会不断的接收数据块.</li>
+<li>如果网络中断, 下载将会停止, 链接将超时并出现错误.</li>
+<li>另外, 如果成功的下载了所有文件的数据, 它将成功后终止序列.</li>
+</ul>
+<p>该工作流程准确的描述了经典Observable的生命周期, 代码如下:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">API</span>.download(file: <span class="string">"http://www..."</span>)</span><br><span class="line">  .subscribe(onNext: &#123; data <span class="keyword">in</span></span><br><span class="line">    <span class="comment">// Append data to temporary file</span></span><br><span class="line">  &#125;,</span><br><span class="line">  onError: &#123; error <span class="keyword">in</span></span><br><span class="line">    <span class="comment">// Display error to user</span></span><br><span class="line">  &#125;,</span><br><span class="line">  onCompleted: &#123;</span><br><span class="line">    <span class="comment">// Use downloaded file</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><code>API.download(file:)</code>返回一个<strong>Observable</strong>的实例, 该实例在网上传输数据块时发出数据.</p>
+<p>我们可以通过提供<strong>onError</strong>闭包订阅错误, 在该闭包中, 可以显示<code>error.localizedDescription</code>在<strong>UIAlertController</strong>中, 或者执行其他的操作.</p>
+<p>最后, 处理一个已完成的事件, 我们则需要提供一个<strong>onCompleted</strong>闭包, 在该闭包中, 我们可以<strong>push</strong>一个新的<strong>UIViewController</strong>来显示下载的文件, 或者其他的逻辑处理.</p>
+<h3 id="无限的Observable序列"><a href="#无限的Observable序列" class="headerlink" title="无限的Observable序列"></a>无限的Observable序列</h3><p>与文件下载活动不同, 这些活动要么自然的终止, 要么就是强制终止, 有一些序列是无限的, 通常UI事件就是这种无限的<strong>Observable</strong>序列:</p>
+<p>例如, 考虑到我们需要对应用程序中的改变设备方向时需要作出反应:</p>
+<ul>
+<li>我们将我们的类作为观察者, 并添加来自<strong>NotificationCenter</strong>的<strong>UIDeviceOrientationDidChange</strong>的通知.</li>
+<li>然后需要提供一个方法回调来处理方向的更改, 它需要从<strong>UIDevice</strong>获取当前的朝向并对最新的值作出相应的反应.</li>
+</ul>
+<p>这一系列的方向变化并没有一个自然的终点, 只要有设备, 就可能有一系列的方向变化, 此外, 有序序列实际上是无限的, 所以在开始观察它时会有一个初始值.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%201/8.png" alt="图片"></p>
+<p>用户可能从来没有旋转过他们的设备, 但这并不意味着事件序列已经终止了, 它只是没有发出事件而已.</p>
+<p>在<strong>RxSwift</strong>中, 我们可以这样写代码来处理设备的朝向:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">UIDevice</span>.rx.orientation</span><br><span class="line">  .subscribe(onNext: &#123; current <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">switch</span> current &#123;</span><br><span class="line">    <span class="keyword">case</span> .landscape:</span><br><span class="line">      <span class="comment">// Re-arrange UI for landscape</span></span><br><span class="line">    <span class="keyword">case</span> .portrait:</span><br><span class="line">      <span class="comment">// Re-arrange UI for portrait</span></span><br><span class="line">	&#125; </span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><code>UIDevice.rx.orientation</code>是一个虚构的控件属性, 它生成一个Observable(这个很简单, 我们将在下一章节中学习到). 我们订阅它根据当前的方向来更新<strong>App UI</strong>, 我们可以直接跳过<strong>onError</strong>和<strong>onCompleted</strong>, 因为这些事件永远都不会从<strong>Observable</strong>对象发出.</p>
+<h3 id="操作符-Operators"><a href="#操作符-Operators" class="headerlink" title="操作符(Operators)"></a>操作符(Operators)</h3><p><strong>ObservableType</strong>和<strong>Observable</strong>类实现了大量抽象异步工作的离散部分的方法, 这些方法可以组合在一起实现复杂的逻辑. 因为它们是高度解耦和可组合的, 所以这些方法通常称作为操作符(<strong>Operators</strong>).</p>
+<p>由于这些操作符主要接受异步的输入, 并且只产生输出而不产生副作用, 所以它们可以很容易的组合在一起, 就像拼拼图一样, 并且可以构建更大的画面.</p>
+<p>例如: 以简单的数学表达式<strong>(1 + 2) * 3 - 4</strong>为例:</p>
+<p>以一种清晰的, 确定的方式, 我们可以将操作符<strong>**<em>, *</em>()</strong>, <strong>+</strong>和<strong>-</strong>按照预定的顺序作为它们输入的数据块, 获取它们输出的结果并继续处理表达式, 直接解析完成为止.</p>
+<p>以某种类似的方式, 我们可以将<strong>Rx</strong>操作符应用<strong>Observable</strong>对象发出的事件, 以确定的处理输入和输出, 知道表达式解析为最终值, 然后我们就可以使用该值来做其他的操作:</p>
+<p>下面是关于一个观察方向变化的例子, 调整后我们就可以看到一些常见的<strong>Rx</strong>操作符:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">UIDevice</span>.rx.orientation</span><br><span class="line">  .<span class="built_in">filter</span> &#123; value <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">return</span> value != .landscape</span><br><span class="line">  &#125;</span><br><span class="line">.<span class="built_in">map</span> &#123; <span class="number">_</span> <span class="keyword">in</span></span><br><span class="line">	<span class="keyword">return</span> <span class="string">"Portrait is the best!"</span></span><br><span class="line">&#125;</span><br><span class="line">.subscribe(onNext: &#123; string <span class="keyword">in</span></span><br><span class="line">  showAlert(text: string)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>每次当<code>UIDevice.rx.orientation</code>生成<code>.landscape</code>或<code>.portrait</code>值, <strong>Rx</strong>将对发出的数据块用对应的操作符进行处理.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%201/9.png" alt="图片"></p>
+<p>首先, <strong>filter</strong>只允许非<code>.landscape</code>的值通过. 如果设备处于横向模式, 那么订阅的代码则不会被执行, 因为有<strong>filter</strong>来抑制这些事件.</p>
+<p>在<code>.portrait</code>值的情况下, <strong>map</strong>操作符将获取方向的类型转换为一串衣服穿输出——文本”<strong>Portrait is the best!</strong>“</p>
+<p>最后, 使用<strong>subscribe</strong>进行订阅, 将我们处理好的字符串, 通过调用一个方法显示在<strong>UIAlertController</strong>中.</p>
+<p>操作符也是可以高度组合的——它们总是将数据作为输入和输出的结果, 因此我们可以轻松地以许多不同的方式将它们链接起来, 从而实现比单个操作符多出更多的功能!</p>
+<p>在阅读本教程中, 我们会慢慢了解到更多复杂的操作符, 它们抽象了更复杂的异步代码.</p>
+<h3 id="线程调度-Schedulers"><a href="#线程调度-Schedulers" class="headerlink" title="线程调度(Schedulers)"></a>线程调度(Schedulers)</h3><p>线程调度相当于<strong>Rx</strong>的分派队列——更加的容易使用.</p>
+<p><strong>RxSwift</strong>附带了许多预编译的调度器, 涵盖<strong>99%</strong>的使用场景, 因为<strong>RxSwift</strong>永远都不希望需要我们自己去创建调度器.</p>
+<p>事实上, 这个教程里的前半部分中的大多数示例都非常简单, 通常都是处理观察数据和更新<strong>UI</strong>, 所以在学习了基础知识之前, 我们不会去研究调度程序.</p>
+<p>例如, 希望可以指定在<strong>SerialDispatchQueueScheduler</strong>上观察下一个事件, 该调度程序使用<strong>Grand Central Dispatch</strong>在指定队列串行的运行代码.</p>
+<p><strong>ConcurrentDispatchQueueScheduler</strong>将同时运行我们的代码, 而<strong>OperationQueueScheduler</strong>将允许我们在指定的操作队列上订阅调度器.</p>
+<p>这里说一句谢谢<strong>RxSwift</strong>, 我们可以在不同的调度器调度相同订阅的不同代码片段, 从而获取最佳的性能.</p>
+<p><strong>RxSwift</strong>将在订阅(在下面图片的左侧方)和调度程序(在下面图片的右侧方)充当调度器, 将代码块发送到正确的上下文中, 并且允许他们无缝间的处理彼此输出的数据.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%201/10.png" alt="图片"></p>
+<p>要阅读此图, 请按照在不同的调度称重的顺序(1, 2, 3, …)跟踪彩色的代码片段, 例如:</p>
+<ul>
+<li>蓝色的网络订阅从一段代码(1)开始, 这段代码运行在基于自定义操作队列的调度程序上.</li>
+<li>这一块的数据作为下一个工作块(2)的输入, 下一个工作块(2)运行在另一个调度程序上, 该调度程序位于并发后台的<strong>GCD</strong>队列上.</li>
+<li>最后, 在主线程的调度程序上调度最后一段蓝色的代码块, 将这些处理好的数据用于<strong>UI</strong>的更新.</li>
+</ul>
+<p>这样子解释起来非常的有趣并且非常的方便, 而且我们也不需要在调度程序上花费太多的精力.</p>
+<h2 id="应用程序体系结构"><a href="#应用程序体系结构" class="headerlink" title="应用程序体系结构"></a>应用程序体系结构</h2><p>值得一提的是, <strong>RxSwift</strong>不会以任何的方式改变应用程序的架构, 它主要是处理事件, 异步数据序列和通用通信.</p>
+<p>我们可以使用<strong>Rx</strong>创建应用程序, 方法可以是实现<strong>Apple developer</strong>文档中定义的<strong>MVC(Model-View-Controller)</strong>架构, 也可以选择实现<strong>MVP(Model-View-Presenter)</strong>或者是<strong>MVVM(Model-View-ViewModel)</strong>.</p>
+<p>如果你想的话, <strong>RxSwift</strong>对于实现你自己得单向数据流架构也非常有用.</p>
+<p>值得注意的是, 我们绝对不需要从新开始写一个项目, 并且使它成为一个响应式应用程序, 可以慢慢的重构迭代现有项目的各个部分, 或者在为应用程序构建新功能时简单的使用<strong>RxSwift</strong>.</p>
+<p>微软的<strong>MVVM</strong>体系结构是专门为在提供数据绑定的平台上创建事件驱动软件而开发的, <strong>RxSwift</strong>和<strong>MVVM</strong>确实可以非常好的结合在一起, 在本教程的最后, 我们会使用<strong>RxSwift</strong>去实现这种模式.</p>
+<p><strong>MVVM</strong>和<strong>RxSwift</strong>之所以能够很好的结合在一起, 是因为<strong>ViewModel</strong>允许我们公开<strong>Observable<t></t></strong>属性, 我们可以直接绑定到<strong>UIViewController</strong>的胶水代码中的<strong>UIKit</strong>控件, 这会让数据模型绑定到<strong>UI</strong>非常的容易:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%201/11.png" alt="图片"></p>
+<p>本教程所有的其他示例都会以<strong>MVC</strong>的架构去实现, 以保证代码简单易懂.</p>
+<h2 id="RxCocoa"><a href="#RxCocoa" class="headerlink" title="RxCocoa"></a>RxCocoa</h2><p><strong>RxSwift</strong>是通用的, 并且是与平台无关的<strong>Rx</strong>规范的实现, 因此它对任何<strong>Cocoa</strong>或者特定的<strong>UIKit</strong>的类一无所知.</p>
+<p><strong>RxCocoa</strong>是<strong>RxSwift</strong>的伙伴库, 包含了帮助我们开发<strong>UIKit</strong>和<strong>Cocoa</strong>的类, 除了提供一些高级类之外, <strong>RxCocoa</strong>还向许多<strong>UI</strong>组件添加了响应式扩展, 这样子我们就可以订阅各种<strong>UI</strong>事件.</p>
+<p>例如, 很容易使用<strong>RxCocoa</strong>订阅<strong>UISwitch</strong>的状态变化, 代码如下:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">toggleSwitch.rx.isOn</span><br><span class="line">  .subscribe(onNext: &#123; isOn <span class="keyword">in</span></span><br><span class="line">    <span class="built_in">print</span>(isOn ? <span class="string">"It's ON"</span> : <span class="string">"It's OFF"</span>)</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>RxCocoa</strong>添加了<strong>rx</strong>, 将<strong>isOn</strong>属性(以及其他属性)订阅到<strong>UISwitch</strong>类, 以便可以将有用的事件订阅为响应式<strong>Observable</strong>序列.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%201/12.png" alt="图片"></p>
+<p>此外, <strong>RxCocoa</strong>将<strong>rx</strong>的明明空间添加到了<strong>UITextField</strong>, <strong>URLSession</strong>, <strong>UIViewController</strong>等等, 甚至允许我们在这个命名空间下定义属于我们自己的响应式扩展, 在这个教程的后面我们会了解到.</p>
+<h2 id="安装RxSwift"><a href="#安装RxSwift" class="headerlink" title="安装RxSwift"></a>安装RxSwift</h2><p>由于<strong>RxSwift</strong>是开源的, 我们可以通过<a href="https://github.com/ReactiveX/RxSwift免费获得" target="_blank" rel="noopener">https://github.com/ReactiveX/RxSwift免费获得</a>.</p>
+<p><strong>RxSwift</strong>是基于<strong>MIT</strong>协议下发布的, 健儿颜值, 它允许我们在现有的基础上将库使用在免费或者是商业软件中, 与其他所有经过麻省理工学院授权的软件一样, 版本声明应该包含在我们发布的所有应用程序中.</p>
+<p>在<strong>RxSwift</strong>存储库中又很多值得探索的地方, 除了<strong>RxSwift</strong>和<strong>RxCocoa</strong>库之外, 我们还可以找到<strong>RxTest</strong>和<strong>RxBlocking</strong>, 他们将允许我们为<strong>RxSwift</strong>代码编写测试.</p>
+<p>除了所有优秀的源代码(绝对值得我们一看), 我们还会找到<strong>Rx.playground</strong>, 这里面演示需要交互操作符, 还可以看看<strong>RxExample</strong>, 在这个<strong>Demo</strong>中, 它在演示的过程中实现了许多的概念.</p>
+<p>在项目中包含<strong>RxSwift/RxCocoa</strong>的最简单方法是通过<strong>CocoaPods</strong>和<strong>Carthage</strong>, 甚至还可以使用<strong>Swift Package Manager</strong>来管理.</p>
+<p>本教程使用的是<strong>CocoaPods</strong>, 哪怕是你以前没有用过也无所谓, 但是请在看本教程的时候确保使用<strong>CocoaPods</strong>.</p>
+<h3 id="通过CocoaPods安装RxSwift"><a href="#通过CocoaPods安装RxSwift" class="headerlink" title="通过CocoaPods安装RxSwift"></a>通过CocoaPods安装RxSwift</h3><p>我们可以像其他的<strong>pod</strong>库一样通过<strong>CocoaPods</strong>安装<strong>RxSwift</strong>, 正常的<strong>Podfile</strong>应该是这样子的:</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">use_frameworks!</span><br><span class="line">target <span class="string">'MyTargetName'</span> <span class="keyword">do</span></span><br><span class="line">  pod <span class="string">'RxSwift'</span>, <span class="string">'~&gt; 4.4'</span></span><br><span class="line">  pod <span class="string">'RxCocoa'</span>, <span class="string">'~&gt; 4.4'</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>当然, 我们可以只导入<strong>RxSwift</strong>和<strong>RxCocoa</strong>, 其他的库如果要使用, 则可以在<a href="https://www.github.com" target="_blank" rel="noopener">GitHub</a>里找到.</p>
+<p>至于<strong>Carthage</strong>这里就不做任何的展示了, 有兴趣的朋友可以自行去寻找资料</p>
+<h2 id="社区"><a href="#社区" class="headerlink" title="社区"></a>社区</h2><p><strong>RxSwift</strong>的项目非常的又活力, 不仅仅是因为<strong>Rx</strong>让我们可以更加简单的创建应用程序, 还因为围绕着这个项目所形成的社区.</p>
+<p><strong>RxSwift</strong>社区非常友好, 开发, 并且热衷于讨论模式, 常见的技术还有互相帮助.</p>
+<p>除了官方所提供的<strong>RxSwift</strong>库, 我们还可以在<a href="http://community.rxswift" target="_blank" rel="noopener">Community</a>找到更多由<strong>Rx</strong>爱好者所提供的项目.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%201/13.png" alt="图片"></p>
+<p>更多的<strong>Rx</strong>库和实验就像雨后的蘑菇一样, 我们可以在<a href="https://github.com/RxSwiftCommunity" target="_blank" rel="noopener">RxSwiftCommunity</a>找到</p>
+<p>如果想认识许多对<strong>RxSwift</strong>感兴趣的人, 也可以通过<strong>Slack</strong>专用的频道: <a href="http://slack.rxswift" target="_blank" rel="noopener">RxSwift for Slack</a>.</p>
+<p>这个频道里有几千名用户在相互帮助或讨论<strong>RxSwift</strong>以及其他配套库的潜在新特性, 还会有关于<strong>RxSwift</strong>的博客文章, 会议演讲等等.</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过这篇文章, 我们知道了命令式编程, 函数式编程的一些基本概念, 也初步认识了<strong>RxSwift</strong>可以给我们带来什么样的好处, 可以更简单, 更省事的开发我们想开发的应用程序.</p>
+<p>那么接下来就开始学习<strong>RxSwift</strong>的基本知识吧.</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#异步编程的介绍"><span class="toc-number">1.</span> <span class="toc-text">异步编程的介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Cocoa和UIKit的异步API"><span class="toc-number">1.1.</span> <span class="toc-text">Cocoa和UIKit的异步API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#同步代码"><span class="toc-number">1.2.</span> <span class="toc-text">同步代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异步代码"><span class="toc-number">1.3.</span> <span class="toc-text">异步代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#异步编程的术语表"><span class="toc-number">2.</span> <span class="toc-text">异步编程的术语表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#状态-可共享的可变状态"><span class="toc-number">2.1.</span> <span class="toc-text">状态, 可共享的可变状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#命令式编程"><span class="toc-number">2.2.</span> <span class="toc-text">命令式编程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#副作用"><span class="toc-number">2.3.</span> <span class="toc-text">副作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#声明式代码"><span class="toc-number">2.4.</span> <span class="toc-text">声明式代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#反应系统"><span class="toc-number">2.5.</span> <span class="toc-text">反应系统</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RxSwift基础"><span class="toc-number">3.</span> <span class="toc-text">RxSwift基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Observables"><span class="toc-number">3.1.</span> <span class="toc-text">Observables</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#有序的Observable序列"><span class="toc-number">3.2.</span> <span class="toc-text">有序的Observable序列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#无限的Observable序列"><span class="toc-number">3.3.</span> <span class="toc-text">无限的Observable序列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#操作符-Operators"><span class="toc-number">3.4.</span> <span class="toc-text">操作符(Operators)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#线程调度-Schedulers"><span class="toc-number">3.5.</span> <span class="toc-text">线程调度(Schedulers)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应用程序体系结构"><span class="toc-number">4.</span> <span class="toc-text">应用程序体系结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RxCocoa"><span class="toc-number">5.</span> <span class="toc-text">RxCocoa</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装RxSwift"><span class="toc-number">6.</span> <span class="toc-text">安装RxSwift</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#通过CocoaPods安装RxSwift"><span class="toc-number">6.1.</span> <span class="toc-text">通过CocoaPods安装RxSwift</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#社区"><span class="toc-number">7.</span> <span class="toc-text">社区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">8.</span> <span class="toc-text">总结</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

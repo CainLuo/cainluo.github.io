@@ -1,0 +1,404 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HealthKit教程的记录锻炼信息 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="本HealthKit教程通过将一个应用程序与系统的健康应用程序集成，一步一步地向您展示如何使用HealthKit api跟踪锻炼。
+
+更新说明:Felipe Laso-Marsetti针对Swift,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">HealthKit教程的记录锻炼信息</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">HealthKit教程的记录锻炼信息</h1>
+        <div class="stuff">
+            <span>九月 24, 2018</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/HealthKit/">HealthKit</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>本HealthKit教程通过将一个应用程序与系统的健康应用程序集成，一步一步地向您展示如何使用HealthKit api跟踪锻炼。</p>
+<blockquote>
+<p><strong>更新说明:</strong>Felipe Laso-Marsetti针对Swift 4.2、Xcode 10和iOS 12更新了本教程。原著是埃内斯托·加西亚写的。</p>
+</blockquote>
+<p>欢迎回到我们的HealthKit教程系列!</p>
+<p>在本系列文章的<a href="https://www.raywenderlich.com/459-healthkit-tutorial-with-swift-getting-started" target="_blank" rel="noopener">第一部分</a>中，您学习了使用HealthKit的基本知识:读取和写入数据。</p>
+<p>在本系列文章的第二部分也是最后一部分中，您将学习如何处理更复杂的数据类型:锻炼。</p>
+<p>这个项目继承了之前HealthKit教程的内容。如果您还没有这个项目，那么可以使用教程顶部或底部的download materials按钮下载本教程的材料。</p>
+<p>准备好在你的HealthKit锻炼中接受另一个代表!:]</p>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>在你的日常生活中，锻炼是一件简单的事情。这是一段时间，在这段时间里，你做一些活动，增加体力消耗。</p>
+<p>大多数锻炼都有以下一个特点:</p>
+<ul>
+<li><p>活动类型(跑步、骑车、腾空等)</p>
+</li>
+<li><p>距离</p>
+</li>
+<li><p>开始和结束时间</p>
+</li>
+<li><p>持续时间</p>
+</li>
+<li><p>能源燃烧</p>
+</li>
+</ul>
+<p>HealthKit对锻炼的看法大致相同。锻炼是这些类型信息的容器，作为样本的集合。给定的锻炼可能包含心率样本、距离样本和用于分类的活动类型。</p>
+<p>继续之前的<a href="https://www.raywenderlich.com/459-healthkit-tutorial-with-swift-getting-started" target="_blank" rel="noopener">HealthKit教程</a>，您将跟踪一种特殊的锻炼方式:<strong>Prancercise</strong>。</p>
+<p>starter项目已经包含一个视图控制器，它为您提供一个位置来跟踪您的Prancercise训练。要查看它，可以导航到<strong>Prancercise Workouts</strong>，然后点击+按钮。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2017/05/Simulator-Screen-Shot-May-29-2017-8.26.21-AM-281x500.png" alt="image1"></p>
+<p>这个视图包含一个启动Prancercise锻炼的按钮。轻按一下按钮。该应用程序将开始跟踪您的Prancercise会话，显示您的启动时间和持续时间。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/08/02-Started-Workout-281x500.png" alt="image2"></p>
+<p>再按一次按钮。您将看到当前的Prancercise会话将停止。此时，您可以点击Done来记录锻炼，或者点击<strong>New Prancercise</strong>按钮来开始新的锻炼会话(请注意，这将删除旧会话)。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/08/03-Finished-Workout-281x500.png" alt="image4"></p>
+<p>##储蓄的训练<br>目前，当你点击Done来保存你的锻炼时，这个应用程序实际上没有做任何事情。你要改变它。</p>
+<p>首先，有一点背景知识: 打开<strong>Workout.swift</strong>，四处看看。您应该看到一个名为<strong>PrancerciseWorkout</strong>的结构。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">PrancerciseWorkout</span> </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> start: <span class="type">Date</span></span><br><span class="line">  <span class="keyword">var</span> end: <span class="type">Date</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">init</span>(start: <span class="type">Date</span>, end: <span class="type">Date</span>) &#123;</span><br><span class="line">    <span class="keyword">self</span>.start = start</span><br><span class="line">    <span class="keyword">self</span>.end = end</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">var</span> duration: <span class="type">TimeInterval</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> end.timeIntervalSince(start)</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">var</span> totalEnergyBurned: <span class="type">Double</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> prancerciseCaloriesPerHour: <span class="type">Double</span> = <span class="number">450</span></span><br><span class="line">    <span class="keyword">let</span> hours: <span class="type">Double</span> = duration / <span class="number">3600</span></span><br><span class="line">    <span class="keyword">let</span> totalCalories = prancerciseCaloriesPerHour * hours</span><br><span class="line">    <span class="keyword">return</span> totalCalories</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>prancerciseexercise</code>是应用程序用来存储与锻炼相关信息的模型。每次你完成Prancercise会话后点击<strong>Done</strong>按钮，应用程序就会创建一个。</p>
+<p>每一个<code>PrancerciseWorkout</code>都会记录它:</p>
+<ol>
+<li><p>开始和结束时间</p>
+</li>
+<li><p>持续时间</p>
+</li>
+<li><p>总热量燃烧</p>
+</li>
+</ol>
+<p>当你保存你的锻炼时，你的应用程序将这些值输入HealthKit。</p>
+<blockquote>
+<p><strong>注意:</strong> 在这里，你假设一个有点紧张的腾空步伐与侵略性的脚踝重量和响亮的拳头泵音乐伴奏。因此，锻炼每小时消耗450卡路里。吃它,尊巴!</p>
+</blockquote>
+<p>既然您已经了解了<code>PrancerciseWorkout</code>包含什么内容，那么您就可以节省一个。</p>
+<p>打开<strong>WorkoutDataStore.swift</strong>并查看<code>save(prancerciseWorkout:completion:)</code>。这是你将用来节省你的升级健身HealthKit。</p>
+<p>在该方法中添加以下代码行:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> healthStore = <span class="type">HKHealthStore</span>()</span><br><span class="line"><span class="keyword">let</span> workoutConfiguration = <span class="type">HKWorkoutConfiguration</span>()</span><br><span class="line">workoutConfiguration.activityType = .other</span><br></pre></td></tr></table></figure>
+
+<p>您要做的第一件事是创建一个健康存储和锻炼配置来将数据存储到HealthKit中。接下来，在方法的末尾添加以下内容:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> builder = <span class="type">HKWorkoutBuilder</span>(healthStore: healthStore,</span><br><span class="line">                               configuration: workoutConfiguration,</span><br><span class="line">                               device: .local())</span><br><span class="line">    </span><br><span class="line">builder.beginCollection(withStart: prancerciseWorkout.start) &#123; (success, error) <span class="keyword">in</span></span><br><span class="line">  <span class="keyword">guard</span> success <span class="keyword">else</span> &#123;</span><br><span class="line">    completion(<span class="literal">false</span>, error)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>HKWorkoutBuilder</code>类(iOS 12的新版本)逐步构造一个锻炼并开始收集锻炼数据。接下来，在’beginCollection(withStart:completion:)’的完成处理程序的右括号前添加以下内容，得到燃烧的卡路里数量:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> quantityType = <span class="type">HKQuantityType</span>.quantityType(</span><br><span class="line">  forIdentifier: .activeEnergyBurned) <span class="keyword">else</span> &#123;</span><br><span class="line">  completion(<span class="literal">false</span>, <span class="literal">nil</span>)</span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">let</span> unit = <span class="type">HKUnit</span>.kilocalorie()</span><br><span class="line"><span class="keyword">let</span> totalEnergyBurned = prancerciseWorkout.totalEnergyBurned</span><br><span class="line"><span class="keyword">let</span> quantity = <span class="type">HKQuantity</span>(unit: unit,</span><br><span class="line">                          doubleValue: totalEnergyBurned)</span><br></pre></td></tr></table></figure>
+
+<p>你可能还记得早期HealthKit教程中的<code>HKQuantity</code>。您使用它来读写用户的身高、体重和体重指数。这里，你创建了一个量来存储这个样本中燃烧的总热量。之后，您可以创建一个新的示例。在你刚刚添加的代码之后立即添加以下代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> sample = <span class="type">HKCumulativeQuantitySeriesSample</span>(type: quantityType,</span><br><span class="line">                                              quantity: quantity,</span><br><span class="line">                                              start: prancerciseWorkout.start,</span><br><span class="line">                                              end: prancerciseWorkout.end)</span><br></pre></td></tr></table></figure>
+
+<p>HKCumulativeQuantitySeriesSample是一种新的示例类型，它存储用于锻炼的总数据，而不是单个值。例如，您可以使用这个方法，通过将所有单独的样本相加来收集您在篮球比赛中跑的总距离。最后，通过在方法中添加以下代码，将示例添加到构建器中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1. Add the sample to the workout builder</span></span><br><span class="line">builder.add([sample]) &#123; (success, error) <span class="keyword">in</span></span><br><span class="line">  <span class="keyword">guard</span> success <span class="keyword">else</span> &#123;</span><br><span class="line">    completion(<span class="literal">false</span>, error)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line">      </span><br><span class="line">  <span class="comment">//2. Finish collection workout data and set the workout end date</span></span><br><span class="line">  builder.endCollection(withEnd: prancerciseWorkout.end) &#123; (success, error) <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">guard</span> success <span class="keyword">else</span> &#123;</span><br><span class="line">      completion(<span class="literal">false</span>, error)</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">    <span class="comment">//3. Create the workout with the samples added</span></span><br><span class="line">    builder.finishWorkout &#123; (<span class="number">_</span>, error) <span class="keyword">in</span></span><br><span class="line">      <span class="keyword">let</span> success = error == <span class="literal">nil</span></span><br><span class="line">      completion(success, error)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码是这样的:</p>
+<ol>
+<li><p>准备好样本后，就可以将其添加到正在构建的锻炼中了。</p>
+</li>
+<li><p>在这里，您完成了对锻炼数据的收集，并为锻炼设置了结束日期。</p>
+</li>
+<li><p>您使用添加的所有示例创建锻炼。请注意如何在完成块中嵌套调用。这是为了确保没有出现竞态条件，并且在尝试下一个步骤之前每一步都已完成。如果你在你的应用程序中没有看到与HealthKit相比正确的数据，这可能是由于锻炼生成器更基于块的异步特性。</p>
+</li>
+</ol>
+<p>相当合适的是，Prancercise锻炼是一种只能被分类为<strong>其他类型</strong>的活动，但是如果您愿意，您可以从任何数量的受支持的活动类型中选择。:]</p>
+<p>您可能还注意到，您可以告诉HealthKit(在创建<code>HKWorkoutBuilder</code>时)记录了锻炼的设备。这在以后查询数据时很有用。</p>
+<p>##查询的锻炼</p>
+<p>现在，您可以保存锻炼，但您还需要从HealthKit加载锻炼的方法。为此，您将向<code>WorkoutDataStore</code>添加一个新方法。</p>
+<p>在<strong>workoutdatastore.swift</strong>中<code>save(prancerciseWorkout:completion:)</code>后粘贴以下方法。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">func</span> <span class="title">loadPrancerciseWorkouts</span>(<span class="title">completion</span>:</span></span><br><span class="line"><span class="class">  @<span class="title">escaping</span> ([<span class="title">HKWorkout</span>]?, <span class="title">Error</span>?) -&gt; <span class="title">Void</span>) </span>&#123;</span><br><span class="line">  <span class="comment">//1. Get all workouts with the "Other" activity type.</span></span><br><span class="line">  <span class="keyword">let</span> workoutPredicate = <span class="type">HKQuery</span>.predicateForWorkouts(with: .other)</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//2. Get all workouts that only came from this app.</span></span><br><span class="line">  <span class="keyword">let</span> sourcePredicate = <span class="type">HKQuery</span>.predicateForObjects(from: .<span class="keyword">default</span>())</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//3. Combine the predicates into a single predicate.</span></span><br><span class="line">  <span class="keyword">let</span> compound = <span class="type">NSCompoundPredicate</span>(andPredicateWithSubpredicates:</span><br><span class="line">    [workoutPredicate, sourcePredicate])</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">let</span> sortDescriptor = <span class="type">NSSortDescriptor</span>(key: <span class="type">HKSampleSortIdentifierEndDate</span>,</span><br><span class="line">                                        ascending: <span class="literal">true</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果您遵循了以前的HealthKit教程，那么这些代码中的大部分看起来都很熟悉。谓词决定您要查找的是哪种类型的HeathKit数据，排序描述符告诉HeathKit如何对它返回的样本进行排序。上面的代码是这样的:</p>
+<ol>
+<li><p><code>HKQuery.predicateforworkout (with:)</code>是一种特殊的方法，它为具有特定活动类型的锻炼提供一个谓词。在这种情况下，您正在加载任何类型的锻炼，其中的活动类型是<code>其他的</code>(所有Prancercise锻炼使用<code>其他</code>活动类型)。</p>
+</li>
+<li><p><code>HKSource</code>表示向HealthKit提供锻炼数据的应用程序。无论何时调用<code>HKSource.default()</code>，都是在说“这个应用程序”。<code>sourcePredicate</code>获取源代码所在的所有训练，你猜对了，就是这个应用程序。</p>
+</li>
+<li><p>有<a href="https://www.raywenderlich.com/145809/getting-started-core-data-tutorial" target="_blank" rel="noopener">Core Data</a>经验的人可能也熟悉<code>NSCompoundPredicate</code>。它提供了将一个或多个过滤器组合在一起的方法。最后的结果是一个查询，该查询获取您所有的锻炼，<code>其他的</code>作为活动类型，Prancercise Tracker作为源应用程序。</p>
+</li>
+</ol>
+<p>现在您已经有了谓词，是时候启动查询了。在方法末尾添加以下代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> query = <span class="type">HKSampleQuery</span>(</span><br><span class="line">  sampleType: .workoutType(),</span><br><span class="line">  predicate: compound,</span><br><span class="line">  limit: <span class="number">0</span>,</span><br><span class="line">  sortDescriptors: [sortDescriptor]) &#123; (query, samples, error) <span class="keyword">in</span></span><br><span class="line">    <span class="type">DispatchQueue</span>.main.async &#123;</span><br><span class="line">      <span class="keyword">guard</span> </span><br><span class="line">        <span class="keyword">let</span> samples = samples <span class="keyword">as</span>? [<span class="type">HKWorkout</span>],</span><br><span class="line">        error == <span class="literal">nil</span> </span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">          completion(<span class="literal">nil</span>, error)</span><br><span class="line">          <span class="keyword">return</span></span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      completion(samples, <span class="literal">nil</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="type">HKHealthStore</span>().execute(query)</span><br></pre></td></tr></table></figure>
+
+<p>在完成处理程序中，您将示例作为一个<code>HKWorkout</code>对象数组展开。这是因为<code>HKSampleQuery</code>默认返回一个<code>HKSample</code>数组，您需要将它们转换为<code>HKWorkout</code>以获得所有有用的属性，比如开始时间、结束时间、持续时间和消耗的能量。</p>
+<p>##将锻炼加载到用户界面<br>您编写了一个从HealthKit加载锻炼的方法。现在是进行这些练习并使用它们填充表视图的时候了。有些设置已经为您完成了。</p>
+<p>打开<strong>workoutstableviewcontroller.swift</strong>，看看周围。你会看到一些东西。</p>
+<ol>
+<li><p>有一个可选的数组，名为<code>workouts</code>，用于存储训练。这些是您将使用上一节的<code>loadprancerciseworkout (completion:)</code>加载的内容。</p>
+</li>
+<li><p>有一个名为<code>reloadWorkouts()</code>的方法。当此屏幕的视图出现时，您可以从<code>viewWillAppear(_:)</code>调用它。每次你导航到这个屏幕，锻炼就会刷新。</p>
+</li>
+</ol>
+<p>要用数据填充用户界面，您将加载训练并连接表视图的<code>数据源</code>。</p>
+<p>粘贴以下代码行到<code>reloadWorkouts()</code>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">WorkoutDataStore</span>.loadPrancerciseWorkouts &#123; (workouts, error) <span class="keyword">in</span></span><br><span class="line">  <span class="keyword">self</span>.workouts = workouts</span><br><span class="line">  <span class="keyword">self</span>.tableView.reloadData()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这里，您从<code>WorkoutDataStore</code>加载训练。然后，在完成处理程序中，将workouts分配给<code>workouts</code>属性，并用新数据重新加载表视图。</p>
+<p>此时，您可能已经注意到，仍然没有方法将数据从训练中获取到表视图。要解决这个问题，您需要放置table view的<code>dataSource</code>。</p>
+<p>将这些代码行粘贴到文件底部，右大括号后面:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MARK: - UITableViewDataSource</span></span><br><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">WorkoutsTableViewController</span> </span>&#123;</span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">tableView</span><span class="params">(<span class="number">_</span> tableView: UITableView,</span></span></span><br><span class="line"><span class="function"><span class="params">                          numberOfRowsInSection section: Int)</span></span> -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> workouts?.<span class="built_in">count</span> ?? <span class="number">0</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这表示您希望行数与从HealthKit中加载的锻炼次数相对应。此外，如果您没有从HealthKit加载任何锻炼，则没有行，表视图将显示为空。</p>
+<blockquote>
+<p><strong>注意:</strong> 您可能已经习惯看到这些方法前面没有<code>override</code>关键字。这里需要使用<code>override</code>的原因是因为<code>WorkoutsTableViewController</code>是<code>UITableViewController</code>的<strong>子类</strong>。</p>
+<p><code>UITableViewController</code>已经实现了所有与<code>UITableViewDatasource</code>相关的函数。要获得自定义行为，需要覆盖这些默认实现。</p>
+</blockquote>
+<p>现在，您将告诉单元格显示什么。将此方法粘贴到扩展的右花括号之前:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">tableView</span><span class="params">(<span class="number">_</span> tableView: UITableView,</span></span></span><br><span class="line"><span class="function"><span class="params">                cellForRowAt indexPath: IndexPath)</span></span> -&gt; <span class="type">UITableViewCell</span> &#123;</span><br><span class="line">  <span class="keyword">guard</span> <span class="keyword">let</span> workouts = workouts <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">fatalError</span>(<span class="string">"""</span></span><br><span class="line"><span class="string">      CellForRowAtIndexPath should \</span></span><br><span class="line"><span class="string">      not get called if there are no workouts</span></span><br><span class="line"><span class="string">      """</span>)</span><br><span class="line">  &#125;</span><br><span class="line">    </span><br><span class="line">  <span class="comment">//1. Get a cell to display the workout in</span></span><br><span class="line">  <span class="keyword">let</span> cell = tableView.dequeueReusableCell(withIdentifier:</span><br><span class="line">    prancerciseWorkoutCellID, <span class="keyword">for</span>: indexPath)</span><br><span class="line">    </span><br><span class="line">  <span class="comment">//2. Get the workout corresponding to this row</span></span><br><span class="line">  <span class="keyword">let</span> workout = workouts[indexPath.row]</span><br><span class="line">    </span><br><span class="line">  <span class="comment">//3. Show the workout's start date in the label</span></span><br><span class="line">  cell.textLabel?.text = dateFormatter.string(from: workout.startDate)</span><br><span class="line">    </span><br><span class="line">  <span class="comment">//4. Show the Calorie burn in the lower label</span></span><br><span class="line">  <span class="keyword">if</span> <span class="keyword">let</span> caloriesBurned =</span><br><span class="line">      workout.totalEnergyBurned?.doubleValue(<span class="keyword">for</span>: .kilocalorie()) &#123;</span><br><span class="line">    <span class="keyword">let</span> formattedCalories = <span class="type">String</span>(format: <span class="string">"CaloriesBurned: %.2f"</span>,</span><br><span class="line">                                   caloriesBurned)</span><br><span class="line">      </span><br><span class="line">    cell.detailTextLabel?.text = formattedCalories</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    cell.detailTextLabel?.text = <span class="literal">nil</span></span><br><span class="line">  &#125;</span><br><span class="line">    </span><br><span class="line">  <span class="keyword">return</span> cell</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>好吧!这就是奇迹发生的地方:</p>
+<ol>
+<li><p>从表视图中删除单元格。</p>
+</li>
+<li><p>你得到了这一行对应的结果。</p>
+</li>
+<li><p>在主标签中填充锻炼的开始日期。</p>
+</li>
+<li><p>如果一个锻炼将它的<code>totalEnergyBurned</code>属性设置为某个值，那么使用<strong>千卡</strong>将其转换为双倍。然后，格式化字符串并将其显示在单元格的detail标签中。</p>
+</li>
+</ol>
+<p>这与之前的HealthKit教程非常相似。唯一的新东西是燃烧卡路里的单位转换。</p>
+<p>构建并运行该应用程序。进入<strong>Prancercise Workouts</strong>，点击+按钮，跟踪一个简短的Prancercise锻炼，点击<strong>Done</strong>，查看表格视图。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/08/04-Workouts-List-281x500.png" alt="image7"></p>
+<blockquote>
+<p><strong>注意: **如果你在尝试保存锻炼时出现错误，请确保你已经在应用程序的主屏幕上点击了</strong>Authorize HealthKit**并完成了授权过程。</p>
+</blockquote>
+<p>这是一种很短的锻炼，但是它会燃烧。这种新的锻炼方式让CrossFit物超所值。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/08/swift-weights-250x250.png" alt="image8"></p>
+<p>##在锻炼中添加样本</p>
+<p>到目前为止，您已经假设一个Prancercise锻炼由一个单独的锻炼会话组成。但是，如果你觉得伸展运动有点过于激烈，你可能想把它分成几个短的间隔。</p>
+<p>使用<strong>样例</strong>，您可以在相同的锻炼下记录许多锻炼间隔。它可以让HealthKit更详细地了解你在日常锻炼中做了什么。</p>
+<p>你可以在锻炼中添加各种各样的样本。如果你愿意，你可以增加距离，燃烧的卡路里，心率等等。</p>
+<p>因为Prancercise更多的是一种舞蹈，所以本HealthKit教程将关注<strong>卡路里燃烧</strong>的样本。</p>
+<p>##制作模型的更新</p>
+<p>这是一种新的方式来思考伸展训练，这意味着是时候改变模式了。</p>
+<p>与其使用单一的Prancercise锻炼模型，您还需要一个表示短时间的<strong>锻炼间隔</strong>的概念。这样，一个<code>PrancerciseWorkout</code>就变成了一个包装器或容器，用于存储日常活动中开始和停止的锻炼间隔。</p>
+<p>打开<strong>Workout.swift</strong>。将<code>PrancerciseWorkout</code>重命名为<code>PrancerciseWorkoutInterval</code>，如下所示:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">PrancerciseWorkoutInterval</span> </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> start: <span class="type">Date</span></span><br><span class="line">  <span class="keyword">var</span> end: <span class="type">Date</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">var</span> duration: <span class="type">TimeInterval</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> end.timeIntervalSince(start)</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">var</span> totalEnergyBurned: <span class="type">Double</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> prancerciseCaloriesPerHour: <span class="type">Double</span> = <span class="number">450</span></span><br><span class="line">    <span class="keyword">let</span> hours: <span class="type">Double</span> = duration / <span class="number">3600</span></span><br><span class="line">    <span class="keyword">let</span> totalCalories = prancerciseCaloriesPerHour * hours</span><br><span class="line">    <span class="keyword">return</span> totalCalories</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>你可以看到其他一切都没有改变。曾经是一项完整的锻炼现在变成了一项锻炼的一部分。</p>
+<p>将以下代码粘贴到<code>PrancerciseWorkoutInterval</code>的struct声明下面:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">PrancerciseWorkout</span> </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> start: <span class="type">Date</span></span><br><span class="line">  <span class="keyword">var</span> end: <span class="type">Date</span></span><br><span class="line">  <span class="keyword">var</span> intervals: [<span class="type">PrancerciseWorkoutInterval</span>]</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">init</span>(with intervals: [<span class="type">PrancerciseWorkoutInterval</span>]) &#123;</span><br><span class="line">    <span class="keyword">self</span>.start = intervals.first!.start</span><br><span class="line">    <span class="keyword">self</span>.end = intervals.last!.end</span><br><span class="line">    <span class="keyword">self</span>.intervals = intervals</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在，一个完整的<code>PrancerciseWorkout</code>由一系列<code>PrancerciseWorkoutInterval</code>值组成。当数组中的第一项开始时，该练习开始;当数组中的最后一项结束时，该练习结束。</p>
+<p>这是一种很好的方式来表示锻炼是由时间间隔组成的，但它仍然缺少一个持续时间和总能量消耗的概念。在您定义这些代码之前，代码不会编译。</p>
+<p><a href="https://www.raywenderlich.com/157123/introduction-functional-programming-swift-2" target="_blank" rel="noopener">函数式编程</a>在这里发挥了作用。您可以使用<code>reduce</code>来总结<code>PrancerciseWorkoutInterval</code>上的持续时间和总能量消耗特性。</p>
+<p>在<code>PrancerciseWorkout</code>中粘贴以下计算属性<code>init(with:)</code>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> totalEnergyBurned: <span class="type">Double</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> intervals.<span class="built_in">reduce</span>(<span class="number">0</span>) &#123; (result, interval) <span class="keyword">in</span></span><br><span class="line">    result + interval.totalEnergyBurned</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> duration: <span class="type">TimeInterval</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> intervals.<span class="built_in">reduce</span>(<span class="number">0</span>) &#123; (result, interval) <span class="keyword">in</span></span><br><span class="line">    result + interval.duration</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>reduce</code>接受一个初始值(在本例中为零)和一个闭包，该闭包接受前面计算的结果。它对数组中的每一项都这样做。</p>
+<p>要计算燃烧的总能量，reduce从零开始，并将零添加到数组中的第一个能量燃烧值。然后它获取结果并将其添加到数组中的下一个值，以此类推。一旦它到达数组的末尾，你就得到了在整个锻炼过程中消耗的所有能量的总和。</p>
+<p>Reduce是一个方便的数组求和函数。如果您想阅读更多关于函数式编程及其美妙之处的内容，请阅读本文。</p>
+<p>##锻炼会话</p>
+<p>您几乎完成了模型的升级。打开<strong>WorkoutSession.swift</strong>，迅速看一看。</p>
+<p><code>WorkoutSession</code>用于存储与当前跟踪的<code>PrancerciseWorkout</code>相关的数据。由于您在<code>PrancerciseWorkout</code>中添加了锻炼间隔的概念，所以<code>WorkoutSession</code>需要在每次开始和结束Prancercise会话时添加新的间隔。</p>
+<p>在<code>WorkoutSession</code>类中，找到声明状态变量的行。它是这样的:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> state: <span class="type">WorkoutSessionState</span> = .notStarted</span><br></pre></td></tr></table></figure>
+
+<p>在它下面，添加一个新行，声明一个<code>PrancerciseWorkoutInterval</code>值数组:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> intervals: [<span class="type">PrancerciseWorkoutInterval</span>] = []</span><br></pre></td></tr></table></figure>
+
+<p>当您完成一个Prancercise会话时，一个新的interval将被添加到这个数组中。您将为此添加一个函数。</p>
+<p>在<code>WorkoutSession</code>中添加下面的<code>clear()</code>方法:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">addNewInterval</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">let</span> interval = <span class="type">PrancerciseWorkoutInterval</span>(start: startDate,</span><br><span class="line">                                            end: endDate)</span><br><span class="line">  intervals.append(interval)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该方法从锻炼会话获取开始和结束日期，并从中创建一个<code>PrancerciseWorkoutInterval</code>。注意，每次Prancercise会话开始和结束时，开始和结束日期都会重置。</p>
+<p>既然您已经有了一种添加锻炼间隔的方法，那么将<code>WorkoutSession</code>中的<code>end()</code>方法替换为:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">end</span><span class="params">()</span></span> &#123;</span><br><span class="line">  endDate = <span class="type">Date</span>()</span><br><span class="line">  addNewInterval()</span><br><span class="line">  state = .finished</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>您可以看到，在为会话设置结束日期之后，立即调用<code>addNewInterval()</code>。</p>
+<p>同样重要的是，当需要清理锻炼时，要清除数组。所以，在<code>clear()</code>的末尾加上这个:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">intervals.removeAll()</span><br></pre></td></tr></table></figure>
+
+<p><code>removeAll()</code>完全按照它说的做。它会删除所有。:]</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/08/swift-cop-stop-police-1-500x500.png" alt="image8"></p>
+<p>还有一个修改。<code>completeWorkout</code>需要使用interval创建一个新的<code>PrancerciseWorkout</code>对象。</p>
+<p>将<code>completeWorkout</code>声明替换为:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> completeWorkout: <span class="type">PrancerciseWorkout?</span> &#123;</span><br><span class="line">  <span class="keyword">guard</span> state == .finished, intervals.<span class="built_in">count</span> &gt; <span class="number">0</span> <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> <span class="type">PrancerciseWorkout</span>(with: intervals)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>好了。因为这个属性是可选的，所以您只希望在<code>WorkoutSession</code>结束并且您至少记录了一个间隔时，它返回一个完整的<code>PrancerciseWorkout</code>。</p>
+<p>每次你停止锻炼，一个新的<code>PrancerciseWorkoutInterval</code>和当前的开始和停止日期都会被添加到列表中。一旦用户点击Done来保存锻炼，这段代码就会使用多个会话中记录的时间间隔生成一个完整的<code>PrancerciseWorkout</code>实体。</p>
+<p>不需要更改<code>CreateWorkoutViewController</code>中的代码。按钮动作调用相同的<code>start()</code>、<code>end()</code>和<code>clear()</code>方法。唯一的区别是，<code>WorkoutSession</code>不是使用单个时间间隔，而是生成和存储许多时间间隔。</p>
+<p>构建和运行。试着开始和停止你的伸展运动，然后点击<strong>Done</strong>将你的运动添加到列表中。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/08/Simulator-Screen-Shot-iPhone-8-Plus-2018-08-23-at-11.55.55-281x500.png" alt="image9"></p>
+<p>需要注意的是，虽然这款应用程序记录了HealthKit上精确的健身数据，但它并没有附带任何样本。您需要一种方法将<code>prancerciseworkoutinterval</code>转换为示例。</p>
+<h2 id="在节省锻炼的同时添加样本"><a href="#在节省锻炼的同时添加样本" class="headerlink" title="在节省锻炼的同时添加样本"></a>在节省锻炼的同时添加样本</h2><p>打开<strong>WorkoutDataStore.swift</strong>，并在保存后立即粘贴此新方法<code>save(prancerciseWorkout:completion:)</code>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">func</span> <span class="title">samples</span>(<span class="title">for</span> <span class="title">workout</span>: <span class="title">PrancerciseWorkout</span>) -&gt; [<span class="title">HKSample</span>] </span>&#123;</span><br><span class="line">  <span class="comment">//1. Verify that the energy quantity type is still available to HealthKit.</span></span><br><span class="line">  <span class="keyword">guard</span> <span class="keyword">let</span> energyQuantityType = <span class="type">HKSampleType</span>.quantityType(</span><br><span class="line">    forIdentifier: .activeEnergyBurned) <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">fatalError</span>(<span class="string">"*** Energy Burned Type Not Available ***"</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//2. Create a sample for each PrancerciseWorkoutInterval</span></span><br><span class="line">  <span class="keyword">let</span> samples: [<span class="type">HKSample</span>] = workout.intervals.<span class="built_in">map</span> &#123; interval <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">let</span> calorieQuantity = <span class="type">HKQuantity</span>(unit: .kilocalorie(),</span><br><span class="line">                                     doubleValue: interval.totalEnergyBurned)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="type">HKCumulativeQuantitySeriesSample</span>(type: energyQuantityType,</span><br><span class="line">                                                  quantity: calorieQuantity,</span><br><span class="line">                                                  start: interval.start,</span><br><span class="line">                                                  end: interval.end)</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> samples</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>嘿，你以前见过这个!这与您在之前的HealthKit教程中提交身体质量指数示例时所做的相同。您在map中进行操作，为与您的<code>PrancerciseWorkout</code>关联的每个<code>PrancerciseWorkoutInterval</code>创建一个示例。</p>
+<p>现在，您将对代码进行一些调整，以便将示例附加到您的练习中。</p>
+<p>在<code>save(prancerciseWorkout:completion:)</code>方法中，替换以下代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> quantityType = <span class="type">HKQuantityType</span>.quantityType(forIdentifier:</span><br><span class="line">  .activeEnergyBurned) <span class="keyword">else</span> &#123;</span><br><span class="line">    completion(<span class="literal">false</span>, <span class="literal">nil</span>)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> unit = <span class="type">HKUnit</span>.kilocalorie()</span><br><span class="line"><span class="keyword">let</span> totalEnergyBurned = prancerciseWorkout.totalEnergyBurned</span><br><span class="line"><span class="keyword">let</span> quantity = <span class="type">HKQuantity</span>(unit: unit,</span><br><span class="line">                          doubleValue: totalEnergyBurned)</span><br><span class="line"><span class="keyword">let</span> sample = <span class="type">HKCumulativeQuantitySeriesSample</span>(type: quantityType,</span><br><span class="line">                                              quantity: quantity,</span><br><span class="line">                                              start: prancerciseWorkout.start,</span><br><span class="line">                                              end: prancerciseWorkout.end)</span><br><span class="line"></span><br><span class="line"><span class="comment">//1. Add the sample to the workout builder</span></span><br><span class="line">builder.add([sample]) &#123; (success, error) <span class="keyword">in</span></span><br><span class="line">  <span class="keyword">guard</span> success <span class="keyword">else</span> &#123;</span><br><span class="line">    completion(<span class="literal">false</span>, error)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//2. Finish collection workout data and set the workout end date</span></span><br><span class="line">  builder.endCollection(withEnd: prancerciseWorkout.end) &#123; (success, error) <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">guard</span> success <span class="keyword">else</span> &#123;</span><br><span class="line">      completion(<span class="literal">false</span>, error)</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//3. Create the workout with the samples added</span></span><br><span class="line">    builder.finishWorkout &#123; (<span class="number">_</span>, error) <span class="keyword">in</span></span><br><span class="line">      <span class="keyword">let</span> success = error == <span class="literal">nil</span></span><br><span class="line">      completion(success, error)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>用这个:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> samples = <span class="keyword">self</span>.samples(<span class="keyword">for</span>: prancerciseWorkout)</span><br><span class="line">    </span><br><span class="line">builder.add(samples) &#123; (success, error) <span class="keyword">in</span></span><br><span class="line">  <span class="keyword">guard</span> success <span class="keyword">else</span> &#123;</span><br><span class="line">    completion(<span class="literal">false</span>, error)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line">      </span><br><span class="line">  builder.endCollection(withEnd: prancerciseWorkout.end) &#123; (success, error) <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">guard</span> success <span class="keyword">else</span> &#123;</span><br><span class="line">      completion(<span class="literal">false</span>, error)</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">    builder.finishWorkout &#123; (workout, error) <span class="keyword">in</span></span><br><span class="line">      <span class="keyword">let</span> success = error == <span class="literal">nil</span></span><br><span class="line">      completion(success, error)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码使用您的Prancercise练习准备了一个示例列表。然后，它会像以前一样将它们添加到锻炼生成器中。</p>
+<p>构建并运行该应用程序。点击<strong>Prancercise Workouts</strong>。然后，点击+按钮，跟踪一个新的腾空锻炼。记录几次伸展运动，然后点击“已完成”，将它们保存到HealthKit作为一次伸展运动。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/08/Simulator-Screen-Shot-iPhone-8-Plus-2018-08-23-at-22.32.04-281x500.png" alt="image"></p>
+<p>##在健康应用程序中查看锻炼样本</p>
+<p>你不会在Prancercise Tracker的用户界面中看到任何新东西，但你的健康应用程序中有大量数据可供阅读。</p>
+<p>打开<strong>健康应用程序</strong>，点击第二个标签<strong>健康数据</strong>，然后点击<strong>活动</strong>。你应该看到你一天锻炼的细目。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/08/05-Health-App-281x500.png" alt="image"></p>
+<p>你可以看到非常短的Prancercise会议记录，所以<strong>活动</strong>表明用户已经花了一分钟的锻炼。这很好。你已经确定了Prancercise方案的相对强度，所以一天的体力活动应该足够了。:]</p>
+<p>点击<strong>Workouts</strong>。下一个屏幕会给你一天的锻炼情况。在您的示例中，您希望查看所有这些数据点来自何处。</p>
+<p>点击<strong>显示所有数据</strong>。这将把你带到一个屏幕，显示你一天的所有锻炼，以及他们的源应用程序。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/08/06-All-Data-1-281x500.png" alt="image"></p>
+<p>整洁。RW的标志显示，这些训练来自Prancercise Tracker。</p>
+<p>点击一个锻炼来查看它的细节。向下滚动到<strong>锻炼样本</strong>部分，然后点击显示总能量的单元格。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/08/07-Workout-Details-281x500.png" alt="image"></p>
+<p>此时，您应该看到与您刚刚跟踪的Prancercise锻炼相关的活动能量样本列表。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/08/08-Sample-List-281x500.png" alt="image"></p>
+<p>点击一个样本，你就可以看到你的短时间腾空开始和结束的时间。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/08/09-Single-Session-281x500.png" alt="image"></p>
+<p>太棒了!你已经开发了一个应用程序，它不仅可以跟踪锻炼，还可以跟踪锻炼中的间歇训练。</p>
+<p>##从这里到哪里?<br>您可以使用本教程顶部或底部的<strong>Download materials</strong>按钮下载最终项目。</p>
+<p>本HealthKit教程向您介绍了HealthKit的基本概念以及如何在自己的应用程序中使用它们。要了解更多关于HealthKit的信息，以下是最相关的资源:</p>
+<ul>
+<li><p><a href="https://developer.apple.com/library/ios/documentation/HealthKit/Reference/HealthKit_Framework/" target="_blank" rel="noopener">HealthKit框架参考</a>。</p>
+</li>
+<li><p>WWDC 2018大会: <a href="https://developer.apple.com/videos/play/wwdc2018/707" target="_blank" rel="noopener">锻炼的新方法</a>。</p>
+</li>
+<li><p><a href="https://developer.apple.com/app-store/review/guidelines/#healthkit" target="_blank" rel="noopener">应用商店审查</a>与HealthKit相关的指南。您需要确保您的应用程序符合这些准则。</p>
+</li>
+</ul>
+<p>经过这些文档和视频,你会准备深入的一些更高级的方面HealthKit并添加这个程序的改进。例如,你可以添加新类型的样本或训练,计算统计使用<code>HKStatisticsQuery</code>或观察的变化与<code>HKObserverQuery</code>存储信息。</p>
+<p>我希望你喜欢这个HealthKit教程，如果你有任何问题或评论，请加入下面的论坛讨论!</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始"><span class="toc-number">1.</span> <span class="toc-text">开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在节省锻炼的同时添加样本"><span class="toc-number">2.</span> <span class="toc-text">在节省锻炼的同时添加样本</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

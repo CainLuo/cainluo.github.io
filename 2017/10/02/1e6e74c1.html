@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：装逼技术RunTime的应用(二) - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="上一章我们耍了一些RunTime的应用, 但并没有完全讲完, 现在继续接着说, 如果没有看到上一篇文章的朋友可以去玩转iOS开发：装逼技术RunTime的应用(一)看看.
+转载声明:如需要转载该文章,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：装逼技术RunTime的应用(二)</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：装逼技术RunTime的应用(二)</h1>
+        <div class="stuff">
+            <span>十月 02, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/iOS进阶/">iOS进阶</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>上一章我们耍了一些RunTime的应用, 但并没有完全讲完, 现在继续接着说, 如果没有看到上一篇文章的朋友可以去<a href="https://cainluo.github.io/2017/09/27/b15fefa3.html">玩转iOS开发：装逼技术RunTime的应用(一)</a>看看.</p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="给Category添加属性"><a href="#给Category添加属性" class="headerlink" title="给Category添加属性"></a>给Category添加属性</h2><p>在此之前, 我们了解到了一个类里面对应有的是<strong>isa</strong>指针, 但实际上这个isa指针是一个<strong>Class</strong>的结构体, 里面有这个类各式各样的信息, 其中有一个<strong>methodLists</strong>里面存储着实例方法列表.</p>
+<p>而我们给对应的类添加<strong>Category</strong>就意味着是再给<strong>methodLists</strong>添加方法, 也就是因为这样子, 所以一般我们是不能在<strong>Category</strong>里面添加属性的, 虽然我们用了<strong>@property</strong>声明, 但也只是仅仅声明了<strong>get</strong>和<strong>set</strong>的方法, 并没有去实现.</p>
+<p>而在这里, 我们就是要利用<strong>RunTime</strong>去实现这个<strong>get</strong>和<strong>set</strong>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@interface NSObject (CLObject)</span><br><span class="line"></span><br><span class="line">@property (nonatomic, copy) NSString *categoryName;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;NSObject+CLObject.h&quot;</span><br><span class="line"></span><br><span class="line">#import &lt;objc/runtime.h</span><br><span class="line"></span><br><span class="line">@implementation NSObject (CLObject)</span><br><span class="line"></span><br><span class="line">- (void)setCategoryName:(NSString *)categoryName &#123;</span><br><span class="line">    </span><br><span class="line">    objc_setAssociatedObject(self, @&quot;categoryName&quot;, categoryName, OBJC_ASSOCIATION_COPY);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSString *)categoryName &#123;</span><br><span class="line">    </span><br><span class="line">    return objc_getAssociatedObject(self, @&quot;categoryName&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;RunTimeCategoryController.h&quot;</span><br><span class="line">#import &quot;NSObject+CLObject.h&quot;</span><br><span class="line"></span><br><span class="line">@interface RunTimeCategoryController ()</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation RunTimeCategoryController</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    </span><br><span class="line">    self.title = NSStringFromClass([self class]);</span><br><span class="line"></span><br><span class="line">    self.view.backgroundColor = [UIColor whiteColor];</span><br><span class="line"></span><br><span class="line">    NSObject *objc = [[NSObject alloc] init];</span><br><span class="line">    </span><br><span class="line">    objc.categoryName = @&quot;NSObject+CLObject&quot;;</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;%@&quot;, objc.categoryName);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>最终效果:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">10</span>-<span class="number">04</span> <span class="number">11</span>:<span class="number">41</span>:<span class="number">57.159145</span>+<span class="number">0800</span> RunTimeExample[<span class="number">1431</span>:<span class="number">87605</span>] -[RunTimeCategoryController viewDidLoad] 第<span class="number">27</span>行 </span><br><span class="line"> NSObject+CLObject</span><br></pre></td></tr></table></figure>
+
+<p>这里解释一下:</p>
+<p>在<strong>Category</strong>这里添加属性, 其实并不是真的添加, 只是关联上而已.</p>
+<p>这里的<strong>objc_setAssociatedObject</strong>有四个参数:</p>
+<ul>
+<li><strong>id _Nonnull object:</strong> 给哪个对象关联属性</li>
+<li><strong>const void * _Nonnull key:</strong> 属性的名称, 这里我们可以用<strong>OC</strong>字符串, 也可以用静态的<strong>void</strong>.</li>
+<li><strong>id _Nullable value:</strong> 属性的数值</li>
+<li><strong>objc_AssociationPolicy policy:</strong> 保存的策略, 这里共有五种保存的策略:<ul>
+<li><strong>OBJC_ASSOCIATION_ASSIGN</strong></li>
+<li><strong>OBJC_ASSOCIATION_RETAIN_NONATOMIC</strong></li>
+<li><strong>OBJC_ASSOCIATION_COPY_NONATOMIC</strong></li>
+<li><strong>OBJC_ASSOCIATION_RETAIN</strong></li>
+<li><strong>OBJC_ASSOCIATION_COPY</strong></li>
+</ul>
+</li>
+</ul>
+<p>光看字面就知道什么意思了, 这里就不多作解释.</p>
+<h2 id="利用RunTime将字典转成模型"><a href="#利用RunTime将字典转成模型" class="headerlink" title="利用RunTime将字典转成模型"></a>利用RunTime将字典转成模型</h2><p>我们在开发中, 都会用到字典转模型, 方式有:</p>
+<ul>
+<li>手动一一对应的给模型赋值</li>
+<li>利用<strong>KVC</strong>将字典转成模型, 但这里有一些不太好的地方<ul>
+<li>必须保证字典中的属性和模型中的属性一一对应.</li>
+<li>如果不一样的话, 就会调用<code>setValue:forUndefinedKey:</code>报<strong>Key</strong>找不到.</li>
+<li>解决办法:<ul>
+<li>重写<code>setValue:forUndefinedKey:</code>方法, 把系统的方法覆盖了, 就能继续使用<strong>KVC</strong>字典转模型了.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>利用<strong>RunTime</strong>实现字典转模型</li>
+</ul>
+<p><strong>主要思路:</strong> 利用<strong>RunTime</strong>遍历模型中所有的属性, 根据模型的属性名去字典中找对应的<strong>Key</strong>, 然后取出对应的值给模型的属性赋值.</p>
+<p><strong>考虑的问题:</strong></p>
+<ul>
+<li>当字典的<strong>Key</strong>和模型的属性对应不上, 这里有两种情况.<ul>
+<li>当字典的<strong>Key</strong>数量大于模型的属性数量时, 这个时候我们不用去管, 因为<strong>RunTime</strong>是会先遍历模型中的所有属性, 然后再根据字典里的<strong>Key</strong>一一赋值, 多出来的就不会再看了.</li>
+<li>当模型里的属性数量大于字典的<strong>Key</strong>的数量时, 这时候由于属性没有对应的值就会被赋值为<strong>nil</strong>, 就会导致<strong>Crash</strong>, 这个时候我们只要加个判断就好了.</li>
+</ul>
+</li>
+<li>模型中嵌套另一个模型(模型里的某个属性是模型).</li>
+<li>数组里的对象是装着模型(模型的属性是数组, 而数组里装的对象都是模型).</li>
+</ul>
+<p>这里我们写一个工具类, 针对上面三种情况用<strong>RunTime</strong>来转换模型:</p>
+<h3 id="字典转模型-模型的属性数量大于字典的Key数量"><a href="#字典转模型-模型的属性数量大于字典的Key数量" class="headerlink" title="字典转模型(模型的属性数量大于字典的Key数量)"></a>字典转模型(模型的属性数量大于字典的Key数量)</h3><p>给<strong>NSObject</strong>添加分类方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">+ (instancetype)cl_modelToDictionary:(NSDictionary *)dictionary &#123;</span><br><span class="line">    </span><br><span class="line">    id object = [[self alloc] init];</span><br><span class="line">    </span><br><span class="line">    unsigned int count = 0;</span><br><span class="line">    </span><br><span class="line">    // 获取成员变量列表</span><br><span class="line">    Ivar *ivarList = class_copyIvarList(self, &amp;count);</span><br><span class="line">    </span><br><span class="line">    for (NSInteger i = 0; i &lt; count; i++) &#123;</span><br><span class="line">        </span><br><span class="line">        // 根据角标取出对应的成员变量</span><br><span class="line">        Ivar ivar = ivarList[i];</span><br><span class="line">        </span><br><span class="line">        // 获取对应的属性名</span><br><span class="line">        NSString *ivarName = [NSString stringWithUTF8String:ivar_getName(ivar)];</span><br><span class="line">        </span><br><span class="line">        // 从下标1开始取对应的key, 不然的话, 就会取到带&quot;_&quot;的key</span><br><span class="line">        NSString *key = [ivarName substringFromIndex:1];</span><br><span class="line">        </span><br><span class="line">        // 根据属性名在字典中查找对应的value</span><br><span class="line">        id value = dictionary[key];</span><br><span class="line">        </span><br><span class="line">        // 判断value是否为nil, 如果不是, 就给属性赋值</span><br><span class="line">        // 当属性的数量大于字典Key的数量时的判断</span><br><span class="line">        if (value) &#123;</span><br><span class="line">            </span><br><span class="line">            [object setValue:value</span><br><span class="line">                      forKey:key];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return object;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看一下转换后的结果:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-Project-Example/master/RunTime/Five/Images/1.png" alt="1"></p>
+<p>这里我们是采用<strong>class_copyIvarList</strong>的方式获取所有成员变量的, 而成员变量都是使用<strong>“_”</strong>符号进行命名的, 所以我们要处理一下, 当然也可以使用<strong>class_copyPropertyList</strong>, 命名就不用处理, 其他都差不多.</p>
+<p>为什么使用<strong>class_copyIvarList</strong>呢? 在前面我们都看到过给分类添加属性的时候, 只是简单的声明了<strong>set</strong>和<strong>get</strong>, 并没有实现</p>
+<p>如果我们使用<strong>class_copyPropertyList</strong>, 可能就会漏掉了成员变量或者是没有实现<strong>set</strong>和<strong>get</strong>方法的属性, 而使用<strong>class_copyIvarList</strong>就不会有这个问题.</p>
+<h3 id="字典转模型-模型中嵌套模型"><a href="#字典转模型-模型中嵌套模型" class="headerlink" title="字典转模型(模型中嵌套模型)"></a>字典转模型(模型中嵌套模型)</h3><p>其实模型中嵌套模型这样子的例子并不少见, 几乎都是这样子的, 借助刚刚的例子, 再加以改进一下, 我们就可以实现解析模型嵌套模型的场景:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">+ (instancetype)cl_modelToDictionary2:(NSDictionary *)dictionary &#123;</span><br><span class="line">    </span><br><span class="line">    id object = [[self alloc] init];</span><br><span class="line">    </span><br><span class="line">    unsigned int count = 0;</span><br><span class="line">    </span><br><span class="line">    // 获取成员变量列表</span><br><span class="line">    Ivar *ivarList = class_copyIvarList(self, &amp;count);</span><br><span class="line">    </span><br><span class="line">    for (NSInteger i = 0; i &lt; count; i++) &#123;</span><br><span class="line">        </span><br><span class="line">        // 根据角标取出对应的成员变量</span><br><span class="line">        Ivar ivar = ivarList[i];</span><br><span class="line">        </span><br><span class="line">        // 获取对应的属性名</span><br><span class="line">        NSString *ivarName = [NSString stringWithUTF8String:ivar_getName(ivar)];</span><br><span class="line">        </span><br><span class="line">        // 获取成员变量的类型</span><br><span class="line">        NSString *ivarType = [NSString stringWithUTF8String:ivar_getTypeEncoding(ivar)];</span><br><span class="line"></span><br><span class="line">        // 从下标1开始取对应的key, 不然的话, 就会取到带&quot;_&quot;的key</span><br><span class="line">        NSString *key = [ivarName substringFromIndex:1];</span><br><span class="line">        </span><br><span class="line">        // 根据属性名在字典中查找对应的value</span><br><span class="line">        id value = dictionary[key];</span><br><span class="line">        </span><br><span class="line">        if ([value isKindOfClass:[NSDictionary class]] &amp;&amp; ![ivarType hasPrefix:@&quot;NS&quot;]) &#123;</span><br><span class="line">            </span><br><span class="line">            // 替换成员变量的类型</span><br><span class="line">            ivarType = [ivarType stringByReplacingOccurrencesOfString:@&quot;\&quot;&quot; withString:@&quot;&quot;];</span><br><span class="line">            ivarType = [ivarType stringByReplacingOccurrencesOfString:@&quot;@&quot; withString:@&quot;&quot;];</span><br><span class="line"></span><br><span class="line">            Class modelClass = NSClassFromString(ivarType);</span><br><span class="line">            </span><br><span class="line">            // 有对应的模型才需要转</span><br><span class="line">            if (modelClass) &#123;</span><br><span class="line">                </span><br><span class="line">                // 把字典转模型</span><br><span class="line">                value = [modelClass cl_modelToDictionary2:value];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 判断value是否为nil, 如果不是, 就给属性赋值</span><br><span class="line">        // 当属性的数量大于字典Key的数量时的判断</span><br><span class="line">        if (value) &#123;</span><br><span class="line">            </span><br><span class="line">            [object setValue:value</span><br><span class="line">                      forKey:key];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return object;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看一下转换后的结果:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-Project-Example/master/RunTime/Five/Images/2.png" alt="2"></p>
+<h3 id="数组中嵌套字典"><a href="#数组中嵌套字典" class="headerlink" title="数组中嵌套字典"></a>数组中嵌套字典</h3><p>在上面, 我们解决了前面两个问题, 最后一个问题就是在数组里嵌套模型, 这里我们需要先声明一个代理:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@protocol ModelDelegate &lt;NSObject</span><br><span class="line"></span><br><span class="line">@optional</span><br><span class="line"></span><br><span class="line">// 提供一些用来转换模型的协议, 只要遵守了这个协议, 就可以把数组中的字典转成模型</span><br><span class="line">+ (NSDictionary *)cl_arrayToModelClass;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">+ (instancetype)cl_modelToDictionary3:(NSDictionary *)dictionary &#123;</span><br><span class="line"></span><br><span class="line">    id object = [[self alloc] init];</span><br><span class="line">    </span><br><span class="line">    unsigned int count = 0;</span><br><span class="line">    </span><br><span class="line">    // 获取成员变量列表</span><br><span class="line">    Ivar *ivarList = class_copyIvarList(self, &amp;count);</span><br><span class="line">    </span><br><span class="line">    for (NSInteger i = 0; i &lt; count; i++) &#123;</span><br><span class="line">        </span><br><span class="line">        // 根据角标取出对应的成员变量</span><br><span class="line">        Ivar ivar = ivarList[i];</span><br><span class="line">        </span><br><span class="line">        // 获取对应的属性名</span><br><span class="line">        NSString *ivarName = [NSString stringWithUTF8String:ivar_getName(ivar)];</span><br><span class="line">        </span><br><span class="line">        // 从下标1开始取对应的key, 不然的话, 就会取到带&quot;_&quot;的key</span><br><span class="line">        NSString *key = [ivarName substringFromIndex:1];</span><br><span class="line">        </span><br><span class="line">        // 根据属性名在字典中查找对应的value</span><br><span class="line">        id value = dictionary[key];</span><br><span class="line">        </span><br><span class="line">        // 判断是否是数组类型</span><br><span class="line">        if ([value isKindOfClass:[NSArray class]]) &#123;</span><br><span class="line">            </span><br><span class="line">            // 判断能否响应代理方法</span><br><span class="line">            if ([self respondsToSelector:@selector(cl_arrayToModelClass)]) &#123;</span><br><span class="line">                </span><br><span class="line">                // 转换一下self</span><br><span class="line">                id allSelf = self;</span><br><span class="line">                </span><br><span class="line">                // 获取数组中字典对应的模型</span><br><span class="line">                NSString *classType = [allSelf cl_arrayToModelClass][key];</span><br><span class="line">                </span><br><span class="line">                // 生成对应的模型</span><br><span class="line">                Class classModel = NSClassFromString(classType);</span><br><span class="line">                </span><br><span class="line">                NSMutableArray *modelArray = [NSMutableArray array];</span><br><span class="line">                </span><br><span class="line">                // 遍历字典里的数组</span><br><span class="line">                for (NSDictionary *dictionary in value) &#123;</span><br><span class="line">                    </span><br><span class="line">                    // 字典转模型</span><br><span class="line">                    id model = [classModel cl_modelToDictionary3:dictionary];</span><br><span class="line">                    </span><br><span class="line">                    [modelArray addObject:model];</span><br><span class="line">                &#125;</span><br><span class="line">                </span><br><span class="line">                value = modelArray;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 判断value是否为nil, 如果不是, 就给属性赋值</span><br><span class="line">        // 当属性的数量大于字典Key的数量时的判断</span><br><span class="line">        if (value) &#123;</span><br><span class="line">            </span><br><span class="line">            [object setValue:value</span><br><span class="line">                      forKey:key];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return object;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后在对应的模型解析时, 我们需要实现代理方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+ (NSDictionary *)cl_arrayToModelClass &#123;</span><br><span class="line"> </span><br><span class="line"> // 我这里对应的类型是RunTimeDataList   </span><br><span class="line">    return @&#123;@&quot;data&quot; : @&quot;RunTimeDataList&quot;&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看一下转换后的结果:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-Project-Example/master/RunTime/Five/Images/3.png" alt="3"></p>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: <a href="https://github.com/CainLuo/iOS-Project-Example/tree/master/RunTime/Five" target="_blank" rel="noopener">https://github.com/CainLuo/iOS-Project-Example/tree/master/RunTime/Five</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#给Category添加属性"><span class="toc-number">1.</span> <span class="toc-text">给Category添加属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#利用RunTime将字典转成模型"><span class="toc-number">2.</span> <span class="toc-text">利用RunTime将字典转成模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#字典转模型-模型的属性数量大于字典的Key数量"><span class="toc-number">2.1.</span> <span class="toc-text">字典转模型(模型的属性数量大于字典的Key数量)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#字典转模型-模型中嵌套模型"><span class="toc-number">2.2.</span> <span class="toc-text">字典转模型(模型中嵌套模型)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数组中嵌套字典"><span class="toc-number">2.3.</span> <span class="toc-text">数组中嵌套字典</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">3.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

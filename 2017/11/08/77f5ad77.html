@@ -1,0 +1,311 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：iOS 11 新特性《Layout的新特性》 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="随着苹果越来越多尺寸的设备发布, 还有iOS设计的改变, 特别是在iOS 11之后, 比大更大的导航栏, 然后再滚动的时候可以改变大小等等操作.
+但这些问题都不是什么问题, 就如同在WWDC 201,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：iOS 11 新特性《Layout的新特性》</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：iOS 11 新特性《Layout的新特性》</h1>
+        <div class="stuff">
+            <span>十一月 08, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/iOS-11/">iOS 11</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>随着苹果越来越多尺寸的设备发布, 还有<strong>iOS</strong>设计的改变, 特别是在<strong>iOS 11</strong>之后, 比大更大的导航栏, 然后再滚动的时候可以改变大小等等操作.</p>
+<p>但这些问题都不是什么问题, 就如同在<strong>WWDC 2017</strong>一样, 苹果在跟我们开发者展示一样东西, 也是他一直想我们去使用的东西, 那就是自动布局.</p>
+<p>随着什么<strong>10.5</strong>英寸, <strong>5.8</strong>英寸, <strong>12.9</strong>英寸这些设备的发布, 让我们开发者在适配多个尺寸的时候也越来越麻烦了, 但随着使用自动布局的发布可以让我们开发者更加注重App的业务上的开发, 再也不用去计算这个差多少, 那个差多少, 旋转一下又怎么处理.</p>
+<p>这里我们就使用一个简单的小项目来捣鼓就好了.</p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="更大的标题"><a href="#更大的标题" class="headerlink" title="更大的标题"></a>更大的标题</h2><p>在<strong>iOS 11</strong>里, 最明显的变化就是导航栏里多了一个大标题:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/3.Layout/Images/1.png" alt="1"></p>
+<p>这里我们可以通过设置<strong>UINavigationBar</strong>的一个<strong>BOOL</strong>值属性来决定是否显示这个大标题:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, readwrite, assign) BOOL prefersLargeTitles;</span><br></pre></td></tr></table></figure>
+
+<p>那如果你是在<strong>Storyboard</strong>上的话, 你也可以在<strong>UINavigationController</strong>上的<strong>UINavigationBar</strong>设置这个属性, 勾上就是为显示大标题, 不勾上就不显示.</p>
+<p>虽然<strong>prefersLargeTitles</strong>是打开大标题的主开关, 但在每一个控制器里, 我们都可以每个控制器里的<strong>UINavigationItem</strong>来显示是否显示大标题, 或者是普通标题, 这里共有三种显示类型:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSInteger, UINavigationItemLargeTitleDisplayMode) &#123;</span><br><span class="line">    UINavigationItemLargeTitleDisplayModeAutomatic,</span><br><span class="line">    UINavigationItemLargeTitleDisplayModeAlways,</span><br><span class="line">    UINavigationItemLargeTitleDisplayModeNever,</span><br><span class="line">&#125; NS_SWIFT_NAME(UINavigationItem.LargeTitleDisplayMode);</span><br></pre></td></tr></table></figure>
+
+<p>要使用这个属性呢, 我们得提前把<strong>prefersLargeTitles</strong>大标题属性设置为<strong>YES</strong>, 然后才能去捣鼓上面的三种显示模式, 默认为<strong>Automatic</strong>, 我们可以通过这个来设置控制器是否需要显示大标题啦~</p>
+<p>当然如果你不想每个控制器都写一遍, 那你可以自己用<strong>RunTime</strong>写个<strong>Method Swizzling</strong>, 或者是自己封装一个<strong>RootController</strong>, 一个<strong>ChildController</strong>, 这样子区分也可以:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/3.Layout/Images/2.png" alt="2"></p>
+<h2 id="搜索控制器"><a href="#搜索控制器" class="headerlink" title="搜索控制器"></a>搜索控制器</h2><p>而第二个变化就是在<strong>UINavigationController</strong>里集成了<strong>UISearchController</strong>, 虽然<strong>UISearchController</strong>并不是什么新的东西, 但在<strong>iOS 11</strong>之后, 我们可以将<strong>UINavigationItem</strong>的<strong>searchController</strong>属性设置为<strong>UISearchController</strong>.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">UISearchController *searchController = [[UISearchController alloc] initWithSearchResultsController:nil];</span><br><span class="line"></span><br><span class="line">self.navigationItem.searchController = searchController;</span><br><span class="line">self.navigationItem.hidesSearchBarWhenScrolling = YES;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/3.Layout/Images/3.png" alt="3"></p>
+<p>这里还有一个属性叫做<strong>hidesSearchBarWhenScrolling</strong>, 如果设置为<strong>YES</strong>的话, 那么在操作的时候, 就会根据滑动来隐藏这个<strong>searchController</strong>, 如果设置为<strong>NO</strong>, 就一直显示着啦, 这个属性默认是为<strong>YES</strong>.</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/3.Layout/Images/4.png" alt="4"></p>
+<h2 id="安全区域"><a href="#安全区域" class="headerlink" title="安全区域"></a>安全区域</h2><p>相信<strong>iOS 11</strong>发布的时候, 很多人都有一个黑人问号的表情, 安全区域<strong>(Safe area)</strong>是个什么鬼.</p>
+<p>其实早在<strong>iOS 7</strong>出来的时候就有两个属性<strong>topLayoutGuide</strong>和<strong>bottomLayoutGuide</strong>, 这两个属性用于自动布局, 由于在<strong>iOS 7</strong>的时候引入了半透明的概念, 如果我们用<strong>UITableView</strong>这类控件布局的话, 那么在<strong>UINavigationBar</strong>和<strong>UITabBar</strong>的背后会显示内容.</p>
+<p>而我们设置了<strong>topLayoutGuide</strong>和<strong>bottomLayoutGuide</strong>就不会有这个问题了, 但遗憾的是, 这两个属性是属于<strong>Controller</strong>而不是属于<strong>UIView</strong>, 为了解决这个问题, 苹果捣鼓了一个新的东西, 就是现在的安全区域, 一个名为<strong>safeAreaLayoutGuide</strong>的东西, 是属于<strong>UIVIew</strong>的.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic,readonly,strong) UILayoutGuide *safeAreaLayoutGuide;</span><br></pre></td></tr></table></figure>
+
+<p><strong>safeAreaLayoutGuide</strong>很适合我们在安全区域里创建约束, 这样子我们就可以非常简单的适配各式各样的机型, 比如强调安全区域的<strong>iPhone X</strong>.</p>
+<p>如果我们只是想要测量一下这个安全区域, 那么<strong>safeAreaInsets</strong>就会给我们返回一些值.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">typedef struct UIEdgeInsets &#123;</span><br><span class="line">    CGFloat top, left, bottom, right;</span><br><span class="line">&#125; UIEdgeInsets;</span><br></pre></td></tr></table></figure>
+
+<p>如果我们想知道这些值是在什么时候改变的, 我们可以通过系统提供的两个API:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// UIView的API</span><br><span class="line">- (void)safeAreaInsetsDidChange;</span><br><span class="line"></span><br><span class="line">// UIViewController</span><br><span class="line">- (void)viewSafeAreaInsetsDidChange;</span><br></pre></td></tr></table></figure>
+
+<p>如果我们不去修改这个安全区域的话, 我们从<strong>safeAreaInsets</strong>获得的值都是为0, 如果我们手动去修改的话, 就可以给动一动<strong>additionalSafeAreaInsets</strong>这个属性:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.additionalSafeAreaInsets = UIEdgeInsetsMake(100, 50, 0, 0);</span><br></pre></td></tr></table></figure>
+
+<p>然后在看看效果:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/3.Layout/Images/5.png" alt="5"></p>
+<p>如果你是使用<strong>storyboard</strong>的话, 你可以随便点击一个控件或者是控制器, 然后查看是否勾上了<strong>Use Safe Area Layout Guides</strong>, 如果勾上了的话, 那么<strong>Xcode</strong>就会将在之前在顶部和底部的布局约束自动转换到安全区域中.</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/3.Layout/Images/6.png" alt="6"></p>
+<p>但有一个情况是需要自己手动的捣鼓的, 这个时候我们就要取消<strong>Use Safe Area Layout Guides</strong>, 然后再手动布局, 并且把之前相对于安全区域的约束双击, 然后设置为<strong>SuperView</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/3.Layout/Images/7.png" alt="7"></p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/3.Layout/Images/8.png" alt="8"></p>
+<blockquote>
+<p>注意: 如果我们之前对<strong>topLayoutGuide</strong>和<strong>bottomLayoutGuide</strong>设置了约束, 而这个时候我们把<strong>Use Safe Area Layout Guides</strong>勾掉, 那么就会和刚刚说的那样, <strong>UINavigationBar</strong>和<strong>UITabBar</strong>的背后会显示内容, 如果我们要限制一下视图到顶部的话, 我们应该在视图的<strong>topAnchor</strong>和<strong>topLayoutGuide.bottomAnchor</strong>添加一个约束, 但是在<strong>iOS 11</strong>中, 我们可以在<strong>topAnchor</strong>和<strong>safeAreaLayoutGuide</strong>.topAnchor之间添加一个约束就哦了.</p>
+</blockquote>
+<blockquote>
+<p>PS: <strong>topLayoutGuide</strong>指示状态栏和导航栏覆盖的区域.<br><strong>safeAreaLayoutGuide</strong>指示状态栏和导航栏未覆盖的区域</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/3.Layout/Images/9.png" alt="9"></p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/3.Layout/Images/10.png" alt="10"></p>
+<h2 id="边距"><a href="#边距" class="headerlink" title="边距"></a>边距</h2><p><strong>Margins</strong>也有一些新的变化, 比如有些属性被弃用了:</p>
+<p>被代替:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic) UIEdgeInsets layoutMargins;</span><br></pre></td></tr></table></figure>
+
+<p>代替的属性:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic) NSDirectionalEdgeInsets directionalLayoutMargins;</span><br></pre></td></tr></table></figure>
+
+<p>新的<strong>directionalLayoutMargins</strong>是允许改变阅读方向, 用了<strong>leading</strong>和<strong>trailing</strong>代替了<strong>left</strong>和<strong>right</strong>, 虽然仍然是用<strong>layoutMarginsGuide</strong></p>
+<p>当我们设置<strong>directionalLayoutMargins</strong>的时候, 它的值是会被添加到<strong>systemMinimumLayoutMargins</strong>中, 用来确定视图的实际边距, 如果我们不想要系统的最小边距, 我们可以把<strong>viewRespectsSystemMinimumLayoutMargins</strong>设置为<strong>NO</strong>就可以了.</p>
+<p>最后一点补充的一个属性为:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic) BOOL insetsLayoutMarginsFromSafeArea;</span><br></pre></td></tr></table></figure>
+
+<p>这个属性如果为YES, 那么我们需要布局的视图边距就相对于安全区域, 如果设置为NO, 那我们需要布局的视图边距就相对于其他视图的边距, 默认为YES.</p>
+<h2 id="滚动视图们"><a href="#滚动视图们" class="headerlink" title="滚动视图们"></a>滚动视图们</h2><p>在<strong>iOS 11</strong>之前, 如果我们要对<strong>UIScrollView</strong>使用自动布局, 我们需要写一些逻辑来确定是约束<strong>UIScrollView</strong>的滚动视图, 还是它的内容区域, 有时候在添加约束的时就会容易发生约束错误的情况, 比如在使用<strong>Storyboard</strong>布局.</p>
+<p>但在iOS 11时, 为了解决这个问题, 苹果给<strong>UIScrollView</strong>添加了两个约束属性:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic,readonly,strong) UILayoutGuide *contentLayoutGuide;</span><br><span class="line">@property(nonatomic,readonly,strong) UILayoutGuide *frameLayoutGuide;</span><br></pre></td></tr></table></figure>
+
+<p>这两个属性可以让我们给<strong>UIScrollView</strong>添加约束时更加的精准, 但两个属性对于使用<strong>Storyboard</strong>的开发者来讲应该不是一件好消息, 因为这两个东西只能在代码中使用.</p>
+<p>除了上面两个属性歪, 还有另一个东西会影响到UIScrollView内容区域:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic,assign) BOOL automaticallyAdjustsScrollViewInsets;</span><br></pre></td></tr></table></figure>
+
+<p>这个属性默认为<strong>YES</strong>, 有时候我们的视图不会显示在<strong>UINavigationBar</strong>的底部就是这个属性搞的鬼, 把它设置为<strong>NO</strong>就好了.</p>
+<p>但庆幸的是, 在<strong>iOS 11</strong>这个属性被干掉了, 系统也不再自动去设置<strong>UIScrollView</strong>的内容, 现在<strong>UIScrollView</strong>的内容插入调整是从安全区域和我们在<strong>contentInset</strong>设置的值计算得出, 由以下属性控制, 暂时共有四种控制方式:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic) UIScrollViewContentInsetAdjustmentBehavior contentInsetAdjustmentBehavior;</span><br><span class="line"></span><br><span class="line">typedef NS_ENUM(NSInteger, UIScrollViewContentInsetAdjustmentBehavior) &#123;</span><br><span class="line">    UIScrollViewContentInsetAdjustmentAutomatic,</span><br><span class="line">    UIScrollViewContentInsetAdjustmentScrollableAxes,</span><br><span class="line">    UIScrollViewContentInsetAdjustmentNever,</span><br><span class="line">    UIScrollViewContentInsetAdjustmentAlways,</span><br><span class="line">&#125; API_AVAILABLE(ios(11.0),tvos(11.0));</span><br></pre></td></tr></table></figure>
+
+<h3 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h3><p>为了更加好理解, 这里展示一个<strong>Demo</strong>, 使用<strong>Storyboard</strong>加代码去实现.</p>
+<p><strong>ScrollView</strong>的布局:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/3.Layout/Images/11.png" alt="11"></p>
+<p><strong>UIImageView</strong>的布局:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/3.Layout/Images/12.png" alt="12"></p>
+<p><strong>TipsView</strong>的布局:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/3.Layout/Images/13.png" alt="13"></p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/3.Layout/Images/14.png" alt="14"></p>
+<blockquote>
+<p>PS: 如果你的约束感觉不对的话, 只要双击约束, 就可以进入到里面去修改了.</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/3.Layout/Images/15.png" alt="15"></p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/3.Layout/Images/16.png" alt="16"></p>
+<p>这里的代码也不难, 主要就是针对<strong>TipsView</strong>和<strong>ScrollView</strong>的布局:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">CGFloat scrollIndicatorMargin = 8;</span><br><span class="line"></span><br><span class="line">self.tipsView.layer.cornerRadius = 8;</span><br><span class="line"></span><br><span class="line">[self.tipsView.leadingAnchor constraintEqualToAnchor:self.scrollView.frameLayoutGuide.leadingAnchor</span><br><span class="line">                                            constant:scrollIndicatorMargin].active = YES;</span><br><span class="line"></span><br><span class="line">[self.tipsView.trailingAnchor constraintEqualToAnchor:self.scrollView.frameLayoutGuide.trailingAnchor</span><br><span class="line">                                            constant:-scrollIndicatorMargin].active = YES;</span><br><span class="line"></span><br><span class="line">[self.tipsView.bottomAnchor constraintEqualToAnchor:self.scrollView.frameLayoutGuide.bottomAnchor</span><br><span class="line">                                            constant:-scrollIndicatorMargin].active = YES;</span><br><span class="line"></span><br><span class="line">self.additionalSafeAreaInsets = UIEdgeInsetsMake(0,</span><br><span class="line">                                                 0,</span><br><span class="line">                                                 self.tipsView.frame.size.height + scrollIndicatorMargin,</span><br><span class="line">                                                 scrollIndicatorMargin);</span><br><span class="line"></span><br><span class="line">self.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/3.Layout/Images/17.png" alt="17"></p>
+<p>如果想更详细的查看约束, 可以自行打开<strong>Demo</strong>慢慢研究哈~.</p>
+<h2 id="自适应的Cells"><a href="#自适应的Cells" class="headerlink" title="自适应的Cells"></a>自适应的Cells</h2><p>在<strong>iOS 7</strong>推出的时候, <strong>UITableView</strong>就有一个属性叫做:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic) CGFloat estimatedRowHeight;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以通过设置为<strong>UITableViewAutomaticDimension</strong>, 再给<strong>Cell</strong>的内部视图做好适配的约束, 那么<strong>Cell</strong>就可以自适应了.</p>
+<p>但这些都是需要我们自己手动去适配, 在<strong>iOS 11</strong>时, 这个东西已经不需要我们去写了, 默认就是<strong>UITableViewAutomaticDimension</strong>.</p>
+<p>而且这个属性不单单只是对普通的Cell有用, 包括<strong>SectionHeader</strong>和<strong>SectionFooter</strong>同样都有效, 如果你不需要的话, 可以手动把<strong>estimatedRowHeight</strong>设置为<strong>0</strong>.</p>
+<p>如果你的项目是使用比较老的<strong>Xcode</strong>, 并且是使用<strong>Storyboard</strong>捣鼓的话, 你可以打开对应的<strong>Storyboard</strong>找到<strong>UITableView</strong>, 然后找到对应的属性, 勾上<strong>Automatic</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/3.Layout/Images/18.png" alt="18"></p>
+<p>但是大规模的使用自动布局会造成一个性能上的问题, 这个之前也说过了, 那要怎么做呢? 我们可以把<strong>estimatedRowHeight</strong>设置为大概要显示多高的数值, 然后确定好<strong>Cell</strong>内的所有约束, 这样子<strong>UITableView</strong>的性能就会得到改善, 当然最好的方式还是使用异步加载, 或者是高度缓存之类的, 这些资料的话, 大家可以自行去百度搜搜.</p>
+<h2 id="刷新控制器"><a href="#刷新控制器" class="headerlink" title="刷新控制器"></a>刷新控制器</h2><p>如果我们给对应的<strong>UITableViewController</strong>添加<strong>UIRefreshControl</strong>的话, 那么它会自动加载到<strong>UINavigationBar</strong>中:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/3.Layout/Images/19.png" alt="19"></p>
+<p>代码也是很简单:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">self.tableView.refreshControl = [[UIRefreshControl alloc] init];</span><br><span class="line"></span><br><span class="line">[self.tableView.refreshControl addTarget:self</span><br><span class="line">                                  action:@selector(refreshControllerAction)</span><br><span class="line">                        forControlEvents:UIControlEventValueChanged];</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (void)refreshControllerAction &#123;</span><br><span class="line">    </span><br><span class="line">    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^&#123;</span><br><span class="line">        </span><br><span class="line">        [self.tableView.refreshControl endRefreshing];</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="UITableVIew的分割线"><a href="#UITableVIew的分割线" class="headerlink" title="UITableVIew的分割线"></a>UITableVIew的分割线</h2><p>我们都知道在<strong>iOS 7</strong>的时候, 苹果就给<strong>UITableView</strong>的分割线添加了一些偏移, 但那时候只能通过<strong>separatorInset</strong>去设置, 但这种设置太过死板缺少灵活性.</p>
+<p>在<strong>iOS 11</strong>之后, 苹果又添加了一个属性:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic) UITableViewSeparatorInsetReference separatorInsetReference;</span><br><span class="line"></span><br><span class="line">typedef NS_ENUM(NSInteger, UITableViewSeparatorInsetReference) &#123;</span><br><span class="line">    UITableViewSeparatorInsetFromCellEdges,    </span><br><span class="line">    UITableViewSeparatorInsetFromAutomaticInsets</span><br><span class="line">&#125; API_AVAILABLE(ios(11.0), tvos(11.0));</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>UITableViewSeparatorInsetFromCellEdges:</strong> 默认值, 如果使用该属性的话, 分割线的起始坐标为<strong>Cell</strong>的边缘值, 也就是<strong>0</strong>.</li>
+<li><strong>UITableViewSeparatorInsetFromAutomaticInsets:</strong> 如果使用该属性的话, 分割线的起始坐标会带上默认值, 比如左边的偏移为<strong>15</strong>.</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/3.Layout/Images/20.png" alt="20"></p>
+<h2 id="堆栈视图Stack-Views"><a href="#堆栈视图Stack-Views" class="headerlink" title="堆栈视图Stack Views"></a>堆栈视图Stack Views</h2><p>我们都知道了在<strong>iOS 9</strong>的时候发布了一个灵活布局的堆栈视图<strong>UIStackViews</strong>, 有了它我们就不需要管理大量的约束.</p>
+<p>但有一些场景还是没有适应到了, 现在就可以解决这个问题了, 在<strong>iOS 11</strong>时, 苹果给它增加了更多的特性, 比如我们在多个视图里, 有一个视图比较特殊, 要离别的地方比较远, 之前是不可实现的, 现在可以了, 让我们来看看吧:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/3.Layout/Images/21.png" alt="21"></p>
+<p>详细的约束布局就麻烦大家去工程里看看吧, 这里就不多说了, 直接看代码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[UIViewPropertyAnimator runningPropertyAnimatorWithDuration:0.5</span><br><span class="line">                                                      delay:0</span><br><span class="line">                                                    options:UIViewAnimationOptionCurveEaseInOut</span><br><span class="line">                                                 animations:^&#123;</span><br><span class="line">    </span><br><span class="line">                                                     if (self.action) &#123;</span><br><span class="line">                                                         </span><br><span class="line">                                                         [self.stackView setCustomSpacing:self.customSpacing</span><br><span class="line">                                                                                afterView:self.sunImageView];</span><br><span class="line">                                                     &#125; else &#123;</span><br><span class="line">                                                         </span><br><span class="line">                                                         [self.stackView setCustomSpacing:0</span><br><span class="line">                                                                                afterView:self.sunImageView];</span><br><span class="line">                                                     &#125;</span><br><span class="line">                                                     </span><br><span class="line">                                                     self.action = !self.action;</span><br><span class="line">                                                     </span><br><span class="line">                                                 &#125; completion:nil];</span><br></pre></td></tr></table></figure>
+
+<h2 id="矢量图"><a href="#矢量图" class="headerlink" title="矢量图"></a>矢量图</h2><p>在以前的<strong>Xcode</strong>版本里, 如果我们要使用矢量图, 那么<strong>Xcode</strong>和<strong>iOS</strong>系统会将这个矢量图在编译的时候自动生成不同大小的图片.</p>
+<p>而在<strong>Xcode 9</strong>中, 我们可以勾选一个东西, 告诉系统保留矢量数据:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/3.Layout/Images/22.png" alt="22"></p>
+<p>这样子的话, 当我们或者是其他用户在辅助功能里开启的大字号字体时, 我们就可以通过设置<strong>UIImageView</strong>的一个属性来保证可以正常显示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic) BOOL adjustsImageSizeForAccessibilityContentSizeCategory;</span><br></pre></td></tr></table></figure>
+
+<p>在Demo里, 我只设置了一个图标的属性, 所以这个图标是正常显示, 而另外两个是不正常的:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/3.Layout/Images/23.png" alt="23"></p>
+<p>这个属性可以在<strong>Storyboard</strong>找到, 也可以在代码里实现, 只要是<strong>UIImageView</strong>就<strong>ok</strong>了.</p>
+<h2 id="自定义导航栏视图"><a href="#自定义导航栏视图" class="headerlink" title="自定义导航栏视图"></a>自定义导航栏视图</h2><p>最后就是补充一下给<strong>UINavigationBar</strong>或者是<strong>UIToolbar</strong>添加自定义视图了.</p>
+<p>我们还是拿刚刚的那个太阳, 星星和月亮的来举例子, 这里只要一个<strong>UIImageView</strong>和一个<strong>UILabel</strong>就好了.</p>
+<p>这个布局和我们去自定义<strong>UITableViewCell</strong>差不多, 直接用约束捣鼓就完事, 而且还特别的简单:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/3.Layout/Images/24.png" alt="24"></p>
+<p>运行的话, 我们可以看到是正常显示的, 但发现会有一个白色的背景色, 我们只要找到对应的<strong>UIView</strong>, 然后把颜色清理掉就<strong>ok</strong>了.</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在<strong>iOS 11</strong>有一些会影响到自动布局的变化, 还有些新增的属性来帮助我们开发者更便捷的开发, 如果你觉得光看文章还不够的话, 可以去看看原汁原味的<strong>WWDC 2017</strong>的介绍:</p>
+<ul>
+<li><strong>WWDC17 Session 204 - Updating Your App for iOS 11</strong> <a href="https://developer.apple.com/videos/play/wwdc2017/204/" target="_blank" rel="noopener">http://apple.co/2syu3Tt</a></li>
+</ul>
+<h2 id="工程"><a href="#工程" class="headerlink" title="工程"></a>工程</h2><p><a href="https://github.com/cainluo/iOS-11-Characteristic/tree/master/3.Layout" target="_blank" rel="noopener">https://github.com/cainluo/iOS-11-Characteristic/tree/master/3.Layout</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#更大的标题"><span class="toc-number">1.</span> <span class="toc-text">更大的标题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#搜索控制器"><span class="toc-number">2.</span> <span class="toc-text">搜索控制器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安全区域"><span class="toc-number">3.</span> <span class="toc-text">安全区域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#边距"><span class="toc-number">4.</span> <span class="toc-text">边距</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#滚动视图们"><span class="toc-number">5.</span> <span class="toc-text">滚动视图们</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo"><span class="toc-number">5.1.</span> <span class="toc-text">Demo</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自适应的Cells"><span class="toc-number">6.</span> <span class="toc-text">自适应的Cells</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#刷新控制器"><span class="toc-number">7.</span> <span class="toc-text">刷新控制器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UITableVIew的分割线"><span class="toc-number">8.</span> <span class="toc-text">UITableVIew的分割线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#堆栈视图Stack-Views"><span class="toc-number">9.</span> <span class="toc-text">堆栈视图Stack Views</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#矢量图"><span class="toc-number">10.</span> <span class="toc-text">矢量图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自定义导航栏视图"><span class="toc-number">11.</span> <span class="toc-text">自定义导航栏视图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">12.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程"><span class="toc-number">13.</span> <span class="toc-text">工程</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：5.《Core Animation》CALayer的Transforms - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="之前我们所了解的CALayer都是比较抽象化, 好在《Core Animation》CALayer的视觉效果解决我们这些视觉动物的学东西的枯燥, 今天我们就来讲讲Transforms, 也就是CAL,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：5.《Core Animation》CALayer的Transforms</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：5.《Core Animation》CALayer的Transforms</h1>
+        <div class="stuff">
+            <span>十月 29, 2016</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/Core-Animation/">Core Animation</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>之前我们所了解的<strong>CALayer</strong>都是比较抽象化, 好在<a href="https://cainluo.github.io/2016/10/27/45d5054f.html">《Core Animation》CALayer的视觉效果</a>解决我们这些视觉动物的学东西的枯燥, 今天我们就来讲讲<strong>Transforms</strong>, 也就是<strong>CALayer</strong>的<strong>Transforms</strong>.</p>
+<blockquote>
+<p>最后: 如果你有更好的建议或者对这篇文章有不满的地方, 请联系我, 我会参考你们的意见再进行修改, 联系我时, 请备注<strong><code>Core Animation</code></strong>, 祝大家学习愉快</p>
+</blockquote>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><strong>CALayer Transforms</strong>讲得是<strong>CALayer</strong>一些我们能够看得见的东西, 这些知识点在我们日常开发中也会有用到的, 比如<strong>Affine Transforms</strong>, <strong>3D Transforms</strong>, <strong>Solid Objects</strong>等等, 待我们一一去讲解.</p>
+<h2 id="Affine-Transforms"><a href="#Affine-Transforms" class="headerlink" title="Affine Transforms"></a>Affine Transforms</h2><p><strong>Affine Transforms</strong>的中文意思叫做仿射转换, 在前一篇文章的时候我们就使用过<strong>transform</strong>来旋转<strong>UIView</strong>, 但那时候我们只是简单的使用罢了, 并没有说明它的原理.</p>
+<p>实际上<strong>UIView</strong>里的<strong>transform</strong>是<strong>CAAffineTransform</strong>类型, 用于做二维空间的旋转, 缩放, 平移等操作, 而且<strong>CAAffineTransform</strong>可以和一个二维空间的向量, 比如<strong>CGPoint</strong>做<strong>3x2</strong>的矩阵.</p>
+<p>大概的运算原理就是, 用<strong>CGPoint</strong>的每一列和<strong>CGAffineTransform</strong>矩阵的每一列对应的元素进行相乘再求和, 这样子就会形成一个新的<strong>CGPoint</strong>.</p>
+<p>说到这里, 应该会有人有疑惑, <strong>CGAffineTransform</strong>和<strong>CGPoint</strong>完全都不是一样东西, 怎么能做运算呢? 其实并不是的, 当你使用它们两个进行运算的时候, 系统会自动补上一些缺少的元素, 使得<strong>CGAffineTransform</strong>和<strong>CGPoint</strong>进行一一对应, 但运算完之后, 这些填充值就会被抛弃掉, 不会进行保存, 仅仅只是用来做运算罢了.</p>
+<p>所以我们通常遇到的二维变换都是使用<strong>3x3</strong>, 而不是刚刚所说到的<strong>2x3</strong>, 但在某些情况下我们也会遇到<strong>2x3</strong>的格式矩阵, 这就是所谓的以列为主(这个等下用事例来查看吧), 但无论如何都好, 只要能够保持一致, 用什么格式又何妨呢?</p>
+<p>当对图层进行矩阵变换时, 图层矩形内的每一个点都被相应的做变换, 从而形成一个新的四边形的形状, <strong>CGAffineTransform</strong>中的”仿射”的意思是无论你如何去改变矩阵的值, 图层中平行的两条线在变换之后仍然保持平行, 这就是<strong>CGAffineTransform</strong>的”仿射”.</p>
+<h3 id="Creating-a-CGAffineTransform-创建一个CGAffineTransform"><a href="#Creating-a-CGAffineTransform-创建一个CGAffineTransform" class="headerlink" title="Creating a CGAffineTransform - 创建一个CGAffineTransform"></a>Creating a CGAffineTransform - 创建一个CGAffineTransform</h3><p>其实对矩阵数学的阐述早就超过了<strong>Core Animation</strong>的讨论范围了, 如果你是对矩阵数学一点都不了解的话, 那你就要哭晕在厕所了, 不过还好, <strong>Core Graphics</strong>提供了一系列的<strong>API</strong>, 对完全没有数学基础的开发者来讲也能够做一些简单的变换, 比如:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CGAffineTransformMakeRotation(CGFloat angle);</span><br><span class="line">CGAffineTransformMakeScale(CGFloat sx, CGFloat sy);</span><br><span class="line">CGAffineTransformMakeTranslation(CGFloat tx, CGFloat ty);</span><br></pre></td></tr></table></figure>
+
+<p>在<strong>UIView</strong>可以通过设置<strong>transform</strong>属性进行变换, 但实际上还是对CGLayer进行了一些图层转变的封装.</p>
+<p><strong>CALayer</strong>同样也有一个<strong>transform</strong>属性, 它叫做<strong>affineTransform</strong>, 但它的类型是<strong>CATransform3D</strong>, 而不是<strong>CGAffineTransform</strong>, 这个后面再解释一下神马是<strong>CATransform3D</strong>.</p>
+<p>直接来看Demo吧:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewTransform &#123;</span><br><span class="line">    </span><br><span class="line">    self.view.backgroundColor = [UIColor grayColor];</span><br><span class="line">    </span><br><span class="line">    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(100, 100, 100, 100)];</span><br><span class="line">    </span><br><span class="line">    imageView.image = [UIImage imageNamed:@&quot;expression&quot;];</span><br><span class="line">    </span><br><span class="line">    [self.view addSubview:imageView];</span><br><span class="line">    </span><br><span class="line">    // 旋转</span><br><span class="line">    CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI_4);</span><br><span class="line">    imageView.layer.affineTransform = transform;</span><br><span class="line">    </span><br><span class="line">    // 缩放</span><br><span class="line">//    CGAffineTransform scaleTransform = CGAffineTransformMakeScale(0.5, 0.5);</span><br><span class="line">//    imageView.layer.affineTransform = scaleTransform;</span><br><span class="line">    </span><br><span class="line">    // 平移</span><br><span class="line">//    CGAffineTransform translationTransform = CGAffineTransformMakeTranslation(50, 50);</span><br><span class="line">//    imageView.layer.affineTransform = translationTransform;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/5.Transforms/images/1.png" alt="1"><br><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/5.Transforms/images/2.png" alt="2"></p>
+<p>注意一下, 我们在这里使用的是<strong>M_PI_4</strong>, 而不是我们自己输入的神马<strong>45</strong>之类的数字, 因为在<strong>iOS</strong>当中, 使用的的是弧度单位, 而不是角度单位, 弧度用数学常量是表示为<strong>pi</strong>, 一个<strong>pi</strong>就为<strong>180°</strong>, 而四分之一度就是<strong>45°</strong>了.</p>
+<p>但这里会有一个问题, 这些宏都是系统提供给我们的, 如果你要自己去加载更多或者是扩展的话, 可以自己手动去写一个<strong>API</strong>.</p>
+<h4 id="Combining-Transforms-混合变换"><a href="#Combining-Transforms-混合变换" class="headerlink" title="Combining Transforms - 混合变换"></a>Combining Transforms - 混合变换</h4><p><strong>Core Graphics</strong>提供了一系列的API可以在一个<strong>transform</strong>的基础上做更深层次的<strong>transform</strong>, 比如说缩放之后再旋转, 比如下面几个<strong>API</strong>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CGAffineTransformRotate(CGAffineTransform t, CGFloat angle);</span><br><span class="line">CGAffineTransformScale(CGAffineTransform t, CGFloat sx, CGFloat sy);</span><br><span class="line">CGAffineTransformTranslate(CGAffineTransform t, CGFloat tx, CGFloat ty)</span><br></pre></td></tr></table></figure>
+
+<p>当你操纵一个<strong>transform</strong>的时候, 需要先创建一个<strong>CGAffineTransform</strong>类型的空值, 直接把<strong>CGAffineTransformIdentity</strong>赋值过去就好了, 这个称为单位矩阵.</p>
+<p>如果你需要把两个已经写好的<strong>transform</strong>合成为一个的话, 你可以使用系统提供的<strong>API</strong>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CGAffineTransformConcat(CGAffineTransform t1, CGAffineTransform t2);</span><br></pre></td></tr></table></figure>
+
+<p>不说那么多废话了, 直接来看Demo吧:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewCombiningTransforms &#123;</span><br><span class="line">    </span><br><span class="line">    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(100, 100, 100, 100)];</span><br><span class="line">    </span><br><span class="line">    imageView.image = [UIImage imageNamed:@&quot;expression&quot;];</span><br><span class="line">    </span><br><span class="line">    [self.view addSubview:imageView];</span><br><span class="line">    </span><br><span class="line">    CGAffineTransform transform = CGAffineTransformIdentity;</span><br><span class="line">    </span><br><span class="line">    // 旋转</span><br><span class="line">    transform = CGAffineTransformRotate(transform, M_PI_4);</span><br><span class="line">    // 缩放</span><br><span class="line">    transform = CGAffineTransformScale(transform, 0.5f, 0.5f);</span><br><span class="line">    // 平移</span><br><span class="line">    transform = CGAffineTransformTranslate(transform, 200, 0);</span><br><span class="line">    </span><br><span class="line">    imageView.layer.affineTransform = transform;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/5.Transforms/images/3.png" alt="3"><br><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/5.Transforms/images/4.png" alt="4"></p>
+<p>看到图片的时候, 你会发现结果好像和想象有些差异, 为什么会平移了那么多? 原因是在于当你按顺序做了<strong>transform</strong>, 上一个<strong>transform</strong>会影响到下一个<strong>transform</strong>, 所以平移之后, 你会发现同样被缩放和旋转了, 这就是意味着, 你在旋转之后的平移和平移之后的旋转讲会得到两种不同的结果, 这个大家需要注意一下.</p>
+<h3 id="3D-Transforms"><a href="#3D-Transforms" class="headerlink" title="3D Transforms"></a>3D Transforms</h3><p>在之前, 我们有提及过<strong>zPosition</strong>这个属性, 可以从用户角度的来让让图层远离或者是靠近,<strong>CATransform</strong>类型的<strong>transform</strong>可以真正做到让图层在<strong>3D</strong>空间内平移或者旋转.</p>
+<p>和<strong>CGAffineTransform</strong>类似,<strong>CATransform3D</strong>也是一个矩阵, 但和之间所说的<strong>2x3</strong>矩阵不一样,<strong>CATransform3D</strong>是一个可以在3D空间内做变换的<strong>4x4</strong>矩阵.</p>
+<p>和<strong>CGAffineTransform</strong>矩阵类似, <strong>Core Animation</strong>也提供了一系列的使用方法, 用来创建和组合<strong>CATransform3D</strong>矩阵, 于<strong>Core Graphics</strong>的函数相比, 也只是在<strong>3D</strong>的平移和旋转中多出了一个<strong>z</strong>参数, 而旋转的API除了有angle参数之外, 还多出了<strong>x</strong>, <strong>y</strong>, <strong>z</strong>等三个参数, 分别决定了每个坐标轴方向上的旋转, 比如:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CATransform3DMakeRotation(CGFloat angle, CGFloat x, CGFloat y, CGFloat z);</span><br><span class="line">CATransform3DMakeScale(CGFloat sx, CGFloat sy, CGFloat sz);</span><br><span class="line">CATransform3DMakeTranslation(Gloat tx, CGFloat ty, CGFloat tz);</span><br></pre></td></tr></table></figure>
+
+<p>在之前的文章里, 我们都应该了解了在<strong>iOS</strong>当中, 原点<strong>{0, 0}</strong>是在左上角, <strong>x</strong>轴正方向为右边, <strong>y</strong>轴正方向为下边, 在<strong>Mac OS</strong>当中则是和<strong>iOS</strong>相反, 但是<strong>Z</strong>轴呢, 则是分别和<strong>x</strong>, <strong>y</strong>轴分别垂直, 指向视角外为正方向, 说那么多, 直接来看代码吧:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewTransforms3D &#123;</span><br><span class="line">    </span><br><span class="line">    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(100, 100, 100, 100)];</span><br><span class="line">    </span><br><span class="line">    imageView.image = [UIImage imageNamed:@&quot;expression&quot;];</span><br><span class="line">    </span><br><span class="line">    [self.view addSubview:imageView];</span><br><span class="line"></span><br><span class="line">    CATransform3D transform = CATransform3DMakeRotation(M_PI_4, 0, 1, 0);</span><br><span class="line">    imageView.layer.transform = transform;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/5.Transforms/images/5.png" alt="5"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/5.Transforms/images/6.png" alt="6"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/5.Transforms/images/7.png" alt="7"></p>
+<h3 id="Perspective-Projection"><a href="#Perspective-Projection" class="headerlink" title="Perspective Projection"></a>Perspective Projection</h3><p>所谓的<strong>Perspective Projection</strong>就是透视投影, 这里需要普及一些知识(虽然我也看不太懂).</p>
+<p>在现实生活中, 当物体远离我们的时候, 会由于视角的问题, 物体看起来会变小, 理论上说远离我们的视图边要比靠近视角边更短, 但实际上, 我们的视角是等距离的, 也就是在<strong>3D Transform</strong>中仍然保持平行, 和之前提到的仿射变换有些类似.</p>
+<p>所以为了做一些修正, 我们需要引入<strong>投影变换</strong>, 又称为<strong>z变换</strong>, 来对一些做了变换的矩阵做一些修改, 旋转的除外, <strong>Core Animation</strong>, 当中并没有给我们提供直接设置透视变换的函数, 所以我们需要手动去修改矩阵值, 但很庆幸的是, 这个修改是很简单的, 直接来看代码吧:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewPerspectiveProjection &#123;</span><br><span class="line">    </span><br><span class="line">    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(100, 100, 100, 100)];</span><br><span class="line">    </span><br><span class="line">    imageView.image = [UIImage imageNamed:@&quot;expression&quot;];</span><br><span class="line">    </span><br><span class="line">    [self.view addSubview:imageView];</span><br><span class="line">    </span><br><span class="line">    CATransform3D transform = CATransform3DMakeRotation(M_PI_4, 0, 1, 0);</span><br><span class="line">    imageView.layer.transform = transform;</span><br><span class="line">    </span><br><span class="line">    CATransform3D transform3DIdentity = CATransform3DIdentity;</span><br><span class="line">    transform3DIdentity.m34 = - 1.0 / 500.0;</span><br><span class="line">    transform3DIdentity = CATransform3DRotate(transform3DIdentity, M_PI_4, 0, 1, 0);</span><br><span class="line">    imageView.layer.transform = transform3DIdentity;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在<strong>CATransform3D</strong>中, 有一个<strong>m34</strong>的元素, 它是用于按比例来缩放<strong>X</strong>和<strong>Y</strong>的值, 从而来计算离视角的距离.</p>
+<p><strong>m34</strong>的默认值为0, 我们可以通过设置<strong>m34</strong>来应用透视效果, 公式是<strong>-1.0/d</strong>, <strong>d</strong>代表了想象中视角相机和屏幕之间的距离, 以像素为单位, 通常设置<strong>500-1000</strong>之间, 但是对于一些特殊视图, 设置的值要小一些, 或者大一些要比<strong>500-1000</strong>要好一些, 所以这些值并不是固定的, 最好是根据需求来调节, 不然会出现湿疹, 或者是失去透视效果.</p>
+<h3 id="The-Vanishing-Point"><a href="#The-Vanishing-Point" class="headerlink" title="The Vanishing Point"></a>The Vanishing Point</h3><p><strong>The Vanishing Point</strong>翻译过来叫做<strong>消失点</strong>, 意思是当在透视角度绘图时, 原理视觉角度的物体将会变小变远, 远离到一个极限的时候, 所有物体最后都会汇聚并且消失在同一个点.</p>
+<p>在现实生活中, 这个点通常都是视图的中心, 如果要在应用中创建拟真效果的透视, 这个点一般是在屏幕的重点, 至少是所有3D对象的视图中点.</p>
+<p>在<strong>Core Animation</strong>中, 这个点是位于变换图层的<strong>anchorPoint</strong>(当然也有一些特殊的情况), 也就是说, 当图层发生变换的时候, 这个点永远位于图层变换钱的<strong>anchorPoint</strong>位置.</p>
+<p>当我们改变一个图层的<strong>position</strong>时, 也同时改变了它的消失点, 所以在我们做3D变换的时候要记住.</p>
+<p>当我们去调整视图的<strong>m34</strong>来让视图更加有3D效果, 通常要把它放置在屏幕的中央, 然后通过平移来把它移动到指定的位置, 这样子做, 就可以让所有的3D图层都有同一个消失点.</p>
+<h3 id="Sublayer-Transform"><a href="#Sublayer-Transform" class="headerlink" title="Sublayer Transform"></a>Sublayer Transform</h3><p>如果在开发中, 我们有多个视图或者多个图层, 而且他们都要做3D变换, 那我们就要对这些视图或者图层每个都设置相同的<strong>m34</strong>值, 并且还要确保在变换钱都在屏幕中央都有一个相同的<strong>position</strong>, 当然, 我们可以自己封装一下, 但这样子也非常的蛋疼, 那该怎么做呢?</p>
+<p>在<strong>CALayer</strong>中有一个属性叫做<strong>sublayerTransform</strong>, 它也是<strong>CATransform3D</strong>类型, 但和我们一个一个的去设置图层不同, 它将会影响所有的子图层, 这就是说明了, 我们只要使用<strong>sublayerTransform</strong>, 就可以一次性的把所有子图层都改变.</p>
+<p>这也可以提供另一个好处, 就是当我们使用<strong>sublayerTransform</strong>属性时, 我们就不需要再对子图层挨个挨个的去设置消失点, 因为消失点将会被设置在容器图层的中心点, 那我们就可以随意设置<strong>position</strong>和<strong>frame</strong>来放置子图层, 还是直接来看Demo吧:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewSublayerTransform &#123;</span><br><span class="line">    </span><br><span class="line">    UIImageView *imageViewOne = [[UIImageView alloc] initWithFrame:CGRectMake(80, 100, 100, 100)];</span><br><span class="line">    </span><br><span class="line">    imageViewOne.image = [UIImage imageNamed:@&quot;expression&quot;];</span><br><span class="line">    </span><br><span class="line">    UIImageView *imageViewTwo = [[UIImageView alloc] initWithFrame:CGRectMake(250, 100, 100, 100)];</span><br><span class="line">    </span><br><span class="line">    imageViewTwo.image = [UIImage imageNamed:@&quot;expression&quot;];</span><br><span class="line"></span><br><span class="line">    [self.view addSubview:imageViewOne];</span><br><span class="line">    [self.view addSubview:imageViewTwo];</span><br><span class="line">    </span><br><span class="line">    CATransform3D perspective = CATransform3DIdentity; perspective.m34 = - 1.0 / 500.0;</span><br><span class="line">    </span><br><span class="line">    self.view.layer.sublayerTransform = perspective;</span><br><span class="line">    </span><br><span class="line">    CATransform3D transform1 = CATransform3DMakeRotation(M_PI_4, 0, 1, 0);</span><br><span class="line">    </span><br><span class="line">    imageViewOne.layer.transform = transform1;</span><br><span class="line">    </span><br><span class="line">    CATransform3D transform2 = CATransform3DMakeRotation(-M_PI_4, 0, 1, 0);</span><br><span class="line">    </span><br><span class="line">    imageViewTwo.layer.transform = transform2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/5.Transforms/images/8.png" alt="8"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/5.Transforms/images/9.png" alt="9"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/5.Transforms/images/10.png" alt="10"></p>
+<h3 id="Backfaces"><a href="#Backfaces" class="headerlink" title="Backfaces"></a>Backfaces</h3><p>我们既然可以在3D场景下旋转图层, 当然也可以从背面去观察它, 比如我们把翻转的角度设置为<strong>M_PI</strong>, 那么就会显示一个镜像的图层, 我们来看看代码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewBackfaces &#123;</span><br><span class="line">    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(100, 100, 100, 100)];</span><br><span class="line">    </span><br><span class="line">    imageView.image = [UIImage imageNamed:@&quot;expression&quot;];</span><br><span class="line">    </span><br><span class="line">    [self.view addSubview:imageView];</span><br><span class="line">        </span><br><span class="line">    CATransform3D transform3DIdentity = CATransform3DIdentity;</span><br><span class="line">    transform3DIdentity.m34 = - 1.0 / 500.0;</span><br><span class="line">    transform3DIdentity = CATransform3DRotate(transform3DIdentity, M_PI, 0, 1, 0);</span><br><span class="line">    imageView.layer.transform = transform3DIdentity;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/5.Transforms/images/11.png" alt="11"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/5.Transforms/images/12.png" alt="12"></p>
+<h3 id="Layer-Flattening"><a href="#Layer-Flattening" class="headerlink" title="Layer Flattening"></a>Layer Flattening</h3><p>有人会问, 如果我们对已经做过变换的图层做反方向的会发生啥事?</p>
+<p>在理论上来讲, 我们如果对内部图层做了一个-45度的旋转, 如果要恢复正常, 则要做相反的变换, 才能相互抵消, 为了验证一下, 我们先试试:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewLayerFlattening &#123;</span><br><span class="line">    </span><br><span class="line">    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(50, 50, 200, 200)];</span><br><span class="line">    view.backgroundColor = [UIColor blueColor];</span><br><span class="line">    </span><br><span class="line">    [self.view addSubview:view];</span><br><span class="line">    </span><br><span class="line">    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(50, 50, 100, 100)];</span><br><span class="line">    </span><br><span class="line">    imageView.image = [UIImage imageNamed:@&quot;expression&quot;];</span><br><span class="line">    </span><br><span class="line">    [view addSubview:imageView];</span><br><span class="line">    </span><br><span class="line">    CATransform3D outer = CATransform3DMakeRotation(M_PI_4, 0, 0, 1);</span><br><span class="line">    view.layer.transform = outer;</span><br><span class="line">    </span><br><span class="line">    CATransform3D inner = CATransform3DMakeRotation(-M_PI_4, 0, 0, 1);</span><br><span class="line">    imageView.layer.transform = inner;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/5.Transforms/images/13.png" alt="13"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/5.Transforms/images/14.png" alt="14"></p>
+<p>看结果, 和我们想象的一样, 再试试再3D变化的情况下能不能抵消, 继续看代码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(50, 50, 200, 200)];</span><br><span class="line">    view.backgroundColor = [UIColor blueColor];</span><br><span class="line">    </span><br><span class="line">    [self.view addSubview:view];</span><br><span class="line">    </span><br><span class="line">    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(50, 50, 100, 100)];</span><br><span class="line">    </span><br><span class="line">    imageView.image = [UIImage imageNamed:@&quot;expression&quot;];</span><br><span class="line">    </span><br><span class="line">    [view addSubview:imageView];</span><br><span class="line">    </span><br><span class="line">//    CATransform3D outer = CATransform3DMakeRotation(M_PI_4, 0, 0, 1);</span><br><span class="line">//    view.layer.transform = outer;</span><br><span class="line">//    </span><br><span class="line">//    CATransform3D inner = CATransform3DMakeRotation(-M_PI_4, 0, 0, 1);</span><br><span class="line">//    imageView.layer.transform = inner;</span><br><span class="line">    </span><br><span class="line">    // 3D Trans</span><br><span class="line">    CATransform3D outer = CATransform3DIdentity; outer.m34 = -1.0 / 500.0;</span><br><span class="line">    outer = CATransform3DRotate(outer, M_PI_4, 0, 1, 0); view.layer.transform = outer;</span><br><span class="line">    </span><br><span class="line">    CATransform3D inner = CATransform3DIdentity; inner.m34 = -1.0 / 500.0;</span><br><span class="line">    inner = CATransform3DRotate(inner, -M_PI_4, 0, 1, 0); imageView.layer.transform = inner;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/5.Transforms/images/15.png" alt="15"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/5.Transforms/images/16.png" alt="16"></p>
+<p>这里我并没有使用<strong>sublayerTransform</strong>属性, 因为这里面的图层并不是容器图层直接的子图层, 所以这里分别对图层设置了<strong>Perspective Projection</strong>.</p>
+<p>结果也是和我们所预期的不太一样, 虽然按道理来讲是显示正常的方块, 但实际上并不是的.</p>
+<p>在<strong>Core Animation</strong>当中, 3D图层存在于3D空间之内, 但它们并不是存在同一个, 其实每一个图层的3D场景都是扁平化的, 当我们正面观察一个图层时, 看到的图层其实是由子图层创建的3D场景, 当你倾斜这个图层时, 会发现这个3D场景只是被绘制在图层的表面罢了.</p>
+<p>总之一句话说完, 用<strong>Core Animation</strong>创建非常负责的3D场景是很蛋疼的, 因为我们不能直接创建一个个图层的去套, 然后构建成一个3D结构的图层关系, 刚刚也说了, 在相同场景下任何3D表面必须和同样的图层保持一致, 这是因为每一个父视图都把它的子视图扁平化了.</p>
+<p>那这个有办法解决吗? 当然有, 使用<strong>CALayer</strong>就可以啦, 在<strong>CALayer</strong>中, 有一个叫做<strong>CATransformLayer</strong>的子类就可以解决这个问题, 这个后面再说吧.</p>
+<h3 id="Solid-Objects"><a href="#Solid-Objects" class="headerlink" title="Solid Objects"></a>Solid Objects</h3><p><strong>Solid Objects</strong>翻译过来就叫做固体对象, 前面我们懂得了一丢丢的3D空间图层布局, 现在我们尝试着来创建一个固态的3D对象(也就是我们所谓的骰子), 直接来看代码吧:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewSolidObjects &#123;</span><br><span class="line">    </span><br><span class="line">    CATransform3D perspective = CATransform3DIdentity;</span><br><span class="line">    perspective.m34 = -1.0 / 500.0;</span><br><span class="line"></span><br><span class="line">    perspective = CATransform3DRotate(perspective, -M_PI_4, 1, 0, 0);</span><br><span class="line">    perspective = CATransform3DRotate(perspective, -M_PI_4, 0, 1, 0);</span><br><span class="line"></span><br><span class="line">    self.view.layer.sublayerTransform = perspective;</span><br><span class="line">    </span><br><span class="line">    CATransform3D transform = CATransform3DMakeTranslation(0, 0, 100);</span><br><span class="line"></span><br><span class="line">    for (NSInteger i = 0; i &lt; 6; i++) &#123;</span><br><span class="line">        </span><br><span class="line">        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];</span><br><span class="line">        </span><br><span class="line">        label.backgroundColor = [UIColor whiteColor];</span><br><span class="line">        label.textColor = [UIColor redColor];</span><br><span class="line">        label.layer.borderColor = [UIColor blackColor].CGColor;</span><br><span class="line">        label.layer.borderWidth = 0.5;</span><br><span class="line">        label.tag = i;</span><br><span class="line">        label.text = [NSString stringWithFormat:@&quot;%ld&quot;, i + 1];</span><br><span class="line">        label.font = [UIFont systemFontOfSize:30];</span><br><span class="line">        label.textAlignment = NSTextAlignmentCenter;</span><br><span class="line">        </span><br><span class="line">        switch (label.tag) &#123;</span><br><span class="line">            case 0: &#123;</span><br><span class="line">                </span><br><span class="line">                [self addLabel:label withTransform:transform];</span><br><span class="line">            &#125;</span><br><span class="line">                break;</span><br><span class="line">            case 1: &#123;</span><br><span class="line">                transform = CATransform3DMakeTranslation(100, 0, 0);</span><br><span class="line">                transform = CATransform3DRotate(transform, M_PI_2, 0, 1, 0);</span><br><span class="line">                [self addLabel:label withTransform:transform];</span><br><span class="line">            &#125;</span><br><span class="line">                break;</span><br><span class="line">            case 2: &#123;</span><br><span class="line">                transform = CATransform3DMakeTranslation(0, -100, 0);</span><br><span class="line">                transform = CATransform3DRotate(transform, M_PI_2, 1, 0, 0);</span><br><span class="line">                [self addLabel:label withTransform:transform];</span><br><span class="line">            &#125;</span><br><span class="line">                break;</span><br><span class="line">            case 3: &#123;</span><br><span class="line">                transform = CATransform3DMakeTranslation(0, 100, 0);</span><br><span class="line">                transform = CATransform3DRotate(transform, -M_PI_2, 1, 0, 0);</span><br><span class="line">                [self addLabel:label withTransform:transform];</span><br><span class="line">            &#125;</span><br><span class="line">                break;</span><br><span class="line">            case 4: &#123;</span><br><span class="line">                transform = CATransform3DMakeTranslation(-100, 0, 0);</span><br><span class="line">                transform = CATransform3DRotate(transform, -M_PI_2, 0, 1, 0);</span><br><span class="line">                [self addLabel:label withTransform:transform];</span><br><span class="line">            &#125;</span><br><span class="line">                break;</span><br><span class="line">            case 5: &#123;</span><br><span class="line">                transform = CATransform3DMakeTranslation(0, 0, -100);</span><br><span class="line">                transform = CATransform3DRotate(transform, M_PI, 0, 1, 0);</span><br><span class="line">                [self addLabel:label withTransform:transform];</span><br><span class="line">            &#125;</span><br><span class="line">                break;</span><br><span class="line">            default:</span><br><span class="line">                break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)addLabel:(UILabel *)label withTransform:(CATransform3D)transform &#123;</span><br><span class="line">    </span><br><span class="line">    [self.view addSubview:label];</span><br><span class="line">    </span><br><span class="line">    CGSize containerSize = self.view.bounds.size;</span><br><span class="line">    label.center = CGPointMake(containerSize.width / 2.0, containerSize.height / 2.0);</span><br><span class="line">    label.layer.transform = transform;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/5.Transforms/images/17.png" alt="17"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/5.Transforms/images/18.png" alt="18"></p>
+<h3 id="Light-and-Shadow"><a href="#Light-and-Shadow" class="headerlink" title="Light and Shadow"></a>Light and Shadow</h3><p>刚刚我们弄了一个看上去像是立方体的, 但是它们之前的每一个面之间的连接压根就分辨不出, 虽然在<strong>Core Animation</strong>可以用3D显示图层, 但它并没有光线的概念, 如果要让这个立方体看起来更加的真实, 那我们就要手动给它加个阴影效果, 这个就根据自己的需求来看了.</p>
+<p>这里我们简单的来看看事例: </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">- (void)addLightingToLabel:(CALayer *)labelLayer &#123;</span><br><span class="line">    </span><br><span class="line">    CALayer *layer = [CALayer layer];</span><br><span class="line">    layer.frame = labelLayer.bounds;</span><br><span class="line">    </span><br><span class="line">    [labelLayer addSublayer:layer];</span><br><span class="line">    </span><br><span class="line">    CATransform3D transform = labelLayer.transform;</span><br><span class="line">    </span><br><span class="line">    GLKMatrix4 matrix4 = [self matrixFrom3DTransformation:transform];</span><br><span class="line">    GLKMatrix3 matrix3 = GLKMatrix4GetMatrix3(matrix4);</span><br><span class="line">    </span><br><span class="line">    GLKVector3 normal = GLKVector3Make(0, 0, 1);</span><br><span class="line">    normal = GLKMatrix3MultiplyVector3(matrix3, normal);</span><br><span class="line">    normal = GLKVector3Normalize(normal);</span><br><span class="line">    </span><br><span class="line">    GLKVector3 light = GLKVector3Normalize(GLKVector3Make(LIGHT_DIRECTION));</span><br><span class="line">    CGFloat dotProduct = GLKVector3DotProduct(normal, light);</span><br><span class="line">    </span><br><span class="line">    CGFloat shadow = 1 + dotProduct - AMBIENT_LIGHT;</span><br><span class="line">    UIColor *color = [UIColor colorWithWhite:0 alpha:shadow];</span><br><span class="line">    </span><br><span class="line">    layer.backgroundColor = color.CGColor;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (GLKMatrix4)matrixFrom3DTransformation:(CATransform3D)transform &#123;</span><br><span class="line">    GLKMatrix4 matrix = GLKMatrix4Make(transform.m11, transform.m12, transform.m13, transform.m14,</span><br><span class="line">                                       transform.m21, transform.m22, transform.m23, transform.m24,</span><br><span class="line">                                       transform.m31, transform.m32, transform.m33, transform.m34,</span><br><span class="line">                                       transform.m41, transform.m42, transform.m43, transform.m44);</span><br><span class="line">    </span><br><span class="line">    return matrix;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/5.Transforms/images/19.png" alt="19"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/5.Transforms/images/20.png" alt="20"></p>
+<h3 id="Touch-Events"><a href="#Touch-Events" class="headerlink" title="Touch Events"></a>Touch Events</h3><p>虽然说我们现在用的是<strong>UILabel</strong>, 如果我们把3, 4, 5, 6换成<strong>UIButton</strong>和<strong>UIView</strong>的组合, 那4, 5, 6点击按钮是无法触发点击事件的.</p>
+<p>这是因为由于视图的顺序, 在之前我们就说过, 点击事件的处理是由视图再父视图中的顺序决定的, 并不是在<strong>3D空间</strong>的<strong>Z轴顺序</strong>上.</p>
+<p>但在这个例子当中, 我们的视图的确是按照顺序来添加的, 那为什么把4, 5, 6换成<strong>UIButton</strong>和<strong>UIView</strong>之后就无法处理点击事件了呢? 那是因为被前面的三个视图挡住了, 在表面上截断了4, 5, 6的点击事件, 这个是和普通的2D布局在按钮上覆盖物体是一样的.</p>
+<p>我们可以把除了3视图之外的视图<strong>userInteractionEnabled</strong>属性都设置成<strong>NO</strong>, 这样子就可以禁止事件传递, 或者通过简单的代码, 把<strong>视图3</strong>覆盖在<strong>视图6</strong>上, 那这样子无论你如何点, 都可以点击到按钮了.</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总结一下:</p>
+<ul>
+<li>AffineTransforms的使用</li>
+<li>AffineTransforms的混合变换</li>
+<li>3D Transforms的Perspective Projection</li>
+<li>3D Transforms的The Vanishing Point</li>
+<li>3D Transforms的Sublayer Transform</li>
+<li>3D Transforms的Backfaces</li>
+<li>3D Transforms的Layer Flattening</li>
+<li>最后再来一丢丢的Solid Objects</li>
+</ul>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: <a href="https://github.com/CainLuo/CoreAnimation" target="_blank" rel="noopener">https://github.com/CainLuo/CoreAnimation</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Affine-Transforms"><span class="toc-number">2.</span> <span class="toc-text">Affine Transforms</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Creating-a-CGAffineTransform-创建一个CGAffineTransform"><span class="toc-number">2.1.</span> <span class="toc-text">Creating a CGAffineTransform - 创建一个CGAffineTransform</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Combining-Transforms-混合变换"><span class="toc-number">2.1.1.</span> <span class="toc-text">Combining Transforms - 混合变换</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3D-Transforms"><span class="toc-number">2.2.</span> <span class="toc-text">3D Transforms</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Perspective-Projection"><span class="toc-number">2.3.</span> <span class="toc-text">Perspective Projection</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-Vanishing-Point"><span class="toc-number">2.4.</span> <span class="toc-text">The Vanishing Point</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Sublayer-Transform"><span class="toc-number">2.5.</span> <span class="toc-text">Sublayer Transform</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Backfaces"><span class="toc-number">2.6.</span> <span class="toc-text">Backfaces</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Layer-Flattening"><span class="toc-number">2.7.</span> <span class="toc-text">Layer Flattening</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Solid-Objects"><span class="toc-number">2.8.</span> <span class="toc-text">Solid Objects</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Light-and-Shadow"><span class="toc-number">2.9.</span> <span class="toc-text">Light and Shadow</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Touch-Events"><span class="toc-number">2.10.</span> <span class="toc-text">Touch Events</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">4.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

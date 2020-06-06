@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CocoaPods 1.7.2  -  Master Repo CDN已经敲定！ - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="CocoaPods 1.7.2带来了对主干规格repo的CDN支持的最终版本。
+这是一个荒谬的规模，意想不到的后果和免费的开源计划的故事。 CocoaPods正在转向使用位于https://cdn.,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">CocoaPods 1.7.2  -  Master Repo CDN已经敲定！</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">CocoaPods 1.7.2  -  Master Repo CDN已经敲定！</h1>
+        <div class="stuff">
+            <span>六月 15, 2019</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/CocoaPods/">CocoaPods</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p><strong>CocoaPods 1.7.2</strong>带来了对主干规格<strong>repo</strong>的<strong>CDN</strong>支持的最终版本。</p>
+<p>这是一个荒谬的规模，意想不到的后果和免费的开源计划的故事。 <strong>CocoaPods</strong>正在转向使用位于<a href="https://cdn.cocoapods.org/的**CDN**，仍然被认为是实验性的。" target="_blank" rel="noopener">https://cdn.cocoapods.org/的**CDN**，仍然被认为是实验性的。</a> 未来的版本将使其成为默认的规格来源。</p>
+<p><strong>CDN</strong>是一个内容交付网络 - 这对<strong>CocoaPods</strong>来说意味着使用<strong>CocoaPods</strong>不需要您拥有计算机上所有公共<strong>Podspec</strong>的本地副本。 为您节省大约<strong>1 GB</strong>的文件存储空间，并减少<strong>pod</strong>安装的大量时间。</p>
+<h2 id="在免费和开源时扩展"><a href="#在免费和开源时扩展" class="headerlink" title="在免费和开源时扩展"></a>在免费和开源时扩展</h2><p><strong>CocoaPods</strong>是一个免费的开源项目，由维护人员在业余时间运行。 因此，它取决于多家科技公司的良好优势和赞助。 最初的决定是将规范存储在<strong>GitHub</strong>存储库中，这是用于存储此类元数据的免费开源项目的常见做法。</p>
+<p><strong>2016</strong>年遇到了第一个规模障碍，当时主要规格报告的流量导致<strong>GitHub</strong>对所有操作进行限速。<br>当时<strong>GitHub</strong>发表的评论称，这个单独的<strong>repo</strong>使用了<strong>5</strong>个整个服务器<strong>CPU</strong>，并且在数<strong>TB</strong>的带宽上消耗了<strong>TB</strong>。</p>
+<p>通过分割回购来改善算法性能并将所有首次克隆限制为浅层，避免了这场危机。</p>
+<p>这解决了<strong>GitHub</strong>的问题，但<strong>CocoaPods</strong>的用户仍然不得不处理不满意的性能。</p>
+<h2 id="Git作为数据库"><a href="#Git作为数据库" class="headerlink" title="Git作为数据库"></a>Git作为数据库</h2><p><strong>Git</strong>是在“慢速网络”和“无备份”是合法设计问题的时候发明的。 作为持续集成的一部分，运行无尽的构建并不常见。 <strong>CDN</strong>并不常见。</p>
+<p>有很多<strong>git repos</strong>的故事打击了<strong>git</strong>设计约束的硬封面。 微软的<strong>Windows</strong>回购就是一个例子。 <strong>CocoaPods</strong>是另一个。</p>
+<p>在撰写本文时，规格回购包括：</p>
+<ul>
+<li>几乎<strong>400k</strong>提交 -  <strong>Linux</strong>内核回购的一半！</li>
+<li>超过<strong>400k</strong>的目录</li>
+<li>超过<strong>300k</strong>的spec文件</li>
+</ul>
+<p>这些数字导致回购需要几分钟来克隆，长时间更新并浪费了无数的<strong>CI</strong>时间。 它也被证明可以抵抗压缩，因为这种目录结构也会成为<strong>tar</strong>的瓶颈。</p>
+<h2 id="目录列表被拒绝"><a href="#目录列表被拒绝" class="headerlink" title="目录列表被拒绝"></a>目录列表被拒绝</h2><p>对很多人来说很明显，规范回购应该放在<strong>CDN</strong>之后，但有几个限制因素：</p>
+<ul>
+<li>它必须是免费的<strong>CDN</strong>，因为该项目是免费和开源的。</li>
+<li>它必须允许某种方式获取目录列表，以便检索<strong>pod</strong>的版本。</li>
+<li>它必须从<strong>GitHub</strong>自动更新作为事实的来源。</li>
+</ul>
+<p>第一个实现是一个<strong>shell</strong>脚本，轮询<strong>GitHub</strong>并将<strong>ls</strong>管道查找到索引文件中。 这是在一台没有开放或免费的机器上运行的，因此无法成为真正的解决方案。 尽管如此，这个自动更新的<strong>repo</strong>被置于<strong>jsDelivr CDN</strong>之后，与它连接的客户端在<strong>1.7.0</strong>中被标记为“高度实验性”。</p>
+<h2 id="最后在Netlify的实现"><a href="#最后在Netlify的实现" class="headerlink" title="最后在Netlify的实现"></a>最后在Netlify的实现</h2><p><strong>CocoaPods/Specs</strong>的<strong>CDN</strong>的最终版本是在<strong>Netlify</strong>上实现的，<strong>Netlify</strong>是一个静态站点托管服务，支持灵活的站点生成。 这个解决方案打破了所有方面：慷慨的开源计划，快速<strong>CDN</strong>和<strong>GitHub</strong>的持续部署。</p>
+<p>每次提交时，<strong>Netlify</strong>都会运行一个专门的脚本，为<strong>repo</strong>中的所有<strong>pod</strong>和版本生成每个分片索引。 如果您注意到我们的<strong>Podspecs repo</strong>的目录结构很奇怪，那就是我们所说的分片。 可以在<a href="https://cdn.cocoapods.org/all_pods_versions_2_2_2.txt找到分片索引的示例。" target="_blank" rel="noopener">https://cdn.cocoapods.org/all_pods_versions_2_2_2.txt找到分片索引的示例。</a> 这将对应于<code>~/.cocoapods/repos/master/Specs/2/2/2/</code>本地。</p>
+<p>另外，我们创建了一个<strong>all_pods.txt</strong>文件，其中包含所有<strong>pod</strong>的列表。</p>
+<p>最后，任何其他请求都会重定向到<strong>GitHub</strong>的<strong>CDN</strong>。</p>
+<h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><p>在我们将其切换为默认值之前，使用<strong>CDN</strong>检索规格时，“最终确定”仍然应该被认为是实验性的。</p>
+<p>要在<strong>Podfile</strong>中使用<strong>CDN</strong>源：</p>
+<p>如果您没有私人规格：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source <span class="string">'https://cdn.cocoapods.org/'</span></span><br></pre></td></tr></table></figure>
+
+<p>如果您有私人规格：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">source <span class="string">'https://github.com/artsy/Specs.git'</span></span><br><span class="line">- source <span class="string">'https://github.com/CocoaPods/Specs.git'</span></span><br><span class="line">+ source <span class="string">'https://cdn.cocoapods.org/'</span></span><br></pre></td></tr></table></figure>
+
+<p>这样做会破坏你的<strong>Podfile.lock</strong>，所以你可能需要运行<strong>pod update</strong>来查看更改（小心，这也可能会更新你的<strong>Pod</strong>）。</p>
+<p>如果您有<strong>CI</strong>设置，建议缓存新的<strong>repo dir</strong>，因为它非常小，可以节省更多时间。 使用<strong>1.7.2</strong>它应该位于<code>~/.cocoapods/repos/cocoapods-(是的，带有- )</code>，但我们希望改进即将发布的版本中的命名。</p>
+<p>在即将发布的版本中，我们计划将<strong>CDN</strong>源作为默认源！</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#在免费和开源时扩展"><span class="toc-number">1.</span> <span class="toc-text">在免费和开源时扩展</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Git作为数据库"><span class="toc-number">2.</span> <span class="toc-text">Git作为数据库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#目录列表被拒绝"><span class="toc-number">3.</span> <span class="toc-text">目录列表被拒绝</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最后在Netlify的实现"><span class="toc-number">4.</span> <span class="toc-text">最后在Netlify的实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用法"><span class="toc-number">5.</span> <span class="toc-text">用法</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

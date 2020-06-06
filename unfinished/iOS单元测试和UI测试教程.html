@@ -1,0 +1,369 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single" class="page">
+    <div id="top">
+        <a class="icon-left image-icon" href="javascript:history.back()"></a>
+    </div>
+    <div class="section">
+        <div class="article">
+            <div class="main">
+                <div class="content">
+                
+                        <h1 id="iOS单元测试和UI测试教程"><a href="#iOS单元测试和UI测试教程" class="headerlink" title="iOS单元测试和UI测试教程"></a>iOS单元测试和UI测试教程</h1><p>2019年4月8日</p>
+<p>了解如何将单元测试和UI测试添加到iOS应用程序，以及如何检查代码覆盖率。</p>
+<blockquote>
+<p>注意: 本教程使用的是Swift 4.2, iOS 12, Xcode 10</p>
+</blockquote>
+<p>写作测试不是很迷人，但是由于测试让你的闪亮应用程序变成了一个充满错误的垃圾，这是必要的。 如果您正在阅读本教程，您已经知道应该为您的代码和UI编写测试，但您可能不知道如何。</p>
+<p>您可能有一个有效的应用程序，但您想测试您为扩展应用程序所做的更改。 也许您已经编写了测试，但不确定它们是否是正确的测试。 或者，您已经开始研究新的应用程序，并希望随时进行测试。</p>
+<p>本教程将向您展示：</p>
+<ul>
+<li>如何使用Xcode的Test导航器测试应用程序的模型和异步方法</li>
+<li>如何使用存根和模拟伪造与库或系统对象的交互</li>
+<li>如何测试UI和性能</li>
+<li>如何使用代码覆盖工具</li>
+</ul>
+<p>在此过程中，您将获得测试忍者所使用的一些词汇。</p>
+<h2 id="找出要测试的内容"><a href="#找出要测试的内容" class="headerlink" title="找出要测试的内容"></a>找出要测试的内容</h2><p>在编写任何测试之前，了解基础知识非常重要。 你需要测试什么？</p>
+<p>如果您的目标是扩展现有应用程序，则应首先为计划更改的任何组件编写测试。</p>
+<p>通常，测试应包括：</p>
+<ul>
+<li>核心功能：模型类和方法及其与控制器的交互</li>
+<li>最常见的UI工作流程</li>
+<li>边界条件</li>
+<li>Bug修复</li>
+</ul>
+<h3 id="最佳实践测试"><a href="#最佳实践测试" class="headerlink" title="最佳实践测试"></a>最佳实践测试</h3><p>首字母缩略词FIRST描述了有效单元测试的一套简明标准。 这些标准是：</p>
+<ul>
+<li>快速：测试应该快速进行。</li>
+<li>独立/隔离：测试不应彼此共享状态。</li>
+<li>可重复：每次运行测试时都应获得相同的结果。 外部数据提供程序或并发问题可能导致间歇性故障。</li>
+<li>自我验证：测试应完全自动化。 输出应该是“通过”或“失败”，而不是依赖于程序员对日志文件的解释。</li>
+<li>及时：理想情况下，应在编写测试的生产代码（测试驱动开发）之前编写测试。</li>
+</ul>
+<p>遵循FIRST原则将使您的测试保持清晰且有用，而不是为您的应用程序设置障碍。</p>
+<h2 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h2><p>首先使用本教程顶部或底部的“下载材料”按钮下载项目材料。 有两个独立的入门项目：BullsEye和HalfTunes。</p>
+<ul>
+<li>BullsEye: 基于<a href="https://store.raywenderlich.com/products/ios-apprentice" target="_blank" rel="noopener">iOS Apprentice</a>中的示例应用程序。 游戏逻辑位于BullsEyeGame类中，您将在本教程中测试它。</li>
+<li>HalfTunes: 是<a href="https://www.raywenderlich.com/110458/nsurlsession-tutorial-getting-started" target="_blank" rel="noopener">URLSession教程</a>中示例应用程序的更新版本。 用户可以在iTunes API中查询歌曲，然后下载和播放歌曲片段。</li>
+</ul>
+<h2 id="Xcode中的单元测试"><a href="#Xcode中的单元测试" class="headerlink" title="Xcode中的单元测试"></a>Xcode中的单元测试</h2><p>Test导航器提供了最简单的测试方法; 您将使用它来创建测试目标并针对您的应用程序运行测试。</p>
+<h3 id="创建单元测试目标"><a href="#创建单元测试目标" class="headerlink" title="创建单元测试目标"></a>创建单元测试目标</h3><p>打开BullsEye项目并按Command-6打开Test导航器。<br>单击左下角的+按钮，然后从菜单中选择New Unit Test Target …：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2016/12/TestNavigator1.png" alt="图片"></p>
+<p>接受默认名称BullsEyeTests。 当测试包出现在“测试”导航器中时，单击以在编辑器中打开该包。 如果捆绑包未自动显示，请单击其他导航器之一进行故障排除，然后返回“测试”导航器。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2016/12/TestNavigator2-650x290.png" alt="图片"></p>
+<p>默认模板导入测试框架XCTest，并使用setUp（），tearDown（）和示例测试方法定义XCTestCase的BullsEyeTests子类。</p>
+<p>运行测试有三种方法：</p>
+<ul>
+<li><strong>Product ▸ Test</strong>或<strong>Command-U</strong>。 这两个都运行所有测试类。</li>
+<li>单击“测试”导航器中的箭头按钮。</li>
+<li>单击装订线中的菱形按钮。</li>
+</ul>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2016/12/TestNavigator3-480x81.png" alt="图片"></p>
+<p>您还可以通过在测试导航器或装订线中单击其菱形来运行单个测试方法。</p>
+<p>尝试不同的方式来运行测试，以了解它需要多长时间以及它看起来像什么。 样本测试还没有做任何事情，所以它们运行得非常快！</p>
+<p>当所有测试成功后，钻石将变为绿色并显示复选标记。 您可以单击testPerformanceExample（）末尾的灰色菱形以打开性能结果：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2016/12/TestNavigator4-650x341.png" alt="图片"></p>
+<p>本教程不需要testPerformanceExample（）或testExample（），因此请删除它们。</p>
+<h3 id="使用XCTAssert测试模型"><a href="#使用XCTAssert测试模型" class="headerlink" title="使用XCTAssert测试模型"></a>使用XCTAssert测试模型</h3><p>首先，您将使用XCTAssert函数来测试BullsEye模型的核心功能：BullsEyeGame对象是否正确计算了一轮的分数？</p>
+<p>在BullsEyeTests.swift中，在import语句下方添加以下行：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@testable</span> <span class="keyword">import</span> BullsEye</span><br></pre></td></tr></table></figure>
+
+<p>这使得单元测试可以访问BullsEye中的内部类型和功能。</p>
+<p>在BullsEyeTests类的顶部，添加以下属性：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sut: <span class="type">BullsEyeGame!</span></span><br></pre></td></tr></table></figure>
+
+<p>这为BullsEyeGame创建了一个占位符，它是被测系统（SUT），或者是测试用例类与测试有关的对象。</p>
+<p>接下来，用这个替换setup（）的内容：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">super</span>.setUp()</span><br><span class="line">sut = <span class="type">BullsEyeGame</span>()</span><br><span class="line">sut.startNewGame()</span><br></pre></td></tr></table></figure>
+
+<p>这会在类级别创建BullsEyeGame对象，因此此测试类中的所有测试都可以访问SUT对象的属性和方法。</p>
+<p>在这里，您还可以调用游戏的startNewGame（）来初始化targetValue。 许多测试将使用targetValue来测试游戏是否正确计算得分。</p>
+<p>在您忘记之前，请在tearDown（）中释放您的SUT对象。 将其内容替换为：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sut = <span class="literal">nil</span></span><br><span class="line"><span class="keyword">super</span>.tearDown()</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：最好在setUp（）中创建SUT并在tearDown（）中释放它，以确保每个测试都以一个干净的平板开始。 有关更多讨论，请查看Jon Reid关于此主题的帖子。</p>
+</blockquote>
+<h2 id="写第一次测试"><a href="#写第一次测试" class="headerlink" title="写第一次测试"></a>写第一次测试</h2><p>现在，您已经准备好编写第一个测试了！</p>
+<p>将以下代码添加到BullsEyeTests的末尾：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testScoreIsComputed</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="comment">// 1. given</span></span><br><span class="line">  <span class="keyword">let</span> guess = sut.targetValue + <span class="number">5</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 2. when</span></span><br><span class="line">  sut.check(guess: guess)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 3. then</span></span><br><span class="line">  <span class="type">XCTAssertEqual</span>(sut.scoreRound, <span class="number">95</span>, <span class="string">"Score computed from guess is wrong"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试方法的名称始终以test开头，然后是对其测试内容的描述。</p>
+<p>将测试格式化为给定的，何时以及然后的部分是一种很好的做法：</p>
+<ol>
+<li>给定：在这里，您可以设置所需的任何值。 在此示例中，您将创建一个猜测值，以便指定它与targetValue的差异。</li>
+<li>时间：在本节中，您将执行正在测试的代码：调用check（guess :)。</li>
+<li>然后：这是您将断言您期望的结果的部分，如果测试失败则打印一条消息。 在这种情况下，sut.scoreRound应该等于95（100  -  5）。</li>
+</ol>
+<p>单击装订线或测试导航器中的菱形图标运行测试。 这将构建并运行应用程序，菱形图标将变为绿色复选标记！</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/01/succeeded-250x250.png" alt="图片"></p>
+<blockquote>
+<p>注意：要查看XCTestAssertions的完整列表，请转到<a href="https://developer.apple.com/documentation/xctest#2870839" target="_blank" rel="noopener">Apple按类别列出的断言</a>。</p>
+</blockquote>
+<h3 id="调试测试"><a href="#调试测试" class="headerlink" title="调试测试"></a>调试测试</h3><p>BullsEyeGame故意内置了一个错误，你现在就可以练习找到它。 要查看操作中的错误，您将创建一个测试，从给定部分中的targetValue中减去5，并使其他所有内容保持不变。</p>
+<p>添加以下测试：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testScoreIsComputedWhenGuessLTTarget</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="comment">// 1. given</span></span><br><span class="line">  <span class="keyword">let</span> guess = sut.targetValue - <span class="number">5</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 2. when</span></span><br><span class="line">  sut.check(guess: guess)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 3. then</span></span><br><span class="line">  <span class="type">XCTAssertEqual</span>(sut.scoreRound, <span class="number">95</span>, <span class="string">"Score computed from guess is wrong"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>guess和targetValue之间的差异仍为5，因此得分仍应为95。</p>
+<p>在“断点”导航器中，添加“测试失败断点”。 当测试方法发布失败声明时，这将停止测试运行。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2016/12/AddTestFailureBreakpoint.png" alt="图片"></p>
+<p>运行测试，它应该在测试失败时停在XCTAssertEqual行。</p>
+<p>在调试控制台中检查sut并猜测：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/01/TestFailure-1-650x372.png" alt="图片"></p>
+<p>猜测是targetValue  -  5但是scoreRound是105，而不是95！</p>
+<p>要进一步调查，请使用正常的调试过程：在when语句中设置一个断点，在BullsEyeGame.swift中设置一个断点，在check（guess :)中，它会产生差异。 然后再次运行测试，并跳过let差异语句以检查应用程序中差异的值：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2016/12/DebugConsole.png" alt="图片"></p>
+<p>问题是差异是负面的，所以得分是100  - （ -  5）。 要解决此问题，您应该使用差异的绝对值。 在check（guess :)中，取消注释正确的行并删除不正确的行。</p>
+<p>删除两个断点，然后再次运行测试以确认它现在成功。</p>
+<h3 id="使用XCTestExpectation测试异步操作"><a href="#使用XCTestExpectation测试异步操作" class="headerlink" title="使用XCTestExpectation测试异步操作"></a>使用XCTestExpectation测试异步操作</h3><p>既然您已经学会了如何测试模型并调试测试失败，那么现在是时候继续测试异步代码了。</p>
+<p>打开HalfTunes项目。 它使用URLSession来查询iTunes API并下载歌曲样本。 假设您要修改它以使用<a href="https://www.raywenderlich.com/121540/alamofire-tutorial-getting-started" target="_blank" rel="noopener">AlamoFire</a>进行网络操作。 要查看是否有任何中断，您应该为网络操作编写测试并在更改代码之前和之后运行它们。</p>
+<p>URLSession方法是异步的：它们立即返回，但直到稍后才完成运行。 要测试异步方法，请使用XCTestExpectation使测试等待异步操作完成。</p>
+<p>异步测试通常很慢，因此您应该将它们与更快的单元测试分开。</p>
+<p>创建一个名为HalfTunesSlowTests的新单元测试目标。 打开HalfTunesSlowTests类，并在现有import语句下方导入HalfTunes应用程序模块：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@testable</span> <span class="keyword">import</span> HalfTunes</span><br></pre></td></tr></table></figure>
+
+<p>此类中的所有测试都使用默认的URLSession将请求发送到Apple的服务器，因此声明一个sut对象，在setUp（）中创建它并在tearDown（）中释放它。</p>
+<p>用以下内容替换HalfTunesSlowTests类的内:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sut: <span class="type">URLSession!</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">setUp</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">super</span>.setUp()</span><br><span class="line">  sut = <span class="type">URLSession</span>(configuration: .<span class="keyword">default</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">tearDown</span><span class="params">()</span></span> &#123;</span><br><span class="line">  sut = <span class="literal">nil</span></span><br><span class="line">  <span class="keyword">super</span>.tearDown()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来，添加此异步测试：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Asynchronous test: success fast, failure slow</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testValidCallToiTunesGetsHTTPStatusCode200</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="comment">// given</span></span><br><span class="line">  <span class="keyword">let</span> url = </span><br><span class="line">    <span class="type">URL</span>(string: <span class="string">"https://itunes.apple.com/search?media=music&amp;entity=song&amp;term=abba"</span>)</span><br><span class="line">  <span class="comment">// 1</span></span><br><span class="line">  <span class="keyword">let</span> promise = expectation(description: <span class="string">"Status code: 200"</span>)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// when</span></span><br><span class="line">  <span class="keyword">let</span> dataTask = sut.dataTask(with: url!) &#123; data, response, error <span class="keyword">in</span></span><br><span class="line">    <span class="comment">// then</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> error = error &#123;</span><br><span class="line">      <span class="type">XCTFail</span>(<span class="string">"Error: \(error.localizedDescription)"</span>)</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> <span class="keyword">let</span> statusCode = (response <span class="keyword">as</span>? <span class="type">HTTPURLResponse</span>)?.statusCode &#123;</span><br><span class="line">      <span class="keyword">if</span> statusCode == <span class="number">200</span> &#123;</span><br><span class="line">        <span class="comment">// 2</span></span><br><span class="line">        promise.fulfill()</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="type">XCTFail</span>(<span class="string">"Status code: \(statusCode)"</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  dataTask.resume()</span><br><span class="line">  <span class="comment">// 3</span></span><br><span class="line">  wait(<span class="keyword">for</span>: [promise], timeout: <span class="number">5</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此测试检查向iTunes发送有效查询是否返回200状态代码。 大多数代码与您在应用程序中编写的代码相同，使用以下附加行：</p>
+<ol>
+<li><p>expectation（description :)：返回存储在promise中的XCTestExpectation对象。 description参数描述了您期望发生的事情。</p>
+</li>
+<li><p>promise.fulfill（）：在异步方法的完成处理程序的成功条件闭包中调用它来标记已满足期望。</p>
+</li>
+<li><p>wait（for：timeout :)：保持测试运行，直到满足所有期望，或超时间隔结束，以先发生者为准。</p>
+</li>
+</ol>
+<p>运行测试。 如果您已连接到互联网，则应用程序在模拟器中加载后，测试应该需要大约一秒钟才能成功。</p>
+<h3 id="失败快"><a href="#失败快" class="headerlink" title="失败快"></a>失败快</h3><p>失败会伤害，但它不需要永远。</p>
+<p>要体验失败，只需从URL中的“itunes”中删除’s’即可：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> url = </span><br><span class="line">  <span class="type">URL</span>(string: <span class="string">"https://itune.apple.com/search?media=music&amp;entity=song&amp;term=abba"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>运行测试。 它失败了，但需要完整的超时间隔！ 这是因为您假设请求总是成功，而这就是您调用promise.fulfill（）的地方。 由于请求失败，仅在超时到期时才完成。</p>
+<p>您可以通过更改以下假设来改进此问题并使测试失败：不要等待请求成功，而是等待直到调用异步方法的完成处理程序。 一旦应用程序收到来自服务器的响应（OK或错误），就会发生这种情况，这符合预期。 然后，您的测试可以检查请求是否成功。</p>
+<p>要了解其工作原理，请创建一个新测试。</p>
+<p>但首先，通过撤消对URL所做的更改来修复上一个测试。</p>
+<p>然后，将以下测试添加到您的班级：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testCallToiTunesCompletes</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="comment">// given</span></span><br><span class="line">  <span class="keyword">let</span> url = </span><br><span class="line">    <span class="type">URL</span>(string: <span class="string">"https://itune.apple.com/search?media=music&amp;entity=song&amp;term=abba"</span>)</span><br><span class="line">  <span class="keyword">let</span> promise = expectation(description: <span class="string">"Completion handler invoked"</span>)</span><br><span class="line">  <span class="keyword">var</span> statusCode: <span class="type">Int?</span></span><br><span class="line">  <span class="keyword">var</span> responseError: <span class="type">Error?</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// when</span></span><br><span class="line">  <span class="keyword">let</span> dataTask = sut.dataTask(with: url!) &#123; data, response, error <span class="keyword">in</span></span><br><span class="line">    statusCode = (response <span class="keyword">as</span>? <span class="type">HTTPURLResponse</span>)?.statusCode</span><br><span class="line">    responseError = error</span><br><span class="line">    promise.fulfill()</span><br><span class="line">  &#125;</span><br><span class="line">  dataTask.resume()</span><br><span class="line">  wait(<span class="keyword">for</span>: [promise], timeout: <span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// then</span></span><br><span class="line">  <span class="type">XCTAssertNil</span>(responseError)</span><br><span class="line">  <span class="type">XCTAssertEqual</span>(statusCode, <span class="number">200</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>关键的区别在于，简单地输入完成处理程序就能满足期望，而这只需要大约一秒钟的时间。 如果请求失败，则断言失败。</p>
+<p>运行测试。 它现在应该花费大约一秒钟才能失败。 它失败是因为请求失败，而不是因为测试运行超过了超时。</p>
+<p>修复网址，然后再次运行测试以确认它现在成功。</p>
+<h2 id="伪造物体和相互作用"><a href="#伪造物体和相互作用" class="headerlink" title="伪造物体和相互作用"></a>伪造物体和相互作用</h2><p>异步测试使您确信您的代码会为异步API生成正确的输入。 您可能还希望测试代码在从URLSession接收输入时正常工作，或者它是否正确更新了用户的默认数据库或iCloud容器。</p>
+<p>大多数应用程序与系统或库对象（您无法控制的对象）进行交互，与这些对象交互的测试可能很慢且不可重复，违反了两个FIRST原则。 相反，您可以通过从存根获取输入或通过更新模拟对象来伪造交互。</p>
+<p>当代码依赖于系统或库对象时，请使用伪造。 您可以通过创建一个假对象来播放该部分并将此伪注入您的代码中来实现此目的。 Jon Reid的依赖注入描述了几种方法。</p>
+<h3 id="来自存根的假输入"><a href="#来自存根的假输入" class="headerlink" title="来自存根的假输入"></a>来自存根的假输入</h3><p>在此测试中，您将通过检查searchResults.count是否正确来检查应用程序的updateSearchResults（_ :)是否正确解析会话下载的数据。 SUT是视图控制器，您将使用存根和一些预先下载的数据伪造会话。</p>
+<p>转到测试导航器并添加新的单元测试目标。 将其命名为HalfTunesFakeTests。 打开HalfTunesFakeTests.swift并导入import语句正下方的HalfTunes应用程序模块：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@testable</span> <span class="keyword">import</span> HalfTunes</span><br></pre></td></tr></table></figure>
+
+<p>现在，用以下内容替换HalfTunesFakeTests类的内容：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sut: <span class="type">SearchViewController!</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">setUp</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">super</span>.setUp()</span><br><span class="line">  sut = <span class="type">UIStoryboard</span>(name: <span class="string">"Main"</span>, bundle: <span class="literal">nil</span>)</span><br><span class="line">    .instantiateInitialViewController() <span class="keyword">as</span>? <span class="type">SearchViewController</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">tearDown</span><span class="params">()</span></span> &#123;</span><br><span class="line">  sut = <span class="literal">nil</span></span><br><span class="line">  <span class="keyword">super</span>.tearDown()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这声明了SUT，它是一个SearchViewController，在setUp（）中创建它并在tearDown（）中释放它：</p>
+<blockquote>
+<p>注意：SUT是视图控制器，因为HalfTunes有一个巨大的视图控制器问题 - 所有工作都在SearchViewController.swift中完成。 将<a href="http://williamboles.me/networking-with-nsoperation-as-your-wingman/" target="_blank" rel="noopener">网络代码移动到单独的模块</a>中可以减少此问题，并且还可以使测试更容易</p>
+</blockquote>
+<p>接下来，您将需要一些示例JSON数据，您的假会话将为您的测试提供这些数据。 只需要几个项目，所以要限制你的下载结果在iTunes中附加＆limit = 3到URL字符串：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:<span class="comment">//itunes.apple.com/search?media=music&amp;entity=song&amp;term=abba&amp;limit=3</span></span><br></pre></td></tr></table></figure>
+
+<p>复制此URL并将其粘贴到浏览器中。 这将下载名为1.txt，1.txt.js或类似文件的文件。 预览它以确认它是一个JSON文件，然后将其重命名为abbaData.json。</p>
+<p>现在，返回Xcode并转到Project导航器。 将文件添加到HalfTunesFakeTests组。</p>
+<p>HalfTunes项目包含支持文件DHURLSessionMock.swift。 这定义了一个名为DHURLSession的简单协议，其方法（存根）用于创建具有URL或URLRequest的数据任务。 它还定义了URLSessionMock，它符合此协议的初始化程序，允许您使用您选择的数据，响应和错误创建模拟URLSession对象。</p>
+<p>要设置假，请转到HalfTunesFakeTests.swift并在创建SUT的语句之后在setUp（）中添加以下内容：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> testBundle = <span class="type">Bundle</span>(<span class="keyword">for</span>: type(of: <span class="keyword">self</span>))</span><br><span class="line"><span class="keyword">let</span> path = testBundle.path(forResource: <span class="string">"abbaData"</span>, ofType: <span class="string">"json"</span>)</span><br><span class="line"><span class="keyword">let</span> data = <span class="keyword">try</span>? <span class="type">Data</span>(contentsOf: <span class="type">URL</span>(fileURLWithPath: path!), options: .alwaysMapped)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> url = </span><br><span class="line">  <span class="type">URL</span>(string: <span class="string">"https://itunes.apple.com/search?media=music&amp;entity=song&amp;term=abba"</span>)</span><br><span class="line"><span class="keyword">let</span> urlResponse = <span class="type">HTTPURLResponse</span>(</span><br><span class="line">  url: url!, </span><br><span class="line">  statusCode: <span class="number">200</span>, </span><br><span class="line">  httpVersion: <span class="literal">nil</span>, </span><br><span class="line">  headerFields: <span class="literal">nil</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> sessionMock = <span class="type">URLSessionMock</span>(data: data, response: urlResponse, error: <span class="literal">nil</span>)</span><br><span class="line">sut.defaultSession = sessionMock</span><br></pre></td></tr></table></figure>
+
+<p>这将设置虚假数据和响应并创建虚假会话对象。 最后，最后，它将假会话注入应用程序作为sut的属性。</p>
+<p>现在，您已准备好编写测试，检查调用updateSearchResults（_ :)是否解析伪数据。 添加以下测试：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test_UpdateSearchResults_ParsesData</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="comment">// given</span></span><br><span class="line">  <span class="keyword">let</span> promise = expectation(description: <span class="string">"Status code: 200"</span>)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// when</span></span><br><span class="line">  <span class="type">XCTAssertEqual</span>(</span><br><span class="line">    sut.searchResults.<span class="built_in">count</span>, </span><br><span class="line">    <span class="number">0</span>, </span><br><span class="line">    <span class="string">"searchResults should be empty before the data task runs"</span>)</span><br><span class="line">  <span class="keyword">let</span> url = </span><br><span class="line">    <span class="type">URL</span>(string: <span class="string">"https://itunes.apple.com/search?media=music&amp;entity=song&amp;term=abba"</span>)</span><br><span class="line">  <span class="keyword">let</span> dataTask = sut.defaultSession.dataTask(with: url!) &#123;</span><br><span class="line">    data, response, error <span class="keyword">in</span></span><br><span class="line">    <span class="comment">// if HTTP request is successful, call updateSearchResults(_:) </span></span><br><span class="line">    <span class="comment">// which parses the response data into Tracks</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> error = error &#123;</span><br><span class="line">      <span class="built_in">print</span>(error.localizedDescription)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> <span class="keyword">let</span> httpResponse = response <span class="keyword">as</span>? <span class="type">HTTPURLResponse</span>,</span><br><span class="line">      httpResponse.statusCode == <span class="number">200</span> &#123;</span><br><span class="line">      <span class="keyword">self</span>.sut.updateSearchResults(data)</span><br><span class="line">    &#125;</span><br><span class="line">    promise.fulfill()</span><br><span class="line">  &#125;</span><br><span class="line">  dataTask.resume()</span><br><span class="line">  wait(<span class="keyword">for</span>: [promise], timeout: <span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// then</span></span><br><span class="line">  <span class="type">XCTAssertEqual</span>(sut.searchResults.<span class="built_in">count</span>, <span class="number">3</span>, <span class="string">"Didn't parse 3 items from fake response"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>您仍然必须将其写为异步测试，因为存根假装是异步方法。</p>
+<p>when断言是在数据任务运行之前searchResults为空。 这应该是真的，因为你在setUp（）中创建了一个全新的SUT。</p>
+<p>假数据包含三个Track对象的JSON，因此断言是视图控制器的searchResults数组包含三个项目。</p>
+<p>运行测试。 它应该很快成功，因为没有任何真正的网络连接！</p>
+<h3 id="虚假对象的假更新"><a href="#虚假对象的假更新" class="headerlink" title="虚假对象的假更新"></a>虚假对象的假更新</h3><p>上一个测试使用存根来提供伪对象的输入。 接下来，您将使用模拟对象来测试您的代码是否正确更新了UserDefaults。</p>
+<p>重新开启BullsEye项目。 该应用程序有两种游戏风格：用户可以移动滑块以匹配目标值，也可以从滑块位置猜测目标值。 右下角的分段控件可切换游戏风格并将其保存在用户默认值中。</p>
+<p>您的下一个测试将检查应用程序是否正确保存了gameStyle属性。</p>
+<p>在Test navigator中，单击New Unit Test Class并将其命名为BullsEyeMockTests。 在import语句下面添加以下内容：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@testable</span> <span class="keyword">import</span> BullsEye</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MockUserDefaults</span>: <span class="title">UserDefaults</span> </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> gameStyleChanged = <span class="number">0</span></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">set</span><span class="params">(<span class="number">_</span> value: Int, forKey defaultName: String)</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> defaultName == <span class="string">"gameStyle"</span> &#123;</span><br><span class="line">      gameStyleChanged += <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>MockUserDefaults覆盖set（_：forKey :)以增加gameStyleChanged标志。 通常，您会看到设置Bool变量的类似测试，但增加Int会为您提供更大的灵活性 - 例如，您的测试可以检查该方法只被调用一次。</p>
+<p>在BullsEyeMockTests中声明SUT和模拟对象：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sut: <span class="type">ViewController!</span></span><br><span class="line"><span class="keyword">var</span> mockUserDefaults: <span class="type">MockUserDefaults!</span></span><br></pre></td></tr></table></figure>
+
+<p>接下来，用这个替换默认的setUp（）和tearDown（）：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">setUp</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">super</span>.setUp()</span><br><span class="line"></span><br><span class="line">  sut = <span class="type">UIStoryboard</span>(name: <span class="string">"Main"</span>, bundle: <span class="literal">nil</span>)</span><br><span class="line">    .instantiateInitialViewController() <span class="keyword">as</span>? <span class="type">ViewController</span></span><br><span class="line">  mockUserDefaults = <span class="type">MockUserDefaults</span>(suiteName: <span class="string">"testing"</span>)</span><br><span class="line">  sut.defaults = mockUserDefaults</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">tearDown</span><span class="params">()</span></span> &#123;</span><br><span class="line">  sut = <span class="literal">nil</span></span><br><span class="line">  mockUserDefaults = <span class="literal">nil</span></span><br><span class="line">  <span class="keyword">super</span>.tearDown()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这将创建SUT和模拟对象，并将模拟对象注入为SUT的属性。</p>
+<p>现在，用以下代码替换模板中的两个默认测试方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testGameStyleCanBeChanged</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="comment">// given</span></span><br><span class="line">  <span class="keyword">let</span> segmentedControl = <span class="type">UISegmentedControl</span>()</span><br><span class="line"></span><br><span class="line">  <span class="comment">// when</span></span><br><span class="line">  <span class="type">XCTAssertEqual</span>(</span><br><span class="line">    mockUserDefaults.gameStyleChanged, </span><br><span class="line">    <span class="number">0</span>, </span><br><span class="line">    <span class="string">"gameStyleChanged should be 0 before sendActions"</span>)</span><br><span class="line">  segmentedControl.addTarget(sut,</span><br><span class="line">    action: #selector(<span class="type">ViewController</span>.chooseGameStyle(<span class="number">_</span>:)), <span class="keyword">for</span>: .valueChanged)</span><br><span class="line">  segmentedControl.sendActions(<span class="keyword">for</span>: .valueChanged)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// then</span></span><br><span class="line">  <span class="type">XCTAssertEqual</span>(</span><br><span class="line">    mockUserDefaults.gameStyleChanged, </span><br><span class="line">    <span class="number">1</span>, </span><br><span class="line">    <span class="string">"gameStyle user default wasn't changed"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>when断言是在测试方法更改分段控件之前gameStyleChanged标志为0。 因此，如果当时的断言也是真的，则意味着set（_：forKey :)只被调用一次。</p>
+<p>运行测试; 它应该成功。</p>
+<h2 id="Xcode中的UI测试"><a href="#Xcode中的UI测试" class="headerlink" title="Xcode中的UI测试"></a>Xcode中的UI测试</h2><p>UI测试允许您测试与用户界面的交互。 UI测试的工作原理是通过查询应用程序的UI对象，合成事件，然后将事件发送到这些对象。 通过API，您可以检查UI对象的属性和状态，以便将它们与预期状态进行比较。</p>
+<p>在BullsEye项目的测试导航器中，添加一个新的UI测试目标。 检查要测试的目标是BullsEye，然后接受默认名称BullsEyeUITests。</p>
+<p>打开BullsEyeUITests.swift并在BullsEyeUITests类的顶部添加此属性：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> app: <span class="type">XCUIApplication!</span></span><br></pre></td></tr></table></figure>
+
+<p>在setUp（）中，使用以下代码替换语句XCUIApplication（）。launch（）：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">app = <span class="type">XCUIApplication</span>()</span><br><span class="line">app.launch()</span><br></pre></td></tr></table></figure>
+
+<p>将testExample（）的名称更改为testGameStyleSwitch（）。</p>
+<p>在testGameStyleSwitch（）中打开一个新行，然后单击编辑器窗口底部的红色Record按钮：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2016/12/UITest.png" alt="图片"></p>
+<p>这将在模拟器中以一种模式打开应用程序，该模式将您的交互记录为测试命令。 应用加载后，点按游戏风格开关的滑动部分和顶部标签。 然后，单击Xcode Record按钮停止录制。</p>
+<p>您现在在testGameStyleSwitch（）中有以下三行：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> app = <span class="type">XCUIApplication</span>()</span><br><span class="line">app.buttons[<span class="string">"Slide"</span>].tap()</span><br><span class="line">app.staticTexts[<span class="string">"Get as close as you can to: "</span>].tap()</span><br></pre></td></tr></table></figure>
+
+<p>记录器已创建代码来测试您在应用程序中测试的相同操作。 向水龙头和标签发送一个水龙头。 您将使用它们作为基础来创建自己的UI测试。</p>
+<p>如果您看到任何其他语句，只需删除它们即可。<br>第一行复制您在setUp（）中创建的属性，因此删除该行。 你不需要点击任何东西，所以也要删除第2行和第3行末尾的.tap（）。现在，打开[“幻灯片”]旁边的小菜单，选择segmentedControls.buttons [“Slide”]。</p>
+<p>您剩下的应该是以下内容：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">app.segmentedControls.buttons[<span class="string">"Slide"</span>]</span><br><span class="line">app.staticTexts[<span class="string">"Get as close as you can to: "</span>]</span><br></pre></td></tr></table></figure>
+
+<p>点击任何其他对象，让录音机帮助您找到您可以在测试中访问的代码。 现在，用这段代码替换这些行来创建给定的部分：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// given</span></span><br><span class="line"><span class="keyword">let</span> slideButton = app.segmentedControls.buttons[<span class="string">"Slide"</span>]</span><br><span class="line"><span class="keyword">let</span> typeButton = app.segmentedControls.buttons[<span class="string">"Type"</span>]</span><br><span class="line"><span class="keyword">let</span> slideLabel = app.staticTexts[<span class="string">"Get as close as you can to: "</span>]</span><br><span class="line"><span class="keyword">let</span> typeLabel = app.staticTexts[<span class="string">"Guess where the slider is: "</span>]</span><br></pre></td></tr></table></figure>
+
+<p>现在您已经在分段控件中有两个按钮的名称，以及两个可能的顶部标签，请在下面添加以下代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// then</span></span><br><span class="line"><span class="keyword">if</span> slideButton.isSelected &#123;</span><br><span class="line">  <span class="type">XCTAssertTrue</span>(slideLabel.exists)</span><br><span class="line">  <span class="type">XCTAssertFalse</span>(typeLabel.exists)</span><br><span class="line"></span><br><span class="line">  typeButton.tap()</span><br><span class="line">  <span class="type">XCTAssertTrue</span>(typeLabel.exists)</span><br><span class="line">  <span class="type">XCTAssertFalse</span>(slideLabel.exists)</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> typeButton.isSelected &#123;</span><br><span class="line">  <span class="type">XCTAssertTrue</span>(typeLabel.exists)</span><br><span class="line">  <span class="type">XCTAssertFalse</span>(slideLabel.exists)</span><br><span class="line"></span><br><span class="line">  slideButton.tap()</span><br><span class="line">  <span class="type">XCTAssertTrue</span>(slideLabel.exists)</span><br><span class="line">  <span class="type">XCTAssertFalse</span>(typeLabel.exists)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当您在分段控件中的每个按钮上点击（）时，将检查是否存在正确的标签。 运行测试 - 所有断言都应该成功。</p>
+<h2 id="性能测试"><a href="#性能测试" class="headerlink" title="性能测试"></a>性能测试</h2><p>从<a href="https://developer.apple.com/library/prerelease/content/documentation/DeveloperTools/Conceptual/testing_with_xcode/chapters/04-writing_tests.html#//apple_ref/doc/uid/TP40014132-CH4-SW8" target="_blank" rel="noopener">Apple的文档</a>中：性能测试需要一段您想要评估的代码并运行十次，收集平均执行时间和运行的标准偏差。 这些单独测量的平均值形成测试运行的值，然后可以与基线进行比较以评估成功或失败。</p>
+<p>编写性能测试非常简单：只需将要测量的代码放入measure（）的闭包中即可。</p>
+<p>要查看此操作，请重新打开HalfTunes项目，并在HalfTunesFakeTests.swift中添加以下测试：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test_StartDownload_Performance</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">let</span> track = <span class="type">Track</span>(</span><br><span class="line">    name: <span class="string">"Waterloo"</span>, </span><br><span class="line">    artist: <span class="string">"ABBA"</span>,</span><br><span class="line">    previewUrl: </span><br><span class="line">      <span class="string">"http://a821.phobos.apple.com/us/r30/Music/d7/ba/ce/mzm.vsyjlsff.aac.p.m4a"</span>)</span><br><span class="line"></span><br><span class="line">  measure &#123;</span><br><span class="line">    <span class="keyword">self</span>.sut.startDownload(track)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行测试，然后单击measure（）尾随闭包开头旁边的图标以查看统计信息。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/02/PerformanceResult-650x291.png" alt="图片"></p>
+<p>单击“设置基线”以设置参考时间。 然后，再次运行性能测试并查看结果 - 它可能比基线更好或更差。 使用“编辑”按钮可以将基线重置为此新结果。</p>
+<p>每个设备配置存储基线，因此您可以在几个不同的设备上执行相同的测试，并根据特定配置的处理器速度，内存等维护不同的基线。</p>
+<p>每当您对可能影响正在测试的方法的性能的应用程序进行更改时，请再次运行性能测试以查看它与基线的比较情况。</p>
+<h2 id="代码覆盖范围"><a href="#代码覆盖范围" class="headerlink" title="代码覆盖范围"></a>代码覆盖范围</h2><p>代码覆盖率工具会告诉您测试实际运行的应用程序代码，因此您知道应用程序代码的哪些部分尚未经过测试。</p>
+<p>要启用代码覆盖，请编辑方案的“测试”操作，并选中“选项”选项卡下的“收集覆盖范围”复选框：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/02/CodeCoverageSwitch-650x225.png" alt="图片"></p>
+<p>运行所有测试（Command-U），然后打开报告导航器（Command-9）。 选择该列表中顶部项目下的Coverage：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/02/CoverageReport1-650x241.png" alt="图片"></p>
+<p>单击显示三角形以查看SearchViewController.swift中的函数和闭包列表：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/02/CoverageReport2-650x329.png" alt="图片"></p>
+<p>向下滚动到updateSearchResults（_ :)以查看覆盖率为87.9％。</p>
+<p>单击此功能的箭头按钮以打开源文件到该功能。 当您将鼠标悬停在右侧边栏中的coverage注释上时，代码部分会突出显示绿色或红色：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/02/CoverageReport4-650x314.png" alt="图片"></p>
+<p>覆盖注释显示测试命中每个代码部分的次数; 未调用的部分以红色突出显示。 正如您所期望的那样，for循环运行了3次，但错误路径中没有执行任何操作。</p>
+<p>要增加此函数的覆盖范围，您可以复制abbaData.json，然后对其进行编辑，以便导致不同的错误。 例如，将“结果”更改为“结果”以进行打印测试（“未在字典中找到结果键”）。</p>
+<h3 id="100％覆盖？"><a href="#100％覆盖？" class="headerlink" title="100％覆盖？"></a>100％覆盖？</h3><p>你有多努力争取100％的代码覆盖率？ 谷歌“100％单元测试覆盖率”，你会发现一系列支持和反对的论据，以及对“100％覆盖率”的定义的争论。 反对它的争论说最后10-15％不值得努力。 它的争论说最后10-15％是最重要的，因为它很难测试。 谷歌“难以单元测试糟糕的设计”，以找到有说服力的论据，即<a href="https://www.toptal.com/qa/how-to-write-testable-code-and-why-it-matters" target="_blank" rel="noopener">不可测试的代码是更深层次设计问题</a>的标志。</p>
+<h2 id="然后去哪儿？"><a href="#然后去哪儿？" class="headerlink" title="然后去哪儿？"></a>然后去哪儿？</h2><p>您现在可以使用一些很棒的工具来编写项目测试。我希望这个iOS单元测试和UI测试教程让你有信心测试所有的东西！</p>
+<p>您可以使用本教程顶部或底部的“下载材料”按钮下载项目的完整版本。通过添加自己的额外测试继续发展您的技能。</p>
+<p>以下是一些可供进一步研究的资源：</p>
+<ul>
+<li><p>有关测试主题的几个WWDC视频。来自WWDC17的两个好的是：<a href="https://developer.apple.com/videos/play/wwdc2017/414/" target="_blank" rel="noopener">可测性工程</a>和<a href="https://developer.apple.com/videos/play/wwdc2018/417/" target="_blank" rel="noopener">测试技巧和诀窍</a>。</p>
+</li>
+<li><p>下一步是自动化：持续集成和持续交付。从Apple的Xcode Server和xcodebuild<a href="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/testing_with_xcode/chapters/08-automation.html#//apple_ref/doc/uid/TP40014132-CH7-SW1" target="_blank" rel="noopener">自动化测试流程</a>开始，以及<a href="https://en.wikipedia.org/wiki/Continuous_delivery" target="_blank" rel="noopener">维基百科的持续交付</a>文章，该文章借鉴了<a href="https://www.thoughtworks.com/continuous-delivery" target="_blank" rel="noopener">ThoughtWorks</a>的专业知识。</p>
+</li>
+<li><p>如果你已经有一个应用程序但还没有为它编写测试，你可能想参考<a href="https://www.amazon.com/Working-Effectively-Legacy-Michael-Feathers/dp/0131177052/ref=sr_1_1?s=books&ie=UTF8&qid=1481511568&sr=1-1" target="_blank" rel="noopener">Michael Feathers的“有效使用遗留代码”</a>，因为没有测试的代码是遗留代码！</p>
+</li>
+<li><p>Jon Reid的Quality Coding样本应用档案非常适合学习有关<a href="http://qualitycoding.org/tdd-sample-archives/" target="_blank" rel="noopener">测试驱动开发</a>的更多信息。</p>
+</li>
+</ul>
+
+                
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

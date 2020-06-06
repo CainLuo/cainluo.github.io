@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：NSURLSession讲解(三) - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="虽然前面两讲都是说了NSURLSession的一些理论上的知识, 但我们现在起码对NSURLSession有个大概的了解, 并不会像一开始的那样, 一脸懵逼的看着, 这个请求是什么鬼, 那个方法是什,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：NSURLSession讲解(三)</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：NSURLSession讲解(三)</h1>
+        <div class="stuff">
+            <span>六月 27, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/网络编程/">网络编程</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>虽然前面两讲都是说了<strong>NSURLSession</strong>的一些理论上的知识, 但我们现在起码对<strong>NSURLSession</strong>有个大概的了解, 并不会像一开始的那样, 一脸懵逼的看着, 这个请求是什么鬼, 那个方法是什么鬼, <strong>Task</strong>是什么东西, 如果没有去看的朋友们可以去看看前面两讲<a href="https://cainluo.github.io/2017/06/20/77359cf6.html">玩转iOS开发：NSURLSession讲解(一)</a>和 <a href="https://cainluo.github.io/2017/06/22/d8040794.html">玩转iOS开发：NSURLSession讲解(二)</a>, 大神就随意啦.</p>
+<p>这里的工程是仿照<a href="https://www.raywenderlich.com" target="_blank" rel="noopener">RayWenderlich</a>(需要翻墙)的一篇文章<a href="https://www.raywenderlich.com/158106/urlsession-tutorial-getting-started" target="_blank" rel="noopener">URLSession Tutorial: Getting Started</a>, 喜欢看原文或者是<strong>Swift</strong>的朋友也可以去看看, 我这个是<strong>Objective-C</strong>版本的.</p>
+<p><strong>注意: 本工程是在Xcode 9 beta 2, iOS 11, Mac OS 10.12.5环境下运行的.</strong></p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="搭建界面"><a href="#搭建界面" class="headerlink" title="搭建界面"></a>搭建界面</h2><p>这里我要说明一下, 原文里的界面是使用<strong>Storyboard</strong>来搭建的, 我这里是使用代码和<a href="https://github.com/SnapKit/Masonry" target="_blank" rel="noopener">Masonry</a>, 这里再次和大神表示感谢.</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-NetWork/master/NSURLSession%E8%AE%B2%E8%A7%A3(%E4%B8%89)/Images/1.png" alt="1"></p>
+<p>搭建好的界面也很简单, 就一个<strong>UITableView</strong>, <strong>UITableViewCell</strong>和<strong>UISearchBar</strong>, 就完事了, 布局的代码都在项目里, 由于个人没有什么艺术细胞, 所以界面略丑, 大家凑合着看吧.</p>
+<h2 id="项目架构"><a href="#项目架构" class="headerlink" title="项目架构"></a>项目架构</h2><p>为了让大家阅读起来比较方便和清晰, 我这里用了我一向习惯的<strong>MVVM</strong>架构模式, 虽然文件多了点, 但每个文件的代码都保证在了<strong>200</strong>行之内, 个人感觉看起来还是比较舒服的.</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-NetWork/master/NSURLSession%E8%AE%B2%E8%A7%A3(%E4%B8%89)/Images/2.png" alt="2"></p>
+<h2 id="实现下载"><a href="#实现下载" class="headerlink" title="实现下载"></a>实现下载</h2><p>在项目里面有一个<strong>QueryService</strong>和一个<strong>DownloadService</strong>, 都是负责管理下载和一些网络请求, 由于代码太多了, 这里我就讲讲思路好了.</p>
+<ul>
+<li><p><strong>QueryService</strong>: 负责实现用<strong>UISearchBar</strong>的搜索网络请求, 当<strong>UISearchBar</strong>输入关键字的时候, 通过指定的URL和<strong>Query</strong>拼接成一条有效的搜索链接, 并且通过<strong>NSURLSessionDataTask</strong>进行网络请求, 成功后会进行数据的解析, 并且通过<strong>SearchModel</strong>进行组装, 然后添加到一个<strong>NSMutableArray</strong>对象里, 最后<strong>UITableView</strong>会通过这个<strong>NSMutableArray</strong>作为数据源来刷新整个<strong>UITableView</strong>.</p>
+</li>
+<li><p><strong>DownloadService</strong>: 负责实现<strong>UITableViewCell</strong>通过<strong>DownloadModel</strong>点击开始下载, 暂停, 恢复下载, 取消下载等等操作.</p>
+</li>
+</ul>
+<p>当然这里我们还需要实现一个叫做<strong>NSURLSessionDownloadDelegate</strong>和 <strong>NSURLSessionDelegate</strong>两个协议, 分别实现:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 下载完成后的操作方法</span><br><span class="line">- (void)URLSession:(NSURLSession *)session</span><br><span class="line">      downloadTask:(NSURLSessionDownloadTask *)downloadTask</span><br><span class="line">didFinishDownloadingToURL:(NSURL *)location;</span><br><span class="line"></span><br><span class="line">// 正在下载时的操作方法</span><br><span class="line">- (void)URLSession:(NSURLSession *)session</span><br><span class="line">      downloadTask:(NSURLSessionDownloadTask *)downloadTask</span><br><span class="line">      didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten</span><br><span class="line">totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite;</span><br><span class="line"></span><br><span class="line">// 后台下载完成后的方法</span><br><span class="line">- (void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession *)session;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-NetWork/master/NSURLSession%E8%AE%B2%E8%A7%A3(%E4%B8%89)/Images/3.png" alt="3"></p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-NetWork/master/NSURLSession%E8%AE%B2%E8%A7%A3(%E4%B8%89)/Images/4.png" alt="4"></p>
+<p>这里面的实现可以去<strong>SearchSessionDelegate</strong>里面看看, 这里就不详细多说了.</p>
+<p>整个项目的核心内容就在这里了, 更详细的细节, 大家可以去项目里自己看看哈, 这里就不浪费大家的时间了.</p>
+<p>最终的效果:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-NetWork/master/NSURLSession%E8%AE%B2%E8%A7%A3(%E4%B8%89)/Images/5.gif" alt="5"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>最后唠叨两句, 由于我这个只是<strong>Demo</strong>, 里面存在的<strong>Bug</strong>, 还有不完善的封装请大家多多见谅, 这里顺便推两个优秀的开源下载管理器<a href="https://github.com/Heikowi/HWIFileDownload" target="_blank" rel="noopener">HWIFileDownload</a>, <a href="https://github.com/thibaultCha/TCBlobDownload" target="_blank" rel="noopener">TCBlobDownload</a>.</p>
+<p>如果有童鞋想自己封装一个的话, 也可以去看看这几篇文章<a href="http://www.cnblogs.com/machao/p/5864251.html" target="_blank" rel="noopener">MCDownloadManager ios文件下载管理器</a>, <a href="http://www.cocoachina.com/ios/20160530/16496.html" target="_blank" rel="noopener">手把手教你封装下载管理器</a>, 还有这个经验贴<a href="http://mobilev5.github.io/2016/03/13/meeting-common-urldownloader/" target="_blank" rel="noopener">iOS通用下载管理器-HJMURLDownloader</a>.</p>
+<p>祝大家学习愉快.</p>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址:"></a>工程地址:</h2><p>项目地址: <a href="https://github.com/cainluo/iOS-NetWork/tree/master/NSURLSession%E8%AE%B2%E8%A7%A3(%E4%B8%89)" target="_blank" rel="noopener">https://github.com/cainluo/iOS-NetWork/tree/master/NSURLSession讲解(三)</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#搭建界面"><span class="toc-number">1.</span> <span class="toc-text">搭建界面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#项目架构"><span class="toc-number">2.</span> <span class="toc-text">项目架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现下载"><span class="toc-number">3.</span> <span class="toc-text">实现下载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">5.</span> <span class="toc-text">工程地址:</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

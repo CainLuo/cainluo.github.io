@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：非脚本版本《模拟器与真机静态Framework合成教程》 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="在我们做iOS开发中, 有时候我们会自己动手写一些库, 方便自己去调用, 但是我们又不想这个库的内部实现代码被别人知道, 这个时候我们就需要把这个库打包成Framework或者是lib.a文件, 这,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：非脚本版本《模拟器与真机静态Framework合成教程》</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：非脚本版本《模拟器与真机静态Framework合成教程》</h1>
+        <div class="stuff">
+            <span>八月 22, 2016</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/iOS包管理/">iOS包管理</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>在我们做<strong><code>iOS开发中</code></strong>, 有时候我们会自己动手写一些库, 方便自己去调用, 但是我们又不想这个库的内部实现代码被别人知道, 这个时候我们就需要把这个库打包成<strong><code>Framework</code></strong>或者是<strong><code>lib.a</code></strong>文件, 这里我们只做<strong><code>Framework</code></strong>的打包教程, <strong><code>lib.a</code></strong>的打包方式和<strong><code>Framework</code></strong>趋同差异, 如果有需要, 后面我再补上.</p>
+<p>为了写这篇文章, 我翻查了许多资料, 都没有找到详细点的可参考资料, 外国的文章就不用说了, 光是看鸡肠就头晕了, 所以我自己总结了一些经验, 整理了一番, 决定分享出来, 希望大家喜欢</p>
+<h2 id="创建静态包工程"><a href="#创建静态包工程" class="headerlink" title="创建静态包工程"></a>创建静态包工程</h2><p>在开始合成之前, 我们肯定是需要创建一个生成<strong><code>Framework</code></strong>的工程, 这里推荐用<strong><code>WorkSpace</code></strong>来创建, 因为可以方便我们去测试<strong><code>Framework</code></strong>库.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/1.png" alt="1"></p>
+<p>添加新的工程<br><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/2.png" alt="2"></p>
+<p>选择创建<strong><code>Cocoa Touch Framework</code></strong><br><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/3.png" alt="3"></p>
+<p>给<strong><code>Framework</code></strong>命名, 喜欢啥名字, 自己看着办呗, 我个人的习惯就是, 这个是什么库, 我就命名是啥<br><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/4.png" alt="4"></p>
+<p>创建完之后, 我们会看到<strong><code>Framework</code></strong>里有一个头文件, 头文件里有一堆不明所以的代码, 这个时候我们不需要管, 直接干掉它<br><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/5.png" alt="5"></p>
+<p>这样子, 我们就创建<strong><code>Framework</code></strong>完毕了, 下面让我们来创建一个测试类.</p>
+<h2 id="添加测试类"><a href="#添加测试类" class="headerlink" title="添加测试类"></a>添加测试类</h2><p>给这个测试类, 添加一个类方法<br><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/6.png" alt="6"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/7.png" alt="7"></p>
+<p>添加完测试类之后, 下面让我们来配置一下整个<strong><code>Framework</code></strong>工程, 让它同时支持模拟器和真机.</p>
+<h2 id="配置静态包工程"><a href="#配置静态包工程" class="headerlink" title="配置静态包工程"></a>配置静态包工程</h2><p> Xcode默认是会把Framework变成Debug模式, 这时候我们需要去改成Release模式<br><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/8.png" alt="8"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/9.png" alt="9"></p>
+<p>然后我们去配置项目工程, 首先我们来添加一个模拟器的支持<br><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/10.png" alt="10"></p>
+<p>修改Framework最低支持iOS的版本, 我这里最低支持的是iOS7<br><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/11.png" alt="11"></p>
+<p>把默认的动态库, 切换成静态库<br><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/12.png" alt="12"></p>
+<p>配置需要暴露的<strong>.h</strong>文件<br><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/13.png" alt="13"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/14.png" alt="14"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/15.png" alt="15"></p>
+<p>最后, 我们在<strong>Test.h</strong>中导入<strong>TestClass.h</strong>, 当然, 我们也不需要这么做, 因为我们已经在配置中暴露了<strong>TestClass.h</strong>文件, 所以不需要引用也是可以的</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/16.png" alt="16"></p>
+<p>这个时候, 我们先来测试一下能不能生成<strong><code>Framework</code></strong>库<br><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/17.png" alt="17"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/18.png" alt="18"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/19.png" alt="19"></p>
+<p>最终测试, 是成功生成<strong>Framework</strong>库的, 但这个是模拟器库, 如果你需要支持真机的话, 那么只要切换运行的选项就好了</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/20.png" alt="20"></p>
+<p> 这时候我们再去查看文件夹, 就会有两个<strong>Framework</strong>文件夹了<br> <img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/21.png" alt="21"></p>
+<h2 id="检测静态包"><a href="#检测静态包" class="headerlink" title="检测静态包"></a>检测静态包</h2><p>虽然我们把<strong><code>Framework</code></strong>都打包好了, 但是我们需要检测一下是否符合我们的需求, 这是我们要打开<strong><code>Terminal</code></strong>, 并且输入命令.</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lipo -info (Framework二进制文件地址)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/22.png" alt="22"></p>
+<p>检测真机Framework包<br><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/23.png" alt="23"></p>
+<p>检测模拟器Framework包<br><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/24.png" alt="24"></p>
+<h2 id="合成真机与模拟器通用的静态包"><a href="#合成真机与模拟器通用的静态包" class="headerlink" title="合成真机与模拟器通用的静态包"></a>合成真机与模拟器通用的静态包</h2><p>前面做了那么多的事情, 就为了现在这一步, 就是将模拟器与真机两个Framework包合成一个通用的Framework包, 由于我这里没有通用的Shell脚本, 只能用最笨的办法合成两个包了, 下面让我们一起来看看.</p>
+<p>打开终端输入合成命令</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lipo -create (真机Framework路径) (模拟器Framework路径) -output (真机/模拟器路径)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/25.png" alt="25"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/26.png" alt="26"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/27.png" alt="27"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/28.png" alt="28"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/29.png" alt="29"></p>
+<p>检测合成后的通用Framework, 只有看到<strong><code>armv7 arm64 i386 x86_64</code></strong>这四个同时存在, 才真正的合成成功</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/30.png" alt="30"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/31.png" alt="31"></p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意!!!!!"></a>注意!!!!!</h2><p> 这里有一个注意事项, 有时候用<strong><code>lipo</code></strong>合成会报一个错误(我这里没有发现)</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crun: error: active developer path (“/Applications/Xcode <span class="number">2</span>.app/Contents/Developer”) does not exist, use xcode-select --switch path/<span class="keyword">to</span>/Xcode.app <span class="keyword">to</span> specify the Xcode that you wish <span class="keyword">to</span> use <span class="keyword">for</span> <span class="keyword">command</span> <span class="built_in">line</span> developer tools (<span class="built_in">or</span> see man xcode-select)</span><br></pre></td></tr></table></figure>
+
+<p> 这时候不要慌, 只要再输入下面的命令, 输入电脑密码后, 然后再次运行合成<strong><code>Framework</code></strong>的命令, 就可以合成了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer</span><br></pre></td></tr></table></figure>
+
+<h2 id="测试静态包"><a href="#测试静态包" class="headerlink" title="测试静态包"></a>测试静态包</h2><p>既然我们那么辛苦的合成了一个通用的<strong><code>Framework</code></strong>, 不用用, 怎么对得起我们的付出呢? 再次回到<strong><code>Workspace</code></strong>, 新建一个测试工程.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/32.png" alt="32"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/33.png" alt="33"></p>
+<p>注意, 创建测试工程的时候, 不要新建到<strong><code>Framework</code></strong>的工程内<br><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/34.png" alt="34"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/35.png" alt="35"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/36.png" alt="36"></p>
+<p>模拟器测试</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/37.png" alt="37"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/38.png" alt="38"></p>
+<p>真机测试</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/39.png" alt="39"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/NotAggregateFramework/images/40.png" alt="40"></p>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>GitHub地址: <a href="https://github.com/CainLuo/CreateGeneralFramework" target="_blank" rel="noopener">https://github.com/CainLuo/CreateGeneralFramework</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建静态包工程"><span class="toc-number">1.</span> <span class="toc-text">创建静态包工程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加测试类"><span class="toc-number">2.</span> <span class="toc-text">添加测试类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置静态包工程"><span class="toc-number">3.</span> <span class="toc-text">配置静态包工程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#检测静态包"><span class="toc-number">4.</span> <span class="toc-text">检测静态包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#合成真机与模拟器通用的静态包"><span class="toc-number">5.</span> <span class="toc-text">合成真机与模拟器通用的静态包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注意"><span class="toc-number">6.</span> <span class="toc-text">注意!!!!!</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#测试静态包"><span class="toc-number">7.</span> <span class="toc-text">测试静态包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">8.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

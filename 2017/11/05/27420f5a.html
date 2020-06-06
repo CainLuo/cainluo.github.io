@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：iOS 11 新特性《Xcode 9》 (二) - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="由于要说的东西有些多, 所以这里分开来说, 希望在第二篇里可以全部讲完.
+如果没有看到之前的第一篇的童鞋, 可以到玩转iOS开发：iOS 11 新特性《Xcode 9》 (一)去看哈.
+转载声明:如,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：iOS 11 新特性《Xcode 9》 (二)</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：iOS 11 新特性《Xcode 9》 (二)</h1>
+        <div class="stuff">
+            <span>十一月 05, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/Xcode/">Xcode</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>由于要说的东西有些多, 所以这里分开来说, 希望在第二篇里可以全部讲完.</p>
+<p>如果没有看到之前的第一篇的童鞋, 可以到<a href="https://cainluo.github.io/2017/11/03/88739438.html">玩转iOS开发：iOS 11 新特性《Xcode 9》 (一)</a>去看哈.</p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="默认的换行符"><a href="#默认的换行符" class="headerlink" title="默认的换行符"></a>默认的换行符</h2><p>在<strong>Xcode 9</strong>中, 默认添加了一个换行符, 酱紫我们就不会忘记一个需要尾随的换行符了, 但有个不好的地方, 就是我们不能删除最后一个换行符, 每次我们输入东西的时候, <strong>Xcode 9</strong>就会自动添加一个~</p>
+<p>酱紫也挺方便的~</p>
+<h2 id="集成GitHub"><a href="#集成GitHub" class="headerlink" title="集成GitHub"></a>集成GitHub</h2><p>除了以上的一些东西, <strong>Xcode 9</strong>还集成了<strong>GitHub</strong>, 我们就可以很方便的用它来集成, 管理第三方库:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-11-Characteristic/master/1.Xcode%209/Images/10.png" alt="10"></p>
+<p>如果我们要<strong>Clone</strong>第三方库的话, 我们可以通过在<strong>Xcode 9</strong>的菜单栏<strong>Source Control</strong>里找到<strong>Clone</strong>的选项, 就可以找到我们的<strong>GitHub</strong>里的第三方库:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-11-Characteristic/master/1.Xcode%209/Images/11.png" alt="11"></p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-11-Characteristic/master/1.Xcode%209/Images/12.png" alt="12"></p>
+<p>这里, 我们选择了<strong>Alamofire</strong>, 当<strong>Clone</strong>完成之后, 我们就可以看到第三方库的代码了:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-11-Characteristic/master/1.Xcode%209/Images/13.png" alt="13"></p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-11-Characteristic/master/1.Xcode%209/Images/14.png" alt="14"></p>
+<p>如果我们想看到第三方库的版本情况, 还有历史提交记录, 我们可以通过使用<strong>Command + 2</strong>或者是点击, 如果我们想多看一些情况的话, 我们可以按着<strong>option +</strong> 鼠标左键点击版本号, 酱紫就可以多看一些信息了:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-11-Characteristic/master/1.Xcode%209/Images/15.png" alt="15"></p>
+<p>我们还可以通过输入<strong>changelog</strong>来搜索一些信息, 我们可以通过<strong>ALL</strong>下拉菜单并选择<strong>Message</strong>，<strong>Author</strong>或<strong>Revision</strong>搜索:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-11-Characteristic/master/1.Xcode%209/Images/16.png" alt="16"></p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-11-Characteristic/master/1.Xcode%209/Images/17.png" alt="17"></p>
+<h3 id="提交到分支"><a href="#提交到分支" class="headerlink" title="提交到分支"></a>提交到分支</h3><p>我们还可以通过选择分支, 然后提交到GitHub上去, 首先我们先从master获取一个分支:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-11-Characteristic/master/1.Xcode%209/Images/18.png" alt="18"></p>
+<p>然后随便修改一些地方:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-11-Characteristic/master/1.Xcode%209/Images/19.png" alt="19"></p>
+<p>然后在<strong>Source Control</strong>里找到<strong>Commit</strong>这个选项:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-11-Characteristic/master/1.Xcode%209/Images/20.png" alt="20"></p>
+<p>然后这里我们可以看到修改了什么内容, 被忘了填写我们的备注内容:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-11-Characteristic/master/1.Xcode%209/Images/21.png" alt="21"></p>
+<p>最后再把分支合并到<strong>master</strong>上, 但在这里, 我们只做演示, 而不会真的提交上去:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-11-Characteristic/master/1.Xcode%209/Images/22.png" alt="22"></p>
+<h2 id="断点调试"><a href="#断点调试" class="headerlink" title="断点调试"></a>断点调试</h2><p>在<strong>Xcode 9</strong>里, 断点调试我们还可以有另外的玩法, 现在我们可以直接在断点里添加<strong>LLDB</strong>的命令:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-11-Characteristic/master/1.Xcode%209/Images/23.png" alt="23"></p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-11-Characteristic/master/1.Xcode%209/Images/24.png" alt="24"></p>
+<p>这样子我们以后写代码的时候, 就不需要经常写个<strong>NSLog</strong>了.</p>
+<h3 id="搜索断点调试"><a href="#搜索断点调试" class="headerlink" title="搜索断点调试"></a>搜索断点调试</h3><p>我们除了可以给断点里给它加入<strong>LLDB</strong>命令, 我们还可以去搜索检索这些命令:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-11-Characteristic/master/1.Xcode%209/Images/25.png" alt="25"></p>
+<p>这样子我们就可以从一大堆的命令里搜索我们想要的命令了</p>
+<h2 id="实体文件夹"><a href="#实体文件夹" class="headerlink" title="实体文件夹"></a>实体文件夹</h2><p>在<strong>Xcode 9</strong>里, 终于把实体文件夹加进来了当我们添加/删除项目里的文件夹时, 终于可以把对应的实体文件夹也添加/删除掉了, 这里我就不作演示了, 大家自行去捣鼓吧~</p>
+<h2 id="视图Debug"><a href="#视图Debug" class="headerlink" title="视图Debug"></a>视图Debug</h2><p>在<strong>Xcode 9</strong>中的视图<strong>Debug</strong>器里也有一定的改进, 我们除了可以点击<strong>Debug View Hierarchy</strong>进入视图<strong>Debug</strong>模式:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-11-Characteristic/master/1.Xcode%209/Images/26.png" alt="26"></p>
+<p>除此之外, 我们还可以通过右边的小窗口看到更详细的内容.</p>
+<h2 id="Runtime问题的检测"><a href="#Runtime问题的检测" class="headerlink" title="Runtime问题的检测"></a>Runtime问题的检测</h2><p>我们都知道在<strong>Xcode 8</strong>的时候添加了两种检测: <strong>Address Sanitizer</strong>和<strong>Thread Sanitizer</strong>, 在<strong>Xcode 9</strong>还增加了另一种<strong>Undefined Behavior Sanitizer</strong>.</p>
+<p><strong>Undefined Behavior Sanitizer</strong>可以用来检测基于<strong>C</strong>语言中的各种问题, 比如对主线程的检测, 这样子可以保证我们没有子线程后者是后台线程上进行UI更新的操作, 由于主线程检查器的开销可以忽略不计, 所以默认都是打开的.</p>
+<p>具体怎么做呢, 这里就不演示了, 你用<strong>GCD</strong>在子线程里更新一下<strong>UI</strong>, 就知道是什么情况了.</p>
+<h2 id="其他的更新"><a href="#其他的更新" class="headerlink" title="其他的更新"></a>其他的更新</h2><p>除此之外, <strong>Xcode 9</strong>还带来了改进后的模拟器, 可以模拟真机的按键点击(这貌似在很多年前的模拟器就有了).</p>
+<p>还有就是可以多开不同的模拟器, 方便我们在各个机型的适配, 而且还支持多方向.</p>
+<p>刚刚我们提到了<strong>Xcode 9</strong>集成了<strong>GitHub</strong>, 其实除了这个, 还集成了<strong>Xcode Server</strong>, 可以直接在<strong>Xcode</strong>里集成各种各样的机器人, 而不需要单独的使用<strong>Xcode</strong>服务器, 直接打开, 然后根据提示就完成了:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-11-Characteristic/master/1.Xcode%209/Images/27.png" alt="27"></p>
+<p>虽然我不知道可以用来干嘛, 如果有知道的童鞋们, 可以教教我~~</p>
+<p>对了, 这里还有一个有意思的地方, 就是无线<strong>Build</strong>到你的手机上, 只要你的电脑和你的手机处在同一个<strong>WiFi</strong>下就可以了:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-11-Characteristic/master/1.Xcode%209/Images/28.png" alt="28"></p>
+<p>这里有一个限制就是, 你的手机系统必须是<strong>iOS 11</strong>或者以上才可以, 其他系统没啥卵用.</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>最后提一下, <strong>Xcode 9</strong>使用<strong>Swift</strong>编写的新构建系统对<strong>Swift</strong>的支持更友好, 它提高了性能, 并且可以捕获当前构建系统无法捕获的各种蛋疼配置问题, 但现在只是可选状态, 但在未来, 这个东西应该是<strong>Xcode</strong>默认勾上的.</p>
+<p>如果我们要去选择新的构建系统可以这么设置:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-11-Characteristic/master/1.Xcode%209/Images/29.png" alt="29"></p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-11-Characteristic/master/1.Xcode%209/Images/30.png" alt="30"></p>
+<p>好了, <strong>Xcode 9</strong>的新特性就讲到这里了, 如果还有什么不懂的话, 可以到官方网上去溜达溜达~~</p>
+<p>这是官方资料:</p>
+<ul>
+<li><strong>Session 404: Debugging with Xcode 9</strong> <a href="https://developer.apple.com/videos/play/wwdc2017/404/" target="_blank" rel="noopener">apple.co/2wlqhOH</a></li>
+<li><strong>Session 401: Localizing with Xcode 9</strong> <a href="https://developer.apple.com/videos/play/wwdc2017/401/" target="_blank" rel="noopener">apple.co/2uynlMw</a></li>
+<li><strong>Session 406: Finding Bugs Using Xcode Runtime Tools</strong> <a href="https://developer.apple.com/videos/play/wwdc2017/406/" target="_blank" rel="noopener">apple.co/2wllzk5</a></li>
+<li><strong>Session 405: GitHub and the New Source Control Workflows in Xcode 9</strong> <a href="https://developer.apple.com/videos/play/wwdc2017/405/" target="_blank" rel="noopener">apple.co/2ufYWMk</a></li>
+</ul>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: <a href="https://github.com/CainRun/iOS-11-Characteristic/tree/master/1.Xcode%209" target="_blank" rel="noopener">https://github.com/CainRun/iOS-11-Characteristic/tree/master/1.Xcode%209</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#默认的换行符"><span class="toc-number">1.</span> <span class="toc-text">默认的换行符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#集成GitHub"><span class="toc-number">2.</span> <span class="toc-text">集成GitHub</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#提交到分支"><span class="toc-number">2.1.</span> <span class="toc-text">提交到分支</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#断点调试"><span class="toc-number">3.</span> <span class="toc-text">断点调试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#搜索断点调试"><span class="toc-number">3.1.</span> <span class="toc-text">搜索断点调试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实体文件夹"><span class="toc-number">4.</span> <span class="toc-text">实体文件夹</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#视图Debug"><span class="toc-number">5.</span> <span class="toc-text">视图Debug</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Runtime问题的检测"><span class="toc-number">6.</span> <span class="toc-text">Runtime问题的检测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他的更新"><span class="toc-number">7.</span> <span class="toc-text">其他的更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">8.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">9.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

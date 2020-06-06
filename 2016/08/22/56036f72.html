@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：Aggregate脚本版本《模拟器与真机静态Framework合成教程》 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="之前我写了一个关于非Aggregate版本的《模拟器与真机静态Framework合成教程》, 但那个实在是太麻烦的, 所以我又出墙翻了一些歪果仁写的博客, 果然是世上无难事只怕有心人, 终于被我找到,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：Aggregate脚本版本《模拟器与真机静态Framework合成教程》</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：Aggregate脚本版本《模拟器与真机静态Framework合成教程》</h1>
+        <div class="stuff">
+            <span>八月 22, 2016</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/iOS包管理/">iOS包管理</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>之前我写了一个关于非<strong><code>Aggregate</code></strong>版本的<a href="https://cainluo.github.io/2016/08/22/9a109611.html">《模拟器与真机静态Framework合成教程》</a>, 但那个实在是太麻烦的, 所以我又出墙翻了一些歪果仁写的博客, 果然是世上无难事只怕有心人, 终于被我找到合适的<strong><code>Shell</code></strong>脚本了</p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<p>##创建静态包工程</p>
+<p>新建一个Workpace文件</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/0.png" alt="0"></p>
+<p>新建Cocoa Touch Framework工程</p>
+<p> <img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/1.png" alt="1"></p>
+<p> <img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/2.png" alt="2"></p>
+<p> <img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/3.png" alt="3"></p>
+<p> <img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/4.png" alt="4"></p>
+<p>##添加测试类</p>
+<p>添加一个测试类<strong><code>TestTwoClass</code></strong></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/5.png" alt="5"></p>
+<p>##配置静态包工程</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/6.png" alt="6"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/7.png" alt="7"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/8.png" alt="8"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/9.png" alt="9"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/10.png" alt="10"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/11.png" alt="11"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/12.png" alt="12"></p>
+<p>##分别生成真机与模拟器的静态包</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/13.png" alt="13"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/14.png" alt="14"></p>
+<p>##创建脚本选项</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/15.png" alt="15"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/16.png" alt="16"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/17.png" alt="17"></p>
+<p>##配置脚本选项</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/18.png" alt="18"></p>
+<p>打开<strong>Run Script</strong>之后, 输入以下的脚本, 就可以自动合成通用的<strong>Framework</strong>库了</p>
+<blockquote>
+<p>PS: 脚本是我在<strong>Google</strong>上搜到的, 详细是谁写的, 我也不清楚, 很感谢这个作者提供的脚本</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">if [ "$&#123;ACTION&#125;" = "build" ]</span><br><span class="line">then</span><br><span class="line">INSTALL_DIR=$&#123;SRCROOT&#125;/Products/$&#123;PROJECT_NAME&#125;.framework</span><br><span class="line"></span><br><span class="line">DEVICE_DIR=$&#123;BUILD_ROOT&#125;/$&#123;CONFIGURATION&#125;-iphoneos/$&#123;PROJECT_NAME&#125;.framework</span><br><span class="line"></span><br><span class="line">SIMULATOR_DIR=$&#123;BUILD_ROOT&#125;/$&#123;CONFIGURATION&#125;-iphonesimulator/$&#123;PROJECT_NAME&#125;.framework</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if [ -d "$&#123;INSTALL_DIR&#125;" ]</span><br><span class="line">then</span><br><span class="line">rm -rf "$&#123;INSTALL_DIR&#125;"</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">mkdir -p "$&#123;INSTALL_DIR&#125;"</span><br><span class="line"></span><br><span class="line">cp -R "$&#123;DEVICE_DIR&#125;/" "$&#123;INSTALL_DIR&#125;/"</span><br><span class="line"><span class="meta">#</span>ditto "$&#123;DEVICE_DIR&#125;/Headers" "$&#123;INSTALL_DIR&#125;/Headers"</span><br><span class="line"></span><br><span class="line">lipo -create "$&#123;DEVICE_DIR&#125;/$&#123;PROJECT_NAME&#125;" "$&#123;SIMULATOR_DIR&#125;/$&#123;PROJECT_NAME&#125;" -output "$&#123;INSTALL_DIR&#125;/$&#123;PROJECT_NAME&#125;"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>open "$&#123;DEVICE_DIR&#125;"</span><br><span class="line"><span class="meta">#</span>open "$&#123;SRCROOT&#125;/Products"</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/19.png" alt="19"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/20.png" alt="20"></p>
+<p>这里逮到一个错误, 不要慌, 因为我们之前是用<strong>Release</strong>模式的, 只要把<strong>Aggregate</strong>切换到<strong>Release</strong>模式, 再运行就可以了</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/21.png" alt="21"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/22.png" alt="22"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/23.png" alt="23"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/24.png" alt="24"></p>
+<p>##检测静态包</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/25.png" alt="25"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/26.png" alt="26"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/27.png" alt="27"></p>
+<p>##测试静态包</p>
+<p>测试的方法和<strong><a href="http://www.jianshu.com/p/305c62fa9e2b" target="_blank" rel="noopener">《模拟器与真机静态Framework合成教程》</a></strong>这里面的测试方法一样, 这样就不多做解释了</p>
+<p>但是这里还有一点需要注意一些, 由于我们刚刚在打包的时候, 是把<strong><code>TestTwoClass.h</code></strong>是丢到<strong><code>Private</code></strong>里面去的, 哪怕我们已经把头文件丢到<strong><code>TestTwo.h</code></strong>中, 然后再引用<strong><code>TestTwo.h</code></strong>, 依旧是没办法去调用<strong><code>TestTwoClass</code></strong>内部的任何东西, 怎么办呢?</p>
+<p>我们只要去改改导入的头文件就可以了, 比如:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CreateGeneralFramework/master/AggregateFramework/images/28.png" alt="28"></p>
+<blockquote>
+<p>PS: 这种方式只是我们来玩玩而已, 基本上我们都会吧<strong><code>.h</code></strong>文件放到<strong><code>public</code></strong>中</p>
+</blockquote>
+<p>##工程地址</p>
+<p>GitHub地址: <a href="https://github.com/CainLuo/CreateGeneralFramework" target="_blank" rel="noopener">https://github.com/CainLuo/CreateGeneralFramework</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

@@ -1,0 +1,268 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：iOS 10 新特性《Measurement》 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="单位换算单位换算其实在iOS开发中, 一直是一个问题, 虽然在大部分App里不一定会遇到换算, 但在一些专业级的App里, 比如导航, 测量, 计算, 汽车辅助类等App就蛋疼了, 因为官方并没有提,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：iOS 10 新特性《Measurement》</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：iOS 10 新特性《Measurement》</h1>
+        <div class="stuff">
+            <span>六月 15, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/iOS-10/">iOS 10</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <h2 id="单位换算"><a href="#单位换算" class="headerlink" title="单位换算"></a>单位换算</h2><p>单位换算其实在iOS开发中, 一直是一个问题, 虽然在大部分<code>App</code>里不一定会遇到换算, 但在一些专业级的App里, 比如导航, 测量, 计算, 汽车辅助类等<code>App</code>就蛋疼了, 因为官方并没有提供这类的<code>API</code>, 基本上都是自己写, 或者是集成第三方库.</p>
+<p>苹果为了再一次完善<code>API</code>, 在<code>Foundation</code>库里加了这么一个叫做<code>Measurement</code>的库, 就是为了解决单位换算的问题.</p>
+<p>这里的项目是<code>Objective-C</code>版本的, 如果喜欢<code>Swift</code>版本的话, 可以到<a href="https://github.com/shinobicontrols/iOS10-day-by-day/tree/master/07%20-%20Measurement" target="_blank" rel="noopener">这里</a>去查看.</p>
+<p><strong>注意: 本文的项目是在<code>Xcode 8.3.3</code>, <code>iOS 10</code>, <code>Mac OS 10.12.5</code>环境下运行的.</strong></p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>由于这里要讲的东西很简单, 我就不过多的复杂化直接看代码好了:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 初始化一个秒数的基数</span><br><span class="line">NSMeasurement *seconds = [[NSMeasurement alloc] initWithDoubleValue:666</span><br><span class="line">                                                                   unit:NSUnitDuration.seconds];</span><br><span class="line"></span><br><span class="line">// 转换为分钟</span><br><span class="line">NSMeasurement *minutes = [seconds measurementByConvertingToUnit:NSUnitDuration.minutes];</span><br><span class="line"></span><br><span class="line">// 转换为小时</span><br><span class="line">NSMeasurement *hours   = [seconds measurementByConvertingToUnit:NSUnitDuration.hours];</span><br><span class="line"></span><br><span class="line">NSString *secondsString = [NSString stringWithFormat:@&quot;%.2f 秒&quot;, seconds.doubleValue];</span><br><span class="line">NSString *minutesString = [NSString stringWithFormat:@&quot;%.2f 分钟&quot;, minutes.doubleValue];</span><br><span class="line">NSString *hoursString   = [NSString stringWithFormat:@&quot;%.2f 小时&quot;, hours.doubleValue];</span><br></pre></td></tr></table></figure>
+
+<p><code>UI</code>的代码我就不贴上来了, 大伙可以去项目里自己去看看, 整体效果就酱紫:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/7.Measurement/Images/1.png" alt="1"></p>
+<h2 id="支持换算单位的类型"><a href="#支持换算单位的类型" class="headerlink" title="支持换算单位的类型"></a>支持换算单位的类型</h2><table>
+<thead>
+<tr>
+<th align="right">单位类型</th>
+<th align="right">单位</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">NSDimension</td>
+<td align="right">维度</td>
+</tr>
+<tr>
+<td align="right">NSUnitAcceleration</td>
+<td align="right">每秒/平方米</td>
+</tr>
+<tr>
+<td align="right">NSUnitAngle</td>
+<td align="right">角度</td>
+</tr>
+<tr>
+<td align="right">NSUnitArea</td>
+<td align="right">平方米</td>
+</tr>
+<tr>
+<td align="right">NSUnitConcentrationMass</td>
+<td align="right">每克/升</td>
+</tr>
+<tr>
+<td align="right">NSUnitDispersion</td>
+<td align="right">百万分之</td>
+</tr>
+<tr>
+<td align="right">NSUnitDuration</td>
+<td align="right">秒</td>
+</tr>
+<tr>
+<td align="right">NSUnitElectricCharge</td>
+<td align="right">库仑</td>
+</tr>
+<tr>
+<td align="right">NSUnitElectricCurrent</td>
+<td align="right">安培</td>
+</tr>
+<tr>
+<td align="right">NSUnitElectricPotentialDifference</td>
+<td align="right">伏</td>
+</tr>
+<tr>
+<td align="right">NSUnitElectricResistance</td>
+<td align="right">欧姆</td>
+</tr>
+<tr>
+<td align="right">NSUnitEnergy</td>
+<td align="right">焦耳</td>
+</tr>
+<tr>
+<td align="right">NSUnitFrequency</td>
+<td align="right">赫兹</td>
+</tr>
+<tr>
+<td align="right">NSUnitFuelEfficiency</td>
+<td align="right">升/每100公里</td>
+</tr>
+<tr>
+<td align="right">NSUnitLength</td>
+<td align="right">米</td>
+</tr>
+<tr>
+<td align="right">NSUnitIlluminance</td>
+<td align="right">公斤</td>
+</tr>
+<tr>
+<td align="right">NSUnitPower</td>
+<td align="right">美国瓦茨</td>
+</tr>
+<tr>
+<td align="right">NSUnitPressure</td>
+<td align="right">牛顿/每平方米</td>
+</tr>
+<tr>
+<td align="right">NSUnitSpeed</td>
+<td align="right">秒/米</td>
+</tr>
+<tr>
+<td align="right">NSUnitTemperature</td>
+<td align="right">开尔文</td>
+</tr>
+<tr>
+<td align="right">NSUnitVolume</td>
+<td align="right">升</td>
+</tr>
+</tbody></table>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>苹果在这个库里提供了<code>170</code>多种不同的单位换算, 我这里只是用了一丢丢, 更多的方法有待各位去挖掘, 如果想了解更多的话, 可以去看看<a href="https://developer.apple.com/videos/play/wwdc2016/238/" target="_blank" rel="noopener">WWDC 2016</a>的视频讲解.</p>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: <a href="https://github.com/CainRun/iOS-10-Characteristic/tree/master/7.Measurement" target="_blank" rel="noopener">https://github.com/CainRun/iOS-10-Characteristic/tree/master/7.Measurement</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#单位换算"><span class="toc-number">1.</span> <span class="toc-text">单位换算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建项目"><span class="toc-number">2.</span> <span class="toc-text">创建项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#支持换算单位的类型"><span class="toc-number">3.</span> <span class="toc-text">支持换算单位的类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">5.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

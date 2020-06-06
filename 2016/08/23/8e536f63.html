@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：《iOS设计模式 — 工厂模式》 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="刚忙完就给我来一场大病, 多么痛的领悟, 好不容易好点了, 可以整理整理知识点了~
+转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.
+简介
+所谓工厂模式其实显示中的,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：《iOS设计模式 — 工厂模式》</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：《iOS设计模式 — 工厂模式》</h1>
+        <div class="stuff">
+            <span>八月 23, 2016</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>刚忙完就给我来一场大病, 多么痛的领悟, 好不容易好点了, 可以整理整理知识点了~</p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><img src="https://raw.githubusercontent.com/CainLuo/DesignPattern/master/FactoryPattern/FactoryPattern%E8%AF%B4%E6%98%8E/FactoryPatternUML.jpg" alt="UML"></p>
+<p>所谓<strong>工厂模式</strong>其实显示中的工厂没啥区别, 客户下单, 工厂负责做出产品出来交货, 这样子就没了, 至于工厂里面做了什么东西, 怎么实现, 我们完全不用关注, 只要知道工厂能按时交货就可以了.</p>
+<h2 id="简单工厂与抽象工厂"><a href="#简单工厂与抽象工厂" class="headerlink" title="简单工厂与抽象工厂"></a>简单工厂与抽象工厂</h2><p>在工厂模式当中, 又有两种不同的工厂模式, 分别是<strong>简单工厂</strong>与<strong>抽象工厂</strong>, 他们之前的区别也很简单, 无非就是一个是<strong>实例</strong>一个<strong>抽象</strong>, 这么说好像不太明确, 下面我们来建个工程, 看看<strong>简单工厂</strong>和<strong>抽象工厂</strong>两者之间到底有啥不一样~</p>
+<h3 id="简单工厂"><a href="#简单工厂" class="headerlink" title="简单工厂"></a>简单工厂</h3><p>首先我们把之前的那个<strong>WorkSpace</strong>打开, 新建一个<strong>FactoryPattern</strong>工程, 然后我们再来新建一个工厂类, 这次我们就拿一个汽车工厂作为例子~</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/DesignPattern/master/FactoryPattern/FactoryPattern%E8%AF%B4%E6%98%8E/1.png" alt="1"></p>
+<p>接下来我们创建一个汽车的基类<strong>BaseCar</strong>, 还有一个协议, 这个协议是用来限制<strong>BaseCar</strong>或者<strong>BaseCar</strong>的子类实现一些必须实现的方法, 我这里只是做演示, 所以<strong>BaseCar</strong>类里面空实现就好了, 其他的交给子类去实现.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/DesignPattern/master/FactoryPattern/FactoryPattern%E8%AF%B4%E6%98%8E/2.png" alt="2"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/DesignPattern/master/FactoryPattern/FactoryPattern%E8%AF%B4%E6%98%8E/3.png" alt="3"></p>
+<p>汽车的基类我们已经有了, 现在我们来建立一个汽车工厂类, 就拿全球最大的汽车厂商通用来做例子, 在这里我们会拿通用汽车的几个旗下品牌来做例子, 且都继承与<strong>BaseCar</strong>, 然后给他们对应做一些差异化的操作就OK了~~</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/DesignPattern/master/FactoryPattern/FactoryPattern%E8%AF%B4%E6%98%8E/4.png" alt="4"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/DesignPattern/master/FactoryPattern/FactoryPattern%E8%AF%B4%E6%98%8E/5.png" alt="5"></p>
+<p>现在我们来实现<strong>Protocol</strong>里的方法再加一些差异化, 酱紫我们就知道到时候初始化出来的汽车是哪辆了</p>
+<p>我们先拿<strong>Buick</strong>来做例子, 添加一个差异化方法, 然后再看看我们利用工厂模式初始化出来的对象是不是<strong>Buick</strong>.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/DesignPattern/master/FactoryPattern/FactoryPattern%E8%AF%B4%E6%98%8E/6.png" alt="6"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/DesignPattern/master/FactoryPattern/FactoryPattern%E8%AF%B4%E6%98%8E/7.png" alt="7"></p>
+<p>其他的几个品牌车子也是同理进行就可以了, 这里就不做演示了, 代码当中我会填上去, 到时候大家去下载源码下来看看就哦了~~</p>
+<p><strong>简单工厂</strong>到这里就基本上搞定了, 下面就让我们来看看什么是<strong>抽象工厂</strong>.</p>
+<h3 id="抽象工厂"><a href="#抽象工厂" class="headerlink" title="抽象工厂"></a>抽象工厂</h3><p><img src="https://raw.githubusercontent.com/CainLuo/DesignPattern/master/FactoryPattern/FactoryPattern%E8%AF%B4%E6%98%8E/AbstractFactoryUML.jpg" alt="AbstractFactoryUML"></p>
+<blockquote>
+<p>其实所谓的<strong>抽象工厂</strong>与<strong>简单工厂</strong>最大的却别, 就是把工厂类做成一个抽象的对象, 比<strong>简单工厂</strong>多了一层抽象层, 然后使用一个管理者去管理这些对应的厂商, 用户可以根据自己的需求, 向不同的厂商拿货, 这就像是超市似得, 一个类别的商品有好几个或者是十几个不同的厂商在供货, 可以让消费者, 根据自己的消费水平或者需求来选择不同厂商的产品, 下面让我们用代码说话~</p>
+</blockquote>
+<h2 id="新建抽象工厂目录"><a href="#新建抽象工厂目录" class="headerlink" title="新建抽象工厂目录"></a>新建抽象工厂目录</h2><blockquote>
+<p>在开始之前, 我们肯定要先规划好文件夹的目录, 以免与之前的<strong>简单工厂</strong>类搞混, 下面就是我们的文件夹结构.</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/CainLuo/DesignPattern/master/FactoryPattern/FactoryPattern%E8%AF%B4%E6%98%8E/8.png" alt="8"></p>
+<p>接下来我们就要去新建我们的<strong>BaseFactory</strong>以及<strong>BaseCar</strong>, 但是这里由于之前已经有<strong>BaseCar</strong>这个类了, 为了区别, 我们在新建的<strong>BaseCar</strong>前面加个前缀<strong>Ab</strong>, 酱紫就好了</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/DesignPattern/master/FactoryPattern/FactoryPattern%E8%AF%B4%E6%98%8E/9.png" alt="9"></p>
+<p>声明且实现<strong>AbBaseFactory</strong>的一个方法.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/DesignPattern/master/FactoryPattern/FactoryPattern%E8%AF%B4%E6%98%8E/10.png" alt="10"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/DesignPattern/master/FactoryPattern/FactoryPattern%E8%AF%B4%E6%98%8E/11.png" alt="11"></p>
+<p>新建完成之后, 我们就需要继续, 这次我们拿<strong>长安</strong>和<strong>广汽</strong>两个厂商做例子, 车型的话, 我就随便挑两个, 一个是<strong>凯美瑞</strong>, 一个是<strong>昂克赛拉</strong></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/DesignPattern/master/FactoryPattern/FactoryPattern%E8%AF%B4%E6%98%8E/12.png" alt="12"></p>
+<h3 id="完善对应的工厂"><a href="#完善对应的工厂" class="headerlink" title="完善对应的工厂"></a>完善对应的工厂</h3><p>新建完这些类之后, 我们需要分别给对应的厂商添加对应的车型, <strong>长安-马自达</strong>, <strong>广汽-凯美瑞</strong></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/DesignPattern/master/FactoryPattern/FactoryPattern%E8%AF%B4%E6%98%8E/13.png" alt="13"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/DesignPattern/master/FactoryPattern/FactoryPattern%E8%AF%B4%E6%98%8E/14.png" alt="14"></p>
+<h3 id="工厂管理者"><a href="#工厂管理者" class="headerlink" title="工厂管理者"></a>工厂管理者</h3><blockquote>
+<p>在完成了之前的工作之后, 现在我们来看看<strong>抽象工厂</strong>的核心, 工厂管理者(FactoryManager).</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/CainLuo/DesignPattern/master/FactoryPattern/FactoryPattern%E8%AF%B4%E6%98%8E/15.png" alt="15"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/DesignPattern/master/FactoryPattern/FactoryPattern%E8%AF%B4%E6%98%8E/16.png" alt="16"></p>
+<p>酱紫, 我们就完成了<strong>抽象工厂</strong>的所有步骤了, 下面让我们来使用一下<strong>抽象工厂</strong>.</p>
+<h2 id="使用抽象工厂"><a href="#使用抽象工厂" class="headerlink" title="使用抽象工厂"></a>使用抽象工厂</h2><p>完成了所有步骤之后, 我们就来使用一下<strong>抽象工厂</strong>, 看看到底是不是我们所要的东西.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/DesignPattern/master/FactoryPattern/FactoryPattern%E8%AF%B4%E6%98%8E/17.png" alt="17"></p>
+<p>到这里, 我们就完成了<strong>工厂模式</strong>的<strong>简单工厂</strong>和<strong>抽象工厂</strong>了, 非常的简单, 如果你们需要对应的文档和代码, 请到我的<strong>GitHub</strong>里, 地址就在下面</p>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: <a href="https://github.com/CainLuo/DesignPattern" target="_blank" rel="noopener">https://github.com/CainLuo/DesignPattern</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简单工厂与抽象工厂"><span class="toc-number">2.</span> <span class="toc-text">简单工厂与抽象工厂</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#简单工厂"><span class="toc-number">2.1.</span> <span class="toc-text">简单工厂</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#抽象工厂"><span class="toc-number">2.2.</span> <span class="toc-text">抽象工厂</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新建抽象工厂目录"><span class="toc-number">3.</span> <span class="toc-text">新建抽象工厂目录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#完善对应的工厂"><span class="toc-number">3.1.</span> <span class="toc-text">完善对应的工厂</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#工厂管理者"><span class="toc-number">3.2.</span> <span class="toc-text">工厂管理者</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用抽象工厂"><span class="toc-number">4.</span> <span class="toc-text">使用抽象工厂</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">5.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

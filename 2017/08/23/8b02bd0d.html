@@ -1,0 +1,269 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：iOS开发中的装逼技术 - RunTime(三) - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="我们已经来到了装逼技术学习的第三部分, 如果没有看到前面部分的朋友, 可以去看玩转iOS开发：iOS开发中的装逼技术 - RunTime(二).
+这次说的是啥呢? 下面我们就来看看
+转载声明:如需要,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：iOS开发中的装逼技术 - RunTime(三)</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：iOS开发中的装逼技术 - RunTime(三)</h1>
+        <div class="stuff">
+            <span>八月 23, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/iOS进阶/">iOS进阶</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>我们已经来到了装逼技术学习的第三部分, 如果没有看到前面部分的朋友, 可以去看<a href="https://cainluo.github.io/2017/10/02/f5f19d26.html">玩转iOS开发：iOS开发中的装逼技术 - RunTime(二)</a>.</p>
+<p>这次说的是啥呢? 下面我们就来看看</p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="自动归档"><a href="#自动归档" class="headerlink" title="自动归档"></a>自动归档</h2><p>我们平常撸归档的时候, 是怎么弄的呢? 看看代码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">- (id)initWithCoder:(NSCoder *)decoder &#123;</span><br><span class="line"></span><br><span class="line">    self = [super init];</span><br><span class="line"></span><br><span class="line">    if (self = [super init]) &#123;</span><br><span class="line"></span><br><span class="line">        NSObject *obj = [decoder decodeObjectForKey:@&quot;keyName&quot;];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)encodeWithCoder:(NSCoder *)coder &#123;</span><br><span class="line"></span><br><span class="line">    NSObject *obj = [[NSObject alloc] init];</span><br><span class="line"></span><br><span class="line">    [coder encodeObject:obj</span><br><span class="line">                 forKey:@&quot;keyName&quot;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看上去好像没什么问题, 但如果我们有一百个归档怎么办, 那我们就要一个一个的去写, 各一百个, 写的手软.</p>
+<p>既然讲到这里, 那肯定有更好的方法去解决了, <strong>Runtime</strong>也可以通过几个步骤之后, 进行归档:</p>
+<ul>
+<li>通过<strong>class_copuIvarList</strong>方法获取当前的<strong>Model</strong>的所有成员变量.</li>
+<li>通过<strong>ivar_getName</strong>方法来获取成员变量的名称.</li>
+<li>通过<strong>KVC</strong>来读取<strong>Model</strong>的属性值, 最后就给<strong>Model</strong>的属性赋值, 就完事.</li>
+</ul>
+<p>举个栗子🌰，新建了一个名为<strong>CoderModel</strong>的<strong>Model</strong>类，详细代码为:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;CoderModel.h&quot;</span><br><span class="line">#import &lt;objc/runtime.h&gt;</span><br><span class="line">#import &lt;objc/message.h&gt;</span><br><span class="line"></span><br><span class="line">@implementation CoderModel</span><br><span class="line"></span><br><span class="line">- (void)encodeWithCoder:(NSCoder *)coder&#123;</span><br><span class="line">    </span><br><span class="line">    unsigned int outCount = 0;</span><br><span class="line">    </span><br><span class="line">    Ivar *vars = class_copyIvarList([self class], &amp;outCount);</span><br><span class="line">    </span><br><span class="line">    for (int i = 0; i &lt; outCount; i ++) &#123;</span><br><span class="line">        </span><br><span class="line">        Ivar var = vars[i];</span><br><span class="line">        </span><br><span class="line">        const char *name = ivar_getName(var);</span><br><span class="line">        </span><br><span class="line">        NSString *key = [NSString stringWithUTF8String:name];</span><br><span class="line">        </span><br><span class="line">        id value = [self valueForKey:key];</span><br><span class="line">        </span><br><span class="line">        [coder encodeObject:value</span><br><span class="line">                     forKey:key];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    free(vars);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (nullable instancetype)initWithCoder:(NSCoder *)decoder&#123;</span><br><span class="line">    </span><br><span class="line">    if (self = [super init]) &#123;</span><br><span class="line">        </span><br><span class="line">        unsigned int outCount = 0;</span><br><span class="line">        </span><br><span class="line">        Ivar *vars = class_copyIvarList([self class], &amp;outCount);</span><br><span class="line">        </span><br><span class="line">        for (int i = 0; i &lt; outCount; i ++) &#123;</span><br><span class="line">            </span><br><span class="line">            Ivar var = vars[i];</span><br><span class="line">            </span><br><span class="line">            const char *name = ivar_getName(var);</span><br><span class="line">            </span><br><span class="line">            NSString *key = [NSString stringWithUTF8String:name];</span><br><span class="line">            </span><br><span class="line">            id value = [decoder decodeObjectForKey:key];</span><br><span class="line">            </span><br><span class="line">            [self setValue:value forKey:key];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        free(vars);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>耍过<strong>KVC</strong>的老铁们都知道, <strong>KVC</strong>的特性, 若能找到<strong>key</strong>的属性<strong>setter</strong>方法, 就会调用<strong>setter</strong>方法.</li>
+<li>如果找不到<strong>setter</strong>, 就会查找成员变量<strong>key</strong>或者成员变量<strong>_key</strong></li>
+<li>所以我们在这里不需要再另外处理前缀有_前缀的成员变量名</li>
+</ul>
+<p>这里我们还需要写一个转模型的<strong>Category</strong>, 自己在工程里找吧, 最终实现:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (void)coderModel &#123;</span><br><span class="line">    </span><br><span class="line">    CoderModel *coderModel = [CoderModel objectWithKeyValues:self.dictionary];</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;%@, %ld, %ld&quot;, coderModel.name, coderModel.age, coderModel.phoneNumber);</span><br><span class="line">    </span><br><span class="line">    NSDictionary *dictionary = [coderModel keyValuesWithObject];</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;dictionary is %@&quot;, dictionary);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">27</span>:<span class="number">51.349</span> <span class="number">1</span>.RunTime[<span class="number">36904</span>:<span class="number">3052474</span>] 小明, -<span class="number">5764607523034234590</span>, -<span class="number">5764607302232026877</span></span><br><span class="line"></span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">23</span> <span class="number">22</span>:<span class="number">27</span>:<span class="number">51.349</span> <span class="number">1</span>.RunTime[<span class="number">36904</span>:<span class="number">3052474</span>] dictionary <span class="keyword">is</span> &#123;</span><br><span class="line">    age = 18;</span><br><span class="line">    name = "\U5c0f\U660e";</span><br><span class="line">    phoneNumber = 13800138000;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="字典与模型互转"><a href="#字典与模型互转" class="headerlink" title="字典与模型互转"></a>字典与模型互转</h3><p>刚刚讲完归档之后, 就顺便把字典与模型的互转给说完吧.</p>
+<p>我们以前给模型赋值的时候是:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (instancetype)initWithDictionary:(NSDictionary *)dictionary &#123;</span><br><span class="line"></span><br><span class="line">    if (self = [super init]) &#123;</span><br><span class="line">    </span><br><span class="line">        self.age  = dictionary[@&quot;age&quot;];</span><br><span class="line">        self.name = dictionary[@&quot;name&quot;];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看起来貌似没啥问题, 但实际上是和归档遇到的问题一个样, 后来用过<strong>MJExtension</strong>, <strong>YYModel</strong>之后, 就发现, 原来模型解析还可以有别的方式.</p>
+<p>我们来看看流程:</p>
+<ul>
+<li><p>字典转模型的时候</p>
+</li>
+<li><p>根据字典的<strong>key</strong>生成<strong>setter</strong>方法</p>
+</li>
+<li><p>使用<strong>objc_msgSend</strong>调用<strong>setter</strong>方法为<strong>Model</strong>的属性赋值或者用<strong>KVC</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">+ (id)objectWithKeyValues:(NSDictionary *)dictionary &#123;</span><br><span class="line"></span><br><span class="line">    id objc = [[self alloc] init];</span><br><span class="line"></span><br><span class="line">    for (NSString *key in dictionary.allKeys) &#123;</span><br><span class="line"></span><br><span class="line">        id value = dictionary[key];</span><br><span class="line"></span><br><span class="line">        // 判断当前属性是否属于Model</span><br><span class="line">        objc_property_t property = class_getProperty(self, key.UTF8String);</span><br><span class="line"></span><br><span class="line">        unsigned int outCount = 0;</span><br><span class="line"></span><br><span class="line">        objc_property_attribute_t *attributeList = property_copyAttributeList(property, &amp;outCount);</span><br><span class="line"></span><br><span class="line">        objc_property_attribute_t attribute = attributeList[0];</span><br><span class="line"></span><br><span class="line">        NSString *typeString = [NSString stringWithUTF8String:attribute.value];</span><br><span class="line"></span><br><span class="line">        if ([typeString isEqualToString:@&quot;@\&quot;CoderModel\&quot;&quot;]) &#123;</span><br><span class="line"></span><br><span class="line">            value = [self objectWithKeyValues:value];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 生成setter方法，并用objc_msgSend调用</span><br><span class="line">        NSString *methodName = [NSString stringWithFormat:@&quot;set%@%@:&quot;, [key substringToIndex:1].uppercaseString, [key substringFromIndex:1]];</span><br><span class="line"></span><br><span class="line">        SEL setter = sel_registerName(methodName.UTF8String);</span><br><span class="line"></span><br><span class="line">        if ([objc respondsToSelector:setter]) &#123;</span><br><span class="line"></span><br><span class="line">            ((void (*) (id,SEL,id)) objc_msgSend) (objc,setter,value);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        free(attributeList);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return objc;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>模型转字典的时候</p>
+</li>
+<li><p>调用<strong>class_copyPropertyList</strong>方法获取当前<strong>Model</strong>的所有属性</p>
+</li>
+<li><p>调用 <strong>property_getName</strong> 获取属性名称</p>
+</li>
+<li><p>根据属性名称生成<strong>getter</strong>方法</p>
+</li>
+<li><p>使用<strong>objc_msgSend</strong>调用<strong>getter</strong>方法获取属性值或者用<strong>KVC</strong></p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">- (NSDictionary *)keyValuesWithObject &#123;</span><br><span class="line"></span><br><span class="line">    unsigned int outCount = 0;</span><br><span class="line"></span><br><span class="line">    objc_property_t *propertyList = class_copyPropertyList([self class], &amp;outCount);</span><br><span class="line"></span><br><span class="line">    NSMutableDictionary *mutableDictionary = [NSMutableDictionary dictionary];</span><br><span class="line"></span><br><span class="line">    for (int i = 0; i &lt; outCount; i ++) &#123;</span><br><span class="line"></span><br><span class="line">        objc_property_t property = propertyList[i];</span><br><span class="line"></span><br><span class="line">        //生成getter方法，并用objc_msgSend调用</span><br><span class="line">        const char *propertyName = property_getName(property);</span><br><span class="line"></span><br><span class="line">        SEL getter = sel_registerName(propertyName);</span><br><span class="line"></span><br><span class="line">        if ([self respondsToSelector:getter]) &#123;</span><br><span class="line"></span><br><span class="line">            id value = ((id (*) (id,SEL)) objc_msgSend) (self,getter);</span><br><span class="line"></span><br><span class="line">            // 判断当前属性是否属于Model</span><br><span class="line">            if ([value isKindOfClass:[self class]] &amp;&amp; value) &#123;</span><br><span class="line"></span><br><span class="line">                value = [value keyValuesWithObject];</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            if (value) &#123;</span><br><span class="line"></span><br><span class="line">                NSString *key = [NSString stringWithUTF8String:propertyName];</span><br><span class="line"></span><br><span class="line">                [mutableDictionary setObject:value</span><br><span class="line">                                      forKey:key];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    free(propertyList);</span><br><span class="line"></span><br><span class="line">    return mutableDictionary;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="动态方法解析"><a href="#动态方法解析" class="headerlink" title="动态方法解析"></a>动态方法解析</h3><p>说到这里基本上就已经结束了, 最后就是对前面没讲的补充.</p>
+<p>一般我们调用了对象里不存在里的方法就会直接崩掉, 然后给一个错误信息:</p>
+<pre><code>unrecognized selector sent to instance 0x0bcde09abc0</code></pre><p>但是在崩掉之前, <strong>Runtime</strong>会给一个机会我们去进行动态解析, 流程大致是:</p>
+<ul>
+<li><p>检测<strong>selector</strong>需不需要忽略的, 比如在<strong>macOS</strong>上的开发, 有了<strong>ARC</strong>就不会理会什么<strong>retain</strong>, <strong>release</strong>这些方法了.</p>
+</li>
+<li><p>检测<strong>target</strong>是不是为<strong>nil</strong>, <strong>Objective-C</strong>是允许对一个<strong>nil</strong>对象随便执行一个方法都不会崩掉, 所以就会被忽略掉了, 但是在<strong>Swift</strong>就会出问题了.</p>
+</li>
+<li><p>如果上面两个都过了, 那就会去查找这个类的<strong>IMP</strong>, 先从<strong>cache</strong>里面找, 找到了就跳到对应的函数去执行.</p>
+</li>
+<li><p>如果<strong>cache</strong>找不到就找一下方法分发表</p>
+</li>
+<li><p>如果在分发表里找不到, 那就会去超类的分发表里去查找, 一直找到<strong>NSObject</strong>.</p>
+</li>
+<li><p>如果还找不到就会开始进入消息转发</p>
+</li>
+</ul>
+<p>转发的大致过程:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-Project-Example/master/RunTime/Three/Images/1.jpg" alt="1"></p>
+<p>图片是在网上的某个博文里偷过来的, 懒得画了.</p>
+<ul>
+<li><p>进入了<code>resolveInstanceMethod:</code>方法后, 指定是否是动态添加方法.</p>
+</li>
+<li><p>如果返回是<strong>NO</strong>, 就会进入下一步</p>
+</li>
+<li><p>如果返回<strong>YES</strong>, 就会通过<strong>class_addMethod</strong>函数动态的添加方法, 消息就会得到处理, 这个过程就会结束了.</p>
+</li>
+<li><p><code>resolveInstanceMethod:</code>方法返回<strong>NO</strong>时, 就会进入<strong>forwardingTargetForSelector</strong>方法, 这是<strong>Runtime</strong>给我们的第二次机会, 用于指定哪个对象响应这个<strong>selector</strong>.</p>
+</li>
+<li><p>如果返回<strong>nil</strong>, 就会进入下一步, 返回某个对象, 则会调用该对象的方法.</p>
+</li>
+<li><p><code>forwardingTargetForSelector:</code>返回是<strong>nil</strong>的话, 我们就要通过<code>methodSignatureForSelector:</code>来指定方法签名.</p>
+</li>
+<li><p>如果<code>methodSignatureForSelector:</code>返回<strong>nil</strong>, 就表示不处理, 返回方法签名, 就会进入下一步.</p>
+</li>
+<li><p>当<code>methodSignatureForSelector:</code>方法返回签名后, 就会调用<code>forwardInvocation:</code>方法, 我们可以通过<strong>anInvocation</strong>对象做处理, 比如修改实现方法, 修改响应对象等等.</p>
+</li>
+<li><p>如果到最后这里, 消息都还是没有得到响应或处理, 那么就会崩掉了.</p>
+</li>
+</ul>
+<p>我们来看看代码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;BicycleModel.h&quot;</span><br><span class="line">#import &quot;SportsCarModel.h&quot;</span><br><span class="line"></span><br><span class="line">#import &lt;objc/runtime.h&gt;</span><br><span class="line"></span><br><span class="line">@implementation BicycleModel</span><br><span class="line"></span><br><span class="line">- (void)ridingSpeed &#123;</span><br><span class="line"></span><br><span class="line">    NSLog(@&quot;Slow Ride&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (BOOL)resolveInstanceMethod:(SEL)sel &#123;</span><br><span class="line"></span><br><span class="line">#if 0</span><br><span class="line">    return NO;</span><br><span class="line">#else</span><br><span class="line">    class_addMethod(self, sel, class_getMethodImplementation(self, sel_registerName(&quot;ridingSpeed&quot;)), &quot;v@:&quot;);</span><br><span class="line"></span><br><span class="line">    return [super resolveInstanceMethod:sel];</span><br><span class="line">#endif</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (id)forwardingTargetForSelector:(SEL)aSelector&#123;</span><br><span class="line"></span><br><span class="line">#if 0</span><br><span class="line">    return nil;</span><br><span class="line">#else</span><br><span class="line">    return [[SportsCarModel alloc] init];</span><br><span class="line">#endif</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector &#123;</span><br><span class="line"></span><br><span class="line">    return [NSMethodSignature signatureWithObjCTypes:&quot;v@:&quot;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)forwardInvocation:(NSInvocation *)anInvocation &#123;</span><br><span class="line"></span><br><span class="line">    return [anInvocation invokeWithTarget:[[SportsCarModel alloc] init]];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#import &quot;SportsCarModel.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation SportsCarModel</span><br><span class="line"></span><br><span class="line">- (void)rapidAcceleration &#123;</span><br><span class="line"></span><br><span class="line">    NSLog(@&quot;High speed&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>执行方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (void)dynamicAnalysis &#123;</span><br><span class="line"></span><br><span class="line">    BicycleModel *bicycle = [[BicycleModel alloc] init];</span><br><span class="line"></span><br><span class="line">    ((void (*) (id, SEL)) objc_msgSend) (bicycle, sel_registerName(&quot;rapidAcceleration&quot;));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印出来的结果:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">24</span> <span class="number">00</span>:<span class="number">09</span>:<span class="number">15.238</span> <span class="number">1</span>.RunTime[<span class="number">37657</span>:<span class="number">3122648</span>] Slow Ride</span><br></pre></td></tr></table></figure>
+
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: <a href="https://github.com/cainluo/iOS-Project-Example/tree/master/RunTime/Three" target="_blank" rel="noopener">https://github.com/cainluo/iOS-Project-Example/tree/master/RunTime/Three</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#自动归档"><span class="toc-number">1.</span> <span class="toc-text">自动归档</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#字典与模型互转"><span class="toc-number">1.1.</span> <span class="toc-text">字典与模型互转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#动态方法解析"><span class="toc-number">1.2.</span> <span class="toc-text">动态方法解析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">2.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

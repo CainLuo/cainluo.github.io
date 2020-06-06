@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：装逼技术RunTime的应用(一) - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="前面我们把RunTime的一些基本知识都了解了一遍, 知道了在Objective-C的方法调用是属于消息传送的机制.
+接着呢, 我们知道了每个类都有一个isa的结构体指针, 在这个结构体里, 我们得,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：装逼技术RunTime的应用(一)</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：装逼技术RunTime的应用(一)</h1>
+        <div class="stuff">
+            <span>九月 27, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/iOS进阶/">iOS进阶</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>前面我们把<strong>RunTime</strong>的一些基本知识都了解了一遍, 知道了在<strong>Objective-C</strong>的方法调用是属于消息传送的机制.</p>
+<p>接着呢, 我们知道了每个类都有一个isa的结构体指针, 在这个结构体里, 我们得到指定类的所有属性, 所有方法的列表, 也可以知道这个所属的父类是什么等等的.</p>
+<p>这只是<strong>RunTime</strong>黑魔法的一丢丢应用, 如果没有看过之前那些文章的朋友可以去这里看看:</p>
+<ul>
+<li><a href="https://cainluo.github.io/2017/08/21/5ac00644.html">玩转iOS开发：iOS开发中的装逼技术 - RunTime(一)</a></li>
+<li><a href="https://cainluo.github.io/2017/08/22/f5f19d26.html">玩转iOS开发：iOS开发中的装逼技术 - RunTime(二)</a></li>
+<li><a href="https://cainluo.github.io/2017/08/23/8b02bd0d.html">玩转iOS开发：iOS开发中的装逼技术 - RunTime(三)</a></li>
+</ul>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="RunTime中的消息应用"><a href="#RunTime中的消息应用" class="headerlink" title="RunTime中的消息应用"></a>RunTime中的消息应用</h2><p>在之前的文章里, 我们就有接触过<strong>RunTime</strong>的消息机制, 通过<strong>Clang</strong>把<strong>Object.m</strong>文件转成<strong>Object.mm</strong>文件, 然后就可以看得到里面的所有东西, 包括是怎么调用方法的也可以明确的看到. </p>
+<p>这次我们换一个方式来实现, 首先我们声明一个类, 内部实现两个小方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;RunTimeMessageModel.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation RunTimeMessageModel</span><br><span class="line"></span><br><span class="line">- (void)cl_post &#123;</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;被调用了: %@, 当前对象为: %@&quot;, NSStringFromClass([self class]), self);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)cl_getWithCount:(NSInteger)count &#123;</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;被%ld人调用了&quot;, count);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>在这里我们还需要修改一点东西, 不然我们没法用<strong>RunTime</strong>的消息机制:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-Project-Example/master/RunTime/Four/Images/1.png" alt="1"></p>
+<p>搞定完一切之后, 我们就来实现一下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;RunTimeMessageController.h&quot;</span><br><span class="line">#import &quot;RunTimeMessageModel.h&quot;</span><br><span class="line"></span><br><span class="line">#import &lt;objc/message.h&gt;</span><br><span class="line"></span><br><span class="line">@interface RunTimeMessageController ()</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation RunTimeMessageController</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    </span><br><span class="line">    self.title = NSStringFromClass([self class]);</span><br><span class="line">    </span><br><span class="line">    Class getClass = objc_getClass(&quot;RunTimeMessageModel&quot;);</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;Get The Class is: %@&quot;, getClass);</span><br><span class="line">    </span><br><span class="line">    // Xcode 会自动屏蔽通过objc_msgSend创建对象, 我们可以去到工程里设置</span><br><span class="line">    // Build Setting -&gt; Enable Strict Checking of objc_msgSend Calls 改成No就好了.</span><br><span class="line">    RunTimeMessageModel *messageModel = objc_msgSend(getClass, @selector(alloc));</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;alloc Object: %@&quot;, messageModel);</span><br><span class="line">    </span><br><span class="line">    // 在不调用init方法, 我们也可以通过发消息调用想用的方法, 这里调用没有在.h文件里声明的方法会警告该方法没有声明</span><br><span class="line">    objc_msgSend(messageModel, @selector(cl_post));</span><br><span class="line">    </span><br><span class="line">    messageModel = objc_msgSend(messageModel, @selector(init));</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;init Object: %@&quot;, messageModel);</span><br><span class="line">    </span><br><span class="line">    objc_msgSend(messageModel, @selector(cl_post));</span><br><span class="line">    </span><br><span class="line">    // 还有另外一种写法, 就是把所有东西都集合在一起, 也就是我们常用的[[NSObject alloc] init];的原型</span><br><span class="line">    RunTimeMessageModel *messageModelTwo = objc_msgSend(objc_msgSend(objc_getClass(&quot;RunTimeMessageModel&quot;), @selector(alloc)), @selector(init));</span><br><span class="line">    </span><br><span class="line">    objc_msgSend(messageModelTwo, @selector(cl_getWithCount:), 5);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>打印结果:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">27</span> <span class="number">22</span>:<span class="number">55</span>:<span class="number">44.713329</span>+<span class="number">0800</span> RunTimeExample[<span class="number">74324</span>:<span class="number">4732411</span>] -[RunTimeMessageController viewDidLoad] 第<span class="number">27</span>行 </span><br><span class="line"> Get The Class i<span class="variable">s:</span> RunTimeMessageModel</span><br><span class="line"> </span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">27</span> <span class="number">22</span>:<span class="number">55</span>:<span class="number">44.714726</span>+<span class="number">0800</span> RunTimeExample[<span class="number">74324</span>:<span class="number">4732411</span>] -[RunTimeMessageController viewDidLoad] 第<span class="number">33</span>行 </span><br><span class="line"> alloc Objec<span class="variable">t:</span> &lt;RunTimeMessageMode<span class="variable">l:</span> <span class="number">0</span>x60400001b9f0&gt;</span><br><span class="line"> </span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">27</span> <span class="number">22</span>:<span class="number">55</span>:<span class="number">44.715881</span>+<span class="number">0800</span> RunTimeExample[<span class="number">74324</span>:<span class="number">4732411</span>] -[RunTimeMessageModel cl_post] 第<span class="number">15</span>行 </span><br><span class="line"> 被调用了: RunTimeMessageModel, 当前对象为: &lt;RunTimeMessageMode<span class="variable">l:</span> <span class="number">0</span>x60400001b9f0&gt;</span><br><span class="line"> </span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">27</span> <span class="number">22</span>:<span class="number">55</span>:<span class="number">44.716663</span>+<span class="number">0800</span> RunTimeExample[<span class="number">74324</span>:<span class="number">4732411</span>] -[RunTimeMessageController viewDidLoad] 第<span class="number">40</span>行 </span><br><span class="line"> init Objec<span class="variable">t:</span> &lt;RunTimeMessageMode<span class="variable">l:</span> <span class="number">0</span>x60400001b9f0&gt;</span><br><span class="line"> </span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">27</span> <span class="number">22</span>:<span class="number">55</span>:<span class="number">44.718265</span>+<span class="number">0800</span> RunTimeExample[<span class="number">74324</span>:<span class="number">4732411</span>] -[RunTimeMessageModel cl_post] 第<span class="number">15</span>行 </span><br><span class="line"> 被调用了: RunTimeMessageModel, 当前对象为: &lt;RunTimeMessageMode<span class="variable">l:</span> <span class="number">0</span>x60400001b9f0&gt;</span><br><span class="line"> </span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">27</span> <span class="number">22</span>:<span class="number">55</span>:<span class="number">44.719543</span>+<span class="number">0800</span> RunTimeExample[<span class="number">74324</span>:<span class="number">4732411</span>] -[RunTimeMessageModel cl_getWithCoun<span class="variable">t:</span>] 第<span class="number">20</span>行 </span><br><span class="line"> 被<span class="number">5</span>人调用了</span><br></pre></td></tr></table></figure>
+
+<p>由于之前的文章里已经有做过解释了, 这里就不详细讲解了.</p>
+<h2 id="RunTime方法交换"><a href="#RunTime方法交换" class="headerlink" title="RunTime方法交换"></a>RunTime方法交换</h2><p>在这里还有比较有意思的用处, 就是交换两个方法, 这里另外建一个类: </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">// RunTimeMethodModel.h文件</span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@interface RunTimeMethodModel : NSObject</span><br><span class="line"></span><br><span class="line">@property (nonatomic, copy) NSString *cl_height;</span><br><span class="line">@property (nonatomic, copy) NSString *cl_weight;</span><br><span class="line"></span><br><span class="line">- (NSString *)cl_height;</span><br><span class="line">- (NSString *)cl_weight;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">// RunTimeMethodModel.m文件</span><br><span class="line">#import &quot;RunTimeMethodModel.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation RunTimeMethodModel</span><br><span class="line"></span><br><span class="line">- (NSString *)cl_height &#123;</span><br><span class="line">    </span><br><span class="line">    return @&quot;我身高180&quot;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSString *)cl_weight &#123;</span><br><span class="line">    </span><br><span class="line">    return @&quot;我体重280&quot;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    </span><br><span class="line">    self.title = NSStringFromClass([self class]);</span><br><span class="line">    </span><br><span class="line">    RunTimeMethodModel *methodModel = [[RunTimeMethodModel alloc] init];</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;身高: %@&quot;, methodModel.cl_height);</span><br><span class="line">    NSLog(@&quot;体重: %@&quot;, methodModel.cl_weight);</span><br><span class="line"></span><br><span class="line">    Method methodOne = class_getInstanceMethod([methodModel class], @selector(cl_height));</span><br><span class="line">    Method methodTwo = class_getInstanceMethod([methodModel class], @selector(cl_weight));</span><br><span class="line"></span><br><span class="line">    method_exchangeImplementations(methodOne, methodTwo);</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;打印的内容: %@&quot;, [methodModel cl_height]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印结果:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">28</span> <span class="number">00</span>:<span class="number">36</span>:<span class="number">20.277653</span>+<span class="number">0800</span> RunTimeExample[<span class="number">76955</span>:<span class="number">4827313</span>] -[RunTimeMethodController viewDidLoad] 第<span class="number">27</span>行 </span><br><span class="line"> 身高: 我身高<span class="number">180</span></span><br><span class="line"></span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">28</span> <span class="number">00</span>:<span class="number">36</span>:<span class="number">20.279144</span>+<span class="number">0800</span> RunTimeExample[<span class="number">76955</span>:<span class="number">4827313</span>] -[RunTimeMethodController viewDidLoad] 第<span class="number">28</span>行 </span><br><span class="line"> 体重: 我体重<span class="number">280</span></span><br><span class="line"></span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">28</span> <span class="number">00</span>:<span class="number">36</span>:<span class="number">20.283090</span>+<span class="number">0800</span> RunTimeExample[<span class="number">76955</span>:<span class="number">4827313</span>] -[RunTimeMethodController viewDidLoad] 第<span class="number">35</span>行 </span><br><span class="line"> 打印的内容: 我体重<span class="number">280</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>PS: 但这里需要注意一点, 由于这里的ViewController会销毁, 但method_exchangeImplementations会一直存在, 再次进来的时候, 就会再次根据上次交换过的顺序再次交换.</p>
+</blockquote>
+<p>那怎么办呢? 查了一下资料, 发现有两个解决的方案:</p>
+<h3 id="load交换方法"><a href="#load交换方法" class="headerlink" title="+load交换方法"></a>+load交换方法</h3><p>我们可以把交换方法的步骤放在+load, 试试看:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">+ (void)load &#123;</span><br><span class="line">    </span><br><span class="line">    Method methodOne = class_getInstanceMethod(self, @selector(cl_height));</span><br><span class="line">    Method methodTwo = class_getInstanceMethod(self, @selector(cl_weight));</span><br><span class="line">    </span><br><span class="line">    method_exchangeImplementations(methodOne, methodTwo);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSString *)cl_height &#123;</span><br><span class="line">    </span><br><span class="line">    return @&quot;我身高180&quot;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSString *)cl_weight &#123;</span><br><span class="line">    </span><br><span class="line">    return @&quot;我体重280&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印结果:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">30</span> <span class="number">20</span>:<span class="number">32</span>:<span class="number">48.054168</span>+<span class="number">0800</span> RunTimeExample[<span class="number">81266</span>:<span class="number">5241395</span>] -[RunTimeMethodController viewDidLoad] 第<span class="number">23</span>行 </span><br><span class="line"> 身高: 我体重<span class="number">280</span></span><br><span class="line"></span><br><span class="line"><span class="number">2017</span>-<span class="number">09</span>-<span class="number">30</span> <span class="number">20</span>:<span class="number">32</span>:<span class="number">48.054436</span>+<span class="number">0800</span> RunTimeExample[<span class="number">81266</span>:<span class="number">5241395</span>] -[RunTimeMethodController viewDidLoad] 第<span class="number">24</span>行 </span><br><span class="line"> 体重: 我身高<span class="number">180</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">2017-09-30 20:33:19.179724+0800 RunTimeExample[81266:5241395] -[RunTimeMethodController viewDidLoad] 第23行 </span><br><span class="line"> 身高: 我体重280</span><br><span class="line"></span><br><span class="line">2017-09-30 20:33:19.179947+0800 RunTimeExample[81266:5241395] -[RunTimeMethodController viewDidLoad] 第24行 </span><br><span class="line"> 体重: 我身高180</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>PS: 虽然在+load这个方法里的确是可以保证方法交换只有一次, 但这里有一个弊端, 就是当程序一运行就会执行这个方法交换了, 这并不是一个好的方案.</p>
+</blockquote>
+<h3 id="initialize交换方法"><a href="#initialize交换方法" class="headerlink" title="+initialize交换方法"></a>+initialize交换方法</h3><p>这里我们尝试第二个方案, 使用<code>+initialize</code>方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">+ (void)initialize &#123;</span><br><span class="line">    </span><br><span class="line">    Method methodOne = class_getInstanceMethod(self, @selector(cl_height));</span><br><span class="line">    Method methodTwo = class_getInstanceMethod(self, @selector(cl_weight));</span><br><span class="line">    </span><br><span class="line">    method_exchangeImplementations(methodOne, methodTwo);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSString *)cl_height &#123;</span><br><span class="line">    </span><br><span class="line">    return @&quot;我身高180&quot;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSString *)cl_weight &#123;</span><br><span class="line">    </span><br><span class="line">    return @&quot;我体重280&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印结果:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">2017-09-30 20:42:49.750880+0800 RunTimeExample[81385:5249133] -[RunTimeMethodController viewDidLoad] 第23行 </span><br><span class="line"> 身高: 我体重280</span><br><span class="line"></span><br><span class="line">2017-09-30 20:42:49.752335+0800 RunTimeExample[81385:5249133] -[RunTimeMethodController viewDidLoad] 第24行 </span><br><span class="line"> 体重: 我身高180</span><br></pre></td></tr></table></figure>
+
+<p>ok, 这满足了我们的需要了, 这解释一下<code>+load</code>和<code>+initialize</code>的区别:</p>
+<ul>
+<li><code>+load</code>: 程序一开始就会去执行, 只执行一次.</li>
+<li><code>+initialize</code>: 当类被初始化的时候会才会去执行, 该类只会执行一次.</li>
+</ul>
+<p>当然并不是说在+load上用是不对的, 也不是说<code>+initialize</code>就一定是对的, 根据场景的需要来使用才是王道.</p>
+<h3 id="RunTime方法拦截"><a href="#RunTime方法拦截" class="headerlink" title="RunTime方法拦截"></a>RunTime方法拦截</h3><p>从刚刚我们就知道, 可以使用<strong>method_exchangeImplementations</strong>交换两个方法, 但只应用在本类, 现在我们来看看别的应用:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@implementation BaseModel</span><br><span class="line"></span><br><span class="line">- (void)cl_logBaseModel &#123;</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;Base Model Log&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@implementation InterceptModel</span><br><span class="line"></span><br><span class="line">- (void)cl_logInterceptModel &#123;</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;Intercept You Method &quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>最终的实现:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">+ (void)initialize &#123;</span><br><span class="line">    </span><br><span class="line">    Method mehtodOne = class_getInstanceMethod([BaseModel class], @selector(cl_logBaseModel));</span><br><span class="line">    Method mehtodTwo = class_getInstanceMethod([InterceptModel class], @selector(cl_logInterceptModel));</span><br><span class="line">    </span><br><span class="line">    method_exchangeImplementations(mehtodOne, mehtodTwo);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    </span><br><span class="line">    self.view.backgroundColor = [UIColor whiteColor];</span><br><span class="line">    </span><br><span class="line">    BaseModel *baseModel = [[BaseModel alloc] init];</span><br><span class="line">    </span><br><span class="line">    [baseModel cl_logBaseModel];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印结果:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">10</span>-<span class="number">01</span> <span class="number">12</span>:<span class="number">36</span>:<span class="number">03.488764</span>+<span class="number">0800</span> RunTimeExample[<span class="number">82538</span>:<span class="number">5345309</span>] -[InterceptModel cl_logInterceptModel] 第<span class="number">15</span>行 </span><br><span class="line"> Intercept You Method</span><br></pre></td></tr></table></figure>
+
+<p>发现方法是被<strong>InterceptModel</strong>这个类拦截, 并且替换了<strong>InterceptModel</strong>的方法.</p>
+<h2 id="补充点小知识"><a href="#补充点小知识" class="headerlink" title="补充点小知识"></a>补充点小知识</h2><p>这里我们都是用实例方法来作为例子, 那是不是说只能使用实例方法呢? </p>
+<p>其实并不是的, 类方法也可以交换和拦截:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;BaseModel.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation BaseModel</span><br><span class="line"></span><br><span class="line">- (void)cl_logBaseModel &#123;</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;Base Model Log&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (void)cl_logBaseModelClass &#123;</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;Base Model Class Log&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@implementation InterceptModel</span><br><span class="line"></span><br><span class="line">- (void)cl_logInterceptModel &#123;</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;Intercept You Method &quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (void)cl_logInterceptModelClass &#123;</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;Intercept Class You Method &quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>最终实现:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">+ (void)initialize &#123;</span><br><span class="line">    </span><br><span class="line">    // 拦截实例方法</span><br><span class="line">    Method mehtodOne = class_getInstanceMethod([BaseModel class], @selector(cl_logBaseModel));</span><br><span class="line">    Method mehtodTwo = class_getInstanceMethod([InterceptModel class], @selector(cl_logInterceptModel));</span><br><span class="line">    </span><br><span class="line">    method_exchangeImplementations(mehtodOne, mehtodTwo);</span><br><span class="line">    </span><br><span class="line">    // 拦截类方法</span><br><span class="line">    Method classMehtodOne = class_getClassMethod([BaseModel class], @selector(cl_logBaseModelClass));</span><br><span class="line">    Method classMehtodTwo = class_getClassMethod([InterceptModel class], @selector(cl_logInterceptModelClass));</span><br><span class="line">    </span><br><span class="line">    method_exchangeImplementations(classMehtodOne, classMehtodTwo);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    </span><br><span class="line">    self.view.backgroundColor = [UIColor whiteColor];</span><br><span class="line">    </span><br><span class="line">    BaseModel *baseModel = [[BaseModel alloc] init];</span><br><span class="line">    </span><br><span class="line">    [baseModel cl_logBaseModel];</span><br><span class="line">    </span><br><span class="line">    [BaseModel cl_logBaseModelClass];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">10</span>-<span class="number">01</span> <span class="number">12</span>:<span class="number">59</span>:<span class="number">13.229912</span>+<span class="number">0800</span> RunTimeExample[<span class="number">82996</span>:<span class="number">5374475</span>] -[InterceptModel cl_logInterceptModel] 第<span class="number">15</span>行 </span><br><span class="line"> Intercept You Method </span><br><span class="line"></span><br><span class="line"><span class="number">2017</span>-<span class="number">10</span>-<span class="number">01</span> <span class="number">12</span>:<span class="number">59</span>:<span class="number">13.230480</span>+<span class="number">0800</span> RunTimeExample[<span class="number">82996</span>:<span class="number">5374475</span>] +[InterceptModel cl_logInterceptModelClass] 第<span class="number">20</span>行 </span><br><span class="line"> Intercept Class You Method</span><br></pre></td></tr></table></figure>
+
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: <a href="https://github.com/CainLuo/iOS-Project-Example/tree/master/RunTime/Four" target="_blank" rel="noopener">https://github.com/CainLuo/iOS-Project-Example/tree/master/RunTime/Four</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#RunTime中的消息应用"><span class="toc-number">1.</span> <span class="toc-text">RunTime中的消息应用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RunTime方法交换"><span class="toc-number">2.</span> <span class="toc-text">RunTime方法交换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#load交换方法"><span class="toc-number">2.1.</span> <span class="toc-text">+load交换方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#initialize交换方法"><span class="toc-number">2.2.</span> <span class="toc-text">+initialize交换方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RunTime方法拦截"><span class="toc-number">2.3.</span> <span class="toc-text">RunTime方法拦截</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#补充点小知识"><span class="toc-number">3.</span> <span class="toc-text">补充点小知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">4.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

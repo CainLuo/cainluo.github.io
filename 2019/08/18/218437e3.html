@@ -1,0 +1,437 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RxSwift：10.Combining Operators in Practice - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="在前一章中, 我们学习了Combining操作符, 并通过一些详细的练习让我们慢慢的掌握这些操作符.
+在这个章节中, 我们将有机会尝试一些功能非常强大的操作符, 然后将学习在我们应用程序开发中解决遇,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">RxSwift：10.Combining Operators in Practice</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">RxSwift：10.Combining Operators in Practice</h1>
+        <div class="stuff">
+            <span>八月 18, 2019</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/RxSwift/">RxSwift</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>在前一章中, 我们学习了<strong>Combining</strong>操作符, 并通过一些详细的练习让我们慢慢的掌握这些操作符.</p>
+<p>在这个章节中, 我们将有机会尝试一些功能非常强大的操作符, 然后将学习在我们应用程序开发中解决遇到类似的问题, 我们将从一个新的项目开始, 构建一个名为<strong>Our Planet</strong>的小型应用程序.</p>
+<blockquote>
+<p>注意: 在阅读本章时首先你需要掌握第<strong>3, 5, 7, 9</strong>章的知识, 如果没有那么请返回到前面的章节学习完成之后再回到本章, 否则你会一头雾水.</p>
+</blockquote>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>本项目利用的是<strong>NASA</strong>公开的一些公共数据, 我们的目标是完成一个美国宇航局的地球天文台自然事件跟踪器, 它几乎是一个实时的, 精心策划用来存储地球上发生的各种自然事情的一个库, 如果你想了解更多的话, 可以打开<a href="https://eonet.sci.gsfc.nasa.gov" target="_blank" rel="noopener">Eonet</a>了解更多信息.</p>
+<p>现在我们要准备开始构建<strong>Our Planet</strong>, 打开本章的<strong>starter</strong>找到项目的根路径, 使用<strong>CocoaPods</strong>安装我们所需要的依赖库, 就像我们之前所做的那样, 完成后就打开<strong>OurPlanet.xcworkspace</strong>.</p>
+<p>现在我们直接运行一下项目, 默认显示的是一个空的<strong>UITableView</strong>.</p>
+<p>我们的任务是:</p>
+<ul>
+<li>从<strong>EONET</strong>所提供的公共<strong>API</strong> “<a href="https://eonet.sci.gsfc.nasa.gov/docs/v2.1&quot;中获取**Event**的分类" target="_blank" rel="noopener">https://eonet.sci.gsfc.nasa.gov/docs/v2.1&quot;中获取**Event**的分类</a>, 然后显示在根控制器.</li>
+<li>下载<strong>Events</strong>并显示每个分类的总数</li>
+<li>当用户点击某个分类时, 则显示该分类的<strong>Event</strong>列表.</li>
+</ul>
+<p>这个时候, 我们将会了解到<strong>combineLatest</strong>在这几种情况下是非常有用的, 但是为了可以联系更多的操作符, 我们将还是尝试使用<strong>startWith</strong>、<strong>concat</strong>、<strong>merge</strong>、<strong>reduce</strong>和<strong>scan</strong>, 这当然也少不了我们已经熟悉的<code>map(_:)</code>和<code>flatMap(_:)</code>.</p>
+<h2 id="准备Web服务端的请求"><a href="#准备Web服务端的请求" class="headerlink" title="准备Web服务端的请求"></a>准备Web服务端的请求</h2><p>好的应用程序应该具备清晰的结构和定义良好的角色, 我们与<strong>EONET API</strong>之间的通信代码不应该存在于任何的一个<strong>UIViewController</strong>中, 由于我们的代码并没有携带任何特定的状态, 所以我们可以使用简单的<strong>static</strong>函数, 为了我们的逻辑清晰起见, 我们将这些<strong>static</strong>函数抽取到一个专门的类中.</p>
+<p>我们将这个称为<strong>EONET Service</strong>, 它是专门抽象我们与<strong>EONET</strong>服务器通信的工具类, 然后获取到的数据显示到我们的应用程序中, 在这里你将会看到如何使用<strong>Rx</strong>模式来开发应用程序, 它允许我们在应用程序中清晰的将数据的请求和使用分离, 并且可以很轻松的替换或者模拟数据的请求, 而会对使用数据方面产生任何的影响.</p>
+<p>除了与服务器通信的工具类, 我们还将添加多几个模型类, 比如<strong>EOCategory</strong>和<strong>EOEvent</strong>, 它们将请求回来的<strong>JSON</strong>数据转换成我们真正所需的数据.</p>
+<p>打开<strong>EONET.swift</strong>, 它已经具备了基本的结构和我们所需要做请求使用的<strong>API URL</strong>, 还提供了稍后我们将会使用的帮助函数.</p>
+<p>所有的<strong>EONET</strong>请求<strong>API</strong>都会使用类似的结构, 我们将会设置一个通用的请求机制来从<strong>EONET</strong>获取数据, 并复用它来获取<strong>Categories</strong>和<strong>Events</strong>数据.</p>
+<h3 id="通用机制的技术要求"><a href="#通用机制的技术要求" class="headerlink" title="通用机制的技术要求"></a>通用机制的技术要求</h3><p>首先我们需要一个请求函数, 但是我们有几个需求:</p>
+<ul>
+<li>从<strong>EONET API</strong>请求数据.</li>
+<li>解析从服务器请求的<strong>JSON</strong>数据</li>
+<li>确保处理完所有的错误信息</li>
+</ul>
+<p>处理错误情况是非常总要的, 千万不要忽略错误信息, 除非它们是不会造成任何影响的.</p>
+<p>现在我们来写代码吧, 先创建一个新的<strong>static</strong>函数:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">request</span>&lt;T: Decodable&gt;<span class="params">(endpoint: String, query: [String: <span class="keyword">Any</span>] = [:], contentIdentifier: String)</span></span> -&gt; <span class="type">Observable</span>&lt;<span class="type">T</span>&gt; &#123;</span><br><span class="line">  <span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">guard</span> <span class="keyword">let</span> url = <span class="type">URL</span>(string: <span class="type">API</span>)?.appendingPathComponent(endpoint),</span><br><span class="line">      <span class="keyword">var</span> components = <span class="type">URLComponents</span>(url: url, resolvingAgainstBaseURL: <span class="literal">true</span>) <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="type">EOError</span>.invalidURL(endpoint)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里的参数是我们用来请求的<strong>端点</strong>名称和<strong>可选查询</strong>参数, <strong>contentIdentify</strong>是用来给返回的数据命名, 这些数据包含了我们需要东西.</p>
+<p>这里我们还做了一个处理, 如果不能初始化为<strong>URL</strong>, 那么它将会抛出一个错误, 我们将在这个函数中捕获所有可能发生的错误.</p>
+<p>有了<strong>URL</strong>之后, 我们来添加查询的参数:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">components.queryItems = <span class="keyword">try</span> query.compactMap &#123; (key, value) <span class="keyword">in</span></span><br><span class="line">  <span class="keyword">guard</span> <span class="keyword">let</span> v = value <span class="keyword">as</span>? <span class="type">CustomStringConvertible</span> <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="type">EOError</span>.invalidParameter(key, value)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="type">URLQueryItem</span>(name: key, value: v.description)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> finalURL = components.url <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="keyword">throw</span> <span class="type">EOError</span>.invalidURL(endpoint)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该函数的核心处理部分是使用了<strong>RxCocoa</strong>对<strong>URLSession</strong>的扩展, 这在我们之前的第<strong>8</strong>章就有使用过.</p>
+<p>接下来, 我们就编写真正请求的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> request = <span class="type">URLRequest</span>(url: finalURL)</span><br><span class="line"><span class="keyword">return</span> <span class="type">URLSession</span>.shared.rx.response(request: request)</span><br><span class="line">  .<span class="built_in">map</span> &#123; (result: (response: <span class="type">HTTPURLResponse</span>, data: <span class="type">Data</span>)) -&gt; <span class="type">T</span> <span class="keyword">in</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> decoder = <span class="keyword">self</span>.jsonDecoder(contentIdentifier: contentIdentifier)</span><br><span class="line">    <span class="keyword">let</span> envelope = <span class="keyword">try</span> decoder.decode(<span class="type">EOEnvelope</span>&lt;<span class="type">T</span>&gt;.<span class="keyword">self</span>, from: result.data)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> envelope.content</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是我们熟悉的结构, 通过使用<code>URLSession.shared.rx.response</code>来请求一个<strong>Observable</strong>对象.</p>
+<blockquote>
+<p>注意: 当数据返回时, <strong>JSONDecoder</strong>将其反序列化为<strong>EOEnvelope</strong>, 它是<strong>EONET</strong>的通用数据封装工具类, 借助<strong>Decodable</strong>, 我们获得所需要的最终数组.</p>
+</blockquote>
+<p>最后, 我们需要使用<strong>catch</strong>来结束函数:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">  &#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="type">Observable</span>.empty()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在我们先忽略掉处理错误的细节, 这将会在之后的章节里学历到.</p>
+<p>现在我们有了一个靠谱的机制来执行请求, 现在我们就来获取<strong>Categories</strong>.</p>
+<h3 id="Fetch-categories"><a href="#Fetch-categories" class="headerlink" title="Fetch categories"></a>Fetch categories</h3><p>要从<strong>EONET</strong>获取到<strong>categories</strong>, 我们需要使用到<strong>Categories API</strong>, 一般来说分类时很少更改的, 所以可以将它设置为单利, 但是我们又要使用异步去获取它们, 所以最佳的方案就是使用<code>Observable&lt;[EOCategory]&gt;</code>:</p>
+<p>将下面的代码添加到<strong>EONET</strong>类中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> categories: <span class="type">Observable</span>&lt;[<span class="type">EOCategory</span>]&gt; = &#123;</span><br><span class="line">  <span class="keyword">let</span> request: <span class="type">Observable</span>&lt;[<span class="type">EOCategory</span>]&gt; = <span class="type">EONET</span>.request(endpoint: categoriesEndpoint,</span><br><span class="line">                                                        contentIdentifier: <span class="string">"categories"</span>)</span><br><span class="line">  <span class="keyword">return</span> request</span><br><span class="line">    .<span class="built_in">map</span> &#123; categories <span class="keyword">in</span> categories.sorted &#123; $<span class="number">0</span>.name &lt; $<span class="number">1</span>.name &#125; &#125;</span><br><span class="line">    .catchErrorJustReturn([])</span><br><span class="line">    .share(replay: <span class="number">1</span>, scope: .forever)</span><br><span class="line">&#125;()</span><br></pre></td></tr></table></figure>
+
+<p>在这里, 我们可以分解一下我们所写的代码:</p>
+<ul>
+<li>我们将请求<strong>categories</strong>端点的数据</li>
+<li>将<strong>EOCategory</strong>对象数组映射到按照分类名称排序的数组</li>
+<li>如果发生了请求错误, 那么就输出一个空数组, 我们将会在门面的章节中看到更多处理错误信息的知识</li>
+</ul>
+<p>这里有一个有趣的地方就是我们在最后添加了一个<code>.share(replay:scope:)</code>, 为什么要使用呢?</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2010/1.png" alt="图片"></p>
+<p>我们创建的分类<strong>Observable</strong>对象是一个单例, 也就是<strong>static var</strong>, 所有订阅者都会获得相同的内容, 因此:</p>
+<ul>
+<li>第一个订阅者订阅之后就会触发<strong>Observable</strong>请求</li>
+<li>获取到的内容将会转换成一个<strong>categories</strong>数组</li>
+<li>然后使用<code>share(replay: 1, scope: .forever)</code>将所有元素转发给第一个订阅者</li>
+<li>然后将最后接收到的元素重新发给新的订阅者, 这个时候是不做任何网络请求的, 就像一个缓存一样, 这就是我们在这里使用<code>.forever</code>的目的.</li>
+</ul>
+<p>现在我们来将<strong>categories</strong>显示到控制器中.</p>
+<h2 id="CategorigesViewController"><a href="#CategorigesViewController" class="headerlink" title="CategorigesViewController"></a>CategorigesViewController</h2><p><strong>CategoriesViewController</strong>是一个用来显示分类列表的控制器, 在我们获取<strong>Events</strong>之前, 我们先保持一下简单的逻辑.</p>
+<p>打开<strong>CategoriesViewController.swift</strong>.</p>
+<p>我们现在用的是<strong>UITableViewController</strong>, 所以需要一个本地存储分类来显示, 首先添加一个<strong>BehaviorReplay</strong>来保存我们所要的数据, 初始值是一个空的数组, 我们将会在订阅中获取到数据之后再刷新<strong>UITableView</strong>.</p>
+<p>在<strong>CategoriesViewController</strong>中添加下面的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> categories = <span class="type">BehaviorRelay</span>&lt;[<span class="type">EOCategory</span>]&gt;(value: [])</span><br><span class="line"><span class="keyword">let</span> disposeBag = <span class="type">DisposeBag</span>()</span><br></pre></td></tr></table></figure>
+
+<p>我们将会在<strong>Categories Replay</strong>中获取到<strong>DataSource</strong>的数量, 然后添加到<code>tableView(_:numberOfRowsInSection:):</code>代码中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> categories.value.<span class="built_in">count</span></span><br></pre></td></tr></table></figure>
+
+<p>注意, 现在我们是直接从<strong>Categories relay</strong>获取数据, 但是在后面我们将会使用<strong>RxCocoa</strong>提供的一些快捷<strong>API</strong>, 现在先简单实现.</p>
+<p>这里我们使用了系统默认的<strong>UITableViewCell</strong>, 那么我们将在<code>tableView(_:cellForRowAt:)</code>方法中添加下面的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> category = categories.value[indexPath.row]</span><br><span class="line"></span><br><span class="line">cell.textLabel?.text = category.name</span><br><span class="line">cell.detailTextLabel?.text = category.description</span><br></pre></td></tr></table></figure>
+
+<p>现在我们已经完成了基本的设置, 但如果我们现在就运行项目的话, 是看不到任何内容的, 因为我们还要订阅<strong>EONET</strong>中的<strong>Observable</strong>对象才行.</p>
+<p>我们找到<code>startDownload()</code>方法中添加下面的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> eoCategories = <span class="type">EONET</span>.categories</span><br><span class="line"></span><br><span class="line">eoCategories</span><br><span class="line">  .bind(to: categories)</span><br><span class="line">  .disposed(by: disposeBag)</span><br></pre></td></tr></table></figure>
+
+<p>这里没有什么特别的地方, 因为所有的实现都在<strong>EONET</strong>中完成, 而<code>bind(to:)</code>操作符则是将一个源<strong>Observable</strong>对象链接到一个观察者中, 也就是我们的<strong>Categories relay</strong>.</p>
+<p>最后, 我们订阅一下<strong>BehaviorRelay</strong>来刷新<strong>UITableView</strong>, 这个订阅我们将添加到调用<code>startDownload()</code>方法之前:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">categories</span><br><span class="line">  .asObservable()</span><br><span class="line">  .subscribe(onNext: &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] <span class="number">_</span> <span class="keyword">in</span></span><br><span class="line">    <span class="type">DispatchQueue</span>.main.async &#123;</span><br><span class="line">      <span class="keyword">self</span>?.tableView?.reloadData()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  .disposed(by: disposeBag)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意: 我们现在使用的是一种经典的<strong>DispatchQueue</strong>技术来保证我们是在主线程中刷新<strong>UI</strong>的, 这个我们会在后面的章节中介绍如何使用<strong>Rx</strong>的方式去使用线程调度.</p>
+</blockquote>
+<p>现在我们开始运行项目, 就会看到<strong>UITableView</strong>中出现了我们需要的分类了.</p>
+<p>现在我们继续来完成下载<strong>Events</strong>.</p>
+<h2 id="添加Events下载API"><a href="#添加Events下载API" class="headerlink" title="添加Events下载API"></a>添加Events下载API</h2><p><strong>EONET API</strong>公开了两个端点来下载<strong>Events</strong>, 一个是全部<strong>Events</strong>, 另一个是每个分类的事件, 而每一个事件都需要区分是<strong>open event</strong>还是<strong>close event</strong>.</p>
+<p><strong>open event</strong>代表的是正在发生的, 比如持续的洪水或者是台风等等, <strong>close event</strong>代表的是事情已经结束了, 已经成为了过去, 而我们感兴趣的请求参数实际是:</p>
+<ul>
+<li>可以查看过去指定天数所发生的<strong>event</strong></li>
+<li><strong>event</strong>的状态是<strong>open</strong>还是<strong>close</strong></li>
+</ul>
+<p>请求的<strong>API</strong>要求我们区别下载<strong>open</strong>和<strong>close</strong>事件, 不过我们希望将这两种事件都合并成一个序列, 然后呈现给订阅者.</p>
+<p>为<strong>EONET.swift</strong>添加一个私有的<strong>static</strong>函数, 用于请求带有参数的<strong>event</strong>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">events</span><span class="params">(forLast days: Int, closed: Bool)</span></span> -&gt; <span class="type">Observable</span>&lt;[<span class="type">EOEvent</span>]&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> query: [<span class="type">String</span>: <span class="type">Any</span>] = [</span><br><span class="line">    <span class="string">"days"</span>: days,</span><br><span class="line">    <span class="string">"status"</span>: (closed ? <span class="string">"closed"</span> : <span class="string">"open"</span>)</span><br><span class="line">  ]</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> request: <span class="type">Observable</span>&lt;[<span class="type">EOEvent</span>]&gt; = <span class="type">EONET</span>.request(endpoint: eventsEndpoint, query: query, contentIdentifier: <span class="string">"events"</span>)</span><br><span class="line">  <span class="keyword">return</span> request.catchErrorJustReturn([])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>之前我们已经获取过指定的模型数据了, 首先是声明请求变量的类型, 以便编译器知道将请求的函数转化为哪种类型, 它会自动将<strong>EONET</strong>的<strong>JSON</strong>内容解码为<strong>EOEvent</strong>对象数组, 这次我们将我们所需的<strong>events</strong>作为参数进行请求, 就会获取到我们想要的确切数据.</p>
+<p>最后, 我们在<strong>EONET</strong>中公开一个新的<strong>static</strong>函数, 并提供一个类型为<code>[EOEvent]</code>的<strong>Observable</strong>对象:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">events</span><span class="params">(forLast days: Int = <span class="number">360</span>)</span></span> -&gt; <span class="type">Observable</span>&lt;[<span class="type">EOEvent</span>]&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> openEvents = events(forLast: days, closed: <span class="literal">false</span>)</span><br><span class="line">  <span class="keyword">let</span> closedEvents = events(forLast: days, closed: <span class="literal">true</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> openEvents.concat(closedEvents)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这将会从<strong>UIViewController</strong>调用的函数, 用来获取<strong>event</strong>, 注意到了<code>concat(_:)</code>操作符了吗? 它的作用是这样的:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2010/2.png" alt="图片"></p>
+<p>我们要的作用就是顺序处理, <strong>concat</strong>创建了一个<strong>Observable</strong>对象, 该对象首先运行源<strong>Observable</strong>对象, 也就是<strong>openEvents</strong>, 直到它完成了之后它就会订阅<strong>closedEvents</strong>, 并将于它一起完成.</p>
+<p>它将会链接第一个<strong>Observable</strong>发出的所有事件, 然后是第二个<strong>Observable</strong>的事件, 如果其中有一个发出了错误事件, 那么它就会转发该错误事件并立即终止.</p>
+<p>这是一个很简单的入门解决方案, 但是我们会在后面的小节中将它改进一下.</p>
+<p>现在我们可以将下载<strong>events</strong>添加到<strong>CategoriesViewController</strong>中了.</p>
+<h2 id="获取Categories事件"><a href="#获取Categories事件" class="headerlink" title="获取Categories事件"></a>获取Categories事件</h2><p>回到<strong>CategoriesViewController.swift</strong>, 找到<code>startDownload()</code>方法, 我们需要一个更加详细的<strong>Categories</strong>下载机制来下载<strong>Events</strong>, 我们希望用<strong>Event</strong>填充到每一个<strong>Categories</strong>里, 但下载是需要时间的, 为了提供最好的用户体验, 我们将处理下面的问题:</p>
+<ul>
+<li>下载完<strong>Categories</strong>时先显示</li>
+<li>下载过去一年的所有<strong>Events</strong></li>
+<li>更新<strong>Categories</strong>列表, 里面包含每个<strong>Category</strong>的<strong>Events</strong>计数</li>
+<li>添加一个标识</li>
+<li>在用户点击<strong>UITableViewCell</strong>时, 就将对应的内容传递到下一个<strong>UITableViewController</strong>中</li>
+</ul>
+<h3 id="使用Events更新Categories"><a href="#使用Events更新Categories" class="headerlink" title="使用Events更新Categories"></a>使用Events更新Categories</h3><p>首先我们要修改一下<code>startDownload()</code>中的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">startDownload</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">let</span> eoCategories = <span class="type">EONET</span>.categories</span><br><span class="line">  <span class="keyword">let</span> downloadedEvents = <span class="type">EONET</span>.events(forLast: <span class="number">360</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先我们准备两个<strong>Observable</strong>对象, <strong>eoCategories</strong>是用来下载<strong>Categories</strong>数组的, 新的<strong>downloadedEvents</strong>是调用我们刚刚添加到<strong>EONET</strong>类里的<strong>events</strong>函数, 并下载过去一年的<strong>Events</strong>.</p>
+<p>现在我们的<strong>UITableView</strong>需要一个<strong>Categories</strong>列表, 打开<strong>EOCategory.swift</strong>, 我们会看到它有一个<strong>events</strong>属性, 它是一个<strong>var</strong>类型, 所以我们可以将下载到的<strong>Events</strong>添加到每一个<strong>Categories</strong>中, 那么该怎么做呢?</p>
+<p>在<code>startDoenload()</code>的末尾添加下面的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> updateCategories = <span class="type">Observable</span></span><br><span class="line">  .combineLatest(eoCategories, downloadedEvents) &#123; (categories, events) -&gt; [<span class="type">EOCategory</span>] <span class="keyword">in</span></span><br></pre></td></tr></table></figure>
+
+<p>我们使用<code>combineLatest(_:_:resultSelector:)</code>将下载的<strong>Categories</strong>和下载的<strong>Events</strong>组合起来, 并构建出一个用于更新的<strong>Categories</strong>数组.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2010/3.png" alt="图片"></p>
+<p>我们现在可以添加<strong>combineLatest</strong>闭包的核心代码了:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> categories.<span class="built_in">map</span> &#123; category <span class="keyword">in</span></span><br><span class="line">  <span class="keyword">var</span> cat = category</span><br><span class="line"></span><br><span class="line">  cat.events = events.<span class="built_in">filter</span> &#123;</span><br><span class="line">    $<span class="number">0</span>.categories.<span class="built_in">contains</span>(<span class="keyword">where</span>: &#123; $<span class="number">0</span>.id == category.id &#125;)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> cat</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们创建的<strong>updatedCategories</strong>的类型为<code>Observable&lt;[EOCategory]&gt;</code>, 这是因为我们在闭包的返回类型中显式声明<code>[EOCategory]</code>的, 它与<strong>map</strong>操作符一起创建出一个新的<strong>Observable</strong>对象.</p>
+<p>上面的代码多数都是普通的<strong>Swift</strong>代码, <strong>events</strong>如果没有进行筛选的话, 那么所有<strong>Categories</strong>都可以使用了, 所以我们使用<strong>filter</strong>来匹配<strong>Events</strong>的<strong>id</strong>与<strong>Categories</strong>的<strong>id</strong>是否相同.</p>
+<p>最后, 像我们刚刚那样, 绑定到<strong>relay</strong>中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">eoCategories</span><br><span class="line">  .concat(updatedCategories)</span><br><span class="line">  .bind(to: categories)</span><br><span class="line">  .disposed(by: disposeBag)</span><br></pre></td></tr></table></figure>
+
+<p>这次我们使用<code>cancat(_:)</code>操作符来绑定来自<strong>eoCategories</strong>和<strong>updatedCategories</strong>的内容,因为<strong>eoCategories</strong>发出一个<strong>Categories</strong>数组就完成了, 接下来<code>concat(_:)</code>操作符就订阅下一个<strong>updatedCategories</strong>.</p>
+<p>回顾一下, 现在我们已经重写了<code>startDownload()</code>来下载<strong>Events</strong>和<strong>Categories</strong>, 并使用<code>combineLatest</code>将它们组合起来以便将<strong>Events</strong>添加到适当的<strong>Categories</strong>中, 现在我们已经有了每个<strong>Categories</strong>的<strong>Events</strong>, 接下来要做的就是更新用户界面的显示内容了.</p>
+<h3 id="更新UITableViewCell的显示"><a href="#更新UITableViewCell的显示" class="headerlink" title="更新UITableViewCell的显示"></a>更新UITableViewCell的显示</h3><p>更新<code>tableView(_:cellForRowAt:)</code>方法来显示<strong>Events</strong>的数量和<strong>UITableViewCell</strong>的指示器, 将下面的代码替换到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cell.textLabel?.text = <span class="string">"\(category.name) (\(category.events.count))"</span></span><br><span class="line">cell.accessoryType = (category.events.<span class="built_in">count</span> &gt; <span class="number">0</span>) ? .disclosureIndicator : .<span class="keyword">none</span></span><br></pre></td></tr></table></figure>
+
+<p>重新运行工程, 我们就会看到<strong>Categories</strong>的计数器为<strong>(0)</strong>, 过了一段时间之后, 我们就会看到计数器更新了过去一年的实际<strong>Events</strong>计数, 如下图所示:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2010/4.png" alt="图片"></p>
+<p>这个我们注意到, <strong>Categories</strong>和<strong>Events</strong>出现的时间有一定的延迟, 这可能是因为<strong>EONET API</strong>的响应需要一些事件, 毕竟我们请求的是一年的数据, 那么我们能不能做点什么来改善一下呢?</p>
+<h3 id="并行下载"><a href="#并行下载" class="headerlink" title="并行下载"></a>并行下载</h3><p>请记住<strong>EONET API</strong>分别提供了<strong>open</strong>和<strong>closed</strong>的<strong>Events</strong>, 到目前为止, 我们一直使用<code>concat(_:)</code>来按顺序的获取它们, 那么我们改进一下, 使用并行下载. <strong>RxSwift</strong>有一个好处就是, 我们可以在不影响<strong>UI</strong>代码的情况下进行更改.</p>
+<p>再次打开<strong>EONET.swift</strong>文件, 然后找到<code>events(forLast:)</code>, 将之前的<strong>return</strong>语句替换为下面的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> <span class="type">Observable</span>.of(openEvents, closedEvents)</span><br><span class="line">  .merge()</span><br><span class="line">  .<span class="built_in">reduce</span>([]) &#123; running, new <span class="keyword">in</span></span><br><span class="line">    running + new</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里操作了什么?</p>
+<ul>
+<li>首先我们创建了一个<strong>Observable</strong>对象</li>
+<li>接下来我们将它们合并了, 就像我们前一章所学到的那样, 记住, <code>merge()</code>接受<strong>Observables</strong>的<strong>Observable</strong>对象, 它订阅源<strong>Observable</strong>发出的每个<strong>Observable</strong>, 然后发出发出所有的元素.</li>
+<li>最后, 将结果缩减为一个数组. 我们将从一个空的数组开始, 每个<strong>Observable</strong>传递一个<strong>Events</strong>数组时, 就会调用闭包, 在这里, 将新的数组添加到现有的数组中, 并返回出去, 这就是我们不断增长的情况, 直到所有的<strong>Observable</strong>完成, 一旦完成了, 那么<strong>reduce</strong>将发出当前最新的值, 并完成.</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2010/5.png" alt="图片"></p>
+<p>现在我们重新运行一下项目, 这个时候你会注意到下载等待的时间略有改善.</p>
+<p>我们更改了<strong>EONET</strong>中的处理, 而不需要修改任何的<strong>UI</strong>代码, 这是一件非常省事的事情, 也是<strong>Rx</strong>的一大优点, 为我们的业务清晰分离提供了很大的灵活性.</p>
+<h2 id="EventsViewController"><a href="#EventsViewController" class="headerlink" title="EventsViewController"></a>EventsViewController</h2><p>现在我们可以通过填充<strong>EventsViewController</strong>来完成<strong>UI</strong>的显示了, 我们不仅要显示<strong>Events</strong>, 还需要一个<strong>UISlider</strong>来控制过去一年中的时间显示, 这是一个很好的锻炼机会.</p>
+<p>打开<strong>EventsViewController.swift</strong>并将下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> events = <span class="type">BehaviorRelay</span>&lt;[<span class="type">EOEvent</span>]&gt;(value: [])</span><br><span class="line"><span class="keyword">let</span> disposeBag = <span class="type">DisposeBag</span>()</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意: 是否厌倦了到处添加<strong>DisposeBag</strong>? 如果我们的对象是<strong>NSObject</strong>的子类, 那么就可以在<strong>GitHub RxSwiftCommunity</strong>组织上查找<strong>NSObject+Rx</strong>的库, 他可以为<strong>NSObject</strong>的任何子类提供一个<strong>DisposeBag</strong>.</p>
+</blockquote>
+<p>我们在<code>viewDidLoad()</code>中添加下面的代码, 每当<strong>Events</strong>获得一个新值时, 就会调用下面的代码来更新<strong>UITableView</strong>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">events.asObservable()</span><br><span class="line">  .subscribe(onNext: &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] <span class="number">_</span> <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">self</span>?.tableView.reloadData()</span><br><span class="line">  &#125;)</span><br><span class="line">  .disposed(by: disposeBag)</span><br></pre></td></tr></table></figure>
+
+<p>确保更新的操作是在主线程上完成的, 因为<strong>Events</strong>有可能是从后台线程中发出, 除非你有另外的操作, 否则就在订阅接收与发出元素的线程上.</p>
+<p>现在我们可以更新<code>tableView(_:numberOfRowsInSection:)</code>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> events.value.<span class="built_in">count</span></span><br></pre></td></tr></table></figure>
+
+<p>在<code>tableView(_:cellForRowAt:)</code>中, 按照下面的方式来配置<strong>UITableViewCell</strong>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> event = events.value[indexPath.row]</span><br><span class="line"></span><br><span class="line">cell.configure(event: event)</span><br></pre></td></tr></table></figure>
+
+<p>最后, 我们返回到<strong>CategoriesViewController</strong>添加选择的操作, 将下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">tableView</span><span class="params">(<span class="number">_</span> tableView: UITableView, didSelectRowAt indexPath: IndexPath)</span></span> &#123;</span><br><span class="line">  <span class="keyword">let</span> category = categories.value[indexPath.row]</span><br><span class="line"></span><br><span class="line">  tableView.deselectRow(at: indexPath, animated: <span class="literal">true</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">guard</span> !category.events.isEmpty <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> eventsController = storyboard?.instantiateViewController(withIdentifier: <span class="string">"events"</span>) <span class="keyword">as</span>! <span class="type">EventsViewController</span></span><br><span class="line"></span><br><span class="line">  eventsController.title = category.name</span><br><span class="line">  eventsController.events.accept(category.events)</span><br><span class="line"></span><br><span class="line">  navigationController?.pushViewController(eventsController, animated: <span class="literal">true</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这很容易就完成了, <strong>EventsViewController</strong>中的<code>BehaviorRelay&lt;[EOEvent]&gt;</code>将会保留这些<strong>Events</strong>, 设置此<strong>BehaviorRelay</strong>的值就会自动触发<strong>UITableView</strong>的刷新, 这个时候我们已经不用再管视图是否已经加载了, 这要感谢一下<strong>RxSwift</strong>.</p>
+<p>现在我们重新运行一下工程, 就会看到我们实现的代码:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2010/6.png" alt="图片"></p>
+<p>但是现在还没有完, 我们还没有将<strong>UISlider</strong>添加进来.</p>
+<h2 id="添加UISlider"><a href="#添加UISlider" class="headerlink" title="添加UISlider"></a>添加UISlider</h2><p>下面是我们将要做的事情:</p>
+<ul>
+<li>将当前<strong>UISlider</strong>的值绑定到<strong>BehaviorRelay</strong>中</li>
+<li>将<strong>UISlider</strong>的值与<strong>Events</strong>组合在一起, 生成过滤后的<strong>Events</strong>列表</li>
+<li>将<strong>UITableView</strong>绑定到过滤之后的<strong>Events</strong>中.</li>
+</ul>
+<p>首先, 将<strong>days</strong>和<strong>filteredEvents</strong>添加到<strong>EventsViewController</strong>中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> days = <span class="type">BehaviorRelay</span>&lt;<span class="type">Int</span>&gt;(value: <span class="number">360</span>)</span><br><span class="line"><span class="keyword">let</span> filteredEvents = <span class="type">BehaviorRelay</span>&lt;[<span class="type">EOEvent</span>]&gt;(value: [])</span><br></pre></td></tr></table></figure>
+
+<p>要过滤<strong>Events</strong>我们就需要使用到<strong>days</strong>最新的值, 然后添加到<strong>Events</strong>中并过滤它们, 我们只想要保留感兴趣的最后<strong>N</strong>天.</p>
+<p>将下面的代码添加到<code>viewDidLoad()</code>中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Observable</span>.combineLatest(days, events) &#123; days, events -&gt; [<span class="type">EOEvent</span>] <span class="keyword">in</span></span><br><span class="line">  <span class="keyword">let</span> maxInterval = <span class="type">TimeInterval</span>(days * <span class="number">24</span> * <span class="number">3600</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> events.<span class="built_in">filter</span> &#123; event <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> date = event.date &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">abs</span>(date.timeIntervalSinceNow) &lt; maxInterval</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在我们将日期和<strong>Events</strong>组合在一起, 并在闭包中进行过滤操作, 只保留那些我们感兴趣的天数的<strong>Events</strong>, 现在我们有了这个<strong>Observable</strong>对象, 可以将它绑定到<strong>filteredEvents</strong>中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.bind(to: filteredEvents)</span><br><span class="line">.disposed(by: disposeBag)</span><br></pre></td></tr></table></figure>
+
+<p>现在我们需要做的两件事是:</p>
+<ul>
+<li>将<strong>UITableView</strong>绑定到<strong>filteredEvents</strong></li>
+<li>然后将<strong>UISlider</strong>绑定到<strong>days</strong></li>
+</ul>
+<p>第一步我们非常简单, 直接在<code>viewDidLoad()</code>方法中将刷新<strong>UITableView</strong>的事件更改为<strong>filteredEvents</strong>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">filteredEvents.asObservable()</span><br><span class="line">  .subscribe(onNext: &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] <span class="number">_</span> <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">self</span>?.tableView.reloadData()</span><br><span class="line">  &#125;)</span><br><span class="line">  .disposed(by: disposeBag)</span><br></pre></td></tr></table></figure>
+
+<p>然后找到<code>sliderAction(slider:)</code>, 在<strong>Storyboard</strong>中, 已经将<strong>UISlider</strong>的<strong>action</strong>事件链接到<strong>EventsViewController</strong>中, 每当用户拖动<strong>UISlider</strong>时就会发出值, 将下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">days.accept(<span class="type">Int</span>(slider.value))</span><br></pre></td></tr></table></figure>
+
+<p>我们还需要更新一下<code>tableView(_:numberOfRowsInSection:)</code>, 并返回过滤后的<strong>Events</strong>数量, 而不是全部的<strong>Events</strong>数量:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> filteredEvents.value.<span class="built_in">count</span></span><br></pre></td></tr></table></figure>
+
+<p>除此之外, 还有一个地方需要修改, 找到<code>tableView(_:cellForRowAt:)</code>中获取当前<strong>Events</strong>的那行, 将它替换为:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> event = filteredEvents.value[indexPath.row]</span><br></pre></td></tr></table></figure>
+
+<p>最后别忘了, 我们还需要更新一下<strong>UILabel</strong>, 将下面的方法添加到<code>viewDidLoad()</code>中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">days.asObservable()</span><br><span class="line">  .subscribe(onNext: &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] days <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">self</span>?.daysLabel.text = <span class="string">"Last \(days) days"</span></span><br><span class="line">  &#125;)</span><br><span class="line">  .disposed(by: disposeBag)</span><br></pre></td></tr></table></figure>
+
+<p>重新运行, 现在我们的应用程序已经完成了!</p>
+<p>但是下载的速度仍然是相当慢, 而且在运行的工程中我们看不到有太多的进展, 没关系, 等下我们就会解决这个问题.</p>
+<h2 id="拆分Event的下载"><a href="#拆分Event的下载" class="headerlink" title="拆分Event的下载"></a>拆分Event的下载</h2><p>本章的最后一项任务就是按<strong>Categories</strong>来划分下载, <strong>EONET API</strong>允许我们一次性下载所有的<strong>Events</strong>, 或者是按照<strong>Categories</strong>来下载.</p>
+<p>现在我们将按照<strong>Categories</strong>分别下载<strong>Events</strong>, 由于是并行下载, 这会有一些复杂, 但这个没关系, 我们一步一步来的完成它.</p>
+<p>下面将是我们使用的策略:</p>
+<ul>
+<li>首先我们获取<strong>Categories</strong></li>
+<li>然后请求每个<strong>Category</strong>的<strong>Events</strong></li>
+<li>每次发出新的<strong>Events</strong>时, 就更新<strong>Categories</strong>并刷新<strong>UITableView</strong></li>
+<li>一直到所有的<strong>Categories</strong>获取到<strong>Events</strong>为止</li>
+</ul>
+<h3 id="给每个Categories的Events添加下载API"><a href="#给每个Categories的Events添加下载API" class="headerlink" title="给每个Categories的Events添加下载API"></a>给每个Categories的Events添加下载API</h3><p>要按照<strong>Categories</strong>来x下载<strong>Events</strong>, 我们需要能够在<strong>API</strong>上使用指定的请求<strong>端点</strong>, 现在我们来更新一下<code>events(forLast:closed:)</code>方法, 将我们所需要的参数传入进去:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">events</span><span class="params">(forLast days: Int, closed: Bool, endpoint: String)</span></span> -&gt; <span class="type">Observable</span>&lt;[<span class="type">EOEvent</span>]&gt; &#123;</span><br></pre></td></tr></table></figure>
+
+<p>我们将需要获取数据的端点参数添加之后, 还需要对请求函数内部的操作稍微修改一下:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> request: <span class="type">Observable</span>&lt;[<span class="type">EOEvent</span>]&gt; = <span class="type">EONET</span>.request(endpoint: endpoint, query: query, contentIdentifier: <span class="string">"events"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>然后再更新另一<code>events(forLast:)</code>方法, 添加第二个参数:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">events</span><span class="params">(forLast days: Int = <span class="number">360</span>, category: EOCategory)</span></span> -&gt; <span class="type">Observable</span>&lt;[<span class="type">EOEvent</span>]&gt; &#123;</span><br></pre></td></tr></table></figure>
+
+<p>现在我们还需要继续更新代码, 因为有一个地方在我们更新了<strong>API</strong>之后就报错了.</p>
+<p>刚才我们所需要的<strong>endpoint</strong>是<strong>String</strong>类型的, 而在<strong>Categories</strong>中就有对应的<strong>endpoint</strong>, 我们我们直接使用该参数就可以了:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> openEvents = events(forLast: days, closed: <span class="literal">false</span>, endpoint: category.endpoint)</span><br><span class="line"><span class="keyword">let</span> closedEvents = events(forLast: days, closed: <span class="literal">true</span>, endpoint: category.endpoint)</span><br></pre></td></tr></table></figure>
+
+<p>现在我们需要使用的<strong>EONET</strong>已经改完了, 但是还不能重新运行项目, 还需要回到<strong>CategoriesViewController</strong>添加一些<strong>Rx</strong>的操作.</p>
+<h3 id="增量更新UI"><a href="#增量更新UI" class="headerlink" title="增量更新UI"></a>增量更新UI</h3><p>每个<strong>Categories</strong>的<strong>Events</strong>下载都围绕着使用<strong>flatMap</strong>来生成尽可能多的<strong>Events</strong>下载<strong>Observable</strong>对象, 然后再合并他们, 现在让我们动手来修改修改.</p>
+<p>找到<strong>CategoriesViewController.swift</strong>中的<code>startDownload()</code>方法, <strong>Xcode</strong>在这里报了一个错, 现在我们使用下面的代码来替换<strong>downloadedEvents</strong>的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> downloadedEvents = eoCategories.flatMap &#123; categories <span class="keyword">in</span></span><br><span class="line">  <span class="keyword">return</span> <span class="type">Observable</span>.from(categories.<span class="built_in">map</span> &#123; category <span class="keyword">in</span></span><br><span class="line">    <span class="type">EONET</span>.events(forLast: <span class="number">360</span>, category: category)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line">.merge()</span><br></pre></td></tr></table></figure>
+
+<p>首先, 我们获得了所有的<strong>Categories</strong>, 然后调用<strong>flatMap</strong>将它们转换为一个<strong>Observable</strong>对象, 为每个类别发出一个<strong>Observable</strong>的<strong>Events</strong>, 然后再将这些所有的<strong>Observable</strong>都合并到一个<strong>Events</strong>数组中.</p>
+<p>我们还需要替换一下<strong>updatedCategories</strong>的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> updatedCategories = eoCategories.flatMap &#123; categories <span class="keyword">in</span></span><br><span class="line">  downloadedEvents.scan(categories) &#123; updated, events <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">return</span> updated.<span class="built_in">map</span> &#123; category <span class="keyword">in</span></span><br><span class="line">      <span class="keyword">let</span> eventsForCategory = <span class="type">EONET</span>.filteredEvents(events: events, forCategory: category)</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> !eventsForCategory.isEmpty &#123;</span><br><span class="line">        <span class="keyword">var</span> cat = category</span><br><span class="line"></span><br><span class="line">        cat.events = cat.events + eventsForCategory</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> cat</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> category</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里我们使用了上一章所学到的<code>scan(_:accumulator:)</code>操作符, 它对源<strong>Observable</strong>发出的元素进行累加, 直到完成后再发出, 在这里, 这个累计值是用来更新列表的<strong>Categories</strong>.</p>
+<p>因此当每一个新的<strong>Events</strong>数组发出时, <strong>scan</strong>都会发出一个<strong>Categories</strong>, 由于<strong>Categories Relay</strong>是与<strong>updatedCategories</strong>绑定的, 所以<strong>UITableView</strong>也会自动刷新.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2010/7.png" alt="图片"></p>
+<p>只需要几行简单的代码, 我们就完成了这一系列复杂的<strong>API</strong>请求, 然后及时更新.</p>
+<p>这里还有一件事需要注意的是.</p>
+<h3 id="限定API请求"><a href="#限定API请求" class="headerlink" title="限定API请求"></a>限定API请求</h3><p>假设我们现在有<strong>25</strong>个<strong>Categories</strong>, 每个<strong>Categories</strong>都会触发两次<strong>API</strong>的请求, 那么这个时候就会向<strong>EONET</strong>服务器发出<strong>50</strong>个<strong>API</strong>的请求, 为了不那么快就到达请求的限制, 我们将限制一下<strong>API</strong>的请求次数.</p>
+<p>有一个非常简单的方式, 可以不需要改动那么多代码就可以将我们的操作符练转换成阈值队列.</p>
+<p>将<strong>downloadEvents</strong>使用的<code>merge()</code>方法替换成下面的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.merge(maxConcurrent: <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这是一个非常简单的改动, 无论<code>flatMap(_:)</code>将<strong>Events</strong>下载推送多少个到<strong>Observable</strong>, 同一时间我们只会订阅两个, 由于每个<strong>Events</strong>下载都会发出一个<strong>open</strong>和<strong>closed</strong>事件, 所以一次性触发的请求最多不会超过四个.</p>
+<p>现在我们可以运行一下项目, 你就会看到数据一点点的加载, 然后你就会越来越喜欢使用<strong>RxSwift</strong>了.</p>
+<p>现在你已经看到了<strong>RxSwift</strong>的好用之处和强大的功能, 他可以帮我们的把代码抽象到另一个新的层次, 然后我们只需要专注写我们的业务逻辑就可以了.</p>
+<h2 id="挑战"><a href="#挑战" class="headerlink" title="挑战"></a>挑战</h2><h3 id="挑战1"><a href="#挑战1" class="headerlink" title="挑战1"></a>挑战1</h3><p>在结束本章之前, 我们将需要在<strong>UINavigationBar</strong>添加一个<strong>UIActivityIndicatorView</strong>, 并在开始下载<strong>Events</strong>时就让它转动起来, 当完成了所有的网络请求之后, 就自动隐藏.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2010/8.png" alt="图片"></p>
+<h3 id="挑战2"><a href="#挑战2" class="headerlink" title="挑战2"></a>挑战2</h3><p>第一个挑战是一个对用户非常友好的用户体验, 现在我们还可以做得更好, 添加<strong>Events</strong>下载时的进度条, 这个挑战非常考验你的能力, 你必须要找到一个正确的位置与代码关联.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2010/9.png" alt="图片"></p>
+<p>你还可以用不同的方式来完成整个挑战, 因此在本章的<strong>Challenge</strong>文件夹中, 你会找到两个不同的解决方案, 加油!</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始"><span class="toc-number">1.</span> <span class="toc-text">开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#准备Web服务端的请求"><span class="toc-number">2.</span> <span class="toc-text">准备Web服务端的请求</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#通用机制的技术要求"><span class="toc-number">2.1.</span> <span class="toc-text">通用机制的技术要求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Fetch-categories"><span class="toc-number">2.2.</span> <span class="toc-text">Fetch categories</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CategorigesViewController"><span class="toc-number">3.</span> <span class="toc-text">CategorigesViewController</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加Events下载API"><span class="toc-number">4.</span> <span class="toc-text">添加Events下载API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#获取Categories事件"><span class="toc-number">5.</span> <span class="toc-text">获取Categories事件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用Events更新Categories"><span class="toc-number">5.1.</span> <span class="toc-text">使用Events更新Categories</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#更新UITableViewCell的显示"><span class="toc-number">5.2.</span> <span class="toc-text">更新UITableViewCell的显示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#并行下载"><span class="toc-number">5.3.</span> <span class="toc-text">并行下载</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EventsViewController"><span class="toc-number">6.</span> <span class="toc-text">EventsViewController</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加UISlider"><span class="toc-number">7.</span> <span class="toc-text">添加UISlider</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#拆分Event的下载"><span class="toc-number">8.</span> <span class="toc-text">拆分Event的下载</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#给每个Categories的Events添加下载API"><span class="toc-number">8.1.</span> <span class="toc-text">给每个Categories的Events添加下载API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#增量更新UI"><span class="toc-number">8.2.</span> <span class="toc-text">增量更新UI</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#限定API请求"><span class="toc-number">8.3.</span> <span class="toc-text">限定API请求</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#挑战"><span class="toc-number">9.</span> <span class="toc-text">挑战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#挑战1"><span class="toc-number">9.1.</span> <span class="toc-text">挑战1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#挑战2"><span class="toc-number">9.2.</span> <span class="toc-text">挑战2</span></a></li></ol></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

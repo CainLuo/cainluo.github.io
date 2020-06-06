@@ -1,0 +1,417 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RxSwift：6.Filtering Operators in Practice - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="在前面一章里, 我们了解了RxSwift的Filtering操作符们, 这只是RxSwift里一部分功能, 他可以帮助我们筛选Observable对象里的元素.
+正如前面解释的一样, 操作符只是Ob,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">RxSwift：6.Filtering Operators in Practice</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">RxSwift：6.Filtering Operators in Practice</h1>
+        <div class="stuff">
+            <span>八月 04, 2019</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/RxSwift/">RxSwift</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>在前面一章里, 我们了解了<strong>RxSwift</strong>的<strong>Filtering</strong>操作符们, 这只是<strong>RxSwift</strong>里一部分功能, 他可以帮助我们筛选<strong>Observable</strong>对象里的元素.</p>
+<p>正如前面解释的一样, 操作符只是<code>Observable&lt;E&gt;</code>类里的方法, 更有一部分操作符是在<strong>ObservableType</strong>协议里定义的, 而<code>Observable&lt;E&gt;</code>又遵循了这个协议.</p>
+<p>操作符对<strong>Observable</strong>的元素进行操作, 从而生成一个新的<strong>Observable</strong>序列, 这种方式非常的方便, 正如我们前面看到, 这允许我们将一个一个操作符串联起来, 并且按照顺序执行:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%206/1.png" alt="图片"></p>
+<p>上面的图表就可以完美的解释, 在本章中, 我们会在应用程序开发中使用过滤操作符. 这个项目我们在之前的第四章里也尝试过.</p>
+<blockquote>
+<p>注意: 在本章中, 我们需要了解到<strong>RxSwift</strong>中过滤操作符的一些理论支持, 如果你还没有读过第五章, 那么请先读一遍然后再回到当前的章节来.</p>
+</blockquote>
+<h2 id="改进Combinestagram项目"><a href="#改进Combinestagram项目" class="headerlink" title="改进Combinestagram项目"></a>改进Combinestagram项目</h2><p>如果你成功的完成了第四章里的挑战, 那么就打开工程继续完善, 如果没有则可以在文件夹里找到本章提供的<strong>starter</strong>, 里面有我们所需的项目工程.</p>
+<p>对于第四章的挑战, 我们有过一个需求, 在本章里我们将会去使用它, 如果你没有完成或者是有其他疑问, 请参考本章提供的项目工程里的<strong>UIAlertViewController+Rx.swift</strong>.</p>
+<p>在本章中, 我们将会完成一系列的需求, 这些需求将会使用我们之前学到的过滤操作符, 我们将会在不同的地方使用到<strong>skip</strong>和<strong>take</strong>, 还将会学习到使用不同的操作符来实现类似的效果.</p>
+<blockquote>
+<p>注意: 本教程到目前为止只是介绍了一些操作符, 所以我们不会编写非常漂亮的代码, 对于本章而言, 还不需要担心最佳的编码方式和工程架构, 要真正理解如何使用过滤操作符才是我们的首要目的.</p>
+</blockquote>
+<h3 id="细化照片的序列"><a href="#细化照片的序列" class="headerlink" title="细化照片的序列"></a>细化照片的序列</h3><p>目前, 我们的应用程序主屏幕是这样的:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%206/2.png" alt="图片"></p>
+<p>大多数情况, 这个应用程序是可以正常工作的, 但如果我们使用了一段时间, 你肯定会发现一些<strong>bug</strong>, 也会觉得它应该添加一些新的功能了.</p>
+<p>例如. 当用户在选择了一批需要拼接的照片时, 我们可能需要做的不仅仅是每次都重新生成预览, 当<strong>Observable</strong>获取了图片时, 用户将会回到主屏幕, 可能会操作某些东西, 接下来我们将会了解如何通过共享一个<strong>Observable</strong>对象的订阅来做更多的事情.</p>
+<h2 id="分享订阅"><a href="#分享订阅" class="headerlink" title="分享订阅"></a>分享订阅</h2><p>如果我们在同一个<strong>Observable</strong>对象上多次调用<code>subscribe(…)</code>会有什么问题吗? 答案是真的可能会有.</p>
+<p><strong>Observable</strong>对象的工作是需要由事件来驱动的, 单纯的调用<strong>Observable</strong>对象的操作符是不会起任何作用的, 但是一旦我们对<strong>Observable</strong>对象使用了<code>subscribe(…)</code>时, 那么<strong>Observable</strong>的对象就会开始工作, 生成我们看到的元素.</p>
+<p>每次订阅的时候, <strong>Observable</strong>都会调用它的<strong>create</strong>闭包, 在某些情况下还会产生一些我们意料之外的问题.</p>
+<p>看一下下面的代码, 如果你愿意尝试的话, 也可以将下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> numbers = <span class="type">Observable</span>&lt;<span class="type">Int</span>&gt;.create &#123; observer <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">let</span> start = getStartNumber()</span><br><span class="line">    observer.onNext(start)</span><br><span class="line">    observer.onNext(start+<span class="number">1</span>)</span><br><span class="line">    observer.onNext(start+<span class="number">2</span>)</span><br><span class="line">    observer.onCompleted()</span><br><span class="line">    <span class="keyword">return</span> <span class="type">Disposables</span>.create()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该代码主要是用来创建一个<code>Observable&lt;Int&gt;</code>, 它是由三个数组组成的序列: <strong>start, start+1, start+2</strong>.</p>
+<p>现在我们在来看一下另一个例子:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> start = <span class="number">0</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getStartNumber</span><span class="params">()</span></span> -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">		start += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> start</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个函数是用来实现递增效果, 然后又返回给调用者, 看起来好像没什么毛病, 现在我们来订阅一下<strong>Observable</strong>, 然后看看输出效果:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">numbers</span><br><span class="line">  .subscribe(</span><br><span class="line">    onNext: &#123; el <span class="keyword">in</span></span><br><span class="line">      <span class="built_in">print</span>(<span class="string">"element [\(el)]"</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">    onCompleted: &#123;</span><br><span class="line">      <span class="built_in">print</span>(<span class="string">"-------------"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>这个时候我们会看到控制台输出:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">element [<span class="number">1</span>]</span><br><span class="line">element [<span class="number">2</span>]</span><br><span class="line">element [<span class="number">3</span>]</span><br><span class="line">-------------</span><br></pre></td></tr></table></figure>
+
+<p>看起来没毛病啊, 但如果我们再次粘贴同样的代码, 然后控制台的输出则是:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">element [<span class="number">1</span>]</span><br><span class="line">element [<span class="number">2</span>]</span><br><span class="line">element [<span class="number">3</span>]</span><br><span class="line">-------------</span><br><span class="line">element [<span class="number">2</span>]</span><br><span class="line">element [<span class="number">3</span>]</span><br><span class="line">element [<span class="number">4</span>]</span><br><span class="line">-------------</span><br></pre></td></tr></table></figure>
+
+<p>现在看起来就是有问题了, 结果和我们预想的有出入, 这个问题在于我们每次调用<code>subscribe(…)</code>时, 都会为订阅者创建一个新的<strong>Observable</strong>对象, 并且是不能保证每次订阅的之后的结果都与前一个相同. 当然, 如果我们每次订阅<strong>Observable</strong>都会生成相同重复的元素, 那也是没有意义的.</p>
+<p>这里我们可以使用<code>share()</code>操作符将订阅共享, 在<strong>Rx</strong>中这种模式是非常常见的, 我们还可以通过在同一个<strong>Observable</strong>筛选出不同的元素用于多个序列.</p>
+<p>我们将在<strong>Combinestagram</strong>中使用<strong>share</strong>, 以便我们更好的理解它的作用.</p>
+<p>打开项目并选在<strong>MainViewController.swift</strong>, 找到<code>actionAdd()</code>并用下面的代码替换掉<code>photosViewController.selectedPhotos</code>, 这里我们创建了一个名为<strong>newPhotos</strong>的变量订阅:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> newPhotos = photosViewController.selectedPhotos</span><br><span class="line">  .share()</span><br><span class="line">newPhotos</span><br><span class="line">  [ here the existing code continues: .subscribe(...) ]</span><br></pre></td></tr></table></figure>
+
+<p>现在, 我们每次订阅之后都不会创建一个新的<strong>Observable</strong>了, 如图所示:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%206/3.png" alt="图片"></p>
+<p>我们将允许多个订阅使用单个<strong>Observable</strong>, 然后生成它们所需的元素:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%206/4.png" alt="图片"></p>
+<p>现在, 我们可以创建<strong>newPhotos</strong>的第二个订阅, 然后过滤掉一些不需要的元素了.</p>
+<p>在这之前, 我们讲解一下<strong>share</strong>的工作原理.</p>
+<ul>
+<li><strong>share</strong>仅当订阅者的数量从<strong>0</strong>到<strong>1</strong>时才创建.</li>
+<li>当第二个, 第三个订阅者订阅<strong>Observable</strong>时, <strong>share</strong>则会使用已经创建好的订阅与它们共享.</li>
+<li>如果所有共享序列的订阅都被处理了, 并且没有更多的订阅者, 那么<strong>share</strong>也会将共享序列给处理掉.</li>
+<li>但如果又有一个订阅者开始订阅的话, 那么<strong>share</strong>也会为它创建一个新的订阅, 就和上面描述一样.</li>
+</ul>
+<blockquote>
+<p>注意: <code>share()</code>不会在订阅生效之前发出元素, 另一方面就是<code>share(replay:scope:)</code>会保留最后发出几个值在缓冲区, 并可以在有新的订阅者提供新的<strong>Observable</strong>序列.</p>
+</blockquote>
+<p>关于<code>share()</code>操作符的经验就是, 如果我们对未完成的<strong>Observable</strong>对象使用是没毛病, 或者是我们可以确保在完成后不会有新的订阅. 后续的章节里, 我们会详细的介绍.</p>
+<h3 id="忽略所有的元素"><a href="#忽略所有的元素" class="headerlink" title="忽略所有的元素"></a>忽略所有的元素</h3><p>我们将从最简单的筛选操作符开始, <code>ignoreElements()</code>会筛选所有的元素, 不过我们的值或者类型是什么, 都会全部过滤掉.</p>
+<p>回想一下, 当用户每次选择一张照片时, <strong>newPhotos</strong>都会发出一个<strong>UIImage</strong>元素, 在本小节里, 我们会在屏幕的左上角添加一个拼接好图片的小预览.</p>
+<p>我们只希望更新一次这个图片, 所以当用户返回到<strong>MainViewController</strong>时, 我们需要忽略掉所有的<strong>UIImage</strong>元素, 只对<code>.completed</code>事件做操作.</p>
+<p>恰好<code>ignoreElements()</code>操作符则满足我们的需求, 它将会抛弃源<strong>Observable</strong>对象的所有元素, 只允许<code>.completed</code>和<code>.error</code>事件通过.</p>
+<p>事实上除了这个操作符之外, 还有另一个满足这个需求的操作符, 如果你记得的话, 就是在第四章里我们了解过的<strong>Completable</strong>, 它也是可以只发出<code>.completed</code>和<code>.error</code>事件.</p>
+<p>我们也可以使用<code>ignoreElements()</code>操作符将<strong>Observable</strong>对象的元素全部过滤掉, 从而转换为一个<strong>Completable</strong>的序列.</p>
+<p>在<code>actionAdd()</code>中, 我们会将下面这段代码添加进去, 由于这里有一个方法我们暂时还没有实现, 所以<strong>Xcode</strong>会提示未找到该函数的错误, 但稍后我们会修复它:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">newPhotos</span><br><span class="line">  .ignoreElements()</span><br><span class="line">  .subscribe(onCompleted: &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">self</span>?.updateNavigationIcon()</span><br><span class="line">  &#125;)</span><br><span class="line">  .disposed(by: bag)</span><br></pre></td></tr></table></figure>
+
+<p>我们给<strong>newPhotos</strong>添加了<code>ignoreElements()</code>操作符忽略了所有的图片, 并在用户返回到<strong>MainViewController</strong>时运行<strong>onCompleted</strong>闭包, 为了解决<strong>Xcode</strong>的错误提示, 现在我们在<strong>MainViewController</strong>中添加还未实现的方法:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">updateNavigationIcon</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">let</span> icon = imagePreview.image?</span><br><span class="line">    .scaled(<span class="type">CGSize</span>(width: <span class="number">22</span>, height: <span class="number">22</span>))</span><br><span class="line">    .withRenderingMode(.alwaysOriginal)</span><br><span class="line"></span><br><span class="line">  navigationItem.leftBarButtonItem = <span class="type">UIBarButtonItem</span>(image: icon,</span><br><span class="line">                                                     style: .done, target: <span class="literal">nil</span>, action: <span class="literal">nil</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在我们运行一下工程, 然后创建一个新的拼图, 每次添加完照片后, 我们都会在左上角上看到拼图的预览.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%206/5.png" alt="图片"></p>
+<h3 id="过滤不需要的元素"><a href="#过滤不需要的元素" class="headerlink" title="过滤不需要的元素"></a>过滤不需要的元素</h3><p>虽然使用<code>ignoreElements()</code>操作符是一个不错的选择, 但是有时我们并不是需要将全部的元素都过滤掉, 这种情况, 我们使用<code>filter(_:)</code>会更加符合需求, 因为<code>filter(_:)</code>会通过谓词来判断允许让哪些元素通过, 又要丢弃哪些元素.</p>
+<p>例如图下的例子, 在某些情况看起来好像都有些别扭:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%206/6.png" alt="图片"></p>
+<p>当然我们可以编写更加友好的拼接代码, 但是在本章中, 我们只选择了模拟器的风景图.</p>
+<p>找到<code>actionAdd()</code>方法, 然后我们对<strong>newPhotos</strong>的第一次订阅进行改造, 我们这里将使用一个<strong>filter</strong>操作符:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">newPhotos</span><br><span class="line">  .<span class="built_in">filter</span> &#123; newImage <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">return</span> newImage.size.width &gt; newImage.size.height</span><br><span class="line">  &#125;</span><br><span class="line">  [existing code .subscribe(...)]</span><br></pre></td></tr></table></figure>
+
+<p>现在的<strong>newPhotos</strong>所发出的每一张照片都必须经过这个<strong>filter</strong>操作符进行过滤后才能够通过<code>subscribe(...)</code>发出, 我们的检查条件是, 如果照片的宽度大于高度那就允许通过, 否则就抛弃.</p>
+<p>现在我们再次运行一下应用程序, 并添加一些照片, 无论我们怎么添加, 都不会再发生像上面图片所示的情况, 因为它已经被过滤掉了.</p>
+<h3 id="实现防止图片重复的过滤器"><a href="#实现防止图片重复的过滤器" class="headerlink" title="实现防止图片重复的过滤器"></a>实现防止图片重复的过滤器</h3><p>当前我们的应用程序还有一个小问题, 就是可以重复的添加多张相同的照片, 这对我们想要拼成有趣的照片好像有障碍, 现在我们将通过添加一些高级的过滤功能来防止用户多次添加相同的照片.</p>
+<p><strong>Observable</strong>对象不提供当前或者是历史记录, 因此我们需要自己去实现一个跟踪的功能.</p>
+<p>保存已经发出来的图片索引好像起不到什么实质性的作用, 要对比两张相同图片的<strong>UIImage</strong>对象最好的方式就是存储图片数据或它的路径.</p>
+<p>但是在我们的这个简单练习中, 我们将使用图片字节的长度, 虽然这个方案并不是最优的, 但是它可以帮助我们简单的实现我们的需求, 又不需要费那么多时间去写这个逻辑, 这不是我们的重点:</p>
+<p>首先在<strong>MainViewController</strong>中添加一个私有的变量:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">var</span> imageCache = [<span class="type">Int</span>]()</span><br></pre></td></tr></table></figure>
+
+<p>我们将在这个数组中以字节单位的将每个图片的长度保存进去, 然后通过传入图片来查询它是否存在, 现在我们来改造一下:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[existing .<span class="built_in">filter</span> &#123;newImage <span class="keyword">in</span> ... ]</span><br><span class="line">.<span class="built_in">filter</span> &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] newImage <span class="keyword">in</span></span><br><span class="line">  <span class="keyword">let</span> len = newImage.pngData()?.<span class="built_in">count</span> ?? <span class="number">0</span></span><br><span class="line">  <span class="keyword">guard</span> <span class="keyword">self</span>?.imageCache.<span class="built_in">contains</span>(len) == <span class="literal">false</span> <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">self</span>?.imageCache.append(len)</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line">[existing code .subscribe(...)]</span><br></pre></td></tr></table></figure>
+
+<p>在<strong>filter</strong>的闭包中, 我们将获得新图片的<strong>PNG</strong>数据, 然后将它保存在常量为<strong>len</strong>中, 如果<strong>imageCache</strong>包含一个具有相同的值, 那么该图片则判断为重复, 然后抛弃, 并返回为<strong>false</strong>.</p>
+<p>如果图片是唯一的, 那么就将字节长度保存在<strong>imageCache</strong>中, 并返回<strong>true</strong>.</p>
+<blockquote>
+<p>注意: 现在我们的看起来并不是很精简, 但是这个并不要太过担心, 在后续我们会学习更多知识来解决这个问题.</p>
+</blockquote>
+<p>保存的逻辑我们是做完了, 但是别忘了在<code>actionClear()</code>方法中将该缓存清除掉:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">imageCache = []</span><br></pre></td></tr></table></figure>
+
+<p>如果我们不将缓存清理的话, 那么用户无论再怎么选择该图片都会被判断为已存在了.</p>
+<p>现在我们运行一下应用程序, 在同一张照片里尝试多点几次, 我们就会发现, 照片只会添加一次到拼图中.</p>
+<h3 id="获取满足条件的元素"><a href="#获取满足条件的元素" class="headerlink" title="获取满足条件的元素"></a>获取满足条件的元素</h3><p>在本应用程序里, 我们做过一个操作, 当我们添加了<strong>6</strong>张照片时, 那么<strong>+</strong>按钮就会禁止被点击, 这将会阻止用户添加更多的照片, 实际上我们不需要限制用户对按钮的控制, 也可以获取到我们想要的元素.</p>
+<p>想想我们之前学到的<code>takeWhile(_)</code>操作符, 它就可以满足我们的需求, 当该操作符过滤完所有元素并满足一定的条件后, 我们将返回一个<strong>Bool</strong>条件, 当这个条件的结果为<strong>false</strong>时, <code>takeWhile(_)</code>将会丢掉所有的元素.</p>
+<p>现在我们再次回到<code>actionAdd()</code>方法, 然后找到第一次订阅<strong>newPhotos</strong>的那行, 然后添加下面的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">newPhotos</span><br><span class="line">  .takeWhile &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] image <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">let</span> <span class="built_in">count</span> = <span class="keyword">self</span>?.images.value.<span class="built_in">count</span> ?? <span class="number">0</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">count</span> &lt; <span class="number">6</span></span><br><span class="line">  &#125;</span><br><span class="line">  [existing code: <span class="built_in">filter</span> &#123;...&#125;]</span><br></pre></td></tr></table></figure>
+
+<p>只要我们拼接的图片总数小于<strong>6</strong>张,  那么<code>takeWhile(...)</code>就会允许图片通过, 这里我们会使用到<code>??</code>, 当<strong>self</strong>为<strong>nil</strong>的时候, 那么就给一个默认值<strong>0</strong>, 这样子做事可以为了满足编译器而不需要强制解包<strong>self</strong>.</p>
+<p>再次运行应用程序, 然后添加大量的照片, 我们就会发现, 一旦添加了<strong>6</strong>张照片后就不能再添加了, 任务完成!</p>
+<blockquote>
+<p>注意: 在上面的代码里, 我们直接访问控制器本身的一个属性的操作在响应式编程里是存在争议的, 但我们为了简单暂时这么做, 之后我们会学习正确的操作方式, 这样子我们就不需要使用这种方式了,</p>
+</blockquote>
+<h2 id="改进图片选择器"><a href="#改进图片选择器" class="headerlink" title="改进图片选择器"></a>改进图片选择器</h2><p>在本小节中, 我们将改进一下<strong>PhotosViewController.swift</strong>, 首先我们将会新建一个新的<strong>Observable</strong>对象, 然后以不同的方式来过滤它, 以便带来更好的用户体验.</p>
+<h3 id="PHPhotoLibrary授权的Observable"><a href="#PHPhotoLibrary授权的Observable" class="headerlink" title="PHPhotoLibrary授权的Observable"></a>PHPhotoLibrary授权的Observable</h3><p>当我们第一次运行工程时, 我们必须授权它去访问相册库, 现在我们回想一下, 当时的用户体验是很友好吗? 我觉得可能不会, 毕竟刚开始学习都会被操作符, <strong>Observable</strong>序列搞得不知所措.</p>
+<p>当程序第一个尝试访问设备的相册库时, <strong>iOS</strong>会异步的向用户请求许可, 这种情况只会发生一次, 因此如果在本节中想再次获得当时授权的对话框, 那么久需要在模拟器上删除<strong>App</strong>.</p>
+<p>然后我们运行工程文件, 点击<strong>+</strong>按钮, 那么就会再次弹出对话框, 点击<strong>ok</strong>后, 我们不会看到照片自动的显示, 需要我们再次回到<strong>MainViewController</strong>再次点击<strong>+</strong>, 照片就会出现了, 唔…..</p>
+<p>我们现在已经知道问题出在哪里了, 那么现在就着手去解决它, 回到<strong>PhotosViewController</strong>中, 一个名为<strong>photos</strong>的属性将会加载所有的照片, 但是目前来看, 一旦授权了, 它将不会自动的加载照片.</p>
+<p>现在我们来创建一个新的文件, 将它命名为<strong>PHPhotoLibrary+Rx.swift</strong>, 然后将下面的代码添加进去:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Foundation</span><br><span class="line"><span class="keyword">import</span> Photos</span><br><span class="line"><span class="keyword">import</span> RxSwift</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">PHPhotoLibrary</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">var</span> authorized: <span class="type">Observable</span>&lt;<span class="type">Bool</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="type">Observable</span>.create &#123; observer <span class="keyword">in</span></span><br><span class="line">      <span class="keyword">return</span> <span class="type">Disposables</span>.create()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们给<strong>PHPhotoLibrary</strong>添加一个名为<strong>authorized</strong>的<code>Observable&lt;Bool&gt;</code>属性, 这是我们之前没有尝试过的.</p>
+<p>根据用户是否授权过<strong>App</strong>访问相册库的权限, 我们可以有两种不同的方式来区别该<strong>Observable</strong>对象:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%206/7.png" alt="图片"></p>
+<p>我们根据上面提供的流程图里创建我们需要的逻辑, 将下面的代码添加在<strong>create</strong>闭包中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">DispatchQueue</span>.main.async &#123;</span><br><span class="line">  <span class="keyword">if</span> authorizationStatus() == .authorized &#123;</span><br><span class="line">    observer.onNext(<span class="literal">true</span>)</span><br><span class="line">    observer.onCompleted()</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    observer.onNext(<span class="literal">false</span>)</span><br><span class="line">    requestAuthorization &#123; newStatus <span class="keyword">in</span></span><br><span class="line">      observer.onNext(newStatus == .authorized)</span><br><span class="line">      observer.onCompleted()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果用户在之前就已经授权过,  那么代码就会发出一个为<strong>true</strong>的值, 否则将会去请求权限, 并将授权授权的结果发出, 如果为<strong>true</strong>则授权访问, 否则则是拒绝访问.</p>
+<p>这里关于使用<strong>GCD</strong>的<code>DispatchQueue.main.async { ... }</code>需要做一个声明, 当我们去请求权限时, 是不应该阻塞当前的线程, 否则我们阻塞了当前线程后就会产生一些其他很糟糕的后果了.</p>
+<p>现在我们已经完成了这个新奇<strong>Observable</strong>对象, 是时候来使用了.</p>
+<p>这个时候我们会有两种情况:</p>
+<ul>
+<li>第一次运行应用程序时, 用户在警告框里点击<strong>OK</strong>授权:</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%206/8.png" alt="图片"></p>
+<ul>
+<li>用户已经授权过了, 再次运行仍然返回<strong>true</strong>:</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%206/9.png" alt="图片"></p>
+<p>现在我们要做的第一件事就是订阅<code>PHPhotoLibrary.authorized</code>, 这个时候我们并不关注<strong>false</strong>, 该<strong>Observable</strong>获取到的结果为<strong>true</strong>, 那么就可以将照片库的照片显示在<strong>PhotosViewController</strong>里.</p>
+<p>现在我们打开<strong>PhotosViewController.swift</strong>, 在编写逻辑之前, 我们需要给当前的<strong>UIViewController</strong>添加一个新的<strong>disposeBag</strong>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">let</span> bag = <span class="type">DisposeBag</span>()</span><br></pre></td></tr></table></figure>
+
+<p>然后我们在<code>viewDidLoad()</code>中将下面的代码添加进去:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> authorized = <span class="type">PHPhotoLibrary</span>.authorized</span><br><span class="line">  .share()</span><br></pre></td></tr></table></figure>
+
+<p>在这里, 我们创建了一个名为<strong>authorized</strong>的共享<strong>Observable</strong>对象, 这样子我们就可以为该<strong>Observable</strong>创建多个单独的订阅了.</p>
+<p>作为本小节的任务, 我们是需要等待获取一个真正的元素, 该元素是用来加载图片的重点, 现在我们将下面的代码添加到<code>viewDidLoad()</code>中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">authorized</span><br><span class="line">  .skipWhile &#123; $<span class="number">0</span> == <span class="literal">false</span> &#125;</span><br><span class="line">  .take(<span class="number">1</span>)</span><br><span class="line">  .subscribe(onNext: &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] <span class="number">_</span> <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">self</span>?.photos = <span class="type">PhotosViewController</span>.loadPhotos()</span><br><span class="line">    <span class="type">DispatchQueue</span>.main.async &#123;</span><br><span class="line">      <span class="keyword">self</span>?.collectionView?.reloadData()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  .disposed(by: bag)</span><br></pre></td></tr></table></figure>
+
+<p>在这段代码中, 我们使用了两个过滤操作符, 第一个<code>skipWhile(_:)</code>是用来忽略所有为<strong>false</strong>的元素, 如果用户不授权, 那么被订阅的的<strong>Observable</strong>永远不会执行<code>.onNext</code>里的代码.</p>
+<p>第二个操作符<code>take(1)</code>是与另一个操作符链接起来, 每当为<strong>true</strong>时, 我们就会获取到该元素, 然后忽略之后的所有内容, 然后完成序列.</p>
+<p>在我们特殊的<strong>Observable</strong>序列中, <strong>true</strong>总是最后一个元素, 其实我们是没有必要使用<code>take(1)</code>的, 但是我们添加上去, 是为了让代码有更好的可读性, 也可以让后来阅读代码人明白这是做什么.</p>
+<p>并且这个权限机制发生了更改, 我们的订阅也不会发生什么样的影响, 一旦获取到的元素为<strong>true</strong>, 那么<strong>collectionView</strong>就会重新加载数据.</p>
+<p>在<code>subscribe(...)</code>的闭包中, 我们会切换到主线中去重新加载<strong>collectionView</strong>, 为什么要这么做呢? 如果我们去看了<strong>PHPhotoLibrary</strong>的源代码, 当用户点击<strong>OK</strong>授权时, 就会发出授权的<strong>Bool</strong>元素:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">requestAuthorization &#123; newStatus <span class="keyword">in</span></span><br><span class="line">  observer.onNext(newStatus == .authorized)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里的<code>requestAuthorization(_:)</code>方法并不能保证是在哪个线程中完成该闭包的, 有可能会在后台线程完成.</p>
+<p>我们可以正常的调用<code>.onNext(_:)</code>事件, 它将调用统一线程上的所有<strong>Observable</strong>的订阅代码, 最后我们也可以在订阅中调用<code>self?.collectionView?.reloadData()</code>, 但如果现在还在后台的线程上的, 这个时候去刷新<strong>UI</strong>, 那么<strong>UIKit</strong>就会崩溃, 所以我们为了防止这个情况的方法, 所以我们要确保是在主线程上.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%206/10.png" alt="图片"></p>
+<blockquote>
+<p>注意: 线程在异步编程中是非常重要的, 而<strong>RxSwift</strong>会使得我们更加容易的使用线程, 在<strong>RxSwift</strong>中, 是不鼓励使用<strong>GCD</strong>来切换线程的, 我们应该使用线程调度器, 在后面我们将会了解更多.</p>
+</blockquote>
+<h3 id="当用户拒绝授权则提示错误消息"><a href="#当用户拒绝授权则提示错误消息" class="headerlink" title="当用户拒绝授权则提示错误消息"></a>当用户拒绝授权则提示错误消息</h3><p>到目前为止, 虽然我们已经订阅了用户授权<strong>Combinestagram</strong>访问相册库的情况, 但是当用户只是简单的拒绝应用程序访问时, 我们是并没有做任何事情的.</p>
+<p>下面是应用程序无法访问照片的可能情况:</p>
+<ul>
+<li>第一次运行程序时, 用户点击了<strong>Don’t Grant</strong>:</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%206/11.png" alt="图片"></p>
+<ul>
+<li>再次运行, 如果用户之前就拒绝了访问:</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%206/12.png" alt="图片"></p>
+<p>在这两种情况下, <strong>Observable</strong>序列的元素都是相同的, 所以我们只需要一种模式就够了:</p>
+<ul>
+<li>我们可以忽略掉序列中的第一个元素, 因为它并不是最后的结果</li>
+<li>然后我们检查最后一次发出的元素是否为<strong>false</strong>, 如果是则显示一条错误信息.</li>
+</ul>
+<p>这个逻辑非常的简单, 我们将下面你的代码添加到<strong>PhotosViewController</strong>的<code>viewDidLoad()</code>里去:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">authorized</span><br><span class="line">  .skip(<span class="number">1</span>)</span><br><span class="line">  .takeLast(<span class="number">1</span>)</span><br><span class="line">  .<span class="built_in">filter</span> &#123; $<span class="number">0</span> == <span class="literal">false</span> &#125;</span><br><span class="line">  .subscribe(onNext: &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] <span class="number">_</span> <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">guard</span> <span class="keyword">let</span> errorMessage = <span class="keyword">self</span>?.errorMessage <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line">    <span class="type">DispatchQueue</span>.main.async(execute: errorMessage)</span><br><span class="line">  &#125;)</span><br><span class="line">  .disposed(by: bag)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意: 这里还有不同方式的代码编写方法, 例如将<code>filter($0 == false)</code>改成<code>filter{ !$0 }</code>, 或者是更加简洁的<code>filter(!)</code>, 这些都可以达到相同的效果, 但是在本教程里, 我们使用最容易阅读的方式, 让初学者更加容易的理解代码.</p>
+</blockquote>
+<p>现在我们有一个问题, 虽然一起是用<strong>skip</strong>, <strong>takeLast</strong>和<strong>filter</strong>可以最好的表达我们想要做的事情, 但是呢, 考虑到有一些特殊的情况, 我们可能并不需要所有的选项.</p>
+<p>例如, 我们使用<code>takeLast(1)</code>, 这是否就意味着我们将跳过第一个元素? 如果我们使用<strong>filter</strong>检查一个元素, 是否真的需要使用最后一个元素?</p>
+<p>这和我们在生活中遇到的大多数问题一样, 答案就是: 视情况而定.</p>
+<p>我们使用<strong>PHPhotosLibrary</strong>当前的实现来获取授权, 那么下面的代码即可:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">authorized</span><br><span class="line">  .skip(<span class="number">1</span>)</span><br><span class="line">  .<span class="built_in">filter</span> &#123; $<span class="number">0</span> == <span class="literal">false</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们知道这里最多就会有两个元素, 因此跳过第一个元素并使用<strong>filter</strong>进行过滤, 那么下面这段代码也是可以的:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">authorized</span><br><span class="line">  .takeLast(<span class="number">1</span>)</span><br><span class="line">  .<span class="built_in">filter</span> &#123; $<span class="number">0</span> == <span class="literal">false</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里我们就可以忽略掉最后一个元素前面的所有内容, 并检查最后一个元素是否为<strong>false</strong>, 这也是一个不错的方案.</p>
+<p>我们甚至可以使用其他的一些过滤操作符, 比如用<code>distinctUntilChanged()</code>来替换<strong>skip</strong>和<strong>takeLast</strong>, 然后再使用<code>takeLast(1)</code>来获取最后一个元素, 并且使用<strong>filter</strong>筛选元素:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">authorized</span><br><span class="line">  .distinctUntilChanged()</span><br><span class="line">  .takeLast(<span class="number">1</span>)</span><br><span class="line">  .<span class="built_in">filter</span> &#123; $<span class="number">0</span> == <span class="literal">false</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样子, 无论我们怎么操作, 都会获取完全相同的效果, 对于上面其他的序列, 并不确定会产生相同的效果.</p>
+<p>实际上, 我们可以大大的缩短订阅的代码, 但前提是我们确定序列的逻辑是不会被改变的, 但是在发布下一个版本的时候呢? 你能确保<strong>grant-access-alert-box</strong>背后的逻辑不会被改变吗? 答案是否定的, 除非我们是<strong>UIKit</strong>团队的成员.</p>
+<p>因此我们保持使用<strong>skip</strong>, <strong>takeLast</strong>和<strong>filter</strong>可能是确保在我们发布下一个版本时保证应用程序逻辑不会崩溃的, 或者我们可以保持原样, 这使得我们的授权<strong>Observable</strong>对象逻辑更具有确定性, 这样子订阅代码就可以更加简单了.</p>
+<p>这就和我们刚刚所说的, 视情况而定.</p>
+<p>现在我们回到主题, 让我们先把<strong>Xcode</strong>提示的错误信息给干掉, 它提示找不到<strong>errorMessage</strong>这个方法, 现在我们将下面的代码添加到<strong>PhotosViewController</strong>中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">errorMessage</span><span class="params">()</span></span> &#123;</span><br><span class="line">  alert(title: <span class="string">"No access to Camera Roll"</span>,</span><br><span class="line">    text: <span class="string">"You can grant access to Combinestagram from the Settings app"</span>)</span><br><span class="line">    .subscribe(onCompleted: &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] <span class="keyword">in</span></span><br><span class="line">      <span class="keyword">self</span>?.dismiss(animated: <span class="literal">true</span>, completion: <span class="literal">nil</span>)</span><br><span class="line">      <span class="number">_</span> = <span class="keyword">self</span>?.navigationController?.popViewController(animated: <span class="literal">true</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">    .disposed(by: bag)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果你在第四章中完成了挑战1的<code>alert(title:description:)</code>, 那么你就会比较了解了, 那么当用户点击<strong>alert</strong>的按钮时, 就会生成一个<strong>Completable</strong>的对象, 从而触发代码里的<strong>onCompleted</strong>闭包里的逻辑, 并从<strong>PhotosViewController</strong>回到<strong>MainViewController</strong>中.</p>
+<p>我们可以尝试一下这个新功能, 首先我们打开模拟器的设置, 然后找到<strong>Combinestagram</strong>应用程序, 然后将照片的权限设置为<strong>Never</strong>.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%206/13.png" alt="图片"></p>
+<p>在此运行应用程序, 点击<strong>+</strong>按钮, 就会触发检测当前应用程序的授权<strong>Observable</strong>, 然后调用<code>requestAuthorization(_:)</code>, 最后我们就会在屏幕上看到下面的警告框:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%206/14.png" alt="图片"></p>
+<p>我们发现, 通过使用<strong>Observable</strong>会是的我们检测授权, <strong>UI</strong>更新都会变得非常的简单.</p>
+<h2 id="尝试基于时间的Filter操作符"><a href="#尝试基于时间的Filter操作符" class="headerlink" title="尝试基于时间的Filter操作符"></a>尝试基于时间的Filter操作符</h2><p>我们将会在之后的章节里了解到关于基于时间的操作符的细节, 然而在这些操作符里, 也有一些是<strong>filter</strong>操作符, 这就是为什么我们现在就要来接触一下的原因.</p>
+<p>基于时间的操作符也被称为调度程序, 而调度程序是一个非常重要的概念, 我们在后续将会学习到, 在下面的示例中, 我们将会使用<code>MainScheduler.instance</code>, 这是一个共享调度的对象, 它将与其他特性一起在应用程序的主线程上运行代码.</p>
+<p>这里不做深入的讨论, 现在让我们来看看基于时间的<strong>filter</strong>操作符的两个示例.</p>
+<h3 id="在给定的时间间隔后完成订阅"><a href="#在给定的时间间隔后完成订阅" class="headerlink" title="在给定的时间间隔后完成订阅"></a>在给定的时间间隔后完成订阅</h3><p>现在我们的操作是, 当用户拒绝访问他们的相册后, 屏幕上会显示一个<strong>NO access</strong>的警告框, 他们必须点击<strong>Close</strong>才能返回.</p>
+<p>还有一种就是不需要用户操作, 过一段时间后就会自动消失, 这也是一种非常常见的用户体验设计, 现在我们就需要将原来的代码改造一下, 如果用户没有在限制的时间内关掉, 那么就让警告框最多显示<strong>5</strong>秒, 然后就自动隐藏.</p>
+<p>打开<strong>PhotosViewController.swift</strong>, 找到<code>errorMessage()</code>方法, 在<code>alert(title: ..., description: …)</code>, 然后插入下面的内容:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.asObservable()</span><br><span class="line">.take(<span class="number">5.0</span>, scheduler: <span class="type">MainScheduler</span>.instance)</span><br><span class="line">[existing code: .subscribe(onDisposed: ...]</span><br></pre></td></tr></table></figure>
+
+<p><code>take(_:scheduler:)</code>是一个过滤操作符, 类似于<code>take(1)</code>或者是<code>takeWhile(…)</code>, <code>take(_:scheduler:)</code>从给定的时间段的源<strong>Observable</strong>获取元素, 一旦时间间隔一到, 那么序列就会自动完成了.</p>
+<blockquote>
+<p>注意: 必须通过<code>asObservable()</code>将<strong>Completable</strong>转换成<code>observable()</code>, 因为在<strong>Completable</strong>类型里是没有<code>take(_:scheduler:)</code>操作符的.</p>
+</blockquote>
+<p>现在我们的警告框<strong>Observable</strong>最多就是存活<strong>5</strong>秒钟, 然后就会处理订阅里的内容.</p>
+<p>如果当用户直接点击了<strong>Close</strong>, 那么就会立刻完成序列, 而不需要等待<strong>5</strong>秒钟, 并且会有相同的效果.</p>
+<h3 id="使用节流方式来减少高负载订阅"><a href="#使用节流方式来减少高负载订阅" class="headerlink" title="使用节流方式来减少高负载订阅"></a>使用节流方式来减少高负载订阅</h3><p>有一种场景是我们只对序列当前的元素感兴趣, 并且认为其他的元素都是无用的, 在本项目中也有这样子的场景, 打开<strong>MainViewController.swift</strong>, 然后找到<strong>viewDidLoad()</strong>方法.</p>
+<p>下面是现有的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">images.asObservable()</span><br><span class="line">  .subscribe(onNext: &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] photos <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">guard</span> <span class="keyword">let</span> preview = <span class="keyword">self</span>?.imagePreview <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line">    preview.image = <span class="type">UIImage</span>.collage(images: photos,</span><br><span class="line">      size: preview.frame.size)</span><br><span class="line">  &#125;)</span><br><span class="line">  .disposed(by: bag)</span><br></pre></td></tr></table></figure>
+
+<p>每次用户选择照片的时候, 订阅者就会收到新的照片集合, 然后生成信的拼图, 这个时候前一张生成的照片就没用了, 但如果用户连续快速的点击多个照片, <strong>subscribe</strong>也会每次都传递元素, 然后拼接成一张新的拼图.</p>
+<p>当我们生成这些照片的时候是会消耗很多资源的, 但是生成好的照片又不一定是最终的, 那么前面所做的工作就是白费的.</p>
+<p>但是问题来了, 我们怎么知道何时会有新的元素传入?</p>
+<p>仔细的想想, 我们好像经常会遇到这样子的情况, 那么我们需要解决的真正问题就是: “如果有很多个元素一个一个的进来, 那么就只拿最后一个.” 因为<strong>RxSwift</strong>是异步的, 所以这种情况非常常见, 为了解决这个问题, <strong>Rx</strong>有个特殊的操作符.</p>
+<p>在<code>viewDidLoad()</code>中找到<code>images.asObservable()</code>, 在它之后添加下面的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.throttle(<span class="number">0.5</span>, scheduler: <span class="type">MainScheduler</span>.instance)</span><br><span class="line">[existing code: .subscribe(onNext: ...]</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>.throttle(_:, scheduler:)</code>操作符来过滤指定时间间隔内跟随前一个元素的任何元素.</p>
+<p>意思就是, 当用户选了一张照片, 并在<strong>0.5</strong>秒里又点击了另一张照片, 那么该操作符就会过滤掉第一个元素, 只让第二元素通过, 这样子我们就可以在拼图的工作中节省一些不必要的资源浪费.</p>
+<p>该操作符也适用于多个相邻的元素, 如果用户快速的点击选择了五张照片, 只要在这<strong>0.5</strong>秒里没有其他元素了, 那么<strong>throttle</strong>就会过滤掉前面四张照片, 只会让第五个元素通过.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%206/15.png" alt="图片"></p>
+<p>我们来举例一下<strong>throttle</strong>操作符使用的场景:</p>
+<ul>
+<li>当我们有一个文字搜索的<strong>subscribe</strong>时, 我们就可以通过使用<strong>throttle</strong>来过滤用户快速输入的关键词, 然后在用户完成输入时就发送给服务器.</li>
+<li>当一个用户点击一个按钮就会显示出一个新的画面, 这个时候我们就使用<strong>throttle</strong>来限制用户的暴力点击事件, 使得最后一次点击才会生效并显示一个新的画面.</li>
+<li>当用户在屏幕上滑动手指时, 我们会收到很多的触点, 但是我们只想知道用户最后停留的地方, 那么就可以使用<strong>throttle</strong>来过滤那些我们不需要的触点, 只留下最后一个真正停留的触点即可.</li>
+</ul>
+<p>在输入内容太多的情况下<code>throttle(_:scheduler:)</code>是非常有用的, 因为它可以让我们减少很多不必要的浪费的资源.</p>
+<p>现在, 我们已经完成了<strong>Combinestagram</strong>最后的部分, 也对最后的过滤操作符做了一个简单的介绍.</p>
+<p>在本章中, 我们讲了另外一个课题, 就是基于时间的操作符, 虽然现在还没有深入了解, 但是不用担心, 随着我们深入学习就会了解的越来越多, 并且<strong>RxSwift</strong>本身就是一个基于异步事件的框架, 所以我们在学习完之后就会发现这个这些时间操作符还可以做更多的事情.</p>
+<p>在我们继续下一步之前, 花点时间回顾一下我们在本章里学习到的所有代码, 以及它是如何简化了我们必须处理的一些常用异步编程的问题.</p>
+<h2 id="挑战"><a href="#挑战" class="headerlink" title="挑战"></a>挑战</h2><h3 id="挑战-Cinbinestagram的源码"><a href="#挑战-Cinbinestagram的源码" class="headerlink" title="挑战: Cinbinestagram的源码"></a>挑战: Cinbinestagram的源码</h3><p>我们这次挑战就是, 清理项目中可以被清除的代码, 找到<strong>MainViewController.swift</strong>中的<code>viewDidLoad()</code>最后两个<strong>Observable</strong>, 通过使用<strong>share</strong>来代替他们.</p>
+<p>此外, 我们查看一下所有的订阅, 并决定哪些操作符可以替换成更好的, 甚至还可以删掉它们.</p>
+<p>如果你还想有额外的任务, 那么可以完善一下点击<strong>clear</strong>按钮时导航栏的预览不被清除的问题.</p>
+<p>现在我们来放松一下, 不要把自己逼的太紧, 如果你想一次性的把所有的操作符都弄懂那会非常累的, 等你准备好了, 那就继续进入下一章, 在那里我们会学习更多有意思的操作符.</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#改进Combinestagram项目"><span class="toc-number">1.</span> <span class="toc-text">改进Combinestagram项目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#细化照片的序列"><span class="toc-number">1.1.</span> <span class="toc-text">细化照片的序列</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分享订阅"><span class="toc-number">2.</span> <span class="toc-text">分享订阅</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#忽略所有的元素"><span class="toc-number">2.1.</span> <span class="toc-text">忽略所有的元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#过滤不需要的元素"><span class="toc-number">2.2.</span> <span class="toc-text">过滤不需要的元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实现防止图片重复的过滤器"><span class="toc-number">2.3.</span> <span class="toc-text">实现防止图片重复的过滤器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取满足条件的元素"><span class="toc-number">2.4.</span> <span class="toc-text">获取满足条件的元素</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#改进图片选择器"><span class="toc-number">3.</span> <span class="toc-text">改进图片选择器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PHPhotoLibrary授权的Observable"><span class="toc-number">3.1.</span> <span class="toc-text">PHPhotoLibrary授权的Observable</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#当用户拒绝授权则提示错误消息"><span class="toc-number">3.2.</span> <span class="toc-text">当用户拒绝授权则提示错误消息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#尝试基于时间的Filter操作符"><span class="toc-number">4.</span> <span class="toc-text">尝试基于时间的Filter操作符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#在给定的时间间隔后完成订阅"><span class="toc-number">4.1.</span> <span class="toc-text">在给定的时间间隔后完成订阅</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用节流方式来减少高负载订阅"><span class="toc-number">4.2.</span> <span class="toc-text">使用节流方式来减少高负载订阅</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#挑战"><span class="toc-number">5.</span> <span class="toc-text">挑战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#挑战-Cinbinestagram的源码"><span class="toc-number">5.1.</span> <span class="toc-text">挑战: Cinbinestagram的源码</span></a></li></ol></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

@@ -1,0 +1,413 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RxSwift：11.Combining Operators in Practice - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="时机就是一切, 响应式编程的核心思想就是对异步数据流随时间建模, 在这方面, RxSwift提供了一系列的操作符允许我们处理时间以及随时间变化和转换的序列, 在本章中将会介绍到, 管理序列的时间维度,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">RxSwift：11.Combining Operators in Practice</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">RxSwift：11.Combining Operators in Practice</h1>
+        <div class="stuff">
+            <span>八月 19, 2019</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/RxSwift/">RxSwift</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>时机就是一切, 响应式编程的核心思想就是对异步数据流随时间建模, 在这方面, <strong>RxSwift</strong>提供了一系列的操作符允许我们处理时间以及随时间变化和转换的序列, 在本章中将会介绍到, 管理序列的时间维度既简单又直观.</p>
+<p>要了解基于时间的操作符, 我们将使用一个动画的<strong>Playground</strong>来练习, 该<strong>Playground</strong>非常直观的演示数据时如何随时间而流动, 这一章我们会有一个空的<strong>RxSwiftPlayground</strong>, 分成几个页面, 我们会在每个页面来练习单个或者多个的相关操作符, 这个<strong>Playground</strong>还包括一些现成的一些类, 这些类方便我们来构建示例.</p>
+<blockquote>
+<p>注意: 该项目使用的是由<strong>Ray Wenderlich</strong>提供的.</p>
+</blockquote>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>首先我们打开<strong>macOS</strong>的终端, 然后去到本章的<strong>starter</strong>文件夹, 然后使用下面的命令去引导脚本:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bootstrap.<span class="keyword">sh</span></span><br></pre></td></tr></table></figure>
+
+<p>为了让我们可以实时的看到效果, 我们需要打开<strong>Xcode</strong>的助理编辑器, 点击<strong>Xcode</strong>右上角有两个圈圈的按钮, 选择你喜欢显示的位置即可:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2011/1.png" alt="图片"> </p>
+<p>助理编辑器通常都会显示一个我们正在编辑的文件, 也是为了我们可以知道现在所编辑的效果:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2011/2.png" alt="图片"></p>
+<p>我们还需要确保在我们输入任何内容后都可以在助理编辑器中自动显示, 长按底部的”三角”按钮, 确保选择的是<strong>Automatically Run</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2011/3.png" alt="图片"></p>
+<p>这个时候, 我们在左侧栏的导航窗口里选择名为<strong>replay</strong>的页面, 然后你可以选择显示或隐藏掉该导航界面:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2011/4.png" alt="图片"></p>
+<p>现在我们要做的准备工作都差不多了, 是时候进入学习阶段了, 第一个要学习的是: <strong>buffering</strong>操作符.</p>
+<blockquote>
+<p>注意: 目前的<strong>Xcode</strong>不完全支持<strong>Common Sources</strong>子文件夹中的文件导入我们所需要依赖的框架, 所以我们需要在每个<strong>Playground</strong>页面中都需要写一段代码才能够正常运行, 这个可以忽略掉.</p>
+</blockquote>
+<h2 id="Buffering操作符"><a href="#Buffering操作符" class="headerlink" title="Buffering操作符"></a>Buffering操作符</h2><p>第一组用于时间的操作符叫做<strong>buffering</strong>, 它会向新的订阅者重新发送过去的元素, 或者它们缓冲元素后并以特定的形式发出, 我们可以控制如何以及何时去发送.</p>
+<h3 id="重新发送过去的元素"><a href="#重新发送过去的元素" class="headerlink" title="重新发送过去的元素"></a>重新发送过去的元素</h3><p>如果我们希望当序列发出时, 需要确保未来的订阅者接收到一些或者所有过去的元素, 那么<code>replay(_:)</code>和<code>replayAll()</code>操作符就可以满足我们的需求.</p>
+<p>为了学习怎么样使用它们, 我们将开始在<strong>replay playground</strong>中编写代码, 并且可以在助理编辑器看到相应的效果,在我们的<strong>Playground</strong>工程中, 包含了一些我们用得上的自定义类, 它可以帮助我们来实现动画效果.</p>
+<p>首先我们要添加一些常量:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> elementsPerSecond = <span class="number">1</span></span><br><span class="line"><span class="keyword">let</span> maxElements = <span class="number">5</span></span><br><span class="line"><span class="keyword">let</span> replayedElements = <span class="number">1</span></span><br><span class="line"><span class="keyword">let</span> replayDelay: <span class="type">TimeInterval</span> = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>我们将使用<strong>elementsPerSecond</strong>作为发出元素的频率, 然后创建一个<strong>Observable</strong>对象, 并且我们还会限制发出元素的总数, 还控制需要重新发送多少个元素给新的订阅者, 现在我们用<code>Observable.create</code>实现我们的需求:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> sourceObservable = <span class="type">Observable</span>&lt;<span class="type">Int</span>&gt;.create &#123; observable <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">var</span> value = <span class="number">1</span></span><br><span class="line">    <span class="keyword">let</span> timer = <span class="type">DispatchSource</span></span><br><span class="line">        .timer(interval: <span class="number">1.0</span> / <span class="type">Double</span>(elementsPerSecond),</span><br><span class="line">               queue: .main, handler: &#123;</span><br></pre></td></tr></table></figure>
+
+<p><code>DispatchSource.timer</code>函数式我们在<strong>Playground</strong>的<strong>Sources</strong>文件夹中自定义扩展方法, 它可以帮助我们简化创建计时器, 现在我们继续添加下面的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">                <span class="keyword">if</span> value &lt;= maxElements &#123;</span><br><span class="line">                    observable.onNext(value)</span><br><span class="line">                    value += <span class="number">1</span></span><br><span class="line">                &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="type">Disposables</span>.create &#123;</span><br><span class="line">        timer.suspend()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里我们并不关心<strong>Observable</strong>对象是否会完成, 我们只想看到它尽可能的发出更多的元素.</p>
+<p>现在我们将通过<code>replay(_:)</code>函数来实现我们要的效果, 将下面的代码添加到<strong>Observable</strong>对象的末尾中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.replay(replayedElements)</span><br></pre></td></tr></table></figure>
+
+<p>这个操作符创建了一个新的序列, 而这个序列则是记录了源<strong>Observable</strong>最后发出的一个元素, 每当有新的订阅者订阅了该<strong>Observable</strong>, 那么就会立刻收到该元素, 并且可以像普通的观察者一样不断的接收任何新的元素.</p>
+<p>为了可以直观的看到<code>replay(_:)</code>的想过, 我们将会创建几个<strong>TimelineView</strong>的视图, 这个类定义在最底部, 它依赖于<strong>Playground Sources</strong>中的<strong>TimelineViewBase</strong>类, 现在我们添加下面的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> sourceTimeLine = <span class="type">TimelineView</span>&lt;<span class="type">Int</span>&gt;.make()</span><br><span class="line"><span class="keyword">let</span> replayedTimeline = <span class="type">TimelineView</span>&lt;<span class="type">Int</span>&gt;.make()</span><br></pre></td></tr></table></figure>
+
+<p>为了方便布局, 我们将使用<strong>UIStackView</strong>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> stack = <span class="type">UIStackView</span>.makeVertical([</span><br><span class="line">    <span class="type">UILabel</span>.makeTitle(<span class="string">"replay"</span>),</span><br><span class="line">    <span class="type">UILabel</span>.make(<span class="string">"Emit \(elementsPerSecond) per second:"</span>),</span><br><span class="line">    sourceTimeline,</span><br><span class="line">    <span class="type">UILabel</span>.make(<span class="string">"Replay \(replayedElements) after \(replayDelay) sec:"</span>),</span><br><span class="line">    replayedTimeline])</span><br></pre></td></tr></table></figure>
+
+<p>这看起来好像很复杂似的, 其实我们只是初始化了一些<strong>UIKit</strong>的控件, 并添加到<strong>UIStackView</strong>中, 而<code>UIStackView.makeVertical(_:)</code>和<code>UILabel.make(_:)</code>也是由<strong>Playground Sources</strong>里的扩展方法.</p>
+<p>接下来, 我们需要准备一个订阅的容器, 并在最顶部的时间轴中显示它接收到的内容:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">_</span> = sourceObservable.subscribe(sourceTimeline)</span><br></pre></td></tr></table></figure>
+
+<p>由于<strong>TimelineView</strong>类实现了<strong>RxSwift</strong>中的<strong>ObserverType</strong>协议, 因此我们可以直接将它添加到<code>subscribe</code>操作符中, 它将会接收到序列发出的事件, 每当有新的事件产生时(无论是元素的发出, 或者是停止事件), <strong>TimelineView</strong>都会将它显示到时间轴上, 这里我们使用了一些颜色来区分, 发出元素为绿色, 发出完成事件为黑色, 发出错误事件为红色.</p>
+<blockquote>
+<p>注意: 在这里你是否有注意到我们的代码中并没有<strong>DisposeBag</strong>, 因为我们这个示例并没有刻意的去使用它们, 因为当<strong>Playground</strong>页面刷新时就会删除掉所有的内容, 所以这里没有必要使用, 但是记住, 在正常开发中, 最好是显式声明<strong>DisposeBag</strong>并使用它.</p>
+</blockquote>
+<p>接下来, 我们希望刻意再次订阅这个源<strong>Observable</strong>, 但是会有一个延迟的时间:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">DispatchQueue</span>.main.asyncAfter(deadline: .now() + replayDelay) &#123;</span><br><span class="line">    <span class="number">_</span> = sourceObservable.subscribe(replayedTimeline)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是另一个时间轴, 它将会显示第二次接收到的元素, 很快我们就会看到实际的效果了.</p>
+<p>因为<code>replay(_:)</code>创建了一个<strong>可连接的Observable对象</strong>, 我们现在需要做的是将它和其它链接在一起就可以开始接收了, 如果我们没有做这一个步骤, 那么将永远接收不到任何东西.</p>
+<blockquote>
+<p>注意: 可连接的<strong>Observable</strong>对象是一个特殊的类, 无论有多少个订阅者去订阅它, 只要不调用<code>connect()</code>方法, 它永远都不会发送任何东西, 虽然这个知识点已经超出了现在我们所学的知识, 但是我们还得注意一下一些操作符返回的是<code>ConnectableObservable&lt;E&gt;</code>而不是<code>Observable&lt;E&gt;</code>, 这些操作符是:</p>
+<ul>
+<li><code>replay(_)</code></li>
+<li><code>replayAll()</code></li>
+<li><code>multicast(_)</code></li>
+<li><code>publish()</code></li>
+</ul>
+<p>本章我们只讨论<code>replay(_)</code>操作符, 而最后两个是属于高级操作符, 之后我们将会简单介绍一下, 它们允许对一个<strong>Observable</strong>对象共享一个订阅, 并不需要去管观察者的数量.</p>
+</blockquote>
+<p>将下面的链接代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">_</span> = sourceObservable.connect()</span><br></pre></td></tr></table></figure>
+
+<p>最后, 我们需要将<strong>UI</strong>界面显示出来, <strong>Playground</strong>这个功能非常实用, 它可以保证我们的代码简洁:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> hostView = setupHostView()</span><br><span class="line"></span><br><span class="line">hostView.addSubview(stack)</span><br><span class="line">hostView</span><br></pre></td></tr></table></figure>
+
+<p>写完这些代码字后, <strong>Xcode</strong>将会重新编译<strong>Playground</strong>, 然后在助理编辑器中就会有一个非常直观的动画出现.</p>
+<p>现在我们将会看到两条时间线, 顶部的时间轴反应了我们对<strong>sourceObservable</strong>的订阅, 底部的时间轴则是我们延迟订阅的时间轴, 为了简单起见, 我们只使用了数字的方式呈现发出的元素, 通过这种方式, 我们可以看到发出元素的进程了.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2011/5.png" alt="图片"></p>
+<p>由于每个人的电脑性能不一样, 你可能需要在更改完<strong>Playground</strong>之后等待一段时间才能看到直观的效果, 这是<strong>Xcode</strong>的一个不好的地方.</p>
+<blockquote>
+<p>注意: 当我们看到实际的效果时可能会非常的兴奋, 但一开始可能会混淆, 静态的时间轴元素通常都是在左边, 但如果你仔细想想, 它们有新元素时则会在右边, 就像我们看到的效果一样.</p>
+</blockquote>
+<p>在我们现在的配置中, <strong>replayedElements</strong>等于<strong>1</strong>, 它将用于<code>replay(_:)</code>操作符来缓冲来自源<strong>Observable</strong>对象的最后一个元素. 我们在动画时间轴上看到, 第二个订阅者大概在相同的延迟时间内接收到元素<strong>3</strong>和元素<strong>4</strong>.</p>
+<p>在订阅时, 它将获得最新的缓冲区<code>element(3)</code>的元素, 恰好在订阅时发出缓冲区的数据, 它们到达的时间大致相同, 所以它们堆叠在一起.</p>
+<blockquote>
+<p>注意: 现在我们可以使用<strong>replayDelay</strong>和<strong>replayedeElements</strong>常量来调整<strong>buffered</strong>重新发送的元素数量和效果, 还可以使用<strong>maxElements</strong>来调整源<strong>Observable</strong>对象发出元素的总数, 将它设置为一个很大的数值, 用于连续发出元素.</p>
+</blockquote>
+<h3 id="无限重发"><a href="#无限重发" class="headerlink" title="无限重发"></a>无限重发</h3><p>我们现在可以来试试第二个重发操作符<code>replayAll()</code>, 但是这个方法我们需要慎重使用, 因为这个方法会缓冲所有的元素, 如果元素太多了, 那么就会直接撑爆内存, 比如我们在<strong>HTTP</strong>请求上下文中使用<code>replayAll()</code>是没有问题的, 因为我们知道保留的数据大概会占用多少内存, 另一方面, 如果我们使用在<strong>Observable</strong>上, 那么<code>replayAll()</code>可能不会终止, 并且可能会产生大量的数据, 这样子也会很快阻塞内存, 这个时候<strong>iOS</strong>就会结束掉你的应用程序了.</p>
+<p>现在我们就将下面的代码替换成<code>replayAll()</code>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.replay(replayedElements)</span><br></pre></td></tr></table></figure>
+
+<p>替换完成之后, 我们就可以立马看到时间轴上的效果, 这个时候就可以看到第二次订阅立刻发出所有的缓冲元素.</p>
+<h3 id="控制缓冲"><a href="#控制缓冲" class="headerlink" title="控制缓冲"></a>控制缓冲</h3><p>现在我们已经接触过可重新发送的序列, 现在我们可以看看更高级的课题: <strong>控制缓冲</strong>, 首先我们来看看<code>buffer(timeSpan:count:scheduler:)</code>操作符, 将现在的页面切换到名为<strong>buffer</strong>的<strong>Playground</strong>, 与前面的例子一样, 我们将添加一些常量:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> bufferTimeSpan: <span class="type">RxTimeInterval</span> = <span class="number">4</span></span><br><span class="line"><span class="keyword">let</span> bufferMaxCount = <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>我们定义了这些常量是用来添加到操作符中, 用来控制操作符的行为, 现在我们来添加一个<strong>Subject</strong>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> sourceObservable = <span class="type">PublishSubject</span>&lt;<span class="type">String</span>&gt;()</span><br></pre></td></tr></table></figure>
+
+<p>我们讲一个短的字符串发送到这个<strong>Observable</strong>中, 像之前一样创建时间轴和<strong>UIStackView</strong>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> sourceTimeline = <span class="type">TimelineView</span>&lt;<span class="type">String</span>&gt;.make()</span><br><span class="line"><span class="keyword">let</span> bufferedTimeline = <span class="type">TimelineView</span>&lt;<span class="type">Int</span>&gt;.make()</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> stack = <span class="type">UIStackView</span>.makeVertical([</span><br><span class="line">    <span class="type">UILabel</span>.make(<span class="string">"buffer"</span>),</span><br><span class="line">    <span class="type">UILabel</span>.make(<span class="string">"Emitted elements:"</span>)</span><br><span class="line">    sourceTimeline,</span><br><span class="line">    <span class="type">UILabel</span>.make(<span class="string">"Buffered elements (at most \(bufferMaxCount) every \(bufferTimeSpan) seconds:"</span>),</span><br><span class="line">    bufferedTimeline</span><br><span class="line">    ])</span><br></pre></td></tr></table></figure>
+
+<p>现在我们就来订阅一下这个<strong>sourceTimeline</strong>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">_</span> = sourceObservable.subscribe(sourceTimeline)</span><br></pre></td></tr></table></figure>
+
+<p>接下来我们来订阅所要发出元素的时间轴:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sourceObservable.buffer(timeSpan: bufferTimeSpan, <span class="built_in">count</span>: bufferMaxCount, scheduler: <span class="type">MainScheduler</span>.instance)</span><br><span class="line">    .<span class="built_in">map</span> &#123; $<span class="number">0</span>.<span class="built_in">count</span> &#125;</span><br><span class="line">    .subscribe(bufferedTimeline)</span><br></pre></td></tr></table></figure>
+
+<p>我们来分解一下这里代码:</p>
+<ul>
+<li>我们希望可以从源<strong>Observable</strong>中接收到元素数组</li>
+<li>然后我们限制每个数组最多可以容纳<strong>bufferMaxCount</strong></li>
+<li>如果在我们限定的<strong>bufferTimeSpan</strong>时间里收到了指定个数的元素, 那么操作符将会发出这些元素然后重置计时器.</li>
+<li>如果在限定的<strong>bufferTimeSpan</strong>时间里没有收到任何元素, 那么<strong>buffer</strong>就会发出一个空的数组.</li>
+</ul>
+<p>现在我们来看看动画图, 将下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> hostView = setupHostView()</span><br><span class="line"></span><br><span class="line">hostView.addSubview(stack)</span><br><span class="line">hostView</span><br></pre></td></tr></table></figure>
+
+<p>由于现在的源<strong>Observable</strong>对象没有发出任何东西, 所以我们可以看到动画图中是空的, 也是刚刚所说的那样, 如果<code>buffer(_:scheduler:)</code>操作符的源<strong>Observable</strong>对象没有接收到任何数据, 那么就会发出空的数组, 这的<strong>0</strong>就是代表着没有元素.</p>
+<p>现在我们来添加一下元素, 先来尝试一下在<strong>5</strong>秒之后发出三个元素:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">DispatchQueue</span>.main.asyncAfter(deadline: .now() + <span class="number">5</span>) &#123;</span><br><span class="line">    sourceObservable.onNext(<span class="string">"🐱"</span>)</span><br><span class="line">    sourceObservable.onNext(<span class="string">"🐱"</span>)</span><br><span class="line">    sourceObservable.onNext(<span class="string">"🐱"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在我们就可以看到时间轴是怎么运动的了:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2011/6.png" alt="图片"></p>
+<p>我们可以来解释一下:</p>
+<ul>
+<li>首先, 缓冲的时间轴会发出一个空的数组, 因为这个时候还没有接收到元素</li>
+<li>然后, <strong>Observable</strong>会发出三个元素.</li>
+<li>这个时候缓冲的时间轴会立即得到有两个元素的数组, 因为我们限制了最大元素个数</li>
+<li>等到时间过去后, 这个时候会有一个元素个数为<strong>1</strong>的数组发出, 因为前面的三个元素有一个被推到后面来了</li>
+</ul>
+<p>像我们看到的, 当缓冲区达到满载时就会发出一个元素的数组, 然后等待开始计时, 或者是等到元素再次满载时才会发出一个新的数组.</p>
+<p>我们可以在不同的场景下多实现, 将刚才的代码注释掉, 并添加下面的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> elementsPerSecond = <span class="number">0.7</span></span><br><span class="line"><span class="keyword">let</span> timer = <span class="type">DispatchSource</span>.timer(interval: <span class="number">1.0</span> / <span class="type">Double</span>(elementsPerSecond), queue: .main) &#123;</span><br><span class="line">    sourceObservable.onNext(<span class="string">"🐱"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个时候时间轴就会以另一个不同的形式呈现了, 和前面的例子一样, 我们可以调整缓冲的时间, 数量, 发出的元素个数来看看时间轴将会如何呈现效果.</p>
+<h3 id="Observable的缓冲窗口"><a href="#Observable的缓冲窗口" class="headerlink" title="Observable的缓冲窗口"></a>Observable的缓冲窗口</h3><p>最后一个操作符和<code>buffer(timeSpan:count:scheduler:)</code>非常相似, 它有一样的接收参数, 工作原理也非常的相似, 唯一不一样的地方就是它发出的是元素, 而不是数组, 它就是<code>window(timeSpan:count:scheduler:)</code></p>
+<p>这一次我们来构建一个稍微比较复杂一点的时间轴, 由于<strong>window</strong>会发出多个<strong>value</strong>, 所以我们将它们拆分开来显示会比较直观, 现在我们从名为<strong>window</strong>的页面开始:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> elementsPerSecond = <span class="number">3</span></span><br><span class="line"><span class="keyword">let</span> windowTimeSpan: <span class="type">RxTimeInterval</span> = <span class="number">4</span></span><br><span class="line"><span class="keyword">let</span> windowMaxCount = <span class="number">10</span></span><br><span class="line"><span class="keyword">let</span> sourceObservable = <span class="type">PublishSubject</span>&lt;<span class="type">String</span>&gt;()</span><br></pre></td></tr></table></figure>
+
+<p>接下来, 我们将使用<strong>Subject</strong>来发送字符串, 然后定时的分组到<strong>window</strong>中, 和之前一样, 我们先来添加<strong>UIKit</strong>的控件:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> sourceTimeline = <span class="type">TimelineView</span>&lt;<span class="type">String</span>&gt;.make()</span><br><span class="line"><span class="keyword">let</span> stack = <span class="type">UIStackView</span>.makeVertical([</span><br><span class="line">    <span class="type">UILabel</span>.makeTitle(<span class="string">"window"</span>),</span><br><span class="line">    <span class="type">UILabel</span>.make(<span class="string">"Emitted elements (\(elementsPerSecond) per sec.):"</span>),</span><br><span class="line">    sourceTimeline,</span><br><span class="line">    <span class="type">UILabel</span>.make(<span class="string">"Windowed observables (at most \(windowMaxCount) every \(windowTimeSpan) sec):"</span>)</span><br><span class="line">    ])</span><br></pre></td></tr></table></figure>
+
+<p>这次我们使用一个定时器来将元素发送到源<strong>Observable</strong>中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> timer = <span class="type">DispatchSource</span>.timer(interval: <span class="number">1.0</span> / <span class="type">Double</span>(elementsPerSecond), queue: .main) &#123;</span><br><span class="line">    sourceObservable.onNext(<span class="string">"🐱"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后我们现在来订阅时间轴:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">_</span> = sourceObservable.subscribe(sourceTimeline)</span><br></pre></td></tr></table></figure>
+
+<p>现在我们将会看到每次发出的元素都是一个<strong>Observable</strong>, 为此, 每当<code>window(timeSpan:count:scheduler:)</code>发出一个新的<strong>Observable</strong>对象时, 我们都会插入一个新的时间轴, 那么之前的时间轴就会下移:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">_</span> = sourceObservable.window(timeSpan: windowTimeSpan, <span class="built_in">count</span>: windowMaxCount, scheduler: <span class="type">MainScheduler</span>.instance)</span><br></pre></td></tr></table></figure>
+
+<p>上面是使用了<strong>window</strong>操作符之后得到的所有<strong>Observable</strong>, 那么接下来我们需要使用<code>flatMap(_:)</code>操作符来获得<strong>Observable</strong>发出的元素, 将下面的代码添加到<strong>window</strong>操作符的后面:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">_</span> = sourceObservable.window(timeSpan: windowTimeSpan, <span class="built_in">count</span>: windowMaxCount, scheduler: <span class="type">MainScheduler</span>.instance)</span><br><span class="line">    .flatMap &#123; windowedObservable -&gt; <span class="type">Observable</span>&lt;(<span class="type">TimelineView</span>&lt;<span class="type">Int</span>&gt;, <span class="type">String?</span>)&gt; <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">let</span> timeline = <span class="type">TimelineView</span>&lt;<span class="type">Int</span>&gt;.make()</span><br><span class="line"></span><br><span class="line">    stack.insert(timeline, at: <span class="number">4</span>)</span><br><span class="line">    stack.keep(atMost: <span class="number">8</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> windowedObservable</span><br><span class="line">        .<span class="built_in">map</span>&#123; value <span class="keyword">in</span> (timeline, value) &#125;</span><br><span class="line">        .concat(<span class="type">Observable</span>.just((timeline, <span class="literal">nil</span>)))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里的代码有一些复杂, 我们来解释一下:</p>
+<ul>
+<li>每当<code>flatMap(_:)</code>获得一个新的<strong>Observable</strong>对象时, 我们将插入一个新的时间轴到<strong>UIStackView</strong></li>
+<li>然后将得到的<strong>Observable</strong>元素转换为元组, 我们的目标是要同时将它的值和时间轴一起发出</li>
+<li>一旦这个内部<strong>Observable</strong>对象完成了之后, 我们将使用<code>concat(_:)</code>来链接一个元组, 这样子我们就可以将时间轴标记已完成了</li>
+<li><code>flatMap(_:)</code>将<strong>Observable</strong>的元组结果转换为一个元组的序列</li>
+<li>订阅<strong>Observable</strong>对象的结果, 并在接收到元组时就填充到时间轴上</li>
+</ul>
+<blockquote>
+<p>注意: 为了保持我们的代码简单, 我们做了一些<strong>Rx</strong>中不建议使用的方式, 我们正在向一个本应该只转转数据的操作符添加了副作用, 正确的姿势应该是使用<code>do(onNext:)</code>来执行副作用, 这将会在本章的挑战中改善.</p>
+</blockquote>
+<p>最后我们需要订阅和显示每一个时间轴中的元素, 由于我们将元素映射到它们所属的实际时间轴上, 所以这个很简单, 将下面的代码连接到上面的代码尾部:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.subscribe(onNext: &#123; tuple <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">let</span> (timeline, value) = tuple</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> value = value &#123;</span><br><span class="line">        timeline.add(.next(value))</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        timeline.add(.completed(<span class="literal">true</span>))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>这里我们判断了一下元素是否有值, 如果有就发出元素, 否则就结束该序列, 现在我们来看看实际的动画效果:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> hostView = setupHostView()</span><br><span class="line"></span><br><span class="line">hostView.addSubview(stack)</span><br><span class="line">hostView</span><br></pre></td></tr></table></figure>
+
+<p>现在我们在<strong>Playground</strong>中就看到实际的效果了, 这里有一个很有趣的效果, 因为<strong>window</strong>操作符的原因, 所以这里会持续发出新的序列:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2011/7.png" alt="图片"></p>
+<p>从第二个时间轴开始, 我们将会看到最新的时间轴都会排在第一个, 上面的截图是我们设置了<strong>window</strong>最大值为<strong>5</strong>, 以及每<strong>4</strong>秒就调用则调用<strong>window</strong>操作符, 这就意味着至少<strong>4</strong>秒钟就会产生一个新的<strong>Observable</strong>对象, 然后在完成之前将会发出<strong>5</strong>个元素.</p>
+<p>如果源<strong>Observable</strong>对象在<strong>window</strong>操作符限制的事件内发出<strong>4</strong>个以上的元素, 就会产生一个新的<strong>Observable</strong>对象, 然后再次循环.</p>
+<h2 id="Time-shifting操作符"><a href="#Time-shifting操作符" class="headerlink" title="Time-shifting操作符"></a>Time-shifting操作符</h2><p>通过几个示例, 我们知道了<strong>Buffering</strong>操作符的作用, 它可以重发过去的元素, 那么当有对应的场景需要延迟多少时间再订阅, 这该怎么办呢?</p>
+<p><strong>RxSwift</strong>也考虑到了这个问题, 所以也有对应的操作符, 现在我们打开名为<strong>delay</strong>的页面, 将从这个示例来讲解.</p>
+<h3 id="延迟订阅"><a href="#延迟订阅" class="headerlink" title="延迟订阅"></a>延迟订阅</h3><p>我们第一个要学习的操作符为<code>delaySubscription(_:scheduler:)</code>, 由于我们之前所需要写的代码太多了, 没法专注于核心内容, 现在这个界面已经为我们剩下写<strong>UI</strong>的代码, 让我们只专注于操作符的学习中.</p>
+<p>找到文件里设置延迟的注释, 然后将下面的代码添加进去:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">_</span> = sourceObservable</span><br><span class="line">    .delaySubscription(delayInSeconds, scheduler: <span class="type">MainScheduler</span>.<span class="keyword">init</span>())</span><br><span class="line">    .subscribe(delayTimeline)</span><br></pre></td></tr></table></figure>
+
+<p><code>delaySubscription(_:scheduler:)</code>顾名思义就是延迟订阅者从订阅中获取元素, 从正在运行的<strong>Playground</strong>动画效果来看, 第二个时间轴就是我们使用<strong>delaySubscription</strong>操作符指定的延迟时间后开始获取到的元素:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2011/8.png" alt="图片"></p>
+<blockquote>
+<p>注意: 在<strong>Rx</strong>的概念中, 有一些<strong>Observable</strong>被称为<strong>冷信号</strong>, 而另一些则被称为<strong>热信号</strong>, 当我们订阅<strong>冷Observable</strong>时, 它们就会开始发出元素, 而<strong>热Observable</strong>对象更像是我们在某个时刻会遇到, 比如<strong>iOS</strong>的<strong>Notification</strong>. 当延迟订阅时, 如果<strong>Observable</strong>对象是冷的, 那么就不会有啥变化, 如果是热的话, 那就会跳过一些元素, 就和本示例一样.</p>
+<p>冷和热的<strong>Observable</strong>是一个比较繁琐的话题, 有时候还会混淆, 这里有个小提示, 冷的<strong>Observable</strong>是在订阅时就会生成事件, 而热的<strong>Observable</strong>对象则是在订阅之后再根据某些条件来生成事件.</p>
+</blockquote>
+<h3 id="延迟元素"><a href="#延迟元素" class="headerlink" title="延迟元素"></a>延迟元素</h3><p><strong>RxSwift</strong>的另一个延迟操作符允许我们队整个序列进行时间的移位, 什么意思呢? 意思就是订阅是正常的订阅, 但是订阅后获得的<strong>Observable</strong>元素将会在指定的延迟时间后发出.</p>
+<p>现在我们来尝试一下, 将刚才的代码替换为下面的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">_</span> = sourceObservable.delay(delayInSeconds, scheduler: <span class="type">MainScheduler</span>.instance)</span><br><span class="line">    .subscribe(delayedTimeline)</span><br></pre></td></tr></table></figure>
+
+<p>代码是非常的类似, 但是我们刚刚使用<code>delay(_:scheduler:)</code>替换了<code>delaySubscription(_:scheduler:)</code>, 现在看看实际的效果:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2011/9.png" alt="图片"></p>
+<p>在前面的例子中, 我们使用延迟订阅会使错过<strong>Observable</strong>中的前两个元素, 当使用<code>delay(_:scheduler:)</code>操作符时, 我们对元素进行了时间移位, 不会遗漏任何元素, 虽然订阅是立即发生的.</p>
+<h2 id="Time操作符"><a href="#Time操作符" class="headerlink" title="Time操作符"></a>Time操作符</h2><p>我们在开发应用程序的时候, 经常会使用到计时器, <strong>iOS</strong>和<strong>macOS</strong>都提供了几种计时器的解决方案, 虽然<strong>Timer</strong>可以满足需求, 但是它的设计的权限让会让我们觉得很困惑, 这让它非常的不好用, 最近<strong>RxSwift</strong>有一个分支提供了另一个解决方案, 这是比传统的<strong>Timer</strong>更好解决方案, 虽然所提供的<strong>API</strong>会有一些复杂, 但是可以通过后期进行封装, 就像<strong>Playground</strong>里一样.</p>
+<p><strong>RxSwift</strong>为一次性和重复的计时器提供了一个简单而有效的解决方案, 它能够和<strong>Observable</strong>完美的集成在一起, 并提供了和其他序列的抵消和组合性.</p>
+<h3 id="时间间隔"><a href="#时间间隔" class="headerlink" title="时间间隔"></a>时间间隔</h3><p>在本章中, 我们多次使用了<strong>DispatchSource</strong>封装的函数来创建间隔计时器, 现在我们可以使用<strong>RxSwift</strong>的解决方案<code>Observable.interval(_:scheduler:)</code>来替换这些代码.</p>
+<p>它会生成一个<strong>Int</strong>类型无限的<strong>Observable</strong>序列(实际上就是一个计时器), 然后再指定的调度程序上间隔的发出.</p>
+<p>回到<strong>replay</strong>的页面, 之前我们在创建<strong>Observable</strong>对象的内部使用了<code>DispatchSource.timer(interval:queue:)</code>来创建一个计时器, 并向观察者提供计数.</p>
+<p>现在我们删掉这段代码, 用下面的代码来代替:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> sourceObservable = <span class="type">Observable</span>&lt;<span class="type">Int</span>&gt;</span><br><span class="line">    .interval(<span class="type">RxTimeInterval</span>(<span class="number">1.0</span> / <span class="type">Double</span>(elementsPerSecond)), scheduler: <span class="type">MainScheduler</span>.instance)</span><br><span class="line">    .replay(replayedElements)</span><br></pre></td></tr></table></figure>
+
+<p>然后<strong>Playground</strong>就会再次刷新运行, 效果和之前是一模一样, 而代码则简洁了非常多.</p>
+<p>使用<strong>RxSwift</strong>的计时器不仅很容易创建, 还非常容易取消, 因为<code>Observable.interval(_:scheduler:)</code>生成的是一个<strong>Observable</strong>序列, 所以我们可以简单的使用<code>dispose()</code>来取消订阅并停止计时器.</p>
+<p>有一点我们需要注意一下, 第一个值是我们在订阅<strong>Observable</strong>序列后的指定时间内发出的, 这个时候计时器是不会启动的, 真正驱动计时器是我们订阅了它, 订阅才是启动它的触发器.</p>
+<blockquote>
+<p>注意: 我们在时间轴图里看到<code>Observable,interval(_:scheduler:)</code>发出的值是从<strong>0</strong>开始的, 如果不需要, 我们可以简单的使用<code>map(_:)</code>操作符过滤一下. 在大多数情况下, 计时器发出的值都会被我们忽略掉, 只是它可以作为一个简单的索引.</p>
+</blockquote>
+<h3 id="一次性或重复计时器"><a href="#一次性或重复计时器" class="headerlink" title="一次性或重复计时器"></a>一次性或重复计时器</h3><p>如果你想要一个更加强大的计时器<strong>Observable</strong>, 那么你可以选择<code>Observable.timer(_:period:scheduler:)</code>, 它和之前的<code>Observable.interval(_:scheduler:)</code>很像, 但是添加了下面的特性:</p>
+<ul>
+<li>我们可以指定时间作为发出第一个值</li>
+<li>我们还可以设置重复周期, 如果我们不指定的话, 那么计时器<strong>Observable</strong>发出一次之后就会完成了</li>
+</ul>
+<p>回到<strong>Playground</strong>, 打开<strong>delay</strong>页面, 找到我们之前使用<code>delay(_:scheduler:)</code>操作符的地方, 然后用下面的代码将它全部替换:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">_</span> = <span class="type">Observable</span>&lt;<span class="type">Int</span>&gt;.timer(<span class="number">3</span>, scheduler: <span class="type">MainScheduler</span>.instance)</span><br><span class="line">    .flatMap &#123; <span class="number">_</span> <span class="keyword">in</span></span><br><span class="line">        sourceObservable.delay(<span class="type">RxTimeInterval</span>(delayInSeconds), scheduler: <span class="type">MainScheduler</span>.instance)</span><br><span class="line">&#125;</span><br><span class="line">    .subscribe(delayedTimeline)</span><br></pre></td></tr></table></figure>
+
+<p>这是由一个计时器去触发另一个计时器, 使用这种调度有几个好的地方:</p>
+<ul>
+<li>整个链接链更具有可读性</li>
+<li>由于我们使用<strong>disposeBag</strong>, 所以我们可以在第一个或者是第二个计时器发出前的任何时间点可以使用单个<strong>Observable</strong>对象取消订阅.</li>
+<li>使用<code>flatMap(_:)</code>操作符我们可以直接生成计时器<strong>Observable</strong>, 而不需要使用<strong>Dispatch</strong>等异步闭包.</li>
+</ul>
+<h3 id="超时"><a href="#超时" class="headerlink" title="超时"></a>超时</h3><p>这里我们将会使用一个特殊的操作符: <strong>timeOut</strong>来完成有关于时间操作符的汇总, 它的主要目的是在语义上区分实际计时器和超时条件, 所以我们可以使用它来捕获超时的错误, 一旦超时操作符被触发了, 那么它就会发出一个<code>RxError.TimeroutError</code>错误事件, 如果我们没有捕获并做相应的处理, 那么它就会终止序列.</p>
+<p>现在我们打开<strong>timeout</strong>页面, 先创建一个简单的按钮:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> button = <span class="type">UIButton</span>(type: .system)</span><br><span class="line"></span><br><span class="line">button.setTitle(<span class="string">"Press me now!"</span>, <span class="keyword">for</span>: .normal)</span><br><span class="line">button.sizeToFit()</span><br></pre></td></tr></table></figure>
+
+<p>然后我们将使用<strong>RxCocoa</strong>的扩展方法, 这个扩展方法可以将<strong>UIButton</strong>的点击事件转换为<strong>Observable</strong>序列, 我们的目的是:</p>
+<ul>
+<li>捕捉<strong>UIButton</strong>的点击事件</li>
+<li>如果<strong>UIButton</strong>在<strong>5</strong>秒内被点击, 那么输出一段文字然后终止序列</li>
+<li>如果<strong>UIButton</strong>没有被点击, 那么就打印错误条件</li>
+</ul>
+<p>现在我们来添加时间轴的代码, 需要和<strong>UIButton</strong>链接在一起:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> tapsTimeline = <span class="type">TimelineView</span>&lt;<span class="type">String</span>&gt;.make()</span><br><span class="line"><span class="keyword">let</span> stack = <span class="type">UIStackView</span>.makeVertical([</span><br><span class="line">    button,</span><br><span class="line">    <span class="type">UILabel</span>.make(<span class="string">"Taps on button above"</span>),</span><br><span class="line">    tapsTimeline</span><br><span class="line">    ])</span><br></pre></td></tr></table></figure>
+
+<p>然后我们来订阅一下<strong>Observable</strong>对象, 然后将它链接到时间轴上:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">_</span> = button</span><br><span class="line">    .rx.tap</span><br><span class="line">    .<span class="built_in">map</span> &#123; <span class="number">_</span> <span class="keyword">in</span> <span class="string">"•"</span> &#125;</span><br><span class="line">    .timeout(<span class="number">5</span>, scheduler: <span class="type">MainScheduler</span>.instance)</span><br><span class="line">    .subscribe(tapsTimeline)</span><br></pre></td></tr></table></figure>
+
+<p>然后和之前一样, 将<strong>UIStackView</strong>添加到<strong>UIView</strong>中, 然后就可以看到效果了:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> hostView = setupHostView()</span><br><span class="line"></span><br><span class="line">hostView.addSubview(stack)</span><br><span class="line">hostView</span><br></pre></td></tr></table></figure>
+
+<p>如果我们在<strong>5</strong>内点击按钮, 那么时间轴上面就会有响应的输出, 否则在<strong>5</strong>秒之后时间轴就会发出一个错误事件, 并停止序列.</p>
+<p><code>timeout(_:scheduler:)</code>的还有另一个版本, 它可以接受一个<strong>Observable</strong>对象, 当<strong>timeout</strong>操作符被触发后, 就会将订阅切换到该<strong>Observable</strong>对象, 而不是发出错误事件.</p>
+<p>这种使用<strong>timeout</strong>操作符的形式也会用的比较多, 不如只是发出一个值, 而不是发出错误事件, 然后正常完成.</p>
+<p>如果你想要尝试的话, 可以将<strong>Playground</strong>上的<code>timerout(_:scheduler:)</code>改为下面的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.timeout(<span class="number">5</span>, other: <span class="type">Observable</span>.just(<span class="string">"X"</span>), scheduler: <span class="type">MainScheduler</span>.instance)</span><br></pre></td></tr></table></figure>
+
+<p>现在我们看到的不是一个错误的信息了, 而是一个<strong>X</strong>和常规的完成事件.</p>
+<h2 id="挑战"><a href="#挑战" class="headerlink" title="挑战"></a>挑战</h2><h3 id="挑战-限制副作用"><a href="#挑战-限制副作用" class="headerlink" title="挑战: 限制副作用"></a>挑战: 限制副作用</h3><p>在我们刚刚的<code>window(_:scheduler:)</code>操作符的讨论中, 我们在<code>flatMap(_:)</code>操作符的闭包中动态的创建了时间轴, 虽然这样子做可以保证我们的代码简短, 但是在响应式编程中有一个原则就是, 除了为应用副作用而创建的特定区域外, 我们要避免在别的地方产生副作用, 在这里的副作用应该单独的拿出来, 专门有一个创建新的时间轴的地方.</p>
+<p>现在你的任务就是找到另一种方法来完成这个事, 试着用你能想到的最优雅的方式完成它, 完成后你可以在本章的文件夹中找到对应的解决方案进行比较.</p>
+<p>这里有几种方案来完成挑战任务, 最有效的方法是将工作分割成多个<strong>Observable</strong>对象, 然后再将它们连接起来.</p>
+<p>让<strong>window</strong>称为一个单独的<strong>Observable</strong>序列, 然后用它来生成两个单独的<strong>Observable</strong>序列: 一个用于准备时间轴<strong>View</strong>(可以使用<code>do(onNext:)</code>来执行副作用), 另一个用于生成时间轴<strong>View</strong>和源序列元素(提示: 使用<strong>zip</strong>和<strong>flatMap</strong>的组合)，以便在每次<strong>window</strong>发出新序列时生成上下文值。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始"><span class="toc-number">1.</span> <span class="toc-text">开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Buffering操作符"><span class="toc-number">2.</span> <span class="toc-text">Buffering操作符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#重新发送过去的元素"><span class="toc-number">2.1.</span> <span class="toc-text">重新发送过去的元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#无限重发"><span class="toc-number">2.2.</span> <span class="toc-text">无限重发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#控制缓冲"><span class="toc-number">2.3.</span> <span class="toc-text">控制缓冲</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Observable的缓冲窗口"><span class="toc-number">2.4.</span> <span class="toc-text">Observable的缓冲窗口</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Time-shifting操作符"><span class="toc-number">3.</span> <span class="toc-text">Time-shifting操作符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#延迟订阅"><span class="toc-number">3.1.</span> <span class="toc-text">延迟订阅</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#延迟元素"><span class="toc-number">3.2.</span> <span class="toc-text">延迟元素</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Time操作符"><span class="toc-number">4.</span> <span class="toc-text">Time操作符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#时间间隔"><span class="toc-number">4.1.</span> <span class="toc-text">时间间隔</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一次性或重复计时器"><span class="toc-number">4.2.</span> <span class="toc-text">一次性或重复计时器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#超时"><span class="toc-number">4.3.</span> <span class="toc-text">超时</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#挑战"><span class="toc-number">5.</span> <span class="toc-text">挑战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#挑战-限制副作用"><span class="toc-number">5.1.</span> <span class="toc-text">挑战: 限制副作用</span></a></li></ol></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

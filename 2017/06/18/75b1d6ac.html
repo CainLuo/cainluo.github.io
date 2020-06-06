@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：iOS 10 新特性《Siri Kit》 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="众所周知Siri是苹果内置在iOS系统的一个语音助手, 自从在2011年的iPhone 4s问世之后, Siri就一直受关注.
+但好景不长, 随着Siri的功能和权限太弱了, 慢慢就被人遗忘, 起码,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：iOS 10 新特性《Siri Kit》</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：iOS 10 新特性《Siri Kit》</h1>
+        <div class="stuff">
+            <span>六月 18, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/iOS-10/">iOS 10</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>众所周知<strong>Siri</strong>是苹果内置在<strong>iOS</strong>系统的一个语音助手, 自从在<strong>2011</strong>年的<strong>iPhone 4s</strong>问世之后, <strong>Siri</strong>就一直受关注.</p>
+<p>但好景不长, 随着<strong>Siri</strong>的功能和权限太弱了, 慢慢就被人遗忘, 起码我身边用<strong>iPhone</strong>的小伙伴都会把<strong>Siri</strong>给关掉, 按照他们的说法就是可以省电…我也是醉了.</p>
+<p>几年过去后, <strong>Siri</strong>终于迎接来了春天, 随着<strong>iOS 10</strong>的推出, 终于给开发者们开放了<strong>Siri Kit</strong>, 也开放了<strong>Siri Intents Extension</strong>, 国内用的最快的<strong>App</strong>依然还是<strong>BAT</strong>巨头的产品, 比如<strong>QQ</strong>.</p>
+<p>这里的工程是<strong>Objective-C</strong>版本, 想看<strong>Swift</strong>版本的, 可以到<a href="https://github.com/shinobicontrols/iOS10-day-by-day/tree/master/09%20-%20Siri%20Intents" target="_blank" rel="noopener">这里</a>去查看.</p>
+<p><strong>注意: 本文的项目是在Xcode 8.3.3, iOS 10, Mac OS 10.12.5环境下运行的.</strong></p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="Siri的服务类型"><a href="#Siri的服务类型" class="headerlink" title="Siri的服务类型"></a>Siri的服务类型</h2><p>这里我简单的举一下Siri目前支持的一些种类, 更加详细的文档请看<a href="https://developer.apple.com/documentation/sirikit?language=objc" target="_blank" rel="noopener">官方文档</a>.<br>|            Siri服务类型            | Intent种类                                                   |<br>| :——————————–: | :———————————————————– |<br>|      VoIP语音 - VoIP calling       | INStartVideoCallIntent、INStartAudioCallIntent               |<br>|          消息 - Messaging          | INSendMessageIntent                                          |<br>|          支付 - Payments           | INSendPaymentIntent、INRequestPaymentIntent                  |<br>|           图片 - Photos            | INSearchForPhotosIntent                                      |<br>|          健身 - Workouts           | INEndWorkoutIntent、INPauseWorkoutIntent 、INStartWorkoutIntent 、 INResumeWorkoutIntent 、INCancelWorkoutIntent |<br>|      骑行预约 - Ride booking       | INRequestRideIntent、INGetRideStatusIntent、 INListRideOptionsIntent、 INGetRideStatusIntent |<br>|      汽车状态 - Car commands       | INSetCarLockStatusIntent、INGetCarPowerLevelStatusIntent、INActivateCarSignalIntent |<br>|         车载系统 - CarPlay         | INSetAudioSourceInCarIntent、INSetClimateSettingsInCarIntent |<br>| 预定餐厅 - Restaurant reservations | INBookRestaurantReservationIntent                            |</p>
+<h2 id="New-Project"><a href="#New-Project" class="headerlink" title="New Project"></a>New Project</h2><p>创建新工程的项目这里我就忽略了, 直接来看添加<strong>Siri Intents Extension</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/9.Siri%20Intents/Images/1.png" alt="1"></p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/9.Siri%20Intents/Images/2.png" alt="2"></p>
+<p>这里注意一下, 我们要把<strong>Include UI Extension</strong>也要勾上, 但这个东西会专门开一篇文章去讲解.</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/9.Siri%20Intents/Images/3.png" alt="3"></p>
+<p>创建好之后, 我们可以看到<strong>Siri Intents Extension</strong>和之前我们遇到的<strong>Extension</strong>不太一样:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/9.Siri%20Intents/Images/4.png" alt="4"></p>
+<p>还有就是, 我们打开Siri Intents Extension的Info.plist文件看到IntentsSupported和IntentsRestrictedWhileLocked, 那有什么用呢?</p>
+<ul>
+<li><p>IntentsSupported: 我们项目需要支持的Siri Intents就放到这里, 比如我们在工程里看到的INSendMessageIntent, INSearchForMessagesIntent, INSetMessageAttributeIntent.</p>
+</li>
+<li><p>IntentsRestrictedWhileLocked: 在锁屏状态下需要锁定的Siri Intents就放到这里, 比如我们在工程里看到的INSendMessageIntent.</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/9.Siri%20Intents/Images/5.png" alt="5"></p>
+<h2 id="SiriKit的流程"><a href="#SiriKit的流程" class="headerlink" title="SiriKit的流程"></a>SiriKit的流程</h2><p>关于<strong>SiriKit</strong>的流程这里我就拷贝一下官方的说法:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/9.Siri%20Intents/Images/6.png" alt="6"></p>
+<p><strong>Siri</strong>和Maps通过<strong>Intents extension</strong>的扩展方式和我们的应用进行交互，其中，类型为<strong>INExtension</strong>的对象扮演着<strong>Intents extension</strong>扩展中直接协同<strong>Siri</strong>对象共同响应用户请求的关键角色。当我们实现了<strong>Intents extension</strong>扩展并产生了一个<strong>Siri</strong>请求事件时，一个典型的<strong>Intent</strong>事件的处理过程中总共有这三个步骤<strong>Resolve</strong>、<strong>Confirm</strong>和<strong>Handle</strong>：</p>
+<ul>
+<li><strong>Resolve</strong>阶段。在<strong>Siri</strong>获取到用户的语音输入之后，生成一个<strong>INIntent</strong>对象，将语音中的关键信息提取出来并且填充对应的属性。这个对象在稍后会传递给我们设置好的<strong>INExtension</strong>子类对象进行处理，根据子类遵循的不同服务<strong>protocol</strong>来选择不同的解决方案。</li>
+<li><strong>Confirm</strong>阶段。在上一个阶段通过<code>handler(for intent:)</code>返回了处理<strong>intent</strong>的对象，此阶段会依次调用<strong>confirm</strong>打头的实例方法来判断Siri填充的信息是否完成。匹配的判断结果包括<strong>Exactly one match</strong>、<strong>Two or more matches</strong>以及<strong>No match</strong>三种情况。这个过程中可以让<strong>Siri</strong>向用户征求更具体的参数信息。</li>
+<li>在<strong>confirm</strong>方法执行完成之后，<strong>Siri</strong>进行最后的处理阶段，生成答复对象，并且向此<strong>intent</strong>对象确认处理结果然后执显示结果给用户看。</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/9.Siri%20Intents/Images/7.png" alt="7"></p>
+<h2 id="交互名单"><a href="#交互名单" class="headerlink" title="交互名单"></a>交互名单</h2><p>这里我们首先要创建一个名单, 用来模拟一下发送消息的场景:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/9.Siri%20Intents/Images/8.png" alt="8"></p>
+<p>这里还有一个<strong>NSString</strong>的类别, 用来转换拼音的:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/9.Siri%20Intents/Images/9.png" alt="9"></p>
+<h2 id="精确匹配和模糊匹配"><a href="#精确匹配和模糊匹配" class="headerlink" title="精确匹配和模糊匹配"></a>精确匹配和模糊匹配</h2><p>回到我们的<strong>IntentHandler.m</strong>文件, 这里我们要开始写代码了, 我们需要些一个精确的用户名称匹配和一个模糊的用户名称匹配:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">// 遍历待匹配选项</span><br><span class="line">for (INPerson *recipient in recipients) &#123;</span><br><span class="line">    </span><br><span class="line">    // Implement your contact matching logic here to create an array of matching contacts</span><br><span class="line">    NSMutableArray&lt;INPerson *&gt; *matchingContacts = [NSMutableArray array];</span><br><span class="line">    </span><br><span class="line">    // 待匹配的名称</span><br><span class="line">    NSString *recipientName = recipient.displayName;</span><br><span class="line">    NSString *recipientNamePinYin = [recipientName cl_PinYin];</span><br><span class="line">    </span><br><span class="line">    // 精确的匹配到列表里的用户</span><br><span class="line">    UserList *user = [UserList checkUserWithName:recipientName];</span><br><span class="line">    </span><br><span class="line">    if (user) &#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;匹配到精确用户:%@&quot;, user);</span><br><span class="line"></span><br><span class="line">        // 创建一个匹配成功的用户</span><br><span class="line">        INPersonHandle *personHandle = [[INPersonHandle alloc] initWithValue:user.userAddress</span><br><span class="line">                                                                        type:INPersonHandleTypeEmailAddress];</span><br><span class="line">        INImage *iconImage = [INImage imageNamed:user.userIcon];</span><br><span class="line">        </span><br><span class="line">        INPerson *person = [[INPerson alloc] initWithPersonHandle:personHandle</span><br><span class="line">                                                   nameComponents:nil</span><br><span class="line">                                                      displayName:recipientName</span><br><span class="line">                                                            image:iconImage</span><br><span class="line">                                                contactIdentifier:nil</span><br><span class="line">                                                 customIdentifier:nil</span><br><span class="line">                                                          aliases:nil</span><br><span class="line">                                                   suggestionType:INPersonSuggestionTypeSocialProfile];</span><br><span class="line">        </span><br><span class="line">        // 把匹配成功的用户记录下来</span><br><span class="line">        [matchingContacts addObject:person];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 如果没有精确匹配到用户, 则用模糊匹配</span><br><span class="line">    if (matchingContacts.count == 0) &#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;没有匹配到精确用户:%@&quot;, user);</span><br><span class="line"></span><br><span class="line">        for (UserList *user in [UserList userList]) &#123;</span><br><span class="line">            </span><br><span class="line">            // 匹配用户的名称</span><br><span class="line">            NSString *userName = user.userName;</span><br><span class="line">            NSString *userNamePinYin = [userName cl_PinYin];</span><br><span class="line">            </span><br><span class="line">            if ([recipientName containsString:userName] || [recipientNamePinYin containsString:userNamePinYin]) &#123;</span><br><span class="line">                </span><br><span class="line">                //  创建一个匹配成功的用户</span><br><span class="line">                INPersonHandle *personHandle = [[INPersonHandle alloc] initWithValue:user.userAddress</span><br><span class="line">                                                                                type:INPersonHandleTypeEmailAddress];</span><br><span class="line">                </span><br><span class="line">                INImage *iconImage = [INImage imageNamed:user.userIcon];</span><br><span class="line">                </span><br><span class="line">                INPerson *person = [[INPerson alloc] initWithPersonHandle:personHandle</span><br><span class="line">                                                           nameComponents:nil</span><br><span class="line">                                                              displayName:userName</span><br><span class="line">                                                                    image:iconImage</span><br><span class="line">                                                        contactIdentifier:nil</span><br><span class="line">                                                         customIdentifier:nil</span><br><span class="line">                                                                  aliases:nil</span><br><span class="line">                                                           suggestionType:INPersonSuggestionTypeSocialProfile];</span><br><span class="line">                </span><br><span class="line">                //  记录匹配的用户</span><br><span class="line">                [matchingContacts addObject:person];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/9.Siri%20Intents/Images/10.png" alt="10"></p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>注意一下, 虽然我们代码写好了, 但我们还是需要看看工程里有没有添加<code>-ObjC</code></p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/9.Siri%20Intents/Images/11.png" alt="11"></p>
+<p>还有就是<strong>Siri Intents Extension</strong>和Siri Intents Extension UI里有没有链接好<strong>NSString+PinYin.m</strong>和<strong>UserList.m</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/9.Siri%20Intents/Images/12.png" alt="12"></p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/9.Siri%20Intents/Images/13.png" alt="13"></p>
+<p>不然就会发生<code>&quot;_OBJC_CLASS_$_UserList&quot;, referenced from:</code>错误了.</p>
+<p>在运行之前一定要到<strong>设置 -&gt; Siri -&gt; 开启Siri</strong>才可以使用, 这里我是用模拟器, 所以没法试着发邮件出去:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/9.Siri%20Intents/Images/14.png" alt="14"></p>
+<p>但是发消息还是<strong>ok</strong>得, 效果:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/9.Siri%20Intents/Images/15.png" alt="15"></p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/9.Siri%20Intents/Images/16.png" alt="16"></p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/9.Siri%20Intents/Images/17.png" alt="17"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>最后我们来看看额外的一篇文章, 就是企鹅公司是肿么给<strong>QQ</strong>适配<strong>SiriKit</strong>的一些思路<a href="http://www.cnblogs.com/oc-bowen/p/5949020.html" target="_blank" rel="noopener">QQ适配 SiriKit</a>.</p>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: <a href="https://github.com/CainRun/iOS-10-Characteristic/tree/master/9.Siri%20Intents" target="_blank" rel="noopener">https://github.com/CainRun/iOS-10-Characteristic/tree/master/9.Siri%20Intents</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Siri的服务类型"><span class="toc-number">1.</span> <span class="toc-text">Siri的服务类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#New-Project"><span class="toc-number">2.</span> <span class="toc-text">New Project</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SiriKit的流程"><span class="toc-number">3.</span> <span class="toc-text">SiriKit的流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#交互名单"><span class="toc-number">4.</span> <span class="toc-text">交互名单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#精确匹配和模糊匹配"><span class="toc-number">5.</span> <span class="toc-text">精确匹配和模糊匹配</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注意"><span class="toc-number">6.</span> <span class="toc-text">注意</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">8.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

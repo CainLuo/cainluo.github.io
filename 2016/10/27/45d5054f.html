@@ -1,0 +1,251 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：4.《Core Animation》CALayer的视觉效果 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="前一章我们对CALayer了解的更加深入了一些《Core Animation》CALayer的几何图层今天我们就来讲讲CALayer Visual Effects, 也就是CALayer的视觉效果.,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：4.《Core Animation》CALayer的视觉效果</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：4.《Core Animation》CALayer的视觉效果</h1>
+        <div class="stuff">
+            <span>十月 27, 2016</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/Core-Animation/">Core Animation</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>前一章我们对<strong>CALayer</strong>了解的更加深入了一些<a href="https://cainluo.github.io/2016/10/24/64fda967.html">《Core Animation》CALayer的几何图层</a>今天我们就来讲讲<strong>CALayer Visual Effects</strong>, 也就是<strong>CALayer</strong>的视觉效果.</p>
+<blockquote>
+<p>最后: 如果你有更好的建议或者对这篇文章有不满的地方, 请联系我, 我会参考你们的意见再进行修改, 联系我时, 请备注<strong>Core Animation</strong>祝大家学习愉快<del>谢谢</del></p>
+</blockquote>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><strong>CALayer Visual Effects</strong>讲得是<strong>CALayer</strong>一些我们能够看得见的东西, 这些知识点在我们日常开发中也会有用到的, 比如<strong>Rounded Corners</strong>, <strong>Layer Borders</strong>, <strong>Drop Shadows</strong>, <strong>Layer Masking</strong>, <strong>Scaling Filters</strong>, <strong>Group Opacity</strong>等等, 待我们一一去讲解.</p>
+<h2 id="Rounded-Corners"><a href="#Rounded-Corners" class="headerlink" title="Rounded Corners"></a>Rounded Corners</h2><p><strong>Rounded Corners</strong>这个东西我们用的其实也是挺多的, 我们都知道, 在<strong>iOS 7</strong>之前, 基本上所有的<strong>Button</strong>都是椭圆形的, 而这些<strong>Button</strong>之所以都是椭圆形, 大多数都是因为<strong>Rounded Corners</strong>这个东西的原因.</p>
+<p>在<strong>CALayer</strong>有一个叫<strong>conrnerRadius</strong>的CGFloat类型属性来控制着图层角的曲率, 默认值为0, 你可以设置任意数值, 是的图层角显示不一样的曲率, 而且<strong>conrnerRadius</strong>这个属性所影响的到的只有设置该属性的<strong>CALayer</strong>, 并不会影响到子图层或者是背景图, 但如果你要让子图层或者是背景图也要跟着该<strong>CALayer</strong>进行曲率处理, 你可以把<strong>masksToBounds</strong>设置为<strong>YES</strong>, 这样子就可以满足你的需求了.</p>
+<p>我们直接来看看<strong>Demo</strong>吧:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">- (void)layerRoundedCorners &#123;</span><br><span class="line">    </span><br><span class="line">    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(100, 100, 100, 100)];</span><br><span class="line">    </span><br><span class="line">    view.backgroundColor = [UIColor redColor];</span><br><span class="line">    view.layer.cornerRadius = 50.f;</span><br><span class="line">    view.layer.masksToBounds = YES;</span><br><span class="line">    </span><br><span class="line">    CALayer *layer = [CALayer layer];</span><br><span class="line">    </span><br><span class="line">    layer.backgroundColor = [UIColor blueColor].CGColor;</span><br><span class="line">    layer.frame = CGRectMake(50, 50, 50, 50);</span><br><span class="line">    </span><br><span class="line">    [view.layer addSublayer:layer];</span><br><span class="line">    [self.view addSubview:view];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/4.VisualEffects/images/1.png" alt="1"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/4.VisualEffects/images/2.png" alt="2"></p>
+<p>PS: 这里需要注意一点, 由于<strong>masksToBounds</strong>和<strong>conrnerRadius</strong>这两个属性同时使用是挺消耗性能的, 如果你是要大面积的去使用, 会造成卡顿现象, 比如说在<strong>UICollectionView</strong>或者是<strong>UITableView</strong>上使用.</p>
+<h3 id="Layer-Borders"><a href="#Layer-Borders" class="headerlink" title="Layer Borders"></a>Layer Borders</h3><p><strong>CALayer</strong>还有两个更好玩的属性, 这也是在<strong>iOS 7</strong>之前<strong>Button</strong>会默认实现的两个属性, 一个叫做<strong>borderWidth</strong>, 一个叫做<strong>borderColor</strong>.</p>
+<ul>
+<li><strong>borderWidth</strong>: 这是一个<strong>CGFloat</strong>类型的属性, 是用来设置<strong>CALayer</strong>边框宽度, 默认值是为<strong>0</strong>.</li>
+<li><strong>borderColor</strong>: 这是一个<strong>CGColorRef</strong>类型的属性, 所以你不能给它直接设置一个<strong>UIColor</strong>对象, 前面我们已经对<strong>CGColorRef</strong>这个东东进行了简单的介绍, 这里我们只需要知道直接给它赋个值就好了, 还有就是<strong>borderColor</strong>是用来设置<strong>CALayer</strong>边框颜色, 在<strong>iOS 7</strong>之前默认值是为黑色, <strong>iOS 7</strong>之后默认值是为透明.</li>
+</ul>
+<p>我们直接来看<strong>Demo</strong>吧:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (void)layerBorders &#123;</span><br><span class="line">    </span><br><span class="line">    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(100, 100, 100, 100)];</span><br><span class="line">    </span><br><span class="line">    view.backgroundColor = [UIColor blueColor];</span><br><span class="line">    view.layer.borderWidth = 5.f;</span><br><span class="line">    view.layer.borderColor = [UIColor redColor].CGColor;</span><br><span class="line">    </span><br><span class="line">    [self.view addSubview:view];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/4.VisualEffects/images/3.png" alt="3"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/4.VisualEffects/images/4.png" alt="4"></p>
+<h3 id="Drop-Shadows"><a href="#Drop-Shadows" class="headerlink" title="Drop Shadows"></a>Drop Shadows</h3><p>在<strong>iOS</strong>当中, 还有一个特性, 叫做<strong>Drop Shadows(阴影)</strong>, 其实这个也不算是<strong>iOS</strong>特有的, 毕竟在<strong>Mac OS</strong>里早就已经有这个特性了.</p>
+<p>阴影往往是起暗示作用, 比如说你现在正在显示的窗口, 周边就会带上阴影, 或者是强调里面的某个图层的优先级, 大多数时候只是用来装饰罢了.</p>
+<p>设置阴影的时候也是很简单, 直接给<strong>shadowOpacity</strong>属性设置一个大于<strong>0.0</strong>的值就好了, <strong>shadowOpacity</strong>这个属性可设置的值是在<strong>0.0~1.0</strong>之间, 默认是<strong>0.f</strong>, 最大值是<strong>1.f</strong>, 如果直接设置为<strong>1.f</strong>, 那么将会显示一个轻微模糊的黑色阴影在图层的上方, 另外, 你可以通过<strong>CALayer</strong>所提供的<strong>shadowColor</strong>, <strong>shadowOffset</strong>, <strong>shadowRadius</strong>对阴影进行一些额外的操作, 这里就不一一介绍了, 各位童鞋们可以自行尝试一下~</p>
+<p>说到这里, 会有人问, 为什么阴影是在图层的上方呢? 其实在之前我们就有了解过Mac OS和iOS的一些东西, 基本上iOS的一些东西都是从Mac OS搬过来, 然后再改改的, 包括这个阴影也是如此, 所以你才会看到在iOS当中阴影是反过来的, 这里我们只需要设置一下<strong>shadowOffset</strong>就可以正常显示了.</p>
+<p>直接看Demo吧:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (void)layerDropShadows &#123;</span><br><span class="line">    </span><br><span class="line">    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(100, 100, 100, 100)];</span><br><span class="line">    </span><br><span class="line">    view.backgroundColor = [UIColor redColor];</span><br><span class="line">    view.layer.shadowOpacity = 1.0f;</span><br><span class="line">    view.layer.shadowOffset = CGSizeMake(0, 3);</span><br><span class="line">    view.layer.shadowRadius = 10.f;</span><br><span class="line">    view.layer.shadowColor = [UIColor blueColor].CGColor;</span><br><span class="line">    </span><br><span class="line">    [self.view addSubview:view];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/4.VisualEffects/images/5.png" alt="5"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/4.VisualEffects/images/6.png" alt="6"></p>
+<h3 id="Shadow-Clipping"><a href="#Shadow-Clipping" class="headerlink" title="Shadow Clipping"></a>Shadow Clipping</h3><p>这里还有一个比较好玩的东西, 就是阴影剪切, 我们都知道<strong>CALayer</strong>超出了<strong>UIView</strong>的范围, 如果要剪切掉的话, 只能用<strong>masksToBounds</strong>这个属性去剪切.</p>
+<p>但这样子会带来另一个的问题, 因为一旦使用<strong>masksToBounds</strong>这个属性, 剪切掉的就不只是多出来的部分, 会连阴影部分都一起剪切完, 为了防止阴影也跟着被剪切掉, 我们需要使用一个比较笨的方法, 就是再创建多一个<strong>CALayer</strong>, 让它去创建阴影部分, 另一个<strong>CALayer</strong>去剪切内容就可以了.</p>
+<p>我们还是直接看Demo吧:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">- (void)layerShadowClipping &#123;</span><br><span class="line">    </span><br><span class="line">    UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];</span><br><span class="line">    UIView *blueView = [[UIView alloc] initWithFrame:CGRectMake(50, 50, 100, 100)];</span><br><span class="line">    UIView *shadowView = [[UIView alloc] initWithFrame:CGRectMake(100, 100, 100, 100)];</span><br><span class="line">    </span><br><span class="line">    contentView.backgroundColor = [UIColor grayColor];</span><br><span class="line">    blueView.backgroundColor = [UIColor blueColor];</span><br><span class="line">    </span><br><span class="line">    contentView.layer.masksToBounds = YES;</span><br><span class="line">    </span><br><span class="line">    shadowView.layer.shadowOpacity = 1.0f;</span><br><span class="line">    shadowView.layer.shadowOffset = CGSizeMake(0, 0.5f);</span><br><span class="line">    shadowView.layer.shadowColor = [UIColor redColor].CGColor;</span><br><span class="line"></span><br><span class="line">    [contentView addSubview:blueView];</span><br><span class="line">    [shadowView addSubview:contentView];</span><br><span class="line">    </span><br><span class="line">    [self.view addSubview:shadowView];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/4.VisualEffects/images/7.png" alt="7"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/4.VisualEffects/images/8.png" alt="8"></p>
+<h3 id="shadowPath"><a href="#shadowPath" class="headerlink" title="shadowPath"></a>shadowPath</h3><p>我们都知道其实阴影是没有形态的, 它是根据图层的形状来进行显示, 如果在一个视图当中有很多子图层, 然后要一个一个的去计算阴影的形状, 那是非常耗性能的, 但如果在开发之前你就已经知道阴影的形状, 那么你就可以提前设置好, 这样子就可以优化性能了, 而这个属性就是<strong>shadowPath</strong>, </p>
+<p><strong>shadowPath</strong>是<strong>CGPathRef</strong>类型, 可以说是一个指向<strong>CGPath</strong>的指针, 而<strong>CGPath</strong>是一个<strong>Core Graphics</strong>对象, 可以用来任意描绘一个矢量图形, 我们也可以使用它来描绘阴影, 大大的提升性能.</p>
+<p>我们直接来看Demo吧:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">- (void)layerShadowPath &#123;</span><br><span class="line">    </span><br><span class="line">    UIView *shadowViewOne = [[UIView alloc] initWithFrame:CGRectMake(50, 50, 100, 100)];</span><br><span class="line">    UIView *shadowViewTwo = [[UIView alloc] initWithFrame:CGRectMake(50, 250, 100, 100)];</span><br><span class="line"></span><br><span class="line">    shadowViewOne.layer.shadowOpacity = 0.5f;</span><br><span class="line">    shadowViewTwo.layer.shadowOpacity = 0.5f;</span><br><span class="line">    </span><br><span class="line">    CGMutablePathRef squarePath = CGPathCreateMutable();</span><br><span class="line">    CGPathAddRect(squarePath, NULL, shadowViewOne.bounds);</span><br><span class="line">    shadowViewOne.layer.shadowPath = squarePath;</span><br><span class="line">    </span><br><span class="line">    CGPathRelease(squarePath);</span><br><span class="line">    </span><br><span class="line">    CGMutablePathRef circlePath = CGPathCreateMutable();</span><br><span class="line">    CGPathAddEllipseInRect(circlePath, NULL, shadowViewTwo.bounds);</span><br><span class="line">    shadowViewTwo.layer.shadowPath = circlePath;</span><br><span class="line">    </span><br><span class="line">    CGPathRelease(circlePath);</span><br><span class="line"></span><br><span class="line">    [self.view addSubview:shadowViewOne];</span><br><span class="line">    [self.view addSubview:shadowViewTwo];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/4.VisualEffects/images/9.png" alt="9"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/4.VisualEffects/images/10.png" alt="10"></p>
+<h3 id="Layer-Masking"><a href="#Layer-Masking" class="headerlink" title="Layer Masking"></a>Layer Masking</h3><p>我们都知道如果我们要剪切超出范围的图层可以使用<strong>masksToBounds</strong>, 通过<strong>conrnerRadius</strong>可以设置图层为圆角, 但如果你需要设置一个不规整的图层时, 用上面的两个属性是没法实现的.</p>
+<p>虽然我们可以使用一个<strong>32位</strong>且带有<strong>alpha</strong>通道的<strong>png</strong>图片可以实现, 但这个方法也是有局限的, 不能以动态编码的形式生成蒙版, 也不能让子图层或者子视图也裁剪成同样的形状.</p>
+<p>苹果为了解决这个为题, 在<strong>CALayer</strong>当中提供了一个<strong>CGLayer</strong>类型, 名叫<strong>mask</strong>的属性, 有着和其他CALayer一样的布局属性, 它就像是一个子图层, 相对于父图层来进行布局的, 但它又区别于子图层, 它是定义父图层可见部分的.</p>
+<p>虽然<strong>mask</strong>里也有<strong>Color</strong>这个属性, 但它并没啥用, 真正重要的是图层的轮廓, 它就像是一台切割机一样, 实心图层部分会被保留, 其他的就会作为垃圾一样被抛弃.</p>
+<p>我们直接来看Demo吧:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">- (void)layerMasking &#123;</span><br><span class="line">    </span><br><span class="line">    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(100, 100, 100, 100)];</span><br><span class="line">    </span><br><span class="line">    imageView.image = [UIImage imageNamed:@&quot;arrow&quot;];</span><br><span class="line">    </span><br><span class="line">    CALayer *maskLayer = [CALayer layer];</span><br><span class="line">    UIImage *maskImage = [UIImage imageNamed:@&quot;star&quot;];</span><br><span class="line">    </span><br><span class="line">    maskLayer.frame = imageView.bounds;</span><br><span class="line">    maskLayer.contents = (__bridge id _Nullable)(maskImage.CGImage);</span><br><span class="line">    </span><br><span class="line">    imageView.layer.mask = maskLayer;</span><br><span class="line">    </span><br><span class="line">    [self.view addSubview:imageView];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/4.VisualEffects/images/11.png" alt="11"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/4.VisualEffects/images/12.png" alt="12"></p>
+<h3 id="Scaling-Filters"><a href="#Scaling-Filters" class="headerlink" title="Scaling Filters"></a>Scaling Filters</h3><p>这里我们提及一个点, 是关于图片显示的一个问题, 我们都知道如果要让一个<strong>CALayer</strong>显示一张图片是直接给它的<strong>contents</strong>直接设置内容, 但是呢, 这个图片是否正确的显示, 画质如何, 我们都无从而知.</p>
+<p>为了解决这个问题,<strong>CALayer</strong>分别提供了<strong>minificationFilter</strong>和<strong>magnificationFilter</strong>属性, 它们都是<strong>NSString</strong>类型, 说到这里, 有人会疑问, 直接显示不就是最好的么, 为啥要那么麻烦, 其实不一定的, 原因的话, 大概有三点吧:</p>
+<ul>
+<li>能够显示最好的画质, 指的是像素没有被压缩也没有被拉伸.</li>
+<li>可以节省资源, 比如神马内存, 存储之类的.</li>
+<li>可以优化性能, 减轻CPU的压力.</li>
+</ul>
+<p>打个比方, 比如我们开发的时候, 有个头像省略图, 这个时候呢, 你说是用全图比较好, 还是压缩过的比较好? 答案肯定是压缩过的比较好, 因为可以省资源.</p>
+<p>顺便说说, 这两个属性可设置的值分别是:</p>
+<ul>
+<li>kCAFilterLinear(默认值)</li>
+<li>kCAFilterNearest</li>
+<li>kCAFilterTrilinear</li>
+</ul>
+<p>说那么多, 直接来看Demo吧:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">- (void)layerScalingFilters &#123;</span><br><span class="line">    </span><br><span class="line">    UIImageView *imageViewOne = [[UIImageView alloc] initWithFrame:CGRectMake(0, 100, self.view.bounds.size.width / 2, 200)];</span><br><span class="line">    UIImageView *imageViewTwo = [[UIImageView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width / 2, 100, self.view.bounds.size.width / 2, 200)];</span><br><span class="line">    UIImageView *imageViewThree = [[UIImageView alloc] initWithFrame:CGRectMake(0, 300, self.view.bounds.size.width / 2, 200)];</span><br><span class="line">    </span><br><span class="line">    imageViewOne.image = [UIImage imageNamed:@&quot;expression&quot;];</span><br><span class="line">    imageViewTwo.image = [UIImage imageNamed:@&quot;expression&quot;];</span><br><span class="line">    imageViewThree.image = [UIImage imageNamed:@&quot;expression&quot;];</span><br><span class="line"></span><br><span class="line">    imageViewOne.layer.magnificationFilter = kCAFilterNearest;</span><br><span class="line">    imageViewTwo.layer.magnificationFilter = kCAFilterLinear;</span><br><span class="line">    imageViewThree.layer.magnificationFilter = kCAFilterTrilinear;</span><br><span class="line"></span><br><span class="line">    imageViewOne.layer.minificationFilter = kCAFilterNearest;</span><br><span class="line">    imageViewTwo.layer.minificationFilter = kCAFilterLinear;</span><br><span class="line">    imageViewThree.layer.minificationFilter = kCAFilterTrilinear;</span><br><span class="line">    </span><br><span class="line">    [self.view addSubview:imageViewOne];</span><br><span class="line">    [self.view addSubview:imageViewTwo];</span><br><span class="line">    [self.view addSubview:imageViewThree];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/4.VisualEffects/images/13.png" alt="13"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/4.VisualEffects/images/14.png" alt="14"></p>
+<p>额…这个有些尴尬, 看起来的效果区别不太大…凑合着看吧..</p>
+<h3 id="Group-Opacity"><a href="#Group-Opacity" class="headerlink" title="Group Opacity"></a>Group Opacity</h3><p>最后, 我们来说说<strong>Group Opacity</strong>这个东西, 在<strong>iOS 7</strong>之前, 如果你在一个<strong>Button</strong>上添加一个视图, 在<strong>alpha</strong>设置为<strong>50%</strong>的情况下会出现图层有分割, 需要设置<strong>shouldRasterize</strong>和<strong>rasterizationScale</strong>两个属性才能使得在半透明的情况下看起来是一体, 但是这个问题在<strong>iOS 7</strong>之后就已经解决了, 现在<strong>shouldRasterize</strong>属性更多的是用来解决<strong>UITableView</strong>里的<strong>CALayer</strong>圆角显示图层的处理, 这里就不做多的解释了, 有兴趣的童鞋们可以去谷歌搜搜<strong>shouldRasterize</strong>的用法, 都是挺简单的~</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总结一下, 这一章我们了解更多的是<strong>CALayer</strong>肉眼上能看到的东西, 比如:</p>
+<ul>
+<li><strong>Rounded Corners</strong>: 在这个知识点里, 我们了解了<strong>CALayer</strong>圆角的处理.</li>
+<li><strong>Layer Borders</strong>: 在这个知识点里, 我们了解了<strong>CALayer</strong>边框的处理, 包括边框的厚度, 以及颜色等</li>
+<li><strong>Drop Shadows</strong>: 在这个知识点里, 我们知道了<strong>CALayer</strong>阴影的处理.</li>
+<li><strong>Layer Masking</strong>: 在这个知识点里, 我们了解了<strong>CALayer</strong>可以作为一个<strong>mask</strong>去使用, 并且可以显示不同不规则的形状.</li>
+<li><strong>Scaling Filters</strong>: 在这个知识点里, 我们知道<strong>CALayer</strong>可以更改显示的画质, 优化显示的资源等等.</li>
+<li><strong>Group Opacity</strong>: 在这个知识点里, 虽然在<strong>iOS 7</strong>之后已经解决了这个问题, 但我们也可以把<strong>shouldRasterize</strong>属性运用在其他的地方.</li>
+</ul>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: <a href="https://github.com/CainLuo/CoreAnimation" target="_blank" rel="noopener">https://github.com/CainLuo/CoreAnimation</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Rounded-Corners"><span class="toc-number">2.</span> <span class="toc-text">Rounded Corners</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Layer-Borders"><span class="toc-number">2.1.</span> <span class="toc-text">Layer Borders</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Drop-Shadows"><span class="toc-number">2.2.</span> <span class="toc-text">Drop Shadows</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Shadow-Clipping"><span class="toc-number">2.3.</span> <span class="toc-text">Shadow Clipping</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shadowPath"><span class="toc-number">2.4.</span> <span class="toc-text">shadowPath</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Layer-Masking"><span class="toc-number">2.5.</span> <span class="toc-text">Layer Masking</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Scaling-Filters"><span class="toc-number">2.6.</span> <span class="toc-text">Scaling Filters</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Group-Opacity"><span class="toc-number">2.7.</span> <span class="toc-text">Group Opacity</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">4.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

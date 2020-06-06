@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：1.《Core Animation》基础概念 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="最近有一些迷糊, 感觉在研究上有了一些迷糊, 不知道怎么往下研究了, 咨询了一下朋友和一些前辈, 决定先玩一玩Core Animation, 毕竟是iOS的核心层之一, 也是最吸引人的地方之一, 今,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：1.《Core Animation》基础概念</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：1.《Core Animation》基础概念</h1>
+        <div class="stuff">
+            <span>十月 21, 2016</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/Core-Animation/">Core Animation</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>最近有一些迷糊, 感觉在研究上有了一些迷糊, 不知道怎么往下研究了, 咨询了一下朋友和一些前辈, 决定先玩一玩<strong>Core Animation</strong>, 毕竟是<strong>iOS</strong>的核心层之一, 也是最吸引人的地方之一, 今天就让我们先来了解一下<strong>Core Animation</strong>的一些概念知识.</p>
+<blockquote>
+<p>最后:如果你有更好的建议或者对这篇文章有不满的地方, 请联系我, 我会参考你们的意见再进行修改, 联系我时, 请备注<strong>Core Animation</strong>如果觉得好的话, 希望大家也可以打赏一下<del>嘻嘻</del>祝大家学习愉快<del>谢谢</del></p>
+</blockquote>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><ul>
+<li><strong>Core Animation</strong>是<strong>iOS</strong>与<strong>OS X</strong>平台上负责图形渲染与动画的基础设施。</li>
+<li><strong>Core Animation</strong>可以动画视图和其他的可视元素。</li>
+<li><strong>Core Animation</strong>为你完成了实现动画所需的大部分绘帧工作。<br>你只需在配置少量的动画参数（如开始点位置和结束点位置）就可启动<strong>Core Animation</strong>。</li>
+<li><strong>Core Animation</strong>将大部分实际的绘图任务交给了图形硬件处理，图形硬件会加速图形渲染的速度。<br>这种自动化的图形加速让动画具有更高的帧率且更加平滑，但这并不会增加<strong>CPU</strong>的负担而导致影响你应用的运行速度。</li>
+</ul>
+<p>更详细的文档介绍<a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CoreAnimation_guide/Introduction/Introduction.html" target="_blank" rel="noopener">通用官方文档</a>和<a href="https://developer.apple.com/library/content/documentation/WindowsViews/Conceptual/ViewPG_iPhoneOS/Introduction/Introduction.html" target="_blank" rel="noopener">iOS官方文档</a>~~</p>
+<h2 id="图层与视图结构"><a href="#图层与视图结构" class="headerlink" title="图层与视图结构"></a>图层与视图结构</h2><p>在我们日常开发<strong>iOS</strong>或者是<strong>Mac</strong>应用中, 我们都避免不了对<strong>UI</strong>的布局, 那我们一般是怎么去看应用中的图层结构呢? 让我们直接来看一个<strong>Demo</strong>吧.</p>
+<p>创建一个新的项目, 然后在项目当中随意添加一个或者多个<strong>UI</strong>控件.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/1.viewLayer/images/1.png" alt="1"></p>
+<p>运行了项目之后, 找到查看图层的按钮, 点击之后就会跳转到查看图层的界面.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/1.viewLayer/images/2.png" alt="2"></p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/1.viewLayer/images/3.png" alt="3"></p>
+<p>再换个角度看看~~</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/CoreAnimation/master/1.viewLayer/images/4.png" alt="4"></p>
+<p>在<strong>iOS</strong>当中, 无论是神马<strong>UIButton</strong>,<strong>UIScrollView</strong>, 还是神马<strong>UITableView</strong>, 都是基于<strong>UIView</strong>基类派生而来的, 而<strong>UIView</strong>是可以处理<strong>Touch</strong>事件, 也支持<strong>Core Graphics</strong>的绘画, 也可以做仿射变换(也就是神马旋转, 缩放事件), 当然, 也可以做类似于滑动, 渐变等<strong>UIView</strong>基础动画.</p>
+<h2 id="CALayer"><a href="#CALayer" class="headerlink" title="CALayer"></a>CALayer</h2><p><strong>CALayer</strong>其实是和<strong>UIView</strong>的概念差不多, 也是同样被层级关系树所管理, 也一样有神马图片, 文本, 背景色等内容, 或者是管理一些子图层等等, 但<strong>CALayer</strong>和<strong>UIView</strong>最大的区别是在于,<strong>CALayer</strong>并不能处理用户交互, 即使<strong>CALayer</strong>提供了一些方法来判断触点是否在图层的范围之内.</p>
+<h2 id="UIView和CALayer层级关系"><a href="#UIView和CALayer层级关系" class="headerlink" title="UIView和CALayer层级关系"></a>UIView和CALayer层级关系</h2><p>用过<strong>UIView</strong>的朋友们其实都知道, 每一个<strong>UIView</strong>当中都有一个<strong>CALayer</strong>实例的图层属性, 也就是所谓<strong>backing layer</strong>.</p>
+<p><strong>UIView</strong>的职责是用来创建并管理这个图层, 以确保层级关系中添加或者被移除的时候, 所关联的<strong>Layer</strong>也会有同样的操作.</p>
+<p>虽然<strong>UIView</strong>是作为一个管理者, 但实际上显示在屏幕上以及做动画效果的都是<strong>Layer</strong>,<strong>UIView</strong>仅仅只是对<strong>Layer</strong>的一个封装, 提供了一些而外的方法, 比如<strong>Touch</strong>的功能,<strong>Core Animation</strong>底层方法的高级<strong>API</strong>, 所以<strong>UIView</strong>和<strong>CALayer</strong>是处于一个平级的关系.</p>
+<h2 id="疑惑"><a href="#疑惑" class="headerlink" title="疑惑"></a>疑惑</h2><p>说到这里, 就会有一个疑惑, 为什么苹果要把<strong>UIView</strong>和<strong>CALayer</strong>处于一个平级的关系呢?(或许有人会有这样子的疑问)</p>
+<p>其实原因很简单, 是为了职责分离, 也算是模块化划分吧, 因为在<strong>Mac OS</strong>当中, 并没有<strong>UIView</strong>这个类, 所以并不能处理<strong>Touch</strong>事件, 但却有<strong>CALayer</strong>, 所以苹果为了能够让<strong>Mac OS</strong>和<strong>iOS</strong>两个系统相互共享代码, 直接把<strong>CALayer</strong>给独立出来了~~</p>
+<h2 id="CALayer的能力"><a href="#CALayer的能力" class="headerlink" title="CALayer的能力"></a>CALayer的能力</h2><p>其实在系统库当中, 苹果已经通过<strong>UIView</strong>提供了许多高级的<strong>API</strong>, 间接的使得动画变得很简单.</p>
+<p>但这样子就带来另外的一个问题, 就是灵活性的缺失, 打个比方, 如果你想在底层做一些额外的操作, 通过系统提供的<strong>API</strong>是没法实现的, 这个时候, 我们除了去学习和了解<strong>Core Animation</strong>之外, 再也没有其他途径了.</p>
+<p>那么说到底,<strong>CALayer</strong>到底能用来做什么呢? 有好几个点, 比如:</p>
+<ul>
+<li>阴影, 圆角, 边框</li>
+<li>3D变换(比如拉伸, 放大, 缩小等)</li>
+<li>非矩形范围</li>
+<li>透明遮罩</li>
+<li>多级非线性动画</li>
+</ul>
+<p>大致上就这一些, 后续我们会通过学习<strong>Core Animation</strong>, 会了解更多的<strong>Layer</strong>, 以及怎么利用<strong>Layer</strong>做出我们想做的效果.</p>
+<h3 id="使用CALayer"><a href="#使用CALayer" class="headerlink" title="使用CALayer"></a>使用CALayer</h3><p>一般来讲, 在我们日常开发中, 都是面对视图开发, 但如果某些特殊的场景, 我们还是需要面向<strong>CALayer</strong>来进行开发的, 比如</p>
+<ul>
+<li>开发一个可同时在<strong>Mac OS</strong>和<strong>iOS</strong>两个平台上使用的应用</li>
+<li>使用多种的<strong>CALayer</strong>子类, 并且不想创建一个<strong>UIView</strong>去封装它们</li>
+<li>做一些对性能特别挑剔的工作(暂时我也没想到, 知道的朋友可以和我说说)</li>
+</ul>
+<p>但总的来说, 直接面向视图开发, 要比面向<strong>CALayer</strong>开发的要简单.</p>
+<h2 id="总结一下"><a href="#总结一下" class="headerlink" title="总结一下"></a>总结一下</h2><p>说了那么多东西, 其实重点就那么几个: </p>
+<ul>
+<li><strong>CALayer</strong>与<strong>UIView</strong>是平级关系</li>
+<li><strong>CALayer</strong>与<strong>UIView</strong>的相同点与区别</li>
+<li><strong>CALayer</strong>可跨平台使用</li>
+<li><strong>CALayer</strong>不能够响应事件</li>
+<li><strong>UIView</strong>是基于<strong>CALayer</strong>封装的一个类, 并提供<strong>Touch</strong>事件</li>
+</ul>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: <a href="https://github.com/CainLuo/CoreAnimation" target="_blank" rel="noopener">https://github.com/CainLuo/CoreAnimation</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#图层与视图结构"><span class="toc-number">2.</span> <span class="toc-text">图层与视图结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CALayer"><span class="toc-number">3.</span> <span class="toc-text">CALayer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UIView和CALayer层级关系"><span class="toc-number">4.</span> <span class="toc-text">UIView和CALayer层级关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#疑惑"><span class="toc-number">5.</span> <span class="toc-text">疑惑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CALayer的能力"><span class="toc-number">6.</span> <span class="toc-text">CALayer的能力</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用CALayer"><span class="toc-number">6.1.</span> <span class="toc-text">使用CALayer</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结一下"><span class="toc-number">7.</span> <span class="toc-text">总结一下</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">8.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

@@ -1,0 +1,456 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single" class="page">
+    <div id="top">
+        <a class="icon-left image-icon" href="javascript:history.back()"></a>
+    </div>
+    <div class="section">
+        <div class="article">
+            <div class="main">
+                <div class="content">
+                
+                        <p>#UndoManager教程: 如何使用Swift值类型实现</p>
+<p>2018年7月9日</p>
+<p>在本教程中，您将学习如何利用基金会的UndoManager类，使用Swift和value类型构建撤销管理器</p>
+<blockquote>
+<p>注意:本教程是为Xcode 10和iOS 12编写的。</p>
+</blockquote>
+<p>没有人是完美的。一旦你实现了UndoManager，你的用户也不必是UndoManager。</p>
+<p><a href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/UndoArchitecture/Articles/UndoManager.html" target="_blank" rel="noopener">UndoManager</a>提供了一种向应用程序添加撤销/重做功能的简单方法。你也可以通过让事情更“本地化”来防止你的推理中偶尔出现的错误。</p>
+<p>在本教程中，您将构建一个名为People Keeper的应用程序，使用Swift值类型改进本地推理，并学习如何使用改进的本地推理实现完美的撤销/重做实现。</p>
+<blockquote>
+<p>注意:本教程假设您对iOS和Swift开发有一定的了解。如果你刚接触iOS开发和/或Swift，请先看看我们的“<a href="https://www.raywenderlich.com/6338-swift-tutorial-part-1-expressions-variables-and-constants" target="_blank" rel="noopener">学习如何用Swift教程编写iOS应用程序</a>”系列。</p>
+</blockquote>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>使用本页顶部和底部的下载材料链接下载本教程的材料。构建并运行<strong>starter</strong>应用程序:</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/03/Starter_Screenshot-650x223.png" alt="图片"></p>
+<p>这款应用预装了一些你可能见过并想要记住的人。单击<strong>Bob</strong>、<strong>Joan</strong>和/或<strong>Sam</strong>，您将看到预览下面的单元格中指定了他们的物理特性、好恶。</p>
+<p>在<strong>PeopleListViewController</strong>(左)中点击<strong>Bob</strong>将打开<strong>PersonDetailViewController</strong>(右)。右边的截屏系列显示了<strong>PersonDetailViewController</strong>的滚动页面内容。</p>
+<p>要理解启动程序代码，请单击项目文件并从头到尾阅读注释。编写添加和编辑联系人的能力将是您在本教程中的工作。</p>
+<h2 id="进行更改"><a href="#进行更改" class="headerlink" title="进行更改"></a>进行更改</h2><p>如果萨姆刮了胡子或者琼开始戴眼镜怎么办? 或者，在一个特别寒冷的冬天，鲍勃决定他不喜欢一切，包括天气?能够实时更新<strong>people in People Keeper</strong>是很有用的。</p>
+<h3 id="实现选择行为"><a href="#实现选择行为" class="headerlink" title="实现选择行为"></a>实现选择行为</h3><p>首先，如果您在<strong>PersonDetailViewController</strong>中选择新功能或主题，则预览应更新。 为此，在<strong>PersonDetailViewController.swift</strong>中由<strong>UICollectionViewDelegate</strong>和<strong>UICollectionViewDataSource</strong>标记的扩展的底部，添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">collectionView</span><span class="params">(<span class="number">_</span> collectionView: UICollectionView,</span></span></span><br><span class="line"><span class="function"><span class="params">                             didSelectItemAt indexPath: IndexPath)</span></span> &#123;</span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line">  <span class="keyword">switch</span> <span class="type">Section</span>(at: indexPath) &#123;</span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line">  <span class="keyword">case</span> .hairColor:</span><br><span class="line">    person.face.hairColor = <span class="type">Person</span>.<span class="type">HairColor</span>.allCases[indexPath.row]</span><br><span class="line">  <span class="keyword">case</span> .hairLength:</span><br><span class="line">    person.face.hairLength = <span class="type">Person</span>.<span class="type">HairLength</span>.allCases[indexPath.row]</span><br><span class="line">  <span class="keyword">case</span> .eyeColor:</span><br><span class="line">    person.face.eyeColor = <span class="type">Person</span>.<span class="type">EyeColor</span>.allCases[indexPath.row]</span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line">  <span class="keyword">case</span> .glasses:</span><br><span class="line">    person.face.glasses = <span class="literal">true</span></span><br><span class="line"><span class="comment">// 4</span></span><br><span class="line">  <span class="keyword">case</span> .facialHair:</span><br><span class="line">    person.face.facialHair.insert(<span class="type">Person</span>.<span class="type">FacialHair</span>.allCases[indexPath.row])</span><br><span class="line"><span class="comment">// 5</span></span><br><span class="line">  <span class="keyword">case</span> .likes:</span><br><span class="line">    person.likes.insert(<span class="type">Person</span>.<span class="type">Topic</span>.allCases[indexPath.row])</span><br><span class="line">    person.dislikes.remove(<span class="type">Person</span>.<span class="type">Topic</span>.allCases[indexPath.row])</span><br><span class="line">  <span class="keyword">case</span> .dislikes:</span><br><span class="line">    person.dislikes.insert(<span class="type">Person</span>.<span class="type">Topic</span>.allCases[indexPath.row])</span><br><span class="line">    person.likes.remove(<span class="type">Person</span>.<span class="type">Topic</span>.allCases[indexPath.row])</span><br><span class="line">  <span class="keyword">default</span>:</span><br><span class="line">    <span class="keyword">break</span></span><br><span class="line">  &#125;</span><br><span class="line"><span class="comment">// 6</span></span><br><span class="line">  collectionView.reloadData()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>选择单元格后，会发生以下情况：</p>
+<ol>
+<li>使用switch语句，执行与当前节对应的枚举值匹配的大小写。</li>
+<li>如果用户选择头发颜色，请将人的头发颜色设置为索引路径选定行的Person.HairColor值。 如果用户选择头发长度或眼睛颜色，也可以设置头发长度或眼睛颜色。</li>
+<li>当用户点击眼镜选项时，人的眼镜布尔值变为真。</li>
+<li>facialHair是一个集合，因为它可以包含多个项目。 当用户选择面部发型时，将其插入面部毛发组中。</li>
+<li>如果用户在喜欢或不喜欢的部分中选择主题，则将其分别添加到喜欢或不喜欢的集合中。 此外，主题不能既喜欢又不喜欢，所以如果用户喜欢某个项目，则在不喜欢部分中取消选择其单元格并将其从不喜欢的集合中删除，反之亦然。</li>
+<li>通过重新加载集合视图来更新预览和选择UI。</li>
+</ol>
+<h3 id="实现取消选择行为"><a href="#实现取消选择行为" class="headerlink" title="实现取消选择行为"></a>实现取消选择行为</h3><p>接下来，实现取消选择行为。 在<code>collectionView(_: didSelectItemAt :)</code>下面，添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">collectionView</span><span class="params">(<span class="number">_</span> collectionView: UICollectionView,</span></span></span><br><span class="line"><span class="function"><span class="params">                             shouldDeselectItemAt indexPath: IndexPath)</span></span> -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">  <span class="keyword">switch</span> <span class="type">Section</span>(at: indexPath) &#123;</span><br><span class="line">  <span class="keyword">case</span> .facialHair, .glasses, .likes, .dislikes:</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">  <span class="keyword">default</span>:</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">collectionView</span><span class="params">(<span class="number">_</span> collectionView: UICollectionView,</span></span></span><br><span class="line"><span class="function"><span class="params">                             didDeselectItemAt indexPath: IndexPath)</span></span> &#123;</span><br><span class="line">    </span><br><span class="line">  <span class="keyword">switch</span> <span class="type">Section</span>(at: indexPath) &#123;</span><br><span class="line">  <span class="comment">// 2</span></span><br><span class="line">  <span class="keyword">case</span> .facialHair:</span><br><span class="line">    person.face.facialHair.subtract([<span class="type">Person</span>.<span class="type">FacialHair</span>.allCases[indexPath.row]])</span><br><span class="line">  <span class="keyword">case</span> .likes:</span><br><span class="line">    person.likes.subtract([<span class="type">Person</span>.<span class="type">Topic</span>.allCases[indexPath.row]])</span><br><span class="line">  <span class="keyword">case</span> .dislikes:</span><br><span class="line">    person.dislikes.subtract([<span class="type">Person</span>.<span class="type">Topic</span>.allCases[indexPath.row]])</span><br><span class="line">  <span class="keyword">case</span> .glasses: <span class="comment">// 3</span></span><br><span class="line">    person.face.glasses = <span class="literal">false</span></span><br><span class="line">  <span class="keyword">default</span>:</span><br><span class="line">    <span class="keyword">break</span></span><br><span class="line">  &#125;</span><br><span class="line">  collectionView.reloadData()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以下是您在每个委托方法中所做的事情：</p>
+<ol>
+<li>在这里，您指定在重复敲击时，只能选择面部毛发，眼镜，喜欢和不喜欢的东西。 只有当用户选择同一类别中的另一个项目时，才会取消选择任何其他部分。</li>
+<li>当用户取消选择面部发型，喜欢或不喜欢时，您从其相应的集合中删除该取消选择的项目。</li>
+<li>当用户取消选择眼镜功能时，您将<strong>眼镜布尔值</strong>设置为<strong>false</strong>。</li>
+</ol>
+<p>构建并运行应用程序。 您现在应该看到所需的选择行为：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/03/Correct-Hair-Selection-480x283.png" alt="图片"></p>
+<p>你现在已经证明自己是这个强大的People Keeper技术的有力指挥官。 你已经获得了使用新武器的权利。 在竞争对手开发人员瞥见你的People Keeper应用程序的那一天，一个强大的班级将从基金会上升到守卫你的状态并防止你的邪恶竞争……</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/03/SwiftValueTypes-undo-2.png" alt="图片"></p>
+<h2 id="介绍UndoManager"><a href="#介绍UndoManager" class="headerlink" title="介绍UndoManager"></a>介绍UndoManager</h2><p>UndoManager是一个通用的撤销堆栈，能够简化应用程序的状态管理。 它可以存储您要跟踪的任何对象或UI状态，以及能够在这些状态中来回遍历的闭包，方法或调用。 虽然它在正确实现时简化了撤消/重做，但较小的竞争对手可能会以导致致命错误的方式实现UndoManager。 下面的两个撤消堆栈演示了一个有缺陷的示例和一个更成功的示例。</p>
+<h3 id="撤消堆栈示例＃1"><a href="#撤消堆栈示例＃1" class="headerlink" title="撤消堆栈示例＃1"></a>撤消堆栈示例＃1</h3><p><img src="https://koenig-media.raywenderlich.com/uploads/2018/03/UndoManager_stack_1-650x483.png" alt="图片"></p>
+<p>撤消堆栈＃1是一系列小步骤，每个步骤负责修改模型，然后匹配视图。 虽然这种策略可以在理论上起作用，但随着操作列表的增加，错误变得更有可能，因为精确地将模型中的每个变化与视图中的每个变化相匹配变得越来越困难。</p>
+<p>要理解原因，这是一个练习：</p>
+<ol>
+<li>将第一个撤消操作从堆栈中弹出后，模型看起来是什么样的？</li>
+</ol>
+<blockquote>
+<p>Bob, Sam</p>
+</blockquote>
+<ol start="2">
+<li>第二个？</li>
+</ol>
+<blockquote>
+<p>Bob, Kathy</p>
+</blockquote>
+<ol start="3">
+<li>第三个？</li>
+</ol>
+<blockquote>
+<p>Bob, Kathy, Mike</p>
+</blockquote>
+<p>无论你是否正确得到这些答案，也许你可以想象多次插入和删除会如何使后续插入，删除或更新的索引计算复杂化。 此撤消堆栈依赖于顺序，错误可能导致数据模型和视图之间的不一致。 这个错误听起来很熟悉吗？</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/03/NSInternalInconsistencyException-480x218.png" alt="图片"></p>
+<p>Model-view inconsistencies cause <code>NSInternalInconsistencyException</code>s.</p>
+<h3 id="撤消堆栈示例＃2"><a href="#撤消堆栈示例＃2" class="headerlink" title="撤消堆栈示例＃2"></a>撤消堆栈示例＃2</h3><p>要避免Undo堆栈示例＃1中的错误，而不是单独记录数据模型和UI更改，请记录整个模型：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/03/UndoManager_stack_2-650x483.png" alt="图片"></p>
+<p>要撤消操作，可以使用撤消堆栈上的模型替换当前模型。 撤销堆栈＃1和＃2执行相同的操作，但＃2与订单无关，因此不易出错。</p>
+<h2 id="撤消详细信息视图更改"><a href="#撤消详细信息视图更改" class="headerlink" title="撤消详细信息视图更改"></a>撤消详细信息视图更改</h2><p>在PersonDetailViewController.swift的底部，插入：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MARK: - Model &amp; State Types</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">PersonDetailViewController</span> </span>&#123;</span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line">  <span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">personDidChange</span><span class="params">(from fromPerson: Person)</span></span> &#123;</span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line">    collectionView?.reloadData() </span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line">    undoManager.registerUndo(withTarget: <span class="keyword">self</span>) &#123; target <span class="keyword">in</span></span><br><span class="line">      <span class="keyword">let</span> currentFromPerson: <span class="type">Person</span> = <span class="keyword">self</span>.person</span><br><span class="line">      <span class="keyword">self</span>.person = fromPerson</span><br><span class="line">      <span class="keyword">self</span>.personDidChange(from: currentFromPerson)</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">// 4</span></span><br><span class="line">    <span class="comment">// Update button UI </span></span><br><span class="line">    <span class="type">DispatchQueue</span>.main.async &#123;</span><br><span class="line">      <span class="keyword">self</span>.undoButton.isEnabled = <span class="keyword">self</span>.undoManager.canUndo</span><br><span class="line">      <span class="keyword">self</span>.redoButton.isEnabled = <span class="keyword">self</span>.undoManager.canRedo</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><code>personDidChange(from:)</code>将以前版本的<strong>person</strong>作为参数。</li>
+<li>现在，在<code>collectionView(_:didSelectItemAt:)</code>和<code>collectionView（_:didDeselectItemAt:)</code>的顶部，添加：</li>
+<li><strong>undoManager</strong>注册一个撤消操作，当调用时，将<code>self.person</code>设置为前一个<strong>Person</strong>，然后递归调用<code>personDidChange(from:)</code>。 <code>personDidChange(from:)</code>更新UI并注册撤消撤消，即，它为撤消操作注册重做路径。</li>
+<li>如果<strong>undoManager</strong>能够撤消 - 即<strong>canUndo</strong>，则启用撤消按钮 - 否则，禁用它。 重做是一样的。 当代码在主线程上运行时，撤消管理器在此方法返回之前不会更新其状态。 使用<strong>DispatchQueue</strong>块允许<strong>UI</strong>更新等待此撤消/重做操作完成。</li>
+</ol>
+<p>现在，在<code>collectionView(_:didSelectItemAt:)</code>和<code>collectionView(_:didDeselectItemAt:)</code>的顶部，添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> fromPerson: <span class="type">Person</span> = person</span><br></pre></td></tr></table></figure>
+
+<p>保留原始人的实例。<br>在这些相同的委托方法的末尾，将<code>collectionView.reloadData()</code>替换为：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">personDidChange(from: fromPerson)</span><br></pre></td></tr></table></figure>
+
+<p>为了注册一个恢复为<strong>fromPerson</strong>的撤消。 你删除了<code>collectionView?.reloadData()</code>，因为它已经在<code>personDidChange(from:)</code>中调用，所以你不需要做两次。</p>
+<p>在<code>undoTapped()</code>中，添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">undoManager.undo()</span><br></pre></td></tr></table></figure>
+
+<p>并在<code>redoTapped()</code>中添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">undoManager.redo()</span><br></pre></td></tr></table></figure>
+
+<p>分别触发撤消和重做。</p>
+<h3 id="实现摇动以撤消-重做"><a href="#实现摇动以撤消-重做" class="headerlink" title="实现摇动以撤消/重做"></a>实现摇动以撤消/重做</h3><p>接下来，您将添加摇动运行应用程序的设备以启动撤消/重做的功能。 在<code>viewDidAppear(_:)</code>的底部，添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">becomeFirstResponder()</span><br></pre></td></tr></table></figure>
+
+<p>在<code>viewWillDisappear(_:)</code>的底部，添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">resignFirstResponder()</span><br></pre></td></tr></table></figure>
+
+<p>然后在<code>viewWillDisappear(_:)</code>下面添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="keyword">var</span> canBecomeFirstResponder: <span class="type">Bool</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当用户摇动他或她的设备运行应用程序以撤消/重做时，<strong>NSResponder</strong>上升响应者链，寻找返回<strong>NSUndoManager</strong>对象的下一个响应者。 当您将<strong>PersonDetailViewController</strong>设置为第一个响应者时，其<strong>undoManager</strong>将响应具有撤消/重做选项的摇动手势。</p>
+<p>构建并运行您的应用程序。 要测试您的更改，请导航到<strong>PersonDetailViewController</strong>，在几种不同的头发颜色之间切换，然后点击或摇动以撤消/重做：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/03/Reference-Type-Undo-650x232.png" alt="图片"></p>
+<p>请注意，点击撤消/重做不会更改预览。</p>
+<p>要进行调试，请在<code>registerUndo(withTarget:handler:)</code>闭包的顶部添加以下内容：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(fromPerson.face.hairColor)</span><br><span class="line"><span class="built_in">print</span>(<span class="keyword">self</span>.person.face.hairColor)</span><br></pre></td></tr></table></figure>
+
+<p>再次，构建并运行您的应用程序。 尝试多次更改一个人的头发颜色，撤消和重做。 现在，查看调试控制台，您应该看到，每当您撤消/重做时，两个<strong>print</strong>语句都只输出最终选定的颜色。 <strong>UndoManager</strong>已经丢球了吗？</p>
+<p>一点也不！ 问题出在代码的其他地方。</p>
+<h2 id="改善地方推理"><a href="#改善地方推理" class="headerlink" title="改善地方推理"></a>改善地方推理</h2><p>局部推理是能够独立于上下文理解代码段的概念。</p>
+<p>例如，在本教程中，您使用了闭包，延迟初始化，协议扩展和压缩代码路径，使代码的某些部分可以理解，而不会冒险远远超出其范围 - 例如，仅查看“本地”代码时。</p>
+<p>这与你刚刚遇到的<strong>bug</strong>有什么关系？ 您可以通过改进本地推理来修复错误。 通过了解参考和值类型之间的差异，您将学习如何更好地保持对代码的本地控制。</p>
+<h3 id="参考类型与价值类型"><a href="#参考类型与价值类型" class="headerlink" title="参考类型与价值类型"></a>参考类型与价值类型</h3><p>参考和值是<strong>Swift</strong>中的两个“类型”类别。 对于具有引用语义的类型（例如类），对同一实例的不同引用共享相同的存储。 但是，值类型（如结构，枚举和元组）各自拥有自己独立的数据。</p>
+<p>要了解这对您当前的难题有何影响，请使用您刚学到的有关参考值与值类型数据存储的内容来回答以下问题：</p>
+<ol>
+<li>如果<strong>Person</strong>是一个类:</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = <span class="type">Person</span>()</span><br><span class="line">person.face.hairColor = .blonde</span><br><span class="line"><span class="keyword">var</span> anotherPerson = person</span><br><span class="line">anotherPerson.face.hairColor = .black</span><br><span class="line"></span><br><span class="line">person.face.hairColor == ??</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">person.face.hairColor == .black</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>如果<strong>Person</strong>是结构:</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = <span class="type">Person</span>()</span><br><span class="line">person.face.hairColor = .blonde</span><br><span class="line"><span class="keyword">var</span> anotherPerson = person</span><br><span class="line">anotherPerson.face.hairColor = .black</span><br><span class="line"></span><br><span class="line">person.face.hairColor == ??</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">person.face.hairColor == .blonde</span><br></pre></td></tr></table></figure>
+
+<p>问题1中的引用语义会损害局部推理，因为对象的值可能会在控件下面发生变化，而在没有上下文的情况下也不再有意义。</p>
+<p>所以在<strong>Person.swift</strong>中，将类<strong>Person</strong>更改为：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span> </span>&#123;</span><br></pre></td></tr></table></figure>
+
+<p>所以<strong>Person</strong>现在具有独立存储的价值语义。</p>
+<p>构建并运行您的应用程序。 然后，更改一个人的一些功能，撤消和重做，看看会发生什么：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/03/Value-Type-Undo-650x232.png" alt="图片"></p>
+<p>撤消和重做选择现在可以按预期工作。</p>
+<p>接下来，添加撤消/重做名称更新的功能。 返回<strong>PersonDetailViewController.swift</strong>，并在<strong>UITextFieldDelegate</strong>扩展名中添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">textFieldDidEndEditing</span><span class="params">(<span class="number">_</span> textField: UITextField)</span></span> &#123;</span><br><span class="line">  <span class="keyword">if</span> <span class="keyword">let</span> text = textField.text &#123;</span><br><span class="line">    <span class="keyword">let</span> fromPerson: <span class="type">Person</span> = person</span><br><span class="line">    person.name = text</span><br><span class="line">    personDidChange(from: fromPerson)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当文本字段完成编辑时，将人员的新名称设置为字段的文本，并为该更改注册撤消操作。</p>
+<p>建立并运行。 现在，更改名称，更改特征，撤消，重做等。大多数应该按计划工作，但您可能会注意到一个小问题。 如果选择名称字段然后按返回而不进行任何编辑，撤消按钮将变为活动状态，表示撤消操作已注册到<strong>undoManager</strong>，即使实际没有任何更改：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/03/Undo-with-no-changes-650x385.png" alt="图片"></p>
+<p>为了解决这个问题，您可以比较原始名称和更新名称，并仅在这两个值不匹配时注册撤消，但这是糟糕的本地推理 - 特别是当人员的属性列表增长时，更容易比较整个 <strong>person</strong>对象而不是单个属性。</p>
+<p>在<code>personDidChange(from:)</code>的顶部，添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> fromPerson == <span class="keyword">self</span>.person &#123; <span class="keyword">return</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>从逻辑上讲，似乎这条线应该比较新旧人，但是有一个错误：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Binary</span> <span class="keyword">operator</span> '==' cannot be applied to operands of type '<span class="type">Person'</span> and '<span class="type">Person!</span>'</span><br></pre></td></tr></table></figure>
+
+<p>事实证明，没有内置的方法来比较<strong>Person</strong>对象，因为它们的几个属性由自定义类型组成。 您必须自己定义比较标准。 幸运的是，<strong>struct</strong>提供了一种简单的方法。</p>
+<h2 id="使你的Struct-Equatable"><a href="#使你的Struct-Equatable" class="headerlink" title="使你的Struct Equatable"></a>使你的Struct Equatable</h2><p>继续使用<strong>Person.swift</strong>并通过添加以下扩展名使<strong>Person</strong>符合<strong>Equatable</strong>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MARK: - Equatable</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">Person</span>: <span class="title">Equatable</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> ==<span class="params">(<span class="number">_</span> firstPerson: Person, <span class="number">_</span> secondPerson: Person)</span></span> -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> firstPerson.name == secondPerson.name &amp;&amp;</span><br><span class="line">      firstPerson.face == secondPerson.face &amp;&amp;</span><br><span class="line">      firstPerson.likes == secondPerson.likes &amp;&amp;</span><br><span class="line">      firstPerson.dislikes == secondPerson.dislikes</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在，如果两个<strong>Person</strong>对象共享相同的名称，面部，喜欢和不喜欢，它们是“平等的”; 否则，他们不是。</p>
+<blockquote>
+<p>注意：您可以比较<code>==(_:_:)</code>中的<strong>Face</strong>和<strong>Topic</strong>自定义对象，而不会使<strong>Face</strong>和<strong>Topic Equatable</strong>，因为每个对象仅由<strong>Strings</strong>组成，<strong>Strings</strong>在<strong>Swift</strong>中本质上是等同的对象。</p>
+</blockquote>
+<p>导航回<strong>PersonDetailViewController.swift</strong>。 建立并运行。 <code>if fromPerson == self.person</code>错误应该已经消失了。 既然你终于让这条线路起作用了，你很快就会完全删除它。 相反，使用差异将改善您的本地推理。</p>
+<h2 id="创建Diffs"><a href="#创建Diffs" class="headerlink" title="创建Diffs"></a>创建Diffs</h2><p>在编程中，“diff”比较两个对象以确定它们是如何或是否不同。 通过创建diff值类型，（1）原始对象，（2）更新的对象和（3）它们的比较都可以存在于单个“本地”位置。</p>
+<p>在<strong>Person.swift</strong>中<strong>Person</strong>结构的末尾，添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Diff</span> </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> from: <span class="type">Person</span></span><br><span class="line">  <span class="keyword">let</span> to: <span class="type">Person</span></span><br><span class="line">    </span><br><span class="line">  <span class="keyword">fileprivate</span> <span class="keyword">init</span>(from: <span class="type">Person</span>, to: <span class="type">Person</span>) &#123;</span><br><span class="line">    <span class="keyword">self</span>.from = from</span><br><span class="line">    <span class="keyword">self</span>.to = to</span><br><span class="line">  &#125;</span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line">  <span class="keyword">var</span> hasChanges: <span class="type">Bool</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> from != to</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">diffed</span><span class="params">(with other: Person)</span></span> -&gt; <span class="type">Diff</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="type">Diff</span>(from: <span class="keyword">self</span>, to: other)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此代码执行以下操作：</p>
+<ol>
+<li><strong>struct Diff</strong>包含原始（从）和新（到）人员值。</li>
+<li>如果<strong>from</strong>和<strong>to</strong>不同，<strong>hasChanges</strong>是真的; 否则就是假的。</li>
+<li><code>diffed（with :)</code>返回包含<strong>self</strong>的<strong>Person</strong>（<strong>from</strong>）和新 <strong>person</strong>（to）的<strong>Diff</strong>。</li>
+</ol>
+<p>在<strong>PersonDetailViewController</strong>中，替换行<code>private func personDidChange（from fromPerson：Person）{</code>为：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">personDidChange</span><span class="params">(diff: Person.Diff)</span></span> &#123;</span><br></pre></td></tr></table></figure>
+
+<p>它现在需要整个<strong>Diff</strong>而不仅仅是“<strong>from</strong>”对象作为参数。</p>
+<p>然后，将<code>if fromPerson == self.person {return}</code>替换为：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">guard</span> diff.hasChanges <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用<strong>diff</strong>的<strong>hasChanges</strong>属性。</p>
+<p>同时删除先前添加的两个打印语句。</p>
+<h2 id="改善代码接近度"><a href="#改善代码接近度" class="headerlink" title="改善代码接近度"></a>改善代码接近度</h2><p>在通过调用<code>personDidChange(diff :)</code>替换现在对<code>personDidChange(form:)</code>的无效调用之前，请查看<code>collectionView(_:didSelectItemAt:)</code>和<code>collectionView(_:didDeselectItemAt:)</code>。</p>
+<p>在每个方法中，请注意保存原始<strong>person</strong>对象的变量在类的顶部初始化，但直到底部才使用。 您可以通过移动对象创建并更紧密地一起使用来改进本地推理。</p>
+<p>在<code>personDidChange(diff:)</code>之上，在同一扩展名中添加一个新方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">modifyPerson</span><span class="params">(<span class="number">_</span> mutatePerson: <span class="params">(<span class="keyword">inout</span> Person)</span></span></span> -&gt; <span class="type">Void</span>) &#123;</span><br><span class="line">  <span class="comment">// 2</span></span><br><span class="line">  <span class="keyword">var</span> person: <span class="type">Person</span> = <span class="keyword">self</span>.person</span><br><span class="line">  <span class="comment">// 3</span></span><br><span class="line">  <span class="keyword">let</span> oldPerson = person</span><br><span class="line">  <span class="comment">// 4</span></span><br><span class="line">  mutatePerson(&amp;person)</span><br><span class="line">  <span class="comment">// 5</span></span><br><span class="line">  <span class="keyword">let</span> personDiff = oldPerson.diffed(with: person)</span><br><span class="line">  personDidChange(diff: personDiff)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是一步一步发生的事情：</p>
+<ol>
+<li><code>modifyPerson(_:)</code>接受一个接收指向<strong>Person</strong>对象的指针的闭包。</li>
+<li><code>var person</code>持有该类当前<strong>Person</strong>的可变副本。</li>
+<li><strong>oldPerson</strong>持有对原始<strong>person</strong>对象的常量引用。</li>
+<li>执行你在<code>modifyPerson(_:)</code>的调用站点创建的<code>(inout Person) -&gt; Void</code>闭包。 闭包中的代码将改变<strong>person</strong>变量。</li>
+<li>然后<code>personDidChange(diff:)</code>更新<strong>UI</strong>并注册一个能够恢复到<strong>fromPerson</strong>数据模型的撤销操作。</li>
+</ol>
+<p>要调用<code>modifyPerson(_:)</code>，在<code>collectionView(_:didSelectItemAt:)</code>中，<code>collectionView(_:didDeselectItemAt:)</code>和<code>textFieldDidEndEditing(_:)</code>替换<code>let fromPerson：Person = person</code>为：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">modifyPerson &#123; person <span class="keyword">in</span></span><br></pre></td></tr></table></figure>
+
+<p>将<code>personDidChange(from：fromPerson)</code>替换为：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>为了使用<code>modifyPerson(_:)</code>闭包来压缩代码。</p>
+<p>类似地，在<strong>undoManager</strong>的<strong>registerUndo</strong>闭包中，将<code>let currentFromPerson：Person = self.person</code>替换为：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">target.modifyPerson &#123; person <span class="keyword">in</span></span><br></pre></td></tr></table></figure>
+
+<p>将<code>self.personDidChange(from:fromPerson)</code>替换为：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>用闭包简化代码。 这种设计方法集中了我们的更新代码，因此为我们的<strong>UI</strong>保留了“推理的局部性”。</p>
+<p>选择类中的所有代码，然后导航到<strong>Editor&gt; Structure&gt; Re-Indent</strong>以正确重新对齐新的闭包。</p>
+<p>然后，在<code>personDidChange(diff:)</code>之后，保护<code>diff.hasChanges else {return}</code>并在<code>collectionView?.reloadData()</code>之后添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">person = diff.to</span><br></pre></td></tr></table></figure>
+
+<p>这会将班级的人员设置为更新的人员。</p>
+<p>同样，在<code>target.modifyPerson {person in ...}</code>闭包内替换<code>self.person = fromPerson</code>为:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">person = diff.from</span><br></pre></td></tr></table></figure>
+
+<p>这会在撤消时恢复前一个人。</p>
+<p>建立并运行。 检查一个人的详细信息视图，一切都应该按预期工作。 您的<strong>PersonDetailViewController</strong>代码已完成！</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/03/SwiftValueTypes-celebrate-1.png" alt="图片"></p>
+<p>现在，点击&lt;<strong>PeopleKeeper</strong>后退按钮。 呃 - 哦……那些变化在哪里？ 你必须以某种方式将这些更新传递回<strong>PeopleListViewController</strong>。</p>
+<h2 id="更新人员列表"><a href="#更新人员列表" class="headerlink" title="更新人员列表"></a>更新人员列表</h2><p>在<strong>PersonDetailViewController</strong>类的顶部，添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> personDidChange: ((<span class="type">Person</span>) -&gt; <span class="type">Void</span>)?</span><br></pre></td></tr></table></figure>
+
+<p>与<code>personDidChange(diff:)</code>方法不同，<strong>personDidChange</strong>变量将包含一个接收更新人员的闭包。</p>
+<p>在<code>viewWillDisappear(_:)</code>的末尾，添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">personDidChange?(person)</span><br></pre></td></tr></table></figure>
+
+<p>当视图在返回主屏幕时消失，更新的人将返回到关闭。</p>
+<p>现在你需要初始化那个闭包。</p>
+<p>回到<strong>PeopleListViewController</strong>，滚动到<code>prepare(for:sender:)</code>。 转换到选定人员的详细信息视图时，<code>prepare(for:sender:)</code>当前将人员对象发送到目标控制器。 同样，您可以向同一函数添加闭包，以从目标控制器检索<strong>person</strong>对象。</p>
+<p>在准备结束时<code>prepare(for:sender:)</code>，添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">detailViewController?.personDidChange = &#123; updatedPerson <span class="keyword">in</span></span><br><span class="line">  <span class="comment">// Placeholder: Update the Data Model and UI</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这初始化了<strong>detailViewController</strong>的<strong>personDidChange</strong>闭包。 您最终将使用代码替换占位符注释以更新数据模型和UI; 在此之前，有一些设置要做。</p>
+<p>打开<strong>PeopleModel.swift</strong>。 在类<strong>PeopleModel</strong>结束时，但在类中，添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Diff</span> </span>&#123;</span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line">  <span class="class"><span class="keyword">enum</span> <span class="title">PeopleChange</span> </span>&#123;</span><br><span class="line">    <span class="keyword">case</span> inserted(<span class="type">Person</span>)</span><br><span class="line">    <span class="keyword">case</span> removed(<span class="type">Person</span>)</span><br><span class="line">    <span class="keyword">case</span> updated(<span class="type">Person</span>)</span><br><span class="line">    <span class="keyword">case</span> <span class="keyword">none</span></span><br><span class="line">  &#125;</span><br><span class="line"><span class="comment">// 2 </span></span><br><span class="line">  <span class="keyword">let</span> peopleChange: <span class="type">PeopleChange</span></span><br><span class="line">  <span class="keyword">let</span> from: <span class="type">PeopleModel</span></span><br><span class="line">  <span class="keyword">let</span> to: <span class="type">PeopleModel</span></span><br><span class="line">    </span><br><span class="line">  <span class="keyword">fileprivate</span> <span class="keyword">init</span>(peopleChange: <span class="type">PeopleChange</span>, from: <span class="type">PeopleModel</span>, to: <span class="type">PeopleModel</span>) &#123;</span><br><span class="line">    <span class="keyword">self</span>.peopleChange = peopleChange</span><br><span class="line">    <span class="keyword">self</span>.from = from</span><br><span class="line">    <span class="keyword">self</span>.to = to</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是代码的作用：</p>
+<ol>
+<li><p><strong>Diff</strong>定义了<strong>PeopleChange</strong>枚举，它表示</p>
+<ol>
+<li><strong>from</strong>和<strong>to</strong>之间的更改是插入，删除，更新还是什么，以及</li>
+<li>插入，删除或更新了哪个<strong>Person</strong>。</li>
+</ol>
+</li>
+<li><p><strong>Diff</strong>包含原始和更新的<strong>PeopleModel</strong>以及<strong>diff</strong>的<strong>PeopleChange</strong>。</p>
+</li>
+</ol>
+<p>为了帮助确定插入，删除或更新了哪个人，请在<strong>Diff</strong>结构后添加此函数：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">changedPerson</span><span class="params">(<span class="keyword">in</span> other: PeopleModel)</span></span> -&gt; <span class="type">Person?</span> &#123;</span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line">  <span class="keyword">if</span> people.<span class="built_in">count</span> != other.people.<span class="built_in">count</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> largerArray = other.people.<span class="built_in">count</span> &gt; people.<span class="built_in">count</span> ? other.people : people</span><br><span class="line">    <span class="keyword">let</span> smallerArray = other.people == largerArray ? people : other.people</span><br><span class="line">    <span class="keyword">return</span> largerArray.first(<span class="keyword">where</span>: &#123; firstPerson -&gt; <span class="type">Bool</span> <span class="keyword">in</span></span><br><span class="line">      !smallerArray.<span class="built_in">contains</span>(<span class="keyword">where</span>: &#123; secondPerson -&gt; <span class="type">Bool</span> <span class="keyword">in</span></span><br><span class="line">        firstPerson.tag == secondPerson.tag</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> other.people.enumerated().compactMap(&#123; index, person <span class="keyword">in</span></span><br><span class="line">      <span class="keyword">if</span> person != people[index] &#123;</span><br><span class="line">        <span class="keyword">return</span> person</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">    &#125;).first</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以下是此代码的细分：</p>
+<ol>
+<li><code>changedPerson(in:)</code>将<strong>self</strong>的当前<strong>PeopleModel</strong>与作为参数传入的人员模型进行比较，然后返回插入/删除/更新的<strong>Person</strong>（如果存在）。</li>
+<li>如果一个数组小于/大于另一个数组，找到两个数组中较大的数组，然后找到数组中第一个未包含在较小数组中的元素。</li>
+<li>如果数组大小相同，则更改是更新而不是插入或删除; 在这种情况下，您遍历枚举的新人员数组，并在新数组中找到与同一索引处的旧人员不匹配的人员。</li>
+</ol>
+<p>在<code>changedPerson(in:)</code>下面，添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">diffed</span><span class="params">(with other: PeopleModel)</span></span> -&gt; <span class="type">Diff</span> &#123;</span><br><span class="line">  <span class="keyword">var</span> peopleChange: <span class="type">Diff</span>.<span class="type">PeopleChange</span> = .<span class="keyword">none</span></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line">  <span class="keyword">if</span> <span class="keyword">let</span> changedPerson = changedPerson(<span class="keyword">in</span>: other) &#123;</span><br><span class="line">    <span class="keyword">if</span> other.people.<span class="built_in">count</span> &gt; people.<span class="built_in">count</span> &#123;</span><br><span class="line">      peopleChange = .inserted(changedPerson)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> other.people.<span class="built_in">count</span> &lt; people.<span class="built_in">count</span> &#123;</span><br><span class="line">      peopleChange = .removed(changedPerson)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      peopleChange = .updated(changedPerson)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="comment">//3</span></span><br><span class="line">  <span class="keyword">return</span> <span class="type">Diff</span>(peopleChange: peopleChange, from: <span class="keyword">self</span>, to: other)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看以上代码：</p>
+<ol>
+<li>您初始化<strong>peopleChange</strong>为<strong>none</strong>表示没有更改。 你最终会从这个方法返回<strong>peopleChange</strong>。</li>
+<li>如果新数组大于旧数组，则插入<strong>changedPerson</strong>; 如果新数组较小，则删除<strong>changedPerson</strong>; 如果新数组与旧数组的大小相同，则更新<strong>changedPerson</strong>。 在每种情况下，使用<code>changedPerson(in :)</code>返回的人作为<strong>changedPerson</strong>的参数。</li>
+<li>您将使用<strong>peopleChange</strong>，原始<strong>PeopleModel</strong>和更新的<strong>PeopleModel</strong>返回<strong>Diff</strong>。</li>
+</ol>
+<p>现在，在<strong>PeopleListViewController.swift</strong>的底部，添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MARK: - Model &amp; State Types</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">PeopleListViewController</span> </span>&#123;</span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line">  <span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">peopleModelDidChange</span><span class="params">(diff: PeopleModel.Diff)</span></span> &#123;</span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line">    <span class="keyword">switch</span> diff.peopleChange &#123;</span><br><span class="line">    <span class="keyword">case</span> .inserted(<span class="keyword">let</span> person):</span><br><span class="line">      <span class="keyword">if</span> <span class="keyword">let</span> index = diff.to.people.index(of: person) &#123;</span><br><span class="line">        tableView.insertRows(at: [<span class="type">IndexPath</span>(item: index, section: <span class="number">0</span>)], with: .automatic)</span><br><span class="line">      &#125;</span><br><span class="line">    <span class="keyword">case</span> .removed(<span class="keyword">let</span> person):</span><br><span class="line">      <span class="keyword">if</span> <span class="keyword">let</span> index = diff.from.people.index(of: person) &#123;</span><br><span class="line">        tableView.deleteRows(at: [<span class="type">IndexPath</span>(item: index, section: <span class="number">0</span>)], with: .automatic)</span><br><span class="line">      &#125;</span><br><span class="line">    <span class="keyword">case</span> .updated(<span class="keyword">let</span> person):</span><br><span class="line">      <span class="keyword">if</span> <span class="keyword">let</span> index = diff.to.people.index(of: person) &#123;</span><br><span class="line">        tableView.reloadRows(at: [<span class="type">IndexPath</span>(item: index, section: <span class="number">0</span>)], with: .automatic)</span><br><span class="line">      &#125;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line">    peopleModel = diff.to</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>与<strong>PersonDetailViewController</strong>中的<code>personDidChange(diff:)</code>一样，<code>peopleModelDidChange(diff:)</code>执行以下操作：</p>
+<ol>
+<li><code>peopleModelDidChange(diff :)</code>将<strong>PeopleModel.Diff</strong>作为参数，然后根据数据模型中的更改更新<strong>UI</strong>。</li>
+<li>如果<strong>diff</strong>的<strong>peopleChange</strong>是插入，则在该插入的索引处插入表视图行。 如果<strong>peopleChange</strong>是删除，则删除该删除索引处的表视图行。 如果<strong>peopleChange</strong>是更新，请重新加载更新的行。 否则，如果没有更改，请退出方法而不更新模型或UI。</li>
+<li>将类的<strong>peopleModel</strong>设置为更新的模型。</li>
+</ol>
+<p>接下来，就像你在<strong>PersonDetailViewController</strong>中添加<code>modifyPerson(_:)</code>一样，在<code>peopleModelDidChange(diff :)</code>上面添加: <code>modifyModel(_:)</code>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">modifyModel</span><span class="params">(<span class="number">_</span> mutations: <span class="params">(<span class="keyword">inout</span> PeopleModel)</span></span></span> -&gt; <span class="type">Void</span>) &#123;</span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line">  <span class="keyword">var</span> peopleModel = <span class="keyword">self</span>.peopleModel</span><br><span class="line"><span class="comment">// 3   </span></span><br><span class="line">  <span class="keyword">let</span> oldModel = peopleModel</span><br><span class="line"><span class="comment">// 4  </span></span><br><span class="line">  mutations(&amp;peopleModel)</span><br><span class="line"><span class="comment">// 5</span></span><br><span class="line">  tableView.beginUpdates()</span><br><span class="line"><span class="comment">// 6</span></span><br><span class="line">  <span class="keyword">let</span> modelDiff = oldModel.diffed(with: peopleModel)</span><br><span class="line">  peopleModelDidChange(diff: modelDiff)</span><br><span class="line"><span class="comment">// 7    </span></span><br><span class="line">  tableView.endUpdates()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以下是此代码一步一步执行的操作：</p>
+<ol>
+<li><code>modifyModel(_:)</code>接受一个闭包，该闭包接受指向变量<strong>PeopleModel</strong>的指针。</li>
+<li><code>var peopleModel</code>拥有类’<strong>peopleModel</strong>的可变副本。</li>
+<li><strong>oldModel</strong>持有对原始模型的常量引用。</li>
+<li>在旧模型上执行突变以生成新模型。</li>
+<li>开始一系列<strong>tableView</strong>更改。</li>
+<li><code>peopleModelDidChange(diff:)</code>执行由<strong>modelDiff</strong> <strong>peopleChange</strong>确定的<strong>tableView</strong>插入，删除或重新加载。</li>
+<li>结束表视图更新。</li>
+</ol>
+<p>返回<code>prepare(for:sender:)</code>，将占位符注释替换为：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">self</span>.modifyModel &#123; model <span class="keyword">in</span></span><br><span class="line">  model.people[selectedIndex] = updatedPerson</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>将所选索引处的人员与其更新版本进行交换。</p>
+<p>最后一步。 替换<code>class PeopleModel {</code> 为：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">PeopleModel</span> </span>&#123;</span><br></pre></td></tr></table></figure>
+
+<p>建立并运行。 选择一个人的详细信息视图，进行一些更改，然后返回到人员列表。 这些变化现在传播：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/03/Propagating-Changes-650x387.png" alt="图片"></p>
+<p>接下来，您将添加删除人员并将人员添加到人员表的功能。</p>
+<p>要处理删除，请将<code>tableView(_:editActionsForRowAt :)</code>中的占位符注释替换为：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">self</span>.modifyModel &#123; model <span class="keyword">in</span></span><br><span class="line">  model.people.remove(at: indexPath.row)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从数据模型和<strong>UI</strong>中删除已删除索引处的人员。</p>
+<p>要处理插入，请将以下内容添加到<code>addPersonTapped()</code>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line">tagNumber += <span class="number">1</span></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="keyword">let</span> person = <span class="type">Person</span>(name: <span class="string">""</span>, face: (hairColor: .black, hairLength: .bald, eyeColor: .black, facialHair: [], glasses: <span class="literal">false</span>), likes: [], dislikes: [], tag: tagNumber)</span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line">modifyModel &#123; model <span class="keyword">in</span></span><br><span class="line">  model.people += [person]</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 4</span></span><br><span class="line">tableView.selectRow(at: <span class="type">IndexPath</span>(item: peopleModel.people.<span class="built_in">count</span> - <span class="number">1</span>, section: <span class="number">0</span>), </span><br><span class="line">                    animated: <span class="literal">true</span>, scrollPosition: .bottom)</span><br><span class="line">showPersonDetails(at: <span class="type">IndexPath</span>(item: peopleModel.people.<span class="built_in">count</span> - <span class="number">1</span>, section: <span class="number">0</span>))</span><br></pre></td></tr></table></figure>
+
+<p>在这里，您执行以下操作：</p>
+<ol>
+<li>类变量tagNumber跟踪人员模型中的最高标记。 当您添加每个新人时，将tagNumber增加1。</li>
+<li>一个新人最初没有名字，没有喜欢或不喜欢，以及默认的面部配置。 他或她的标签值等于当前tagNumber。</li>
+<li>将新人添加到数据模型的末尾并更新UI。</li>
+<li>选择新项目的行 - 即最后一行 - 并转换到该人员的详细信息视图，以便用户可以设置详细信息。</li>
+</ol>
+<p>建立并运行。 添加人员，更新等。您现在应该能够从人员列表中添加和删除用户，并且更新应在控制器之间来回传播：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/03/Updatable-People-List-650x193.png" alt="图片"></p>
+<p>你还没有完成 -  <strong>PeopleListViewController</strong>的<strong>undo</strong>和<strong>redo</strong>不起作用。 是时候编写最后一点反破坏来保护你的联系人名单了！</p>
+<h2 id="撤消人员列表更改"><a href="#撤消人员列表更改" class="headerlink" title="撤消人员列表更改"></a>撤消人员列表更改</h2><p>在<code>peopleModelDidChange(diff :)</code>结束时，添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line">undoManager.registerUndo(withTarget: <span class="keyword">self</span>) &#123; target <span class="keyword">in</span></span><br><span class="line">  <span class="comment">// 2</span></span><br><span class="line">  target.modifyModel &#123; model <span class="keyword">in</span></span><br><span class="line">    model = diff.from</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line"><span class="type">DispatchQueue</span>.main.async &#123;</span><br><span class="line">  <span class="keyword">self</span>.undoButton.isEnabled = <span class="keyword">self</span>.undoManager.canUndo</span><br><span class="line">  <span class="keyword">self</span>.redoButton.isEnabled = <span class="keyword">self</span>.undoManager.canRedo</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这里，您：</p>
+<ol>
+<li>注册能够撤消数据模型和UI更改的撤消操作。</li>
+<li>通过将当前模型替换为前一个模型来修改人员模型。</li>
+<li>适当地启用/禁用<strong>undoButton</strong>和<strong>redoButton</strong>。</li>
+</ol>
+<p>在<code>undoTapped()</code>中，添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">undoManager.undo()</span><br></pre></td></tr></table></figure>
+
+<p>并在<code>redoTapped()</code>中添加：</p>
+<p>分别触发撤消和重做。<br>最后但同样重要的是，为此控制器添加抖动以撤消/重做。 在<code>viewDidAppear(_:)</code>的末尾，添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">becomeFirstResponder()</span><br></pre></td></tr></table></figure>
+
+<p>在<code>viewWillDisappear(_:)</code>的末尾，添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">resignFirstResponder()</span><br></pre></td></tr></table></figure>
+
+<p>在<code>viewWillDisappear(_:)</code>下面添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="keyword">var</span> canBecomeFirstResponder: <span class="type">Bool</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样控制器可以响应摇动手势撤消/重做。</p>
+<p>而已！ 建立并运行。 您可以编辑，添加，撤消，重做，摇动等。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/03/SwiftValueTypes-crowd-1.png" alt="图片"></p>
+<h2 id="然后去哪儿？"><a href="#然后去哪儿？" class="headerlink" title="然后去哪儿？"></a>然后去哪儿？</h2><p>使用本教程底部或顶部的“下载材料”链接下载最终项目，以查看它与您的版本的比较。</p>
+<p>要进一步探索<strong>UndoManager API</strong>，请尝试对撤消功能进行分组，命名撤消操作，使撤消操作可废弃并使用各种内置通知。</p>
+<p>要进一步探索值类型，请尝试向<strong>Person</strong>和<strong>PeopleModel</strong>添加属性，以使您的应用程序更加健壮。</p>
+<p>如果您想让<strong>PeopleKeeper</strong>真正为您服务，请在应用启动之间添加数据持久性。 有关详细信息，请参阅我们的“<a href="https://www.raywenderlich.com/684-updated-course-saving-data-in-ios" target="_blank" rel="noopener">更新课程：在iOS中保存数据</a>”。</p>
+<p>有任何问题，意见或建议吗？ 加入下面的论坛讨论！</p>
+<p>工程示例: <a href="https://koenig-media.raywenderlich.com/uploads/2018/07/People-Keeper.zip" target="_blank" rel="noopener">https://koenig-media.raywenderlich.com/uploads/2018/07/People-Keeper.zip</a></p>
+
+                
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

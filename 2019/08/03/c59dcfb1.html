@@ -1,0 +1,414 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RxSwift：5.Filtering Operators - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="学习一项新的技术就像建造楼房一样, 如果希望楼房坚固, 那么就必须打下坚实的基础, 现在我们已经通过前面的几章学习和练习, 建立了一个坚实的RxSwift基础, 现在是是否丰富我们的知识库和技能了.,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">RxSwift：5.Filtering Operators</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">RxSwift：5.Filtering Operators</h1>
+        <div class="stuff">
+            <span>八月 03, 2019</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/RxSwift/">RxSwift</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>学习一项新的技术就像建造楼房一样, 如果希望楼房坚固, 那么就必须打下坚实的基础, 现在我们已经通过前面的几章学习和练习, 建立了一个坚实的<strong>RxSwift</strong>基础, 现在是是否丰富我们的知识库和技能了.</p>
+<p>本章介绍的是关于<strong>RxSwift</strong>的<strong>Filter</strong>操作符, 我们可以使用它来对<code>.next</code>事件进行约束, 以便订阅者只接收到它想要接收并处理的元素. 如果你曾经使用过<strong>Swift</strong>标准库里的<code>filter(_:)</code>方法, 那么恭喜你, 你已经完成了一半, 但如果没有, 也不要担心, 本章会详细的为你讲解.</p>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>在本章中, 我们将使用一个<strong>Xcode</strong>项目, 该项目已经写好了<strong>CocoaPods</strong>所需的东西, 直接打开终端, 去到当前目录然后输入:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod install</span><br></pre></td></tr></table></figure>
+
+<p><strong>CocoaPods</strong>就会自动的把<strong>RxSwift</strong>和我们的工程关联起来了.</p>
+<blockquote>
+<p>注意: 该教程使用的是<strong>RxSwift 4.4.1</strong>版本, <strong>Xcode 10.3</strong>, 默认是<strong>Swift 5.0</strong>版本.</p>
+</blockquote>
+<h2 id="Ignoreing操作符"><a href="#Ignoreing操作符" class="headerlink" title="Ignoreing操作符"></a>Ignoreing操作符</h2><p>从下面的时序图中, <strong>ignoreElements</strong>将会忽略掉所有的<code>.next</code>事件, 但它会允许停止事件<code>.completed</code>或<code>.error</code>事件通过.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%205/1.png" alt="图片"></p>
+<blockquote>
+<p>注意: 到目前为止, 我们已经看到很多种这种时序图了, 这种时序图有助于形象化的加深我们队操作符的工作方式, 第一行是Observable对象, 中间的框是代表操作符以及参数, 最下面的是代表订阅者, 或者是订阅者在操作符执行后会接收到什么.</p>
+</blockquote>
+<p>现在我们把下面的例子添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">ignoreElements</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"--- ignoreElements ---"</span>)</span><br><span class="line">		<span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">let</span> strikes = <span class="type">PublishSubject</span>&lt;<span class="type">String</span>&gt;()</span><br><span class="line">    <span class="keyword">let</span> disposeBag = <span class="type">DisposeBag</span>()</span><br><span class="line">		<span class="comment">// 2</span></span><br><span class="line">    strikes</span><br><span class="line">        .ignoreElements()</span><br><span class="line">        .subscribe &#123; <span class="number">_</span> <span class="keyword">in</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"You're out!"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        .disposed(by: disposeBag)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们要做的是:</p>
+<ol>
+<li>创建一个名为<strong>strikes</strong>的<strong>PublishSubject</strong>.</li>
+<li>订阅<strong>strikes</strong>获取它的所有事件, 然后使用<strong>ignoreElements</strong>忽略所有的<code>.next</code>事件.</li>
+</ol>
+<p>当我们只想让订阅者接收<code>.completed</code>或<code>.error</code>事件时, <strong>ignoreElements</strong>就非常有用了.</p>
+<p>现在我们添加<code>.next</code>事件:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">strikes.onNext(<span class="string">"X"</span>)</span><br><span class="line">strikes.onNext(<span class="string">"X"</span>)</span><br><span class="line">strikes.onNext(<span class="string">"X"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>现在我们无论如何触发事件, <strong>Xcode</strong>的控制台里什么东西都不会打印, 因为我们使用了<strong>ignoreElements</strong>操作符, 现在我们添加一个<code>.completed</code>事件, 看看会发生什么事情.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strikes.onCompleted()</span><br></pre></td></tr></table></figure>
+
+<p>这个时候订阅者接收到了<code>.completed</code>事件, 然后控制台就会打印:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--- ignoreElements ---</span><br><span class="line">You<span class="string">'re out!</span></span><br></pre></td></tr></table></figure>
+
+<p>你可能会注意到<strong>ignoreElements</strong>实际上返回了一个<strong>Completable</strong>, 正如我们刚刚所说的, 这是完全合理的.</p>
+<p>有时候, 我们可能在处理<strong>Observable</strong>发出的第<strong>n</strong>个索引的元素, 这个时候我们可以使用<strong>elementAt</strong>, 它会通过索引帮我们获取我们希望接收的元素, 然后忽略其他内容.</p>
+<p>在下面的时序表中, <strong>elementAt</strong>传递的索引为<strong>1</strong>, 因此它只允许第二个元素通过.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%205/2.png" alt="图片"></p>
+<p>将下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">elementAt</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"--- elementAt ---"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">let</span> strikes = <span class="type">PublishSubject</span>&lt;<span class="type">String</span>&gt;()</span><br><span class="line">    <span class="keyword">let</span> disposeBag = <span class="type">DisposeBag</span>()</span><br><span class="line">    <span class="comment">// 2</span></span><br><span class="line">    strikes</span><br><span class="line">        .elementAt(<span class="number">2</span>)</span><br><span class="line">        .subscribe (onNext: &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"\($0), You're out!"</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">        .disposed(by: disposeBag)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这里我们的步骤是:</p>
+<ol>
+<li>创建一个名为<strong>strikes</strong>的<strong>PublishSubject</strong>.</li>
+<li>我们订阅了<strong>strikes</strong>, 并使用了<strong>elementAt</strong>操作符只获取索引为<strong>2</strong>的元素.</li>
+</ol>
+<p>现在我们可以在代码上添加<code>.next</code>事件, 然后我们就会看到是第几次之后才会打印信息, 添加下面的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">strikes.onNext(<span class="string">"1"</span>)</span><br><span class="line">strikes.onNext(<span class="string">"2"</span>)</span><br><span class="line">strikes.onNext(<span class="string">"3"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>现在看看<strong>Xcode</strong>的终端所输出的消息:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--- elementAt ---</span><br><span class="line"><span class="number">3</span>, <span class="type">You're</span> out!</span><br></pre></td></tr></table></figure>
+
+<p>关于<code>element(at:)</code>的一个有趣的情况, 是要找到我们所需要的索引元素, 那么该序列就会终止.</p>
+<p><strong>ignoreElements</strong>和<strong>elementAt</strong>是用来过滤<strong>Observable</strong>对象发出的元素. 如果我们需要通过使用谓词来过滤元素, 并且只允许为<strong>true</strong>的元素通过, 那么这两个操作符就不太适用了.</p>
+<p>现在我们来看一下西面的时序图, 这里只允许<strong>1</strong>和<strong>2</strong>的通过, 因为我们的过滤器生命了只允许小于<strong>3</strong>的元素通过.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%205/3.png" alt="图片"></p>
+<p>现在我们将下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">filter</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"--- filter ---"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">let</span> numbers = <span class="type">Observable</span>.of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>)</span><br><span class="line"></span><br><span class="line">    numbers</span><br><span class="line">        <span class="comment">// 2</span></span><br><span class="line">        .<span class="built_in">filter</span> &#123; $<span class="number">0</span> % <span class="number">2</span> == <span class="number">0</span>&#125;</span><br><span class="line">        <span class="comment">// 3</span></span><br><span class="line">        .subscribe(onNext: &#123;</span><br><span class="line">            <span class="built_in">print</span>($<span class="number">0</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">        .disposed(by: disposeBag)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们来分解一下步骤:</p>
+<ol>
+<li>创建一个<strong>Int</strong>类型的<strong>Observable</strong>对象.</li>
+<li>适用<strong>filter</strong>操作符将奇数过滤掉</li>
+<li>输出我们过滤完成后的元素</li>
+</ol>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">--- <span class="built_in">filter</span> ---</span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">6</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Skipping操作符"><a href="#Skipping操作符" class="headerlink" title="Skipping操作符"></a>Skipping操作符</h2><p>我们可能会在某些场景下需要跳过一定数量的元素, 而<strong>skip</strong>操作符就可以满足我们这个需求, 我们看看下面的时序图, 这里是忽略了前面两个元素:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%205/4.png" alt="图片"></p>
+<p>把下面的例子添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">skip</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"--- skip ---"</span>)</span><br><span class="line">		<span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">let</span> letter = <span class="type">Observable</span>.of(<span class="string">"A"</span>, <span class="string">"B"</span>, <span class="string">"C"</span>, <span class="string">"D"</span>, <span class="string">"E"</span>, <span class="string">"F"</span>, <span class="string">"G"</span>)</span><br><span class="line">  </span><br><span class="line">    letter</span><br><span class="line">				<span class="comment">// 2</span></span><br><span class="line">        .skip(<span class="number">3</span>)</span><br><span class="line">        .subscribe(onNext: &#123;</span><br><span class="line">            <span class="built_in">print</span>($<span class="number">0</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">        .disposed(by: disposeBag)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们这个代码做的操作:</p>
+<ol>
+<li>创建了一个纯字母的<strong>Observable</strong>对象</li>
+<li>订阅该<strong>Observable</strong>然后使用<strong>skip</strong>操作符跳过前面3个元素.</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">--- skip ---</span><br><span class="line"><span class="type">D</span></span><br><span class="line"><span class="type">E</span></span><br><span class="line"><span class="type">F</span></span><br><span class="line"><span class="type">G</span></span><br></pre></td></tr></table></figure>
+
+<p>在<strong>skip</strong>操作符的家族里, 有一个操作符和<strong>filter</strong>非常相似, 叫做<strong>skipWhile</strong>, 它允许我们使用谓词来确定应该跳过哪些内容, 但又与<strong>filter</strong>不同的是它只会过滤订阅生命周期中的元素, 直到没有需要跳过的内容它就会允许其他元素通过.</p>
+<p>使用<strong>skipWhile</strong>, 如果谓词为<strong>true</strong>将跳过元素, 返回<strong>flase</strong>则让元素通过, 它和<strong>filter</strong>刚好相反, 在下面的时序图中, <strong>1</strong>被阻止通过, 因为我们的条件中<strong>1 % 2 **是等于</strong>1<strong>的, 但是</strong>2<strong>是允许通过的, 因为它满足该条件, 之后的所有元素</strong>skipWhile**就不会再跳过了.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%205/5.png" alt="图片"></p>
+<p>把下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">skipWhile</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"--- skipWhile ---"</span>)</span><br><span class="line">		<span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">let</span> numbers = <span class="type">Observable</span>.of(<span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">    numbers</span><br><span class="line">        <span class="comment">// 2</span></span><br><span class="line">        .skipWhile &#123; $<span class="number">0</span> % <span class="number">2</span> == <span class="number">0</span> &#125;</span><br><span class="line">        .subscribe(onNext: &#123;</span><br><span class="line">            <span class="built_in">print</span>($<span class="number">0</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">        .disposed(by: disposdBag)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解释一下代码:</p>
+<ol>
+<li>创建一个名为<strong>numbers</strong>的<strong>Observable</strong>对象</li>
+<li>订阅该<strong>Observable</strong>对象, 并且使用<strong>skipWhile</strong>加上一个谓词谈判条件, 如果是遇到元素为奇数, 则允许元素通过.</li>
+</ol>
+<p><strong>skip</strong>跳过所有满足条件的元素, 遇到不满足条件的元素后则会通过, 判断条件则会失效.</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">--- skipWhile ---</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<p>如果你正在开发一个众筹应用程序, 我们就可以使用<strong>skipWhile</strong>操作, 如果金额未达到一定数时, 那么众筹则不成功, 否则就成功了.</p>
+<p>到目前为止, 我们学到的过滤操作符都是基于一些静态条件的, 如果我们想根据其他的<strong>Observable</strong>对象来动态筛选元素, 是否有这种操作符? 答案是肯定的, 接下来我们就会看到了.</p>
+<p>第一个是<strong>skipUntill</strong>, 它可以一直跳过我们订阅的<strong>Observable</strong>对象的元素, 直到关联的<strong>Observable</strong>被触发为止就不再跳过. </p>
+<p>在下面的时序图中, <strong>skipUntill</strong>忽略了第一个行<strong>Observable</strong>对象所发出的元素, 直到第二行的<strong>Observable</strong>对象被触发, 发出了<code>.next</code>事件后, 则停止跳过, 然后剩下的元素则会通过</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%205/6.png" alt="图片"></p>
+<p>将下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">skipUntil</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"--- skipUntil ---"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">let</span> subject = <span class="type">PublishSubject</span>&lt;<span class="type">String</span>&gt;()</span><br><span class="line">    <span class="keyword">let</span> trigger = <span class="type">PublishSubject</span>&lt;<span class="type">String</span>&gt;()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2.</span></span><br><span class="line">    subject</span><br><span class="line">        .skipUntil(trigger)</span><br><span class="line">        .subscribe(onNext: &#123;</span><br><span class="line">            <span class="built_in">print</span>($<span class="number">0</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">        .disposed(by: disposeBag)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这次的例子中, 我们是这么做的:</p>
+<ol>
+<li>创建一个名为<strong>subject</strong>和<strong>trigger</strong>的<strong>PublishSubject</strong>对象, 第二个<strong>trigger</strong>对象是用来驱动第一个<strong>subject</strong>的事件.</li>
+<li>使用<strong>skipUntil</strong>, 当第二个<strong>subject</strong>触发了事件后, 那么<strong>skipUntil</strong>将会停止跳过.</li>
+</ol>
+<p>现在我们来添加几个<code>.next</code>事件:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">subject.onNext(<span class="string">"A"</span>)</span><br><span class="line">subject.onNext(<span class="string">"B"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这个时候无论我们怎么触发事件, 控制台是不会有任何东西打印的, 因为<strong>skipUntil</strong>跳过了事件, 现在我们来为<strong>trigger</strong>添加一个<code>.next</code>事件:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">trigger.onNext(<span class="string">"X"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这个时候<strong>skipUntil</strong>就会停止跳过, 从这时候开始, <strong>subject</strong>的所有元素都会被释放, 现在我们来添加一个<code>.next</code>事件:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">subject.onNext(<span class="string">"C"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>再次触发事件, 我们就可以看到控制台有东西输出了.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--- skipUntil ---</span><br><span class="line"><span class="type">C</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Taking操作符"><a href="#Taking操作符" class="headerlink" title="Taking操作符"></a>Taking操作符</h2><p><strong>take</strong>是<strong>skip</strong>的反义词, 如图所示, 当我们想获取指定个数的元素时, 则可以使用<strong>take</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%205/7.png" alt="图片"></p>
+<p>将下面的例子添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">take</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"--- take ---"</span>)</span><br><span class="line">	<span class="comment">// 1</span></span><br><span class="line">  <span class="keyword">let</span> numbers = <span class="type">Observable</span>.of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>)</span><br><span class="line"></span><br><span class="line">  numbers</span><br><span class="line">      <span class="comment">// 2</span></span><br><span class="line">      .take(<span class="number">9</span>)</span><br><span class="line">      .subscribe(onNext: &#123;</span><br><span class="line">          <span class="built_in">print</span>($<span class="number">0</span>)</span><br><span class="line">      &#125;)</span><br><span class="line">      .disposed(by: disposeBag)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们是这么做的:</p>
+<ol>
+<li>创建一个名为<strong>numbers</strong>的<strong>Observable</strong>对象.</li>
+<li>使用<strong>take</strong>来获取前<strong>9</strong>个元素.</li>
+</ol>
+<p>使用<strong>take</strong>操作符可以避免一个非常尴尬的问题, 就是越界的问题, 然后我们会得到:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">--- take ---</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br></pre></td></tr></table></figure>
+
+<p>还有一个叫做<strong>takeWhile</strong>的操作符, 它的工作原理类似于<strong>skipWhile</strong>.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%205/8.png" alt="图片"></p>
+<p>有时候, 我们除了获取到元素之外还想获取到元素的索引, 这个时候我们可以使用<code>enumerated()</code>操作符来生成元组, 这个时候我们就会获取到Observable发出的每一个元素和元素的索引, 就和<strong>Swift</strong>标准库里的<strong>enumerated</strong>方法一样.</p>
+<p>将下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">takeWhile</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"--- takeWhile ---"</span>)</span><br><span class="line">		<span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">let</span> numbers = <span class="type">Observable</span>.of(<span class="number">2</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">6</span>, <span class="number">2</span>, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    numbers</span><br><span class="line">        <span class="comment">// 2</span></span><br><span class="line">        .enumerated()</span><br><span class="line">        <span class="comment">// 3</span></span><br><span class="line">        .takeWhile &#123; index, integer <span class="keyword">in</span></span><br><span class="line">            <span class="comment">// 4</span></span><br><span class="line">            integer % <span class="number">2</span> == <span class="number">0</span> &amp;&amp; index &lt; <span class="number">3</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 5</span></span><br><span class="line">        .<span class="built_in">map</span> &#123; $<span class="number">0</span>.element &#125;</span><br><span class="line">        <span class="comment">// 6</span></span><br><span class="line">        .subscribe(onNext: &#123;</span><br><span class="line">            <span class="built_in">print</span>($<span class="number">0</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">        .disposed(by: disposeBag)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们一步一步来拆解代码:</p>
+<ol>
+<li>创建一个名为<strong>numbers</strong>的<strong>Observable</strong>对象.</li>
+<li>使用<code>enumerated()</code>操作符转换成包含元素和索引的元组.</li>
+<li>使用<strong>takeWhile</strong>操作符, 将元组拆分成单独的参数.</li>
+<li>传递一个谓词用于过滤元素, 知道不满足条件位置.</li>
+<li>使用<strong>map</strong>操作符(工作原理和<strong>Swift</strong>标准库的<strong>map</strong>类似)来映射每一个从<strong>takeWhile</strong>获取的元素.</li>
+<li>订阅<strong>Observable</strong>对象, 并输出元素.</li>
+</ol>
+<blockquote>
+<p>注意: 我们会在将来的不久学习更多有关于<strong>map</strong>的操作符</p>
+</blockquote>
+<p>从我们的筛选条件中, 只有当整数为偶数, 且索引小于<strong>3</strong>时才会发出元素.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">--- takeWhile ---</span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<p>同样的, 和<strong>skipUntil</strong>一样, <strong>take</strong>家族也有一个类似的操作符叫做<strong>takeUntil</strong>, 但是和<strong>skipUntil</strong>相反, 意思就是源<strong>Observable</strong>是正常接收元素的, 一旦用来驱动的<strong>Observable</strong>接收到了<code>.next</code>事件, 那么源<strong>Observable</strong>所发出的元素则会被过滤, 如下面的时序图所示:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%205/9.png" alt="图片"></p>
+<p>将下面的代码添加到工程中: </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">takeUntil</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"--- takeUntil ---"</span>)</span><br><span class="line">		<span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">let</span> subject = <span class="type">PublishSubject</span>&lt;<span class="type">String</span>&gt;()</span><br><span class="line">    <span class="keyword">let</span> trigger = <span class="type">PublishSubject</span>&lt;<span class="type">String</span>&gt;()</span><br><span class="line">		<span class="comment">// 2</span></span><br><span class="line">    subject</span><br><span class="line">        .takeUntil(trigger)</span><br><span class="line">        .subscribe(onNext: &#123;</span><br><span class="line">            <span class="built_in">print</span>($<span class="number">0</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">        .disposed(by: disposeBag)</span><br><span class="line">		<span class="comment">// 3</span></span><br><span class="line">    subject.onNext(<span class="string">"1"</span>)</span><br><span class="line">    subject.onNext(<span class="string">"2"</span>)</span><br><span class="line">    subject.onNext(<span class="string">"3"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里和之前我们创建的<strong>skipUntil</strong>很像, 还是循例解析一下:</p>
+<ol>
+<li>创建一个名为<strong>subject</strong>和<strong>trigger</strong>的<strong>PublishSubject</strong>.</li>
+<li>使用<strong>takeUntil</strong>将<strong>trigger</strong>与<strong>subject</strong>关联, 一旦<strong>trigger</strong>发出事件, 那么<strong>takeUntil</strong>则会过滤掉所有的元素.</li>
+<li>给<strong>subject</strong>添加几个<code>.next</code>事件</li>
+</ol>
+<p>现在我们触发一下事件, 看看控制台的输出:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">--- takeUntil ---</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>现在我们在<strong>trigger</strong>中添加一个元素, 然后在给<strong>subject</strong>添加另一个元素:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">trigger.onNext(<span class="string">"X"</span>)</span><br><span class="line"></span><br><span class="line">subject.onNext(<span class="string">"4"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这个时候我们再触发事件, 就会发现控制台里除了前面打印的内容之外, 再也不会打印任何东西了.</p>
+<p>后续我们会学到<strong>takeUntil</strong>与<strong>RxCocoa</strong>混搭使用, 并且<strong>takeUntil</strong>可以在处理订阅的时候不需要将订阅添加到<strong>disposeBag</strong>中, 但如果我们使用<strong>Observable</strong>和<strong>Subscribe</strong>来玩<strong>if-then-but-what</strong>的话, 会不会造成内存泄漏是一回事, 但是那代码看起来肯定是非常的复杂了, 所以我们还是规规矩矩的是使用<strong>disposeBag</strong>好一些.</p>
+<h2 id="Distinct操作符"><a href="#Distinct操作符" class="headerlink" title="Distinct操作符"></a>Distinct操作符</h2><p>回到我们的整体, 现在我们要学习几个可以防止重复操作的操作符, 如下面的时序图所示, <strong>distinctUntilChanged</strong>可以用来防止相邻的两个元素重复发送, 所以图里第二个<strong>1</strong>是可以正常通过的:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%205/10.png" alt="图片"></p>
+<p>把下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">distinctUntilChanged</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"--- distinctUntilChanged ---"</span>)</span><br><span class="line">		<span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">let</span> letter = <span class="type">Observable</span>.of(<span class="string">"A"</span>, <span class="string">"A"</span>, <span class="string">"B"</span>, <span class="string">"B"</span>, <span class="string">"A"</span>)</span><br><span class="line"></span><br><span class="line">    letter</span><br><span class="line">        <span class="comment">// 2.</span></span><br><span class="line">        .distinctUntilChanged()</span><br><span class="line">        .subscribe(onNext: &#123;</span><br><span class="line">            <span class="built_in">print</span>($<span class="number">0</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">        .disposed(by: disposeBag)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里我们的操作是:</p>
+<ol>
+<li>创建一个名为<strong>letter</strong>的纯字母<strong>Observable</strong>对象</li>
+<li>使用<strong>distinctUntilChanged</strong>操作符防止相邻的重复元素通过.</li>
+</ol>
+<p><strong>distinctUntilChanged</strong>只防止连续重复的元素出现, 所以第二个元素和第四个元素是会被阻止的, 因为它们和前一个元素是相同的, 但是最后面的元素<strong>A</strong>与前一个元素不相同, 所以它允许通过, 现在我们触发一下事件, 然后看看控制台会输出什么:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">--- distinctUntilChanged ---</span><br><span class="line">A</span><br><span class="line">B</span><br><span class="line">A</span><br></pre></td></tr></table></figure>
+
+<p>但是我们这里有一点是需要知道的, 由于<strong>String</strong>类型是遵循了<strong>Equatable</strong>协议, 所以我们可以使用<strong>distinctUntilChanged</strong>来进行元素的比较.</p>
+<p>除此之外, 我们还可以给<strong>distinctUntilChanged</strong>添加一些判断条件来过滤元素, 如图所示, 我们可以比较元素的<strong>value</strong>值来判断是否重复:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%205/11.png" alt="图片"></p>
+<p>将下面的例子添加到我们的工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">distinctUntilChangedTow</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"--- distinctUntilChanged(_:) ---"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 1</span></span><br><span class="line">    <span class="type">Observable</span>.of(<span class="number">10</span>, <span class="number">10</span>, <span class="number">110</span>, <span class="number">20</span>, <span class="number">20</span>, <span class="number">220</span>, <span class="number">210</span>, <span class="number">210</span>, <span class="number">310</span>, -<span class="number">1</span>)</span><br><span class="line">        <span class="comment">// 2</span></span><br><span class="line">        .distinctUntilChanged &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> $<span class="number">0</span> &lt; <span class="number">0</span> || $<span class="number">1</span> &lt; <span class="number">0</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> $<span class="number">0</span> &gt;= $<span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 3</span></span><br><span class="line">        .subscribe(onNext: &#123;</span><br><span class="line">            <span class="built_in">print</span>($<span class="number">0</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">        .disposed(by: disposeBag)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们来解释一下:</p>
+<ol>
+<li>创建一个纯数字的<strong>Observable</strong>对象</li>
+<li>使用<code>distinctUntilChanged(_:)</code>来过滤元素, 如果条件为<strong>true</strong>则过滤掉, 否则则发出元素</li>
+<li>打印允许通过的元素</li>
+</ol>
+<p>现在我们来看看控制台输出的结果:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">--- distinctUntilChanged(<span class="number">_</span>:) ---</span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="number">110</span></span><br><span class="line"><span class="number">220</span></span><br><span class="line"><span class="number">310</span></span><br><span class="line">-<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>当然如果我们需要明确的防止不遵循<strong>Equatable</strong>协议类型的重复, 那么<strong>distinctUntilChanged(_:)</strong>也是非常有用的.</p>
+<h2 id="挑战"><a href="#挑战" class="headerlink" title="挑战"></a>挑战</h2><p>完成挑战, 可以使得我们刚刚学到的东西更加的巩固, 在文件夹里找到挑战的初始化版本和完成的版本.</p>
+<h3 id="挑战-创建一个电话号码的查询"><a href="#挑战-创建一个电话号码的查询" class="headerlink" title="挑战: 创建一个电话号码的查询"></a>挑战: 创建一个电话号码的查询</h3><p>在<strong>starter</strong>文件夹中使用<strong>CocoaPods</strong>安装应用程序所需要的所有依赖局, 然后打开工程.</p>
+<p>我们需要使用过滤操作符来实现以下几个需求:</p>
+<ol>
+<li>输入的电话号码不能以<strong>0</strong>开头, 我们可以使用<strong>skipWhile</strong>操作符.</li>
+<li>每次输入的数字必须要小于时, 因此过滤操作的条件是小于<strong>10</strong>.</li>
+<li>该工程所限制的号码为中国的手机号码, 即<strong>11</strong>位数字, 只接收前<strong>11</strong>位数字的输入, 我们可以使用<strong>take</strong>和<strong>toArray</strong>.</li>
+</ol>
+<p>打开工程后, 我们会发现工程中有一个简单的黄页信息:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> contacts = [</span><br><span class="line">  <span class="string">"150-1234-0987"</span>: <span class="string">"张三"</span>,</span><br><span class="line">  <span class="string">"137-8987-4321"</span>: <span class="string">"李四"</span>,</span><br><span class="line">  <span class="string">"170-7890-5678"</span>: <span class="string">"王五"</span>,</span><br><span class="line">  <span class="string">"159-2345-3456"</span>: <span class="string">"赵六"</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>这里我们还会提供一个实用的函数, 我们需要传递一个个数为<strong>11</strong>位的数组, 然后会返回一个格式化后的电话号码字符串:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">phoneNumber</span><span class="params">(from inputs: [Int])</span></span> -&gt; <span class="type">String</span> &#123;</span><br><span class="line">  <span class="keyword">var</span> phone = inputs.<span class="built_in">map</span>(<span class="type">String</span>.<span class="keyword">init</span>).joined()</span><br><span class="line">    phone.insert(<span class="string">"-"</span>, at: phone.index(</span><br><span class="line">    phone.startIndex,</span><br><span class="line">    offsetBy: <span class="number">3</span>)</span><br><span class="line">  )</span><br><span class="line">  phone.insert(<span class="string">"-"</span>, at: phone.index(</span><br><span class="line">    phone.startIndex,</span><br><span class="line">    offsetBy: <span class="number">8</span>)</span><br><span class="line">  )</span><br><span class="line">  <span class="keyword">return</span> phone</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们从输入的<strong>PublishSubject</strong>开始:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> input = <span class="type">PublishSubject</span>&lt;<span class="type">Int</span>&gt;()</span><br></pre></td></tr></table></figure>
+
+<p>然后会有一系列的<strong>onNext</strong>来测试我们的方法是否可行:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">input.onNext(<span class="number">0</span>)</span><br><span class="line">input.onNext(<span class="number">150</span>)</span><br><span class="line"></span><br><span class="line">input.onNext(<span class="number">1</span>)</span><br><span class="line">input.onNext(<span class="number">5</span>)</span><br><span class="line">input.onNext(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">"12340987"</span>.forEach &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> number = (<span class="type">Int</span>(<span class="string">"\($0)"</span>)) &#123;</span><br><span class="line">        input.onNext(number)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为这次的挑战主要是集中在使用过滤操作符上, 所以我们可以在订阅的<code>.next</code>事件中使用下面的代码来进行输出:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> contact = contacts[phone] &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"Dialing \(contact) (\(phone))..."</span>)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"Contact not found"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>加油!</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li><p><strong>ignoreElements</strong>: 忽略所有的<code>.onNext()</code>事件, 只会在接收到<code>.completed()</code>与<code>.error()</code>事件才会发出事件.</p>
+</li>
+<li><p><strong>elementAt</strong>: 可以忽略给定的<code>.onNext()</code>事件个数, 以下代码则会忽略两次<code>.onNext()</code>事件, 之后<strong>Observable</strong>再收到<code>.onNext()</code>事件则会发出事件</p>
+</li>
+<li><p><strong>filter</strong>: 通过给定的判定条件决定是否进行下一步的操作, 如条件为<strong>true</strong>则继续下一步操作, 否则则不会</p>
+</li>
+</ul>
+<h3 id="skip操作符"><a href="#skip操作符" class="headerlink" title="skip操作符"></a>skip操作符</h3><ul>
+<li><p><strong>skip</strong>: 可以忽略给定元素的个数, 如数量大于给定的个数, 会发出剩余的元素</p>
+</li>
+<li><p><strong>skipWhile</strong>: 通过给定的判断条件决定是否允许元素的通过, 如果为<strong>true</strong>, 后续的所有元素则可以输出</p>
+</li>
+<li><p><strong>skipUntil</strong>: 只接受<strong>Observable</strong>作为驱动, 当<strong>trigger subject</strong>没有接收到任何事件时, 则不允许任何<code>.onNext()</code>事件通过, 如果<strong>trigger subject</strong>接收到事件后, 后续的<code>.onNext()</code>事件则可以通过</p>
+</li>
+</ul>
+<h3 id="take操作符"><a href="#take操作符" class="headerlink" title="take操作符"></a>take操作符</h3><ul>
+<li><p><strong>take</strong>: 可以获取指定数的元素, 就算输入个数大于<strong>Observable</strong>所拥有的元素则会返回所有的元素, 不会报错</p>
+</li>
+<li><p><strong>takeWhile</strong>: 和<strong>skipWhile</strong>相反, 一旦条件为<strong>true</strong>可以通过元素, 否则则不可通过</p>
+</li>
+</ul>
+<h3 id="distinct操作符"><a href="#distinct操作符" class="headerlink" title="distinct操作符"></a>distinct操作符</h3><ul>
+<li><p><strong>distinctUntilChanged</strong>: 可以防止连续重复的元素输出</p>
+</li>
+<li><p>除了可以直接调用之外, <code>distinctUntilChanged()</code>还可以在里面做一些判断条件</p>
+</li>
+</ul>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始"><span class="toc-number">1.</span> <span class="toc-text">开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Ignoreing操作符"><span class="toc-number">2.</span> <span class="toc-text">Ignoreing操作符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Skipping操作符"><span class="toc-number">3.</span> <span class="toc-text">Skipping操作符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Taking操作符"><span class="toc-number">4.</span> <span class="toc-text">Taking操作符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Distinct操作符"><span class="toc-number">5.</span> <span class="toc-text">Distinct操作符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#挑战"><span class="toc-number">6.</span> <span class="toc-text">挑战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#挑战-创建一个电话号码的查询"><span class="toc-number">6.1.</span> <span class="toc-text">挑战: 创建一个电话号码的查询</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#skip操作符"><span class="toc-number">7.1.</span> <span class="toc-text">skip操作符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#take操作符"><span class="toc-number">7.2.</span> <span class="toc-text">take操作符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#distinct操作符"><span class="toc-number">7.3.</span> <span class="toc-text">distinct操作符</span></a></li></ol></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

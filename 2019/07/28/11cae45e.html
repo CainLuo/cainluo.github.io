@@ -1,0 +1,393 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RxSwift：3.Subjects - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="在前面, 我们已经了解到了什么是Observable, 如何创建它, 订阅它, 以及如何使用它去处理我们需要做的事情. Observable是RxSwift的一个基础的部分, 但是在我们开发应用程序,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">RxSwift：3.Subjects</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">RxSwift：3.Subjects</h1>
+        <div class="stuff">
+            <span>七月 28, 2019</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/RxSwift/">RxSwift</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>在前面, 我们已经了解到了什么是<strong>Observable</strong>, 如何创建它, 订阅它, 以及如何使用它去处理我们需要做的事情. <strong>Observable</strong>是<strong>RxSwift</strong>的一个基础的部分, 但是在我们开发应用程序的时候, 有一个常见的需求, 就是在运行时手动向Observable添加新值, 然后将其发送给订阅者, 也就是说我们想要一个既是作为<strong>Observable</strong>又是作为<strong>观察者</strong>的东西, 这个东西叫做<strong>Subject</strong>.</p>
+<p>在本章中, 我们将学习<strong>RxSwift</strong>中不同类型的<strong>Subject</strong>, 了解每一种<strong>Subject</strong>的工作原理才能让我们在开发中如鱼得水, 除了<strong>Subject</strong>之外, 我们还需要了解<strong>relays</strong>的东西, 它是基于<strong>Subjects</strong>的封装, 后续我们会了解到它.</p>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>在本章中, 我们将使用一个<strong>Xcode</strong>项目, 该项目已经写好了<strong>CocoaPods</strong>所需的东西, 直接打开终端, 去到当前目录然后输入:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod install</span><br></pre></td></tr></table></figure>
+
+<p><strong>CocoaPods</strong>就会自动的把<strong>RxSwift</strong>和我们的工程关联起来了.</p>
+<blockquote>
+<p>注意: 该教程使用的是<strong>RxSwift 4.4.1</strong>版本, <strong>Xcode 10.3</strong>, 默认是<strong>Swift 5.0</strong>版本.</p>
+</blockquote>
+<p>将下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">publishSubject</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"--- Publish Subject ---"</span>)</span><br><span class="line">    <span class="keyword">let</span> subject = <span class="type">PublishSubject</span>&lt;<span class="type">String</span>&gt;()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们刚刚创建了一个<strong>PublishSubject</strong>的东西, 它会在接收到消息, 然后再将消息发给订阅者, 这里我们预先声明了该<strong>PublishSubject</strong>是<strong>String</strong>类型, 因此它只能接收和发送<strong>String</strong>.</p>
+<p>将下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">subject.onNext(<span class="string">"Hello publish subject"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这会给<strong>subject</strong>添加一个新的字符串, 现在我们是得不到任何结果的, 因为还没有订阅者去订阅这个<strong>subject</strong>, 现在我们来给<strong>subject</strong>添加一个订阅者:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> subscriptionOne = subject</span><br><span class="line">    .subscribe(onNext: &#123; string <span class="keyword">in</span></span><br><span class="line">        <span class="built_in">print</span>(string)</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
+
+<p>现在我们添加了<strong>subject</strong>的订阅, 就和上一章一样, 我们现在用<code>.next</code>事件输出内容, 触发事件后, 我们仍让没有在<strong>Xcode</strong>的控制台里看到有什么消息的输出, 这是为什么呢?</p>
+<p>因为这里我们使用的是<strong>PublishSubject</strong>, 它只会向当前的订阅者发出消息, 如果在发送消息之前没有订阅, 那么则不会得到任何东西.</p>
+<p>我们继续添加消息:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">subject.on(.next(<span class="string">"1"</span>))</span><br></pre></td></tr></table></figure>
+
+<p>因为刚刚我们有了一个订阅者, 现在又在这个订阅者之后发送消息, 所以我们会在控制台上看到消息的打印:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--- Publish Subject ---</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>与<strong>subscribe</strong>操作符类似, <code>on(.next(_:))</code>是用来向<strong>subject</strong>添加一个<code>.next</code>事件, 并将元素作为传递参数, 和<strong>subscribe</strong>操作符一样, <strong>subject</strong>也有快捷的语法, 在项目中添加下面的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">subject.onNext(<span class="string">"2"</span>)</span><br></pre></td></tr></table></figure>
+
+<p><code>onNext(_:)</code>与<code>on(.next(_))</code>的效果是一样的, 只是前者看起来会比较简洁一些, 现在我们再触发一下事件, 就会看到控制台上输出的两个消息:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">--- Publish Subject ---</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>有了前面的这个简单介绍, 我们现在就来正式进入学习.</p>
+<h2 id="什么是Subjects"><a href="#什么是Subjects" class="headerlink" title="什么是Subjects?"></a>什么是Subjects?</h2><p>就像我们前面所看到, 它既可以是<strong>Observable</strong>又可以是观察者. <strong>Subject</strong>接收<code>.next</code>事件, 每当它接收到一个事件时, 它都会发送给它的订阅者.</p>
+<p>在<strong>RxSwift</strong>中, 有四种<strong>Subject</strong>类型, 还有两种基于<strong>Subject</strong>封装的<strong>Relay</strong>类型:</p>
+<ul>
+<li><strong>PublishSubject</strong>: 开始的时候为空, 只向已经订阅了的订阅者发送元素.</li>
+<li><strong>BehaviorSubject</strong>: 初始化时需要填入一个初始值, 会向已经订阅过或新订阅的订阅者发送元素.</li>
+<li><strong>ReplaySubject</strong>: 初始化一个指定的缓冲区大小, 并只维护这个缓冲区大小的元素, 并会向已经订阅过或新订阅的订阅者发送元素.</li>
+<li><strong>AsyncSubject</strong>: 仅在序列中发出最后一个<code>.next</code>事件, 并且仅仅是当<strong>subject</strong>接收到<code>.completed</code>事件时才会发送, 这个<strong>subject</strong>比较少用到, 本教程不会介绍到它, 但是为了完整的介绍, 这里才将它列出来.</li>
+<li><strong>PublishRelay</strong>和<strong>BehaviorRelay</strong>: 前者是基于<strong>PublishSubject</strong>的封装, 后者是基于<strong>BehaviorSubject</strong>的封装, 它们只接受<code>.next</code>事件, 我们根本不能讲<code>.completed</code>或<code>.error</code>事件添加到它们之中, 在我们需要使用到无限序列时, 它们就会派上用场.</li>
+</ul>
+<p>接下来, 我们会学习更多关于<strong>Subject</strong>和<strong>Relay</strong>的知识, 并且如何使用它们.</p>
+<blockquote>
+<p>注意: 或许你会注意在项目中我们会额外的导入一个叫做<strong>RxCocoa</strong>的库, 原因是因为<strong>relays</strong>是封装在<strong>RxCocoa</strong>中的, 这个类在<strong>RxSwift</strong>中已经被弃用了, 即使<strong>relays</strong>是基于<strong>RxSwift</strong>的<strong>subject</strong>的封装, 后面我们会慢慢的去介绍<strong>RxCocoa</strong>的东西.</p>
+</blockquote>
+<h2 id="使用PublishSubject"><a href="#使用PublishSubject" class="headerlink" title="使用PublishSubject"></a>使用PublishSubject</h2><p>当我们只希望订阅者在订阅之后能收到新的事件的通知, 一直到它们取消了订阅, 或者是遇到<code>.completed</code>或<code>.error</code>事件终止, 那么<strong>PublishSubject</strong>就能够派上用场了.</p>
+<p>在下面的时序图中, 第一行是<strong>PublishSubject</strong>, 第二行和第三行是订阅者, 往上的箭头是代表订阅者的订阅, 往下的箭头代表<strong>PublishSubject</strong>像订阅者发出事件.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%203/1.png" alt="图片"></p>
+<p>第一个订阅者是在<strong>1</strong>之后订阅的, 所以它并不会收到该事件, 而后面的<strong>2</strong>和<strong>3</strong>它就可以得到, 第二个订阅者是在<strong>2</strong>之后才订阅的, 所以它只有<strong>3</strong>.</p>
+<p>回到工程中, 我们添加下面的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> subscriptionTwo = subject</span><br><span class="line">    .subscribe &#123; event <span class="keyword">in</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"2)"</span>, event.element ?? event)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>之前我们知道了事件是具有元素的属性, 该属性会将<code>.next</code>事件的元素发送出来, 这里我们使用<code>??</code>运算符, 如果有元素就打印元素, 没有则打印事件.</p>
+<p>触发事件, 就如同我们刚刚所说的, <strong>subscriptionTwo</strong>不会打印任何东西, 因为它是在<strong>1</strong>和<strong>2</strong>之后订阅的, 现在我们来添加一个事件:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">subject.onNext(<span class="string">"3"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>再次触发事件, 我们会在控制台上看到两次的输出, 一个是来自<strong>subscriptionOne</strong>, 一个是来自<strong>subscriptionTwo</strong>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">2</span>) <span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>这个时候我们为<strong>subscriptionOne</strong>添加一个结束操作符, 然后再添加一个<code>.next</code>事件:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">subscriptionOne.dispose()</span><br><span class="line">subject.onNext(<span class="string">"4"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>触发事件后, 这次在控制台上只会输出一个消息, 因为<strong>subscriptionOne</strong>已经被释放掉了:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2</span>) <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<p>当<strong>PublishSubject</strong>接收到<code>.completed</code>或<code>.error</code>事件时(这里我们称为<strong>停止(stop)事件</strong>), 它会向订阅者发出<strong>stop</strong>事件, 并且再也不会发出<code>.next</code>事件, 也会向新的订阅者发送<strong>stop</strong>事件, 将下面的代码添加到示例中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line">subject.onCompleted()</span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line">subject.onNext(<span class="string">"5"</span>)</span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line">subscriptionTwo.dispose()</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> disposeBag = <span class="type">DisposeBag</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 4</span></span><br><span class="line">subject</span><br><span class="line">    .subscribe &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"3)"</span>, $<span class="number">0</span>.element ?? $<span class="number">0</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    .disposed(by: disposeBag)</span><br><span class="line">subject.onNext(<span class="string">"?"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这里我们解释一下代码:</p>
+<ol>
+<li>使用<code>.onCompleted()</code>方法将<code>.completed</code>事件发送给<strong>subject</strong>, 这会使得<strong>Subject</strong>停止了<strong>Observable</strong>序列.</li>
+<li>再向<strong>subject</strong>添加一个<code>.next</code>事件, 但是由于<strong>subject</strong>已经终止了, 所以不会发出任何的消息.</li>
+<li>完成了订阅之后, 我们需要释放掉订阅.</li>
+<li>将观察者添加到<strong>disposeBag</strong>中.</li>
+</ol>
+<p>试想一下, 新的订阅者会让<strong>Subject</strong>正常工作嘛? 答案是不会的, 但是我们仍然会得到一个<code>.completed</code>事件:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2</span>) completed</span><br><span class="line"><span class="number">3</span>) completed</span><br></pre></td></tr></table></figure>
+
+<p>事实上, <strong>Subject</strong>一旦终止了, 它会向新的订阅者发出它的<strong>stop</strong>事件, 因此我们在处理业务逻辑时可以获得到<strong>subject</strong>的<strong>stop</strong>事件也是一个好事情, 不仅可以在终止时得到通知, 还可以在订阅终止时得到通知, 但是这个需要非常小心操作, 有时候也会导致一些<strong>bug</strong>的出现.</p>
+<p>在我们建模时, 一些敏感的数据可能会使用到<strong>PublishSubject</strong>, 有时候我们希望新的订阅者可以知道最新发出的元素时什么, 哪怕这个元素时在订阅之前发送的, 这个时候我们就会有一些选择了.</p>
+<h2 id="使用BehaviorSubject"><a href="#使用BehaviorSubject" class="headerlink" title="使用BehaviorSubject"></a>使用BehaviorSubject</h2><p><strong>BehaviorSubject</strong>的工作方式与<strong>PublishSubject</strong>类似, 只是和<strong>PublishSubject</strong>多了一个向新订阅者再次发送<code>.next</code>事件, 看看下面的时序图:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%203/2.png" alt="图片"></p>
+<p>顶部第一行是<strong>BehaviorSubject</strong>, 第二行的第一个订阅者在<strong>1</strong>之后订阅, 但是在<strong>2</strong>之前订阅, 所以它在订阅的时立即就可以得到<strong>1</strong>, 然后后面就是<strong>Subject</strong>发出的<strong>2</strong>和<strong>3</strong>. 一次类推, 第二个订阅者在<strong>2</strong>之后<strong>3</strong>之前订阅, 所以它立即获得了<strong>2</strong>, 然后在<strong>3</strong>发出时就可以得到<strong>3</strong>.</p>
+<p>现在, 将下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">MyError</span>: <span class="title">Error</span> </span>&#123;</span><br><span class="line">    <span class="keyword">case</span> anError</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">prints</span>&lt;T: CustomStringConvertible&gt;<span class="params">(label: String, event: Event&lt;T&gt;)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(label, (event.element ?? event.error) ?? event)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">behaviorSubject</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"--- Behavior Subject ---"</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 4</span></span><br><span class="line">    <span class="keyword">let</span> subject = <span class="type">BehaviorSubject</span>(value: <span class="string">"Initial value"</span>)</span><br><span class="line">    <span class="keyword">let</span> disposeBag = <span class="type">DisposeBag</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解释一下代码:</p>
+<ol>
+<li>订阅一个错误类型, 在后续的示例中使用.</li>
+<li>声明一个帮助函数, 并使用三元运算符在这个基础上进行一些拓展, 如果有元素则打印元素, 如果没有元素有错误就打印错误, 否则就打印事件.</li>
+<li>添加触发事件.</li>
+<li>创建一个新的<strong>BehaviorSubject</strong>, 初始化时需要给它一个初始值.</li>
+</ol>
+<blockquote>
+<p>注意: 因为<strong>BehaviorSubject</strong>总是会发出最新的元素, 所以初始化时不给初始值的话就不能创建一个元素. 如果需要在初始化的时候不提供初始值, 那么我们就使用<strong>PublishSubject</strong>.</p>
+</blockquote>
+<p>接下来我们添加一下订阅的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">subject</span><br><span class="line">    .subscribe &#123;</span><br><span class="line">        <span class="keyword">self</span>.prints(label: <span class="string">"1)"</span>, event: $<span class="number">0</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    .disposed(by: disposeBag)</span><br></pre></td></tr></table></figure>
+
+<p>我们在<strong>BehaviorSubject</strong>创建之后就立马订阅它, 由于它并没有接收到新的元素, 所以它会把初始值发给新的订阅者:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--- Behavior Subject ---</span><br><span class="line"><span class="number">1</span>) Initial value</span><br></pre></td></tr></table></figure>
+
+<p>现在我们在订阅之前添加一个<code>.next</code>事件, 并添加一个新的元素:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">subject.onNext(<span class="string">"X"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这个时候我们看到它会输出最新的元素:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--- <span class="type">Behavior</span> <span class="type">Subject</span> ---</span><br><span class="line"><span class="number">1</span>) <span class="type">X</span></span><br></pre></td></tr></table></figure>
+
+<p>现在我们继续在后面添加代码, 然后看看会打印出什么:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line">subject.onError(<span class="type">MyError</span>.anError)</span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line">subject</span><br><span class="line">    .subscribe &#123;</span><br><span class="line">        <span class="keyword">self</span>.prints(label: <span class="string">"2)"</span>, event: $<span class="number">0</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    .disposed(by: disposeBag)</span><br></pre></td></tr></table></figure>
+
+<p>解释一下:</p>
+<ol>
+<li>给<strong>BehaviorSubject</strong>添加我们自定义的<strong>MyError.anError</strong>.</li>
+<li>然后再创建一个新的订阅者.</li>
+</ol>
+<p>这个时候我们在输出结果, 就会看到这个错误类型连续打印两次:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>) anError</span><br><span class="line"><span class="number">2</span>) anError</span><br></pre></td></tr></table></figure>
+
+<p>当我们希望时候最新的元素填充到试图时, 那么<strong>BehaviorSubject</strong>就非常有用, 例如我们需要将<strong>UIKit</strong>的控件与<strong>BehaviorSubject</strong>绑定在一起, 那么就方便我们在网络获取到最新的数据填充到<strong>UIKit</strong>的控件中.</p>
+<p>但是如果我们想要显示的不仅仅是最新的值, 例如在搜索模块中, 我们可能会显示最近搜索的一些搜索词, <strong>BehaviorSubject</strong>就可以起到这个再次发送的作用了.</p>
+<h2 id="使用ReplaySubject"><a href="#使用ReplaySubject" class="headerlink" title="使用ReplaySubject"></a>使用ReplaySubject</h2><p><strong>ReplaySubject</strong>将临时缓存或者缓冲我们指定大小的最新元素, 直到满载之后, 它就会把缓冲区的元素重新发送给订阅者.</p>
+<p>我们来看看下面的<strong>ReplaySubject</strong>时序图, 它的缓冲区大小为<strong>2</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%203/3.png" alt="图片"></p>
+<p>中间的第一个订阅者已经订阅了第一行的<strong>ReplaySubject</strong>, 因此在<strong>ReplaySubject</strong>发出元素时就可以接收到, 第二个订阅者是在<strong>2</strong>之后才订阅的, 因此它可以获得<strong>1</strong>和<strong>2</strong>的再次推送.</p>
+<p>这里要注意一些, 当我们使用<strong>ReplaySubject</strong>时, 它的缓冲区是保存在内存中的, 如果我们需要为某种类型的<strong>ReplaySubject</strong>设置较大的缓冲区, 比如图像, 数组之类的, 那么<strong>ReplaySubject</strong>就会占用大量的内存, 弄不好还会导致内存撑爆了.</p>
+<p>接下来, 我们把下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">replaySubject</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"--- Replay Subject ---"</span>)</span><br><span class="line">    <span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">let</span> subject = <span class="type">ReplaySubject</span>&lt;<span class="type">String</span>&gt;.create(bufferSize: <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">let</span> disposeBag = <span class="type">DisposeBag</span>()</span><br><span class="line">    <span class="comment">// 2</span></span><br><span class="line">    subject.onNext(<span class="string">"1"</span>)</span><br><span class="line">    subject.onNext(<span class="string">"2"</span>)</span><br><span class="line">    subject.onNext(<span class="string">"3"</span>)</span><br><span class="line">    <span class="comment">// 3</span></span><br><span class="line">    subject</span><br><span class="line">        .subscribe &#123;</span><br><span class="line">            <span class="keyword">self</span>.prints(label: <span class="string">"1)"</span>, event: $<span class="number">0</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        .disposed(by: disposeBag)</span><br><span class="line"></span><br><span class="line">    subject</span><br><span class="line">        .subscribe &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">self</span>.prints(label: <span class="string">"2)"</span>, event: $<span class="number">0</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        .disposed(by: disposeBag)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解释一下代码:</p>
+<ol>
+<li>使用类方法<code>create(bufferSize:)</code>创建一个缓冲区大小为<strong>2</strong>的<strong>ReplaySubject</strong>.</li>
+<li>给<strong>ReplaySubject</strong>添加三个<code>.next</code>事件.</li>
+<li>创建两个订阅者订阅<strong>ReplaySubject</strong>.</li>
+</ol>
+<p>两个订阅者都会获得<strong>ReplaySubject</strong>重新发出的最新两个元素, 而元素<strong>1</strong>则永远不会被发出, 因为我们设置的缓冲区大小为<strong>2</strong>.</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">--- Replay Subject ---</span><br><span class="line"><span class="number">1</span>) <span class="number">2</span></span><br><span class="line"><span class="number">1</span>) <span class="number">3</span></span><br><span class="line"><span class="number">2</span>) <span class="number">2</span></span><br><span class="line"><span class="number">2</span>) <span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>接下来我们继续添加代码到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">subject.onNext(<span class="string">"4"</span>)</span><br><span class="line">subject</span><br><span class="line">    .subscribe &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">self</span>.prints(label: <span class="string">"3)"</span>, event: $<span class="number">0</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    .disposed(by: disposeBag)</span><br></pre></td></tr></table></figure>
+
+<p>我们又向<strong>ReplaySubject</strong>添加了另一个元素, 然后又创建了一个新的订阅者, 前两个订阅者可以正常的接收到该元素, 因为在发出元素<strong>4</strong>之前它们就已经订阅了, 现在又多了一个订阅者, 那么这次输出的结果:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>) <span class="number">4</span></span><br><span class="line"><span class="number">2</span>) <span class="number">4</span></span><br><span class="line"><span class="number">3</span>) <span class="number">3</span></span><br><span class="line"><span class="number">3</span>) <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<p>现在我们已经很熟练<strong>ReplaySubject</strong>了, 所以这个也是预料之中, 那么现在我们来加点不一样的东西, 我们在元素<strong>4</strong>之后, 创建第三个订阅者之前添加一行代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">subject.onError(<span class="type">MyError</span>.anError)</span><br></pre></td></tr></table></figure>
+
+<p>现在我们再次触发事件, 结果可能会和我们想象的不一样:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>) <span class="number">4</span></span><br><span class="line"><span class="number">2</span>) <span class="number">4</span></span><br><span class="line"><span class="number">1</span>) anError</span><br><span class="line"><span class="number">2</span>) anError</span><br><span class="line"><span class="number">3</span>) <span class="number">3</span></span><br><span class="line"><span class="number">3</span>) <span class="number">4</span></span><br><span class="line"><span class="number">3</span>) anError</span><br></pre></td></tr></table></figure>
+
+<p>生活往往都是充满着意外和惊喜, 那么这个是为什么呢? 我们回想一下之前学到的知识<strong>ReplaySubject</strong>因为遇到了错误并向订阅者发送了错误后并且停止运行.</p>
+<p>但是呢, 因为缓冲区仍然是存在的, 所以在<strong>RelaySubject</strong>发出<strong>stop</strong>事件之前, 它会先重新发给订阅者然后再发送错误信息后停止.</p>
+<p>我们在发送错误事件的后面添加一行代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">subject.dispose()</span><br></pre></td></tr></table></figure>
+
+<p>通过手动给<strong>ReplaySubject</strong>添加<code>.dispose()</code>操作符, 那么前两个订阅者会受到错误消息, 而新的订阅者则会报错, 因为<strong>ReplaySubject</strong>已经被释放掉了:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">3</span>) Object `RxSwift.(unknown context at <span class="number">0</span>x10e875a28).ReplayMany&lt;Swift.String&gt;` was already disposed.</span><br></pre></td></tr></table></figure>
+
+<p>当然, 这种手动给<strong>ReplaySubject</strong>添加<code>.dispose()</code>操作符的事情, 我们一般都不会这么做的, 我们需要做的是添加<strong>disposeBag</strong>即可, 然后系统就会处理和分配资源给所有者.</p>
+<p>这里有一个题外话, 有关于<strong>ReplayMany</strong>:</p>
+<blockquote>
+<p>注意: 如果你想知道什么事<strong>ReplayMany</strong>, 可以打开源代码进去查看, 就会发现它是用于创建<strong>ReplaySubject</strong>的一个内部类型.</p>
+</blockquote>
+<p>学完这三种<strong>PublishSubject</strong>, <strong>BehaviorSubject</strong>和<strong>ReplaySubject</strong>, 我们能够对几乎可以满足所有的业务需求了, 如果你还想继续往下学习的话, 那我们就继续来介绍一下<strong>relays</strong>.</p>
+<p>其实这里还有第四种<strong>Subject</strong>, 叫做<strong>AsyncSubjet</strong>, 这里就不做介绍了, 工程代码里有, 想了解的话可以去看看.</p>
+<h2 id="使用relays"><a href="#使用relays" class="headerlink" title="使用relays"></a>使用relays</h2><p>正如我们前面所说的, <strong>replay</strong>是基于<strong>subject</strong>封装, 这样子<strong>replay</strong>就会拥有<strong>subject</strong>的功能, 但是与常规的<strong>subject</strong>不同, 我们是用<code>accept(_:)</code>方法来给<strong>replay</strong>添加数值, 也就是说我们不能使用<code>.onNext</code> 方法, 因为<strong>replay</strong>只接受数值,  同时我们也不能给给<strong>replay</strong>添加<code>.error</code>或<code>.completed</code>事件.</p>
+<p><strong>PublishReplay</strong>是基于<strong>PublishSubject</strong>的封装, <strong>BehaviorReplay</strong>是基于<strong>BehaviorSubject</strong>的封装, <strong>relays</strong>与<strong>subject</strong>最大的区别在于, 它永远都不会终止.</p>
+<p>把下面的例子添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">publishRelay</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"--- Publish Relay ---"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> relay = <span class="type">PublishRelay</span>&lt;<span class="type">String</span>&gt;()</span><br><span class="line">    <span class="keyword">let</span> disposeBag = <span class="type">DisposeBag</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>除了<strong>PublishReplay</strong>这个类名不一样之外, 其他的初始化方式和<strong>PublishSubject</strong>没区别, 现在我们用<code>accept(_:)</code>来给<strong>PublishReplay</strong>添加数值:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">relay.accept(<span class="string">"Hello Publish Relay"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>由于现在我们还没有订阅者, 所以不会发出任何的内容, 现在我们来创建一个订阅者, 然后再使用<code>accept(_:)</code>添加一个新值:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">relay</span><br><span class="line">    .subscribe(onNext: &#123;</span><br><span class="line">        <span class="built_in">print</span>($<span class="number">0</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">    .disposed(by: disposeBag)</span><br><span class="line"></span><br><span class="line">relay.accept(<span class="string">"1"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出内容的方式和<strong>PublishSubject</strong>一致:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--- Publish Relay ---</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>刚刚我们也说了, 无法给<strong>replay</strong>添加<code>.error</code>和<code>.completed</code>事件, 如果我们强制加上的话, 那么编译器则会报错, 不信你可以试试:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">relay.accept(<span class="type">MyError</span>.anError)</span><br><span class="line">relay.onCompleted()</span><br></pre></td></tr></table></figure>
+
+<p>现在我们继续来看看<strong>BehaviorReplay</strong>, <strong>BehaviorReplay</strong>是基于<strong>BehaviorSubject</strong>的封装, 它同样也不会因为<code>.error</code>或<code>.completed</code>事件而终止, 在创建的时候我们也需要给定一个初始值, <strong>BehaviorReplay</strong>和<strong>BehaviorSubject</strong>最大的区别在于前者可以访问它当前的值.</p>
+<p>我们把下面的例子添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">behaviorRelay</span><span class="params">(<span class="number">_</span> sender: <span class="keyword">Any</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"--- Behavior Relay ---"</span>)</span><br><span class="line">		<span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">let</span> relay = <span class="type">BehaviorRelay</span>(value: <span class="string">"Initial value"</span>)</span><br><span class="line">    <span class="keyword">let</span> disposeBag = <span class="type">DisposeBag</span>()</span><br><span class="line">		<span class="comment">// 2</span></span><br><span class="line">    relay.accept(<span class="string">"XXXXX"</span>)</span><br><span class="line">		<span class="comment">// 3</span></span><br><span class="line">    relay</span><br><span class="line">        .subscribe &#123;</span><br><span class="line">            <span class="keyword">self</span>.prints(label: <span class="string">"1)"</span>, event: $<span class="number">0</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        .disposed(by: disposeBag)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这次我们做的是:</p>
+<ol>
+<li>创建一个有初值的<strong>BehaviorReplay</strong>, 编译器可以推断出<strong>BehaviorReplay</strong>的类型, 当然我们也可以自己显式声明类型为<code>BehaviorRelay&lt;String&gt;(value: &quot;Initial value&quot;)</code>.</li>
+<li>给<strong>replay</strong>添加一个新值.</li>
+<li>订阅<strong>replay</strong>.</li>
+</ol>
+<p>触发事件后, 我们得到最新的值:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--- Behavior Relay ---</span><br><span class="line"><span class="number">1</span>) XXXXX</span><br></pre></td></tr></table></figure>
+
+<p>接下来, 我们继续添加代码到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line">relay.accept(<span class="string">"1"</span>)</span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line">relay</span><br><span class="line">    .subscribe &#123;</span><br><span class="line">        <span class="keyword">self</span>.prints(label: <span class="string">"2)"</span>, event: $<span class="number">0</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    .disposed(by: disposeBag)</span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line">relay.accept(<span class="string">"2"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>来解释一下:</p>
+<ol>
+<li>继续给<strong>replay</strong>添加新值<strong>1</strong></li>
+<li>创建一个新的订阅者, 这次我们标记为<strong>2)</strong>.</li>
+<li>最后结束时, 再次给<strong>replay</strong>添加新值<strong>2</strong></li>
+</ol>
+<p>现在订阅<strong>1)</strong>会接收到<strong>replay</strong>添加的新值<strong>1</strong>, 新的订阅者同样也可以得到, 最后我们再次添加一个新值<strong>2</strong>, 那么这两个订阅者也可以收到<strong>2</strong>.</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>) <span class="number">1</span></span><br><span class="line"><span class="number">2</span>) <span class="number">1</span></span><br><span class="line"><span class="number">1</span>) <span class="number">2</span></span><br><span class="line"><span class="number">2</span>) <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>最后, 我们来访问一下<strong>replay</strong>的值:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(relay.value)</span><br></pre></td></tr></table></figure>
+
+<p>就像我们前面所说的, <strong>BehaviorReplay</strong>允许我们直接访问它当前最新的值, 在这个例子中, <strong>replay</strong>最新的值是<strong>2</strong>, 因此在控制台输出的结果是:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>BehaviorReplay</strong>是通用的, 我们可以和常规的<strong>subject</strong>一样, 订阅它来获取<code>accept(_:)</code>最新的值, 也可以只获取它当前最新的值, 而不是订阅它.</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h3 id="Subjects"><a href="#Subjects" class="headerlink" title="Subjects"></a>Subjects</h3><ul>
+<li><strong>PublishSubject</strong>:  初始化时内容为空, 只有当观察者在<strong>PublishSubject</strong>发送消息前订阅了<strong>PublishSubject</strong>才能接收到<strong>PublishSubject</strong>所发出来的消息, <strong>一旦遇到onCompleted或者是onError事件时, 该Subject则会被释放</strong>.</li>
+<li><strong>BehaviorSubject</strong>: 初始化时可以给定一个初始化值并发送, 一旦有有观察者订阅, 则会把消息的发送给观察者, 一旦遇到<code>.completed</code>或者是<code>.error</code>事件时, 该<strong>Subject</strong>则会被释放.</li>
+<li><strong>ReplaySubject</strong>: 在初始化时可以设置<strong>Subject</strong>的缓冲区大小, 一旦有观察者订阅, 则会把缓冲区大小的内容发送给观察者, 一旦遇到<code>.completed</code>或者是<code>.error</code>事件时, 该<strong>Subject</strong>则会被释放.<ul>
+<li>注意点: <strong>ReplaySubject</strong>不适合在数据较大的场景下使用, 容易造成内存压力,<br>比如<strong>ReplaySubject</strong>是缓存了数组, 或者是图片, 那么<strong>ReplaySubject</strong>所发出去的每一个元素都是数组, 因此缓冲区也是缓冲了那么多个数组.</li>
+</ul>
+</li>
+<li><strong>AsyncSubject</strong>: 和<strong>PublishSubject</strong>一样, 只有当观察者在<strong>AsyncSubject</strong>发送消息前订阅了<strong>AsyncSubject</strong>之后才能接收到收到消息, 并且只会发出最后一个元素, 如果收到<code>.error</code>事件或者是<code>.completed</code>事件就会停止并且发出<code>.error</code>或者<code>.completed</code>事件.</li>
+</ul>
+<h3 id="Relays"><a href="#Relays" class="headerlink" title="Relays"></a>Relays</h3><ul>
+<li><strong>PublishRelay</strong>: 只是对<strong>PublishSubject</strong>简单的封装, 除了<strong>accept</strong>事件和不接受<code>.error</code>和<code>.completed</code>事件之外, 其他都一样.</li>
+<li><strong>BehaviorRelay</strong>: <strong>BehaviorRelay</strong>同样也是对<strong>BehaviorSubject</strong>简单的封装, 除了<strong>accept</strong>事件和不接受<code>.error</code>和<code>.completed</code>事件之外, 其他都一样, 并且可以直接访问<strong>BehaviorRelay</strong>最新的值</li>
+</ul>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始"><span class="toc-number">1.</span> <span class="toc-text">开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是Subjects"><span class="toc-number">2.</span> <span class="toc-text">什么是Subjects?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用PublishSubject"><span class="toc-number">3.</span> <span class="toc-text">使用PublishSubject</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用BehaviorSubject"><span class="toc-number">4.</span> <span class="toc-text">使用BehaviorSubject</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用ReplaySubject"><span class="toc-number">5.</span> <span class="toc-text">使用ReplaySubject</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用relays"><span class="toc-number">6.</span> <span class="toc-text">使用relays</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Subjects"><span class="toc-number">7.1.</span> <span class="toc-text">Subjects</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Relays"><span class="toc-number">7.2.</span> <span class="toc-text">Relays</span></a></li></ol></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CocoaPods 1.7.0 Beta - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="CocoaPods 1.7.0大大扩展了先前版本的改进底层基础架构，支持多个Swift版本，应用程序规范等等！
+这是一个巨大的版本，包含各种新功能，以帮助推动CocoaPods向前发展。
+让我们跳进,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">CocoaPods 1.7.0 Beta</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">CocoaPods 1.7.0 Beta</h1>
+        <div class="stuff">
+            <span>二月 22, 2019</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/CocoaPods/">CocoaPods</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>CocoaPods 1.7.0大大扩展了先前版本的改进底层基础架构，支持多个Swift版本，应用程序规范等等！</p>
+<p>这是一个巨大的版本，包含各种新功能，以帮助推动CocoaPods向前发展。</p>
+<p>让我们跳进去吧！</p>
+<h2 id="支持多种Swift版本"><a href="#支持多种Swift版本" class="headerlink" title="支持多种Swift版本"></a>支持多种Swift版本</h2><p>最初在CocoaPods 1.4.0中引入的swift_version DSL现在已经扩展到支持多个Swift版本。 这有助于pod作者，并在消费者选择使用哪个版本的Swift时为消费者提供更大的灵活性。</p>
+<p>Pod作者现在只需在swift_versions DSL中指定其他Swift版本，即可将该信息转录到他们的podspec中。</p>
+<p>这是一个示例podspec，它指定了它支持的其他Swift版本：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Pod::Spec.new <span class="keyword">do</span> <span class="params">|spec|</span></span><br><span class="line">  spec.name = <span class="string">'CoconutLib'</span></span><br><span class="line">  spec.version = <span class="string">'1.0'</span></span><br><span class="line">  <span class="comment"># ... rest of root spec entries go here</span></span><br><span class="line">  spec.swift_versions = [<span class="string">'3.2'</span>, <span class="string">'4.0'</span>, <span class="string">'4.2'</span>]</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>除非CoconutLib pod的消费者另有指定，否则CocoaPods将在安装过程中自动选择最新版本的Swift，在此示例中为4.2。</p>
+<p>但是，在很多情况下，pod的使用者可能无法使用最新的Swift版本，可能是因为他们的工具链还不支持它。 例如，使用不支持Swift 4的旧版Xcode的项目将无法集成CoconutLib pod并最终导致编译错误。 为了解决这个问题，CocoaPods 1.7.0提供了通过新的supports_swift_versions DSL为Podfile中集成的每个目标指定Swift版本要求的能力。</p>
+<p>例如：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">target <span class="string">'MyApp'</span> <span class="keyword">do</span></span><br><span class="line">  supports_swift_versions <span class="string">'&gt;= 3.0'</span>, <span class="string">'&lt; 4.0'</span></span><br><span class="line">  pod <span class="string">'CoconutLib'</span>, <span class="string">'~&gt; 1.0'</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的配置将成功集成CoconutLib pod并使用Swift 3.2作为版本进行编译。 这是因为它是MyApp目标定义中指定的要求以及在CoconutLib podspec中声明的受支持的Swift版本列表所满足的唯一版本。</p>
+<blockquote>
+<p>注意：supports_swift_versions DSL也可以在Podfile的根级别声明，在这种情况下，它将应用于Podfile中的所有目标。 此外，嵌套目标（例如测试目标）将从其父级继承其Swift需求，除非它们明确指定了自己的Swift版本要求。</p>
+</blockquote>
+<p>在选择要使用的Swift版本时，可能会出现许多其他边缘情况。 我们建议您仔细阅读有关此更改的提案，以了解更多信息！</p>
+<h3 id="Linting和验证"><a href="#Linting和验证" class="headerlink" title="Linting和验证"></a>Linting和验证</h3><p>pod作者通常很难维护基础设施以支持Swift的多个（主要是较旧的）版本，因此，在lint期间，CocoaPods将在验证期间选择最新版本的Swift。</p>
+<p>对于具有基础结构（例如CI系统）的pod作者，确保其pod可以使用旧版本的Swift，在lint期间应该使用–swift-version参数来覆盖默认行为。</p>
+<h3 id="弃用-swift-version文件"><a href="#弃用-swift-version文件" class="headerlink" title="弃用.swift-version文件"></a>弃用.swift-version文件</h3><p>到目前为止，大多数pod作者一直依赖于在其repo的根目录中指定.swift-version文件，以便使用他们正式支持的Swift版本成功发布他们的pod。但是，此信息永远不会在已发布的podspec中转录，因此在集成期间，在选择要使用的Swift版本时，不会考虑这些信息。</p>
+<p>这可能会导致许多问题，特别是在发布新版本的Swift时。这是因为消费者会自动选择使用最新版本的Swift而不会让pod作者正式声称它受支持。</p>
+<p>我们强烈建议pod作者迁移到其podspec中使用官方支持的swift_version DSL。</p>
+<p>我们还建议您删除回购中的.swift-version文件，除非您将其用于其他工具，例如swiftenv。 swift_version DSL将始终优先于.swift-version文件。</p>
+<p>最后，在lint期间将显示警告，鼓励pod作者从使用.swift-version文件迁移，并且在未来的CocoaPods主要版本中，我们计划完全删除对它的支持。</p>
+<h2 id="应用规格"><a href="#应用规格" class="headerlink" title="应用规格"></a>应用规格</h2><p>通过最近推出的测试规范，我们能够构建一个平台，供我们扩展并介绍可由pod作者提供的不同类型的规范。 在1.7.0中，我们引入了应用程序规范，允许pod作者在他们的podspec中描述一个应用程序。</p>
+<p>应用程序规范可以通过各种方式帮助pod作者，例如，它们可以用于将示例应用程序与其pod一起发布，作为消费者如何将其集成到各自应用程序的教程。</p>
+<p>应用程序规范推进了“孤立开发”的概念，其中podspec可以用作生成整个（可抛出）工作空间以进行开发所需的单一信息。</p>
+<p>以下是应用规范声明的示例：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Pod::Spec.new <span class="keyword">do</span> <span class="params">|s|</span></span><br><span class="line">  s.name         = <span class="string">'CoconutLib'</span></span><br><span class="line">  s.version      = <span class="string">'1.0'</span></span><br><span class="line">  s.authors      = <span class="string">'Coconut Corp'</span>, &#123; <span class="string">'Monkey Boy'</span> =&gt; <span class="string">'monkey@coconut-corp.local'</span> &#125;</span><br><span class="line">  s.homepage     = <span class="string">'http://coconut-corp.local/coconut-lib.html'</span></span><br><span class="line">  s.summary      = <span class="string">'Coconuts For the Win.'</span></span><br><span class="line">  s.description  = <span class="string">'All the Coconuts'</span></span><br><span class="line">  s.source       = &#123; <span class="symbol">:git</span> =&gt; <span class="string">'http://coconut-corp.local/coconut-lib.git'</span>, <span class="symbol">:tag</span> =&gt; <span class="string">'v1.0'</span> &#125;</span><br><span class="line">  s.license      = &#123;</span><br><span class="line">    <span class="symbol">:type</span> =&gt; <span class="string">'MIT'</span>,</span><br><span class="line">    <span class="symbol">:file</span> =&gt; <span class="string">'LICENSE'</span>,</span><br><span class="line">    <span class="symbol">:text</span> =&gt; <span class="string">'Permission is hereby granted ...'</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  s.source_files = <span class="string">'Sources/*.swift'</span></span><br><span class="line"></span><br><span class="line">  s.app_spec <span class="string">'SampleApp'</span> <span class="keyword">do</span> <span class="params">|app_spec|</span></span><br><span class="line">    app_spec.source_files = <span class="string">'Sample/*.swift'</span></span><br><span class="line">  <span class="keyword">end</span>  </span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>应用程序规范可以利用大多数CocoaPods规范DSL来声明依赖项，构建配置设置等。</p>
+<p>默认情况下，应用程序规范不会自动集成到正在使用pod的项目中。 如果您希望这样做，您可以在Podfile中指定它，类似于测试规范：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">target <span class="string">'MyApp'</span> <span class="keyword">do</span></span><br><span class="line">   use_frameworks!</span><br><span class="line">   pod <span class="string">'CoconutLib'</span>, <span class="string">'~&gt; 1.0'</span>, <span class="symbol">:appspecs</span> =&gt; [<span class="string">'SampleApp'</span>]</span><br><span class="line"> <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>我们希望将来能够将应用程序规范推广到顶级概念，其中消费者应用程序被描述为应用程序规范，完全不需要维护.xcodeproj以便与CocoaPods集成。</p>
+<h2 id="多个Xcodeproj生成"><a href="#多个Xcodeproj生成" class="headerlink" title="多个Xcodeproj生成"></a>多个Xcodeproj生成</h2><p>从历史上看，CocoaPods总是生成一个Pods.xcodeproj，它包含所有必需的目标，并为您的项目构建设置以进行编译。只使用一个包含整个Podfile的项目就可以很好地适用于较小的项目;但是，随着项目的增长，Pods.xcodeproj文件的大小也会增加。</p>
+<p>Pods.xcodeproj文件越大，Xcode用于解析其内容的时间越长，我们发现这会导致Xcode体验降级。我们已经注意到，通过将每个pod作为自己独立的Xcode项目集成并嵌套在顶级Pods.xcodeproj下，我们已经注意到大型CocoaPods项目的一些显着性能改进，而不是将所有目标放入一个单片Xcode项目中。</p>
+<p>此外，在大型代码库中，此功能可以证明特别有用，因为开发人员可以选择仅打开他们需要处理的特定.xcodeproj（位于Pods /目录下）而不是打开可能减慢其开发过程的完整工作空间。</p>
+<p>无论性能是一个问题，还是您更喜欢使用多个Xcode项目设置工作区，CocoaPods现在使用generate_multiple_pod_projects安装选项支持此设置。</p>
+<p>您可以在Podfile中启用它，如下所示：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">install! <span class="string">'cocoapods'</span>, <span class="symbol">:generate_multiple_pod_projects</span> =&gt; <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>默认情况下，此选项已关闭，但我们建议您尝试使用此选项并向我们报告您遇到的任何问题。 我们期望在将来对CocoaPods进行主要版本更新时，这将成为工作空间生成的默认选项。</p>
+<p>以下是它的外观：</p>
+<p>没有multi-xcodeproj（默认）：</p>
+<p><img src="http://blog.cocoapods.org/assets/blog_img/CocoaPods-1.7.0/no-multi-xcodeproj.png" alt="图片"></p>
+<p>使用multi-xcodeproj：</p>
+<p><img src="http://blog.cocoapods.org/assets/blog_img/CocoaPods-1.7.0/multi-xcodeproj.png" alt="图片"></p>
+<p>警告：如果您的pod依赖于使用其依赖项的引用语法导入标头，则将项目切换为使用多个.xcodeproj可能会导致一些编译器错误。 例如#import“PDDebugger.h”将不再适用于依赖于PonyDebugger的pod。 相反，我们强烈建议您更新标头以正确导入框架及其相关标头：#import &lt;PonyDebugger / PDDebugger.h&gt;。 这是故意的，因为此功能目前是选择加入的。</p>
+<h2 id="增量安装"><a href="#增量安装" class="headerlink" title="增量安装"></a>增量安装</h2><p>每次运行pod安装时，CocoaPods现在只支持重新生成自上次安装以来已更改的pod目标，而不是重新生成整个工作区。 根据项目的大小，每个pod安装调用可以节省几秒到几分钟的时间。</p>
+<p>您可以使用安装选项incremental_installation在Podfile中启用此功能，如下所示：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">install! <span class="string">'cocoapods'</span>,</span><br><span class="line">         <span class="symbol">:generate_multiple_pod_projects</span> =&gt; <span class="literal">true</span>,</span><br><span class="line">         <span class="symbol">:incremental_installation</span> =&gt; <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：incremental_installation选项当前还需要启用generate_multiple_pod_projects安装选项才能使其正常工作。</p>
+</blockquote>
+<h2 id="方案DSL"><a href="#方案DSL" class="headerlink" title="方案DSL"></a>方案DSL</h2><p>Pod作者现在能够为他们的规范，测试规范和新发布的应用程序规范定制生成的方案。 目前，包含了对指定环境变量和启动参数的支持，并且可以在将来轻松扩展。</p>
+<p>这是一个例子：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Pod::Spec.new <span class="keyword">do</span> <span class="params">|spec|</span></span><br><span class="line">  spec.name = <span class="string">'CoconutLib'</span></span><br><span class="line">  spec.version = <span class="string">'1.0'</span></span><br><span class="line">  <span class="comment"># ... rest of root spec entries go here</span></span><br><span class="line">  spec.test_spec <span class="string">'Tests'</span> <span class="keyword">do</span> <span class="params">|test_spec|</span></span><br><span class="line">    test_spec.source_files = <span class="string">'Tests/**/*.swift'</span></span><br><span class="line">    test_spec.scheme = &#123; </span><br><span class="line">      <span class="symbol">:launch_arguments</span> =&gt; [<span class="string">'Arg1'</span>, <span class="string">'Arg2'</span>], </span><br><span class="line">      <span class="symbol">:environment_variables</span> =&gt; &#123; <span class="string">'Key1'</span> =&gt; <span class="string">'Val1'</span>&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>以上将为测试规范测试生成以下方案的示例：</p>
+<p><img src="http://blog.cocoapods.org/assets/blog_img/CocoaPods-1.7.0/scheme_config.png" alt="图片"></p>
+<blockquote>
+<p>注意：您可以选择为特定平台配置方案。 例如，test_spec.ios.scheme将仅为iOS目标配置方案。</p>
+</blockquote>
+<h2 id="xcfilelist支持"><a href="#xcfilelist支持" class="headerlink" title=".xcfilelist支持"></a>.xcfilelist支持</h2><p>在CocoaPods 1.7.0脚本阶段现在支持使用.xcfilelist以指定脚本输入和输出路径。 CocoaPods将自动检测正在集成的Xcode项目是否支持.xcfilelist，而不是通过单独的输入/输出路径条目。</p>
+<p>这减少了CocoaPods进入用户项目的占用空间，但也利用了每个配置使用不同输入/输出路径的能力（例如’Debug’vs’Release’）。</p>
+<h2 id="实验特点"><a href="#实验特点" class="headerlink" title="实验特点"></a>实验特点</h2><p>随着1.7.0，我们正在发布一些令人兴奋和重要的实验功能！</p>
+<p>CDN支持Master Specs Repo<br>主规格repo对CocoaPods的功能至关重要，但是，多年来它的规模已经大大增加，使其成为CocoaPods的首选难题。</p>
+<p>对于互联网连接速度较慢的人来说尤其如此，因为克隆回购邮件及其整个历史几乎是不可能的。 此外，CI系统在第一次设置时也会显着减慢，因为再次克隆可能需要很长时间。</p>
+<p>在1.7.0中，我们正在尝试使用CDN支持，以避免在本地计算机（或CI）上克隆主规范存储库以便使用CocoaPods。 这可以通过使用以下命令替换Podfile中的主规范repo声明的源来实现：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># source 'https://github.com/CocoaPods/Specs' comment or remove this line.</span></span><br><span class="line">source <span class="string">'https://cdn.jsdelivr.net/cocoa/'</span></span><br></pre></td></tr></table></figure>
+
+<p>或者，您可以通过运行pod repo remove master删除现有的基于git的repo。</p>
+<p>我们期望语法或服务器结构再次以1.8.0更改，因此在1.7.0中采用此功能时，您应该期望在将来进行更改以保持此工作。 我们不打算支持1.7.x版本之外的1.7.0版本。</p>
+<p>我们要感谢jsDelivr对这项工作的支持和帮助！ 目前，我们目前计划保持两种方式消耗主规格回购，但我们强烈建议您切换，因为开始使用CocoaPods要快得多。</p>
+<p>根据结果和稳定性，我们希望从1.7.0开始，CocoaPods将不再需要用户克隆主规格repo才能开始使用。</p>
+<h3 id="Windows支持"><a href="#Windows支持" class="headerlink" title="Windows支持"></a>Windows支持</h3><p>从1.7.0开始，我们添加了对Windows的支持！ 我们鼓励Windows用户使用CocoaPods并向我们报告任何问题。</p>
+<h2 id="下一步是什么？"><a href="#下一步是什么？" class="headerlink" title="下一步是什么？"></a>下一步是什么？</h2><p>CocoaPods 1.7.0是一个非常令人兴奋的版本，我们很高兴您试用它，并建议您升级：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gem install cocoapods --<span class="keyword">pre</span></span><br></pre></td></tr></table></figure>
+
+<p>对于未来的版本，我们希望能够大大改善CocoaPods的集成故事。</p>
+<p>目前，pod的使用者被限制为一种全有或全无的方法来集成他们的项目，迫使他们通过use_frameworks在任何地方使用动态框架或静态库来做出选择！ 选项。</p>
+<p>另一方面，pod作者对于他们可以指定如何打包和链接到消费者目标的选项也非常有限，并且必须确保他们的pod可以跨包和链接样式的不同排列进行编译。 我们正在规划如何进一步改进这一点，并为pod作者和消费者提供更好的选择。</p>
+<p>与往常一样，我们要感谢所有贡献者让这个版本成为现实！</p>
+<p>签出更改日志以获取完整的更改列表。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#支持多种Swift版本"><span class="toc-number">1.</span> <span class="toc-text">支持多种Swift版本</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Linting和验证"><span class="toc-number">1.1.</span> <span class="toc-text">Linting和验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#弃用-swift-version文件"><span class="toc-number">1.2.</span> <span class="toc-text">弃用.swift-version文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应用规格"><span class="toc-number">2.</span> <span class="toc-text">应用规格</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多个Xcodeproj生成"><span class="toc-number">3.</span> <span class="toc-text">多个Xcodeproj生成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#增量安装"><span class="toc-number">4.</span> <span class="toc-text">增量安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方案DSL"><span class="toc-number">5.</span> <span class="toc-text">方案DSL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#xcfilelist支持"><span class="toc-number">6.</span> <span class="toc-text">.xcfilelist支持</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实验特点"><span class="toc-number">7.</span> <span class="toc-text">实验特点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows支持"><span class="toc-number">7.1.</span> <span class="toc-text">Windows支持</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#下一步是什么？"><span class="toc-number">8.</span> <span class="toc-text">下一步是什么？</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

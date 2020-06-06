@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：耍耍iOS中的KVC - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="什么是KVC呢? 这里拿一下苹果的官方文档来看看:
+键值编码是由NSKeyValueCoding对象采用的非正式协议启用的机制，用于提供对其属性的间接访问。当一个对象符合键值编码方式时，其属性可以通,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：耍耍iOS中的KVC</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：耍耍iOS中的KVC</h1>
+        <div class="stuff">
+            <span>八月 03, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/iOS基础/">iOS基础</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>什么是<strong>KVC</strong>呢? 这里拿一下苹果的官方文档来看看:</p>
+<p>键值编码是由<strong>NSKeyValueCoding</strong>对象采用的非正式协议启用的机制，用于提供对其属性的间接访问。当一个对象符合键值编码方式时，其属性可以通过简洁，统一的消息接口的字符串参数进行寻址。这种间接访问机制补充了由实例变量及其相关的访问器方法提供的直接访问。</p>
+<p>您通常使用访问器方法来访问对象的属性。<strong>get</strong>访问器（或<strong>getter</strong>）返回属性的值。一个<strong>set</strong>访问器（或<strong>setter</strong>）设置一个属性的值。在<strong>Objective-C</strong>中，您还可以直接访问属性的底层实例变量。以任何这些方式访问对象属性是直接的，但需要调用特定于属性的方法或变量名称。随着属性列表的增长或更改，访问这些属性的代码也是如此。相比之下，符合键值编码的对象提供了一个在其所有属性中一致的简单消息传递接口。</p>
+<p>键值编码是许多其他<strong>Cocoa</strong>技术的基础概念，如键值观察，<strong>Cocoa bindings</strong>, <strong>Core Data</strong>, 和<strong>AppleScript-ability</strong>。在某些情况下，键值编码也可以帮助简化代码。</p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="举个栗子🌰"><a href="#举个栗子🌰" class="headerlink" title="举个栗子🌰"></a>举个栗子🌰</h2><p>如果我们有一个Person的模型, 里面有三个属性:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h</span><br><span class="line"></span><br><span class="line">@interface KVCModel : NSObject</span><br><span class="line"></span><br><span class="line">@property (nonatomic, copy) NSString *name;</span><br><span class="line">@property (nonatomic, copy) NSString *height;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, assign) NSInteger age;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>然后实现<strong>KVC</strong>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">- (KVCModel *)kvcModel &#123;</span><br><span class="line">    </span><br><span class="line">    if (!_kvcModel) &#123;</span><br><span class="line">        </span><br><span class="line">        _kvcModel = [[KVCModel alloc] init];</span><br><span class="line">        </span><br><span class="line">        [_kvcModel setValue:@&quot;小明&quot;</span><br><span class="line">                     forKey:@&quot;name&quot;];</span><br><span class="line">        [_kvcModel setValue:@(18)</span><br><span class="line">                     forKey:@&quot;age&quot;];</span><br><span class="line">        [_kvcModel setValue:@&quot;168&quot;</span><br><span class="line">                     forKey:@&quot;height&quot;];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return _kvcModel;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在点击更新资料的时候通过<strong>KVC</strong>取出模型数据:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (void)updataAction &#123;</span><br><span class="line">    </span><br><span class="line">    NSString *name   = [self.kvcModel valueForKeyPath:@&quot;name&quot;];</span><br><span class="line">    NSString *height = [self.kvcModel valueForKeyPath:@&quot;height&quot;];</span><br><span class="line"></span><br><span class="line">    NSInteger age = [[self.kvcModel valueForKeyPath:@&quot;age&quot;] integerValue];</span><br><span class="line">    </span><br><span class="line">    self.infoLabel.text = [NSString stringWithFormat:@&quot;名字: %@ \n年龄: %ld \n身高: %@&quot;, name, (long)age, height];</span><br><span class="line">    </span><br><span class="line">    [self.kvcModel setValue:@(age + 1)</span><br><span class="line">                     forKey:@&quot;age&quot;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>效果:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-Project-Example/master/KVC/Images/1.gif" alt="1"></p>
+<h2 id="KVC中的Key-Path"><a href="#KVC中的Key-Path" class="headerlink" title="KVC中的Key Path"></a>KVC中的Key Path</h2><p>在<strong>KVC</strong>中, 允许我们通过关系来访问对象, 假设我们这个<strong>Model</strong>的结构如下:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-Project-Example/master/KVC/Images/2.png" alt="2"></p>
+<p>那我们就可以通过以下的方法获取<strong>age</strong>或者是<strong>city</strong>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[person valueForKeyPath:@&quot;address.city&quot;];</span><br><span class="line"></span><br><span class="line">[person valueForKeyPath:@&quot;info.age&quot;];</span><br></pre></td></tr></table></figure>
+
+<p>这里要看清楚方法, 调用的是:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (nullable id)valueForKeyPath:(NSString *)keyPath;</span><br></pre></td></tr></table></figure>
+
+<p>而不是:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (nullable id)valueForKey:(NSString *)key;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Objective-C与Swift的KVC"><a href="#Objective-C与Swift的KVC" class="headerlink" title="Objective-C与Swift的KVC"></a>Objective-C与Swift的KVC</h2><p>无论是在<strong>Objective-C</strong>还是<strong>Swift</strong>, <strong>KVC</strong>的定义都是对<strong>NSObject</strong>的扩展来实现的, 在<strong>Objective-C</strong>中有个<strong>NSKeyValueCoding</strong>的显式类名, 在<strong>Swift</strong>中是没有的, 当然也是不需要的.</p>
+<p>这也就说明了, 在<strong>Objective-C</strong>中, 几乎所有的类都是支持<strong>KVC</strong>的.</p>
+<h2 id="KVC的查找顺序"><a href="#KVC的查找顺序" class="headerlink" title="KVC的查找顺序"></a>KVC的查找顺序</h2><p><strong>KVC</strong>是怎么操作这里就不写代码了, 项目里有, 大家自己可以去看看项目. </p>
+<p>当我们开始调用<strong>KVC</strong>的方法时:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)setValue:(nullable id)value forKey:(NSString *)key;</span><br></pre></td></tr></table></figure>
+
+<p><strong>KVC</strong>会做出以下几种操作:</p>
+<ul>
+<li>程序会优先通过调用上面的方法, 然后通过<strong>setter</strong>方法完成操作.</li>
+<li>如果找不到上面的方法的话, 就会去调用<code>+ (BOOL)accessInstanceVariablesDirectly</code>方法, 如果这个方法, 被重写, 并返回<strong>NO</strong>的话,<strong>KVC</strong>就会去调用<code>- (void)setValue:(nullable id)value forUndefinedKey:(NSString *)key;</code>方法, 但一般都不会重写并返回<strong>NO</strong>的, 除非有什么特殊的操作.</li>
+<li>那如果这个类里面没有<code>set&lt;key&gt;</code>方法, 也没有<code>_&lt;key&gt;</code>方法, 那么<strong>KVC</strong>就会去搜索<code>_is&lt;key</code>的成员变量.</li>
+<li>和上面一样，如果这个类即没有<code>set&lt;Key&gt;:</code>方法，也没有<code>_&lt;key&gt;</code>和<code>_is&lt;Key&gt;</code>成员变量，<strong>KVC</strong>再会继续搜索<code>&lt;key&gt;</code>和<code>is&lt;Key&gt;</code>的成员变量, 再给它们赋值。</li>
+<li>如果上面列出的方法或者成员变量都不存在，系统将会执行该对象的<code>setValue:forUNdefinedKey:</code>方法，默认<strong>Boom</strong>.</li>
+</ul>
+<p><strong>注意: 这里得注意一下, Key一定要大小写都遵循KVC的规则, 不然就炸了.</strong></p>
+<h2 id="KVC的集合类操作"><a href="#KVC的集合类操作" class="headerlink" title="KVC的集合类操作"></a>KVC的集合类操作</h2><p>假设我们有一个数组, 要取得数组中的最大值, 我们可以:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">NSArray *numbers = @[@4, @84, @2];</span><br><span class="line">    </span><br><span class="line">NSLog(@&quot;max = %@&quot;, [numbers valueForKeyPath:@&quot;@max.self&quot;]);</span><br></pre></td></tr></table></figure>
+
+<p>那如果我们的数组里存的是Person对象, 而这个Person里有一个叫做age的属性, 要取得里面最大的age属性, 我们可以这么做:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">NSArray *numbers = @[Person1, Person2, Person3];</span><br><span class="line">    </span><br><span class="line">NSLog(@&quot;max = %@&quot;, [numbers valueForKeyPath:@&quot;@max.age&quot;]);</span><br></pre></td></tr></table></figure>
+
+<p>苹果的官方文档里也有说明<a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/KeyValueCoding/CollectionOperators.html" target="_blank" rel="noopener">CollectionOperators</a>.</p>
+<h2 id="KVC的异常处理"><a href="#KVC的异常处理" class="headerlink" title="KVC的异常处理"></a>KVC的异常处理</h2><p>如果, 我们要把一个属性赋值为nil, 或者是把key弄错的话, 那么就会发生一些异常情况了, 这个时候, 我们就要采取一些措施:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[person setValue:nil forKey:@&quot;age&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>这时候在Person类里面加入一个方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@implementation Person</span><br><span class="line"></span><br><span class="line">-(void)setNilValueForKey:(NSString *)key&#123;</span><br><span class="line">    NSLog(@&quot;不能将%@设成nil&quot;,key);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>这样子就<strong>ok</strong>了.</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这里举的例子稍微比较简单, 如果想了解更深入的话, 大家可以去看看下面的推荐文档:</p>
+<ul>
+<li><a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/KeyValueCoding/index.html#//apple_ref/doc/uid/10000107-SW1" target="_blank" rel="noopener">KVC编程指南</a></li>
+<li><a href="http://www.cnblogs.com/ioshe/p/5937946.html" target="_blank" rel="noopener">iOS设计模式 —— KVC</a></li>
+<li><a href="http://www.jianshu.com/p/45cbd324ea65" target="_blank" rel="noopener">iOS开发技巧系列详解KVC(我告诉你KVC的一切)</a></li>
+</ul>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: <a href="https://github.com/CainLuo/iOS-Project-Example/tree/master/KVC" target="_blank" rel="noopener">https://github.com/CainLuo/iOS-Project-Example/tree/master/KVC</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#举个栗子🌰"><span class="toc-number">1.</span> <span class="toc-text">举个栗子🌰</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#KVC中的Key-Path"><span class="toc-number">2.</span> <span class="toc-text">KVC中的Key Path</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Objective-C与Swift的KVC"><span class="toc-number">3.</span> <span class="toc-text">Objective-C与Swift的KVC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#KVC的查找顺序"><span class="toc-number">4.</span> <span class="toc-text">KVC的查找顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#KVC的集合类操作"><span class="toc-number">5.</span> <span class="toc-text">KVC的集合类操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#KVC的异常处理"><span class="toc-number">6.</span> <span class="toc-text">KVC的异常处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">8.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

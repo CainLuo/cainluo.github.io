@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：iOS中的GCD开发(二) - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="在前面一篇文章里, 我们大概知道了GCD是个什么概念, 也知道了如何创建队列, 创建任务, 但前面的都只是理念, 估计有很多人不喜, 要开始喷我了, 这才我们来用代码实践实践, 如果没有看过上一篇的,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：iOS中的GCD开发(二)</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：iOS中的GCD开发(二)</h1>
+        <div class="stuff">
+            <span>八月 05, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/多线程/">多线程</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>在前面一篇文章里, 我们大概知道了<strong>GCD</strong>是个什么概念, 也知道了如何创建队列, 创建任务, 但前面的都只是理念, 估计有很多人不喜, 要开始喷我了, 这才我们来用代码实践实践, 如果没有看过上一篇的, 可以去<a href="https://cainluo.github.io/2017/08/04/c74d0c1e.html">玩转iOS开发：iOS中的GCD开发(一)</a>看看.</p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="CGD的基本使用"><a href="#CGD的基本使用" class="headerlink" title="CGD的基本使用"></a>CGD的基本使用</h2><p>这里我们就需要创建一个工程, 然后试试水:</p>
+<h2 id="并行队列-同步执行"><a href="#并行队列-同步执行" class="headerlink" title="并行队列+同步执行"></a>并行队列+同步执行</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">- (void)syncQueueConcurrent &#123;</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;开始执行任务&quot;);</span><br><span class="line">    </span><br><span class="line">    dispatch_queue_t queue = dispatch_queue_create(&quot;test&quot;, DISPATCH_QUEUE_CONCURRENT);</span><br><span class="line">    </span><br><span class="line">    dispatch_sync(queue, ^&#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;第一个任务当前线程为: %@&quot;, [NSThread currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    dispatch_sync(queue, ^&#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;第二个任务当前线程为: %@&quot;, [NSThread currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    dispatch_sync(queue, ^&#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;第三个任务当前线程为: %@&quot;, [NSThread currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;结束执行任务&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">15</span>:<span class="number">03</span>:<span class="number">55.567</span> GCD-Example[<span class="number">14007</span>:<span class="number">7612071</span>] 开始执行任务</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">15</span>:<span class="number">03</span>:<span class="number">55.567</span> GCD-Example[<span class="number">14007</span>:<span class="number">7612071</span>] 第一个任务当前线程为: &lt;NSThread: <span class="number">0</span>x608000067340&gt;&#123;<span class="keyword">number</span> = <span class="number">1</span>, name = main&#125;</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">15</span>:<span class="number">03</span>:<span class="number">55.567</span> GCD-Example[<span class="number">14007</span>:<span class="number">7612071</span>] 第二个任务当前线程为: &lt;NSThread: <span class="number">0</span>x608000067340&gt;&#123;<span class="keyword">number</span> = <span class="number">1</span>, name = main&#125;</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">15</span>:<span class="number">03</span>:<span class="number">55.568</span> GCD-Example[<span class="number">14007</span>:<span class="number">7612071</span>] 第三个任务当前线程为: &lt;NSThread: <span class="number">0</span>x608000067340&gt;&#123;<span class="keyword">number</span> = <span class="number">1</span>, name = main&#125;</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">15</span>:<span class="number">03</span>:<span class="number">55.568</span> GCD-Example[<span class="number">14007</span>:<span class="number">7612071</span>] 结束执行任务</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>从输出结果, 我们可以看得出, 现在当前的线程都为同一条, 名为<strong>main</strong>, 而且线程数只有<strong>1</strong>.</li>
+<li>在执行任务的前和执行任务后, 我都加了一个<strong>Log</strong>, 从执行顺序上我们可以知道, 并行队列+同步执行是一个任务一个任务的去执行的.</li>
+</ul>
+<h4 id="并行队列-异步执行"><a href="#并行队列-异步执行" class="headerlink" title="并行队列+异步执行"></a>并行队列+异步执行</h4><p>接下来我们看看并行队列+异步执行的组合:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">- (void)asyncQueueConcurrent &#123;</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;开始执行任务&quot;);</span><br><span class="line">    </span><br><span class="line">    dispatch_queue_t queue = dispatch_queue_create(&quot;test&quot;, DISPATCH_QUEUE_CONCURRENT);</span><br><span class="line">    </span><br><span class="line">    dispatch_async(queue, ^&#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;第一个任务当前线程为: %@&quot;, [NSThread currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    dispatch_async(queue, ^&#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;第二个任务当前线程为: %@&quot;, [NSThread currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    dispatch_async(queue, ^&#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;第三个任务当前线程为: %@&quot;, [NSThread currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;结束执行任务&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">15</span>:<span class="number">08</span>:<span class="number">40.069</span> GCD-Example[<span class="number">14052</span>:<span class="number">7619255</span>] 开始执行任务</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">15</span>:<span class="number">08</span>:<span class="number">40.070</span> GCD-Example[<span class="number">14052</span>:<span class="number">7619255</span>] 结束执行任务</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">15</span>:<span class="number">08</span>:<span class="number">40.070</span> GCD-Example[<span class="number">14052</span>:<span class="number">7619380</span>] 第三个任务当前线程为: &lt;NSThread: <span class="number">0</span>x60800026a640&gt;&#123;<span class="keyword">number</span> = <span class="number">5</span>, name = (null)&#125;</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">15</span>:<span class="number">08</span>:<span class="number">40.070</span> GCD-Example[<span class="number">14052</span>:<span class="number">7619363</span>] 第一个任务当前线程为: &lt;NSThread: <span class="number">0</span>x60800026a5c0&gt;&#123;<span class="keyword">number</span> = <span class="number">3</span>, name = (null)&#125;</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">15</span>:<span class="number">08</span>:<span class="number">40.070</span> GCD-Example[<span class="number">14052</span>:<span class="number">7619362</span>] 第二个任务当前线程为: &lt;NSThread: <span class="number">0</span>x60000026bb00&gt;&#123;<span class="keyword">number</span> = <span class="number">4</span>, name = (null)&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>从输出的结果, 我们可以看到, 这里的线程数有好几条, 而且线程的名字也不知道, 并且从时间上来看到, 几乎都是在同一时间执行任务的.</li>
+<li>所以我们可以得出一个结果, 并行队列+异步执行的组合除了在主队列上执行, 还会另外开启多几条线程来并行执行任务.</li>
+</ul>
+<h3 id="串行队列-同步执行"><a href="#串行队列-同步执行" class="headerlink" title="串行队列+同步执行"></a>串行队列+同步执行</h3><p>继续下一个串行队列+同步执行组合:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">- (void)syncQueueSerial &#123;</span><br><span class="line"></span><br><span class="line">    NSLog(@&quot;开始执行任务&quot;);</span><br><span class="line"></span><br><span class="line">    dispatch_queue_t queue = dispatch_queue_create(&quot;test&quot;, DISPATCH_QUEUE_SERIAL);</span><br><span class="line"></span><br><span class="line">    dispatch_sync(queue, ^&#123;</span><br><span class="line"></span><br><span class="line">        NSLog(@&quot;第一个任务当前线程为: %@&quot;, [NSThread currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    dispatch_sync(queue, ^&#123;</span><br><span class="line"></span><br><span class="line">        NSLog(@&quot;第二个任务当前线程为: %@&quot;, [NSThread currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    dispatch_sync(queue, ^&#123;</span><br><span class="line"></span><br><span class="line">        NSLog(@&quot;第三个任务当前线程为: %@&quot;, [NSThread currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    NSLog(@&quot;结束执行任务&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">15</span>:<span class="number">16</span>:<span class="number">21.723</span> GCD-Example[<span class="number">14119</span>:<span class="number">7628753</span>] 开始执行任务</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">15</span>:<span class="number">16</span>:<span class="number">21.723</span> GCD-Example[<span class="number">14119</span>:<span class="number">7628753</span>] 第一个任务当前线程为: &lt;NSThread: <span class="number">0</span>x6080000794c0&gt;&#123;<span class="keyword">number</span> = <span class="number">1</span>, name = main&#125;</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">15</span>:<span class="number">16</span>:<span class="number">21.724</span> GCD-Example[<span class="number">14119</span>:<span class="number">7628753</span>] 第二个任务当前线程为: &lt;NSThread: <span class="number">0</span>x6080000794c0&gt;&#123;<span class="keyword">number</span> = <span class="number">1</span>, name = main&#125;</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">15</span>:<span class="number">16</span>:<span class="number">21.724</span> GCD-Example[<span class="number">14119</span>:<span class="number">7628753</span>] 第三个任务当前线程为: &lt;NSThread: <span class="number">0</span>x6080000794c0&gt;&#123;<span class="keyword">number</span> = <span class="number">1</span>, name = main&#125;</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">15</span>:<span class="number">16</span>:<span class="number">21.724</span> GCD-Example[<span class="number">14119</span>:<span class="number">7628753</span>] 结束执行任务</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>从结果看, 这个串行队列+同步执行组合是一个一个任务来执行的, 都是在主队列中完成, 并没有开启新线程.</li>
+<li>由于是串行队列, 所以我们可以在上面看到, 先执行第一个开始<strong>Log</strong>, 然后任务都是按个添加, 最后在执行结束<strong>Log</strong>.</li>
+</ul>
+<h3 id="串行队列-异步执行"><a href="#串行队列-异步执行" class="headerlink" title="串行队列 + 异步执行"></a>串行队列 + 异步执行</h3><p>继续串行队列 + 异步执行:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">- (void)asyncQueueSerial &#123;</span><br><span class="line"></span><br><span class="line">    NSLog(@&quot;开始执行任务&quot;);</span><br><span class="line"></span><br><span class="line">    dispatch_queue_t queue = dispatch_queue_create(&quot;test&quot;, DISPATCH_QUEUE_SERIAL);</span><br><span class="line"></span><br><span class="line">    dispatch_async(queue, ^&#123;</span><br><span class="line"></span><br><span class="line">        NSLog(@&quot;第一个任务当前线程为: %@&quot;, [NSThread currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    dispatch_async(queue, ^&#123;</span><br><span class="line"></span><br><span class="line">        NSLog(@&quot;第二个任务当前线程为: %@&quot;, [NSThread currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    dispatch_async(queue, ^&#123;</span><br><span class="line"></span><br><span class="line">        NSLog(@&quot;第三个任务当前线程为: %@&quot;, [NSThread currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    NSLog(@&quot;结束执行任务&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">17</span>:<span class="number">32</span>:<span class="number">06.723</span> GCD-Example[<span class="number">14279</span>:<span class="number">7669095</span>] 开始执行任务</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">17</span>:<span class="number">32</span>:<span class="number">06.723</span> GCD-Example[<span class="number">14279</span>:<span class="number">7669095</span>] 结束执行任务</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">17</span>:<span class="number">32</span>:<span class="number">06.723</span> GCD-Example[<span class="number">14279</span>:<span class="number">7669192</span>] 第一个任务当前线程为: &lt;NSThread: <span class="number">0</span>x60800006ee00&gt;&#123;<span class="keyword">number</span> = <span class="number">3</span>, name = (null)&#125;</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">17</span>:<span class="number">32</span>:<span class="number">06.724</span> GCD-Example[<span class="number">14279</span>:<span class="number">7669192</span>] 第二个任务当前线程为: &lt;NSThread: <span class="number">0</span>x60800006ee00&gt;&#123;<span class="keyword">number</span> = <span class="number">3</span>, name = (null)&#125;</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">17</span>:<span class="number">32</span>:<span class="number">06.724</span> GCD-Example[<span class="number">14279</span>:<span class="number">7669192</span>] 第三个任务当前线程为: &lt;NSThread: <span class="number">0</span>x60800006ee00&gt;&#123;<span class="keyword">number</span> = <span class="number">3</span>, name = (null)&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>从结果来看, 我们可以看到, 是开启新线程来执行任务, 但由于是串行队列, 所以这里的任务还是一个接着一个来执行的.</li>
+<li>另外, 这里还有一点, 我们可以看到先打印了开发<strong>Log</strong>和结束<strong>Log</strong>, 最后才执行任务, 可以说明, 这里的任务并不是一下子就开始执行的, 是需要将任务都添加到队列里, 然后才开始同步执行.</li>
+</ul>
+<h2 id="主队列"><a href="#主队列" class="headerlink" title="主队列"></a>主队列</h2><p>主队列是<strong>GCD</strong>自带的一种特殊的队列, 这里有两点需要注意一下:</p>
+<ul>
+<li>所有放在主队列里执行的任务都会放到主线程里执行.</li>
+<li>我们可以通过<code>dispatch_get_main_queue()</code>获取主队列.</li>
+</ul>
+<p>说那么多不如直接来段代码:</p>
+<h3 id="主队列-同步执行"><a href="#主队列-同步执行" class="headerlink" title="主队列+同步执行"></a>主队列+同步执行</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">- (void)syncMainQueue &#123;</span><br><span class="line"></span><br><span class="line">    NSLog(@&quot;开始执行任务&quot;);</span><br><span class="line"></span><br><span class="line">    dispatch_queue_t queue = dispatch_get_main_queue();</span><br><span class="line"></span><br><span class="line">    dispatch_sync(queue, ^&#123;</span><br><span class="line"></span><br><span class="line">        NSLog(@&quot;第一个任务当前线程为: %@&quot;, [NSThread currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    dispatch_sync(queue, ^&#123;</span><br><span class="line"></span><br><span class="line">        NSLog(@&quot;第二个任务当前线程为: %@&quot;, [NSThread currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    dispatch_sync(queue, ^&#123;</span><br><span class="line"></span><br><span class="line">        NSLog(@&quot;第三个任务当前线程为: %@&quot;, [NSThread currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    NSLog(@&quot;结束执行任务&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">17</span>:<span class="number">56</span>:<span class="number">24.607</span> GCD-Example[<span class="number">14437</span>:<span class="number">7689741</span>] 开始执行任务</span><br></pre></td></tr></table></figure>
+
+<p>当我们运行的时候发现异常了, 断言在执行完开始<strong>Log</strong>之后不动了, 为什么咧?</p>
+<p>其实这是因为我们在<strong>ViewDidload</strong>方法里执行了<code>[self syncMainQueue];</code>方法, 我们都知道, 同步执行是一个一个任务去执行的.</p>
+<p>但主线还在执行<code>[self syncMainQueue];</code>的时候, 我们又往主线程里塞任务, 这个时候就会出现异常现象, 我们称之为卡线程.</p>
+<p>如果要解决的话, 我们就需要在<strong>ViewDidload</strong>里改善一下方案:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line"></span><br><span class="line">    dispatch_queue_t queue = dispatch_queue_create(&quot;test&quot;, DISPATCH_QUEUE_CONCURRENT);</span><br><span class="line"></span><br><span class="line">    dispatch_async(queue, ^&#123;</span><br><span class="line"></span><br><span class="line">        [self syncMainQueue];</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">18</span>:<span class="number">03</span>:<span class="number">33.209</span> GCD-Example[<span class="number">14492</span>:<span class="number">7698292</span>] 开始执行任务</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">18</span>:<span class="number">03</span>:<span class="number">33.214</span> GCD-Example[<span class="number">14492</span>:<span class="number">7698172</span>] 第一个任务当前线程为: &lt;NSThread: <span class="number">0</span>x600000066340&gt;&#123;<span class="keyword">number</span> = <span class="number">1</span>, name = main&#125;</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">18</span>:<span class="number">03</span>:<span class="number">33.215</span> GCD-Example[<span class="number">14492</span>:<span class="number">7698172</span>] 第二个任务当前线程为: &lt;NSThread: <span class="number">0</span>x600000066340&gt;&#123;<span class="keyword">number</span> = <span class="number">1</span>, name = main&#125;</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">18</span>:<span class="number">03</span>:<span class="number">33.216</span> GCD-Example[<span class="number">14492</span>:<span class="number">7698172</span>] 第三个任务当前线程为: &lt;NSThread: <span class="number">0</span>x600000066340&gt;&#123;<span class="keyword">number</span> = <span class="number">1</span>, name = main&#125;</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">18</span>:<span class="number">03</span>:<span class="number">33.216</span> GCD-Example[<span class="number">14492</span>:<span class="number">7698292</span>] 结束执行任务</span><br></pre></td></tr></table></figure>
+
+<p>唔, 酱紫改造就可以顺利的执行完任务了, 这里还需要提多两点:</p>
+<ul>
+<li>在执行的结果里, 虽我们在<strong>ViewDidload</strong>用的是并行+异步的组合去改善的, 但这不会影响到主队列里的任务执行顺序, 也不会开启新线程.</li>
+<li>主队列是属于串行队列, 所以我们可以看到所执行的任务是一个接着一个.</li>
+</ul>
+<h3 id="主队列-异步执行"><a href="#主队列-异步执行" class="headerlink" title="主队列+异步执行"></a>主队列+异步执行</h3><p>最后一个组合主队列+异步执行:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">- (void)asyncMainQueue &#123;</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;开始执行任务&quot;);</span><br><span class="line">    </span><br><span class="line">    dispatch_queue_t queue = dispatch_get_main_queue();</span><br><span class="line">    </span><br><span class="line">    dispatch_async(queue, ^&#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;第一个任务当前线程为: %@&quot;, [NSThread currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    dispatch_async(queue, ^&#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;第二个任务当前线程为: %@&quot;, [NSThread currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    dispatch_async(queue, ^&#123;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;第三个任务当前线程为: %@&quot;, [NSThread currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;结束执行任务&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">18</span>:<span class="number">08</span>:<span class="number">16.059</span> GCD-Example[<span class="number">14537</span>:<span class="number">7704614</span>] 开始执行任务</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">18</span>:<span class="number">08</span>:<span class="number">16.059</span> GCD-Example[<span class="number">14537</span>:<span class="number">7704614</span>] 结束执行任务</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">18</span>:<span class="number">08</span>:<span class="number">16.064</span> GCD-Example[<span class="number">14537</span>:<span class="number">7704614</span>] 第一个任务当前线程为: &lt;NSThread: <span class="number">0</span>x608000261700&gt;&#123;<span class="keyword">number</span> = <span class="number">1</span>, name = main&#125;</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">18</span>:<span class="number">08</span>:<span class="number">16.064</span> GCD-Example[<span class="number">14537</span>:<span class="number">7704614</span>] 第二个任务当前线程为: &lt;NSThread: <span class="number">0</span>x608000261700&gt;&#123;<span class="keyword">number</span> = <span class="number">1</span>, name = main&#125;</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">18</span>:<span class="number">08</span>:<span class="number">16.065</span> GCD-Example[<span class="number">14537</span>:<span class="number">7704614</span>] 第三个任务当前线程为: &lt;NSThread: <span class="number">0</span>x608000261700&gt;&#123;<span class="keyword">number</span> = <span class="number">1</span>, name = main&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>从结果上我们可以看到, 虽然我们用的是异步执行, 具备了开启新线程的能力, 但是由于这是主队列, 所以所有的任务都是在主线程中, 任务也是一个接着一个执行的.</li>
+<li>另外, 我们可以看到, 是先执行开始<strong>Log</strong>, 结束<strong>Log</strong>, 最后再执行主队列里的任务, 这里我们就可以知道, 任务并不是马上就执行的, 而是把所有任务都添加到队列里之后, 再执行.</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>学完之后, 我们就可以愉快的和<strong>GCD</strong>玩耍了, 队列, 任务神马的, 再也不用担心了.</p>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: <a href="https://github.com/cainluo/iOS-Project-Example/tree/master/GCD-Example" target="_blank" rel="noopener">https://github.com/cainluo/iOS-Project-Example/tree/master/GCD-Example</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#CGD的基本使用"><span class="toc-number">1.</span> <span class="toc-text">CGD的基本使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#并行队列-同步执行"><span class="toc-number">2.</span> <span class="toc-text">并行队列+同步执行</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#并行队列-异步执行"><span class="toc-number">2.0.1.</span> <span class="toc-text">并行队列+异步执行</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#串行队列-同步执行"><span class="toc-number">2.1.</span> <span class="toc-text">串行队列+同步执行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#串行队列-异步执行"><span class="toc-number">2.2.</span> <span class="toc-text">串行队列 + 异步执行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#主队列"><span class="toc-number">3.</span> <span class="toc-text">主队列</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#主队列-同步执行"><span class="toc-number">3.1.</span> <span class="toc-text">主队列+同步执行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#主队列-异步执行"><span class="toc-number">3.2.</span> <span class="toc-text">主队列+异步执行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">5.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

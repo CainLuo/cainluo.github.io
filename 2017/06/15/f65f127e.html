@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：iOS 10 新特性《UserNotifications》 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="Notification在iOS以来发展以来都是一个非常重要的功能之一, 各类App都需要通过通知来推送消息, 不然怎么告诉用户, App来消息推送啦, 或者有什么安排事项到点要告诉你了, 这些都是,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：iOS 10 新特性《UserNotifications》</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：iOS 10 新特性《UserNotifications》</h1>
+        <div class="stuff">
+            <span>六月 15, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/iOS-10/">iOS 10</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p><strong>Notification</strong>在<strong>iOS</strong>以来发展以来都是一个非常重要的功能之一, 各类<strong>App</strong>都需要通过通知来推送消息, 不然怎么告诉用户, App来消息推送啦, 或者有什么安排事项到点要告诉你了, 这些都是需要推送的.</p>
+<p>但我们都知道, 在之前的消息推送里, 无论是<strong>UI</strong>还是内容, 都是非常的死, 不够人性化, 好在苹果也看到了这一点, 在<strong>iOS 10</strong>就改善了这个东西.</p>
+<p>同样我这里也是<strong>Objective-C</strong>版本, 喜欢看<strong>Swift</strong>版本的可以到<a href="https://github.com/shinobicontrols/iOS10-day-by-day/tree/master/05%20-%20User%20Notifications" target="_blank" rel="noopener">这里</a>去看.</p>
+<p><strong>注意: 本文的项目是在Xcode 8.3.3, iOS 10, Mac OS 10.12.5环境下运行的.</strong></p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="UNUserNotification-Of-iOS-10"><a href="#UNUserNotification-Of-iOS-10" class="headerlink" title="UNUserNotification Of iOS 10"></a>UNUserNotification Of iOS 10</h2><p>那么在<strong>iOS 10</strong>苹果推出了<strong>UNUserNotification</strong>这套框架, 除去了以前那套硬邦邦的通知之外, 我们可以额外给通知添加一些<strong>Action Button</strong>, 或者是一些不一样的内容, 说那么多废话, 直接来看项目吧.</p>
+<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>新工程和我们以前创建的一毛一样, 这里就不过多的演示了, 文章后面有项目地址, 大家可以自行去看.</p>
+<p>我们来看看<strong>AppDelegate.m</strong>文件:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/5.UserNotifications/Images/1.png" alt="1"></p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/5.UserNotifications/Images/2.png" alt="2"></p>
+<p>这里要自己写代码的地方我都标上去了, 如果还是看不懂, 那我就真的没办法了…</p>
+<p>再来看看<strong>NotificationController.m</strong>文件, 这里我们直接忽略掉<strong>UI</strong>的布局, 因为这不是重点:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/5.UserNotifications/Images/3.png" alt="3"></p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/5.UserNotifications/Images/4.png" alt="4"></p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/5.UserNotifications/Images/5.png" alt="5"></p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/5.UserNotifications/Images/6.png" alt="6"></p>
+<p>由于这里没有仔细的去封装代码, 所以看起来有些臃肿, 这个大家就不要喷了….</p>
+<p>对了, 我想起一个坑, 在我导入<strong>MP4</strong>文件的时候, 我发现文件的<strong>Path</strong>居然为<strong>nil</strong>, 于是乎<strong>Google</strong>了一下, 发现是我傻缺了, 忘记在这里点一下:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/5.UserNotifications/Images/7.png" alt="7"></p>
+<p>关于怎么添加一些<strong>Action Button</strong>, 项目里面没有弄, 这里给大家贴句代码吧:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">UNTextInputNotificationAction *inputAction = [UNTextInputNotificationAction</span><br><span class="line">                                                  actionWithIdentifier:@&quot;inputAction&quot;</span><br><span class="line">                                                  title:@&quot;输入&quot;</span><br><span class="line">                                                  options:UNNotificationActionOptionForeground</span><br><span class="line">                                                  textInputButtonTitle:@&quot;发送&quot;</span><br><span class="line">                                                  textInputPlaceholder:@&quot;随便说说&quot;];</span><br><span class="line"></span><br><span class="line">    UNNotificationAction *goodbyeAction = [UNNotificationAction actionWithIdentifier:@&quot;goodbyeAction&quot;</span><br><span class="line">                                                                               title:@&quot;再见&quot;</span><br><span class="line">                                                                             options:UNNotificationActionOptionForeground];</span><br><span class="line"></span><br><span class="line">    UNNotificationAction *cancelAction = [UNNotificationAction actionWithIdentifier:@&quot;cancelAction&quot;</span><br><span class="line">                                                                              title:@&quot;取消&quot;</span><br><span class="line">                                                                            options:UNNotificationActionOptionDestructive];</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">UNNotificationCategory *category = [UNNotificationCategory categoryWithIdentifier:@&quot;inputCategory&quot; actions:@[inputAction,goodbyeAction,cancelAction] intentIdentifiers:@[] options:UNNotificationCategoryOptionCustomDismissAction];</span><br><span class="line"></span><br><span class="line">[[UNUserNotificationCenter currentNotificationCenter] setNotificationCategories:@[category]];</span><br></pre></td></tr></table></figure>
+
+<h2 id="一切就绪"><a href="#一切就绪" class="headerlink" title="一切就绪"></a>一切就绪</h2><p>一切就绪之后, 我们就运行来看看:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/5.UserNotifications/Images/8.png" alt="8"></p>
+<p>这是一个正常通知:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/5.UserNotifications/Images/9.png" alt="9"></p>
+<p>这是添加了<strong>Image</strong>的通知:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/5.UserNotifications/Images/10.png" alt="10"></p>
+<p>这是添加了一个<strong>Video</strong>的通知, 重点是还可以播放:</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/5.UserNotifications/Images/11.png" alt="11"></p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意!!!"></a>注意!!!</h2><p>虽然说苹果在<strong>UNUserNotification</strong>有了些花样, 但这里还是需要注意一点, 这是有限制的, 不然这也太不苹果了, 那么是什么限制呢? 可以点进去这里看看<a href="https://developer.apple.com/documentation/usernotifications/unnotificationattachment?language=objc" target="_blank" rel="noopener">UNUserNotification类型文件限制</a>, 一旦超出了, 出现什么问题, 我就母鸡了.</p>
+<p>再搜这篇文章的时候, 突然发现了有大神总结了<a href="http://www.jianshu.com/p/9b720efe3779" target="_blank" rel="noopener">WWDC2016笔记</a>, 大家有需要可以去看看~~</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>文章里只是简单的讲解, 如果还想了解更多的话, 可以自行去查看<a href="https://developer.apple.com/videos/play/wwdc2016/707/" target="_blank" rel="noopener">WWDC 2016</a>的视频讲解.</p>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: <a href="https://github.com/CainRun/iOS-10-Characteristic/tree/master/5.UserNotifications" target="_blank" rel="noopener">https://github.com/CainRun/iOS-10-Characteristic/tree/master/5.UserNotifications</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#UNUserNotification-Of-iOS-10"><span class="toc-number">1.</span> <span class="toc-text">UNUserNotification Of iOS 10</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建项目"><span class="toc-number">2.</span> <span class="toc-text">创建项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一切就绪"><span class="toc-number">3.</span> <span class="toc-text">一切就绪</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注意"><span class="toc-number">4.</span> <span class="toc-text">注意!!!</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">6.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

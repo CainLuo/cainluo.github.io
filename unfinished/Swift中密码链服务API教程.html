@@ -1,0 +1,327 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single" class="page">
+    <div id="top">
+        <a class="icon-left image-icon" href="javascript:history.back()"></a>
+    </div>
+    <div class="section">
+        <div class="article">
+            <div class="main">
+                <div class="content">
+                
+                        <h1 id="Swift中密码链服务API教程"><a href="#Swift中密码链服务API教程" class="headerlink" title="Swift中密码链服务API教程"></a>Swift中密码链服务API教程</h1><p>2018年12月31日</p>
+<p>在iOS的Swift Keychain教程中，您将学习如何与C语言API进行交互，以便在iOS Keychain中安全地存储密码。</p>
+<blockquote>
+<p>注意: 本教程使用的是Swift 4.2, iOS 12, Xcode 10</p>
+</blockquote>
+<p>Apple Keychain是Apple开发人员最重要的安全元素之一，它是一个用于存储元数据和敏感信息的专用数据库。使用Keychain是存储对您的应用至关重要的小块数据的最佳方式，例如秘密和密码。</p>
+<p>直接与Keychain交互很复杂，特别是在Swift中。您必须使用安全框架，该框架主要使用C语言编写。</p>
+<p>有不同的Swift包装器，允许您与Keychain进行交互。 Apple甚至提供了一款名为<a href="https://developer.apple.com/library/archive/samplecode/GenericKeychain/Introduction/Intro.html#//apple_ref/doc/uid/DTS40007797-Intro-DontLinkElementID_2" target="_blank" rel="noopener">GenericKeychain</a>的产品，让您的生活更轻松。</p>
+<p>虽然您可以轻松地使用第三方包装器与Apple提供的不友好的API进行交互，但了解Keychain Services可为您的开发人员工具带添加一个有价值的工具。</p>
+<p>在本教程中，您将深入研究Keychain Services API并学习如何创建自己的包装器，将其开发为iOS框架。</p>
+<p>特别是，您将学习如何添加，修改，删除和搜索通用和Internet密码。此外，您将提供单元测试以验证您的代码是否按预期工作。</p>
+<h2 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h2><p>在本教程中，您将使用SecureStore，这是一个样板iOS框架，您可以在其中实现Keychain Services API。</p>
+<p>首先使用本教程顶部或底部的“下载材质”按钮下载入门项目。 下载后，在Xcode中打开SecureStore.xcodeproj。</p>
+<p>为了让您专注，启动项目具有与实现已为您设置的包装器相关的所有内容。</p>
+<p>项目的结构应如下所示：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/11/keychain_project_structure-1.png" alt="图片"></p>
+<p>包装器的代码位于SecureStore组文件夹中：</p>
+<ul>
+<li>SecureStoreError.swift：包含一个枚举，它表示您的包装器可以处理的所有可能的错误。 SecureStoreError符合LocalizedError，提供描述错误及其发生原因的本地化消息。</li>
+<li>SecureStoreQueryable.swift：定义与文件同名的协议。 SecureStoreQueryable强制实现者提供定义为类型为[String：Any]的字典的查询属性。在内部，您的API仅处理这些类型的对象。稍后会详细介绍。</li>
+<li>SecureStore.swift：定义您将在本教程中实现的包装器。它提供了一个初始化程序和一组存根方法，用于从Keychain添加，更新，删除和检索您的密码。消费者可以通过注入符合SecureStoreQueryable的某种类型来创建包装器的实例。</li>
+<li>InternetProtocol.swift：表示您可以处理的所有可能的Internet协议值。</li>
+<li>InternetAuthenticationType.swift：描述包装器提供的身份验证机制。</li>
+</ul>
+<blockquote>
+<p>注意：依赖注入允许您编写扩展和隔离功能的类。 对于一个非常简单的概念来说，这是一个可怕的词。 在本教程中，您将看到“注入”一词，它指的是将整个对象传递给初始化程序。</p>
+</blockquote>
+<p>除了框架代码，您还应该有两个其他文件夹：SecureStoreTests和TestHost。 前者包含您将随框架一起提供的单元测试。 后者包含一个空的app，您将用它来测试您的框架API。</p>
+<blockquote>
+<p>注意：通常，要测试您在教程中编写的代码，可以在模拟器中运行应用程序。 而不是这样做，您将通过运行单元测试来验证您的代码是否正常工作。 因此项目中的测试主机应用程序将无法在模拟器中运行; 相反，它作为容器，它为您的框架执行单元测试。</p>
+</blockquote>
+<p>在深入研究代码之前，先看看一些理论！</p>
+<h2 id="钥匙串服务概述"><a href="#钥匙串服务概述" class="headerlink" title="钥匙串服务概述"></a>钥匙串服务概述</h2><p>为什么使用Keychain而不是更简单的解决方案？不会在UserDefaults中存储用户的base-64编码密码就够了吗？</p>
+<p>当然不！攻击者恢复以这种方式存储的密码是微不足道的。</p>
+<p>钥匙串服务可帮助您代表用户将项目或小块数据安全地存储到加密数据库中。</p>
+<p>从Apple的文档中，SecKeychain类表示数据库，而SecKeychainItem类表示项目。</p>
+<p>根据您运行的操作系统，Keychain Services的运行方式不同。</p>
+<p>在iOS中，应用程序可以访问包含iCloud Keychain的单个Keychain。锁定和解锁设备会自动锁定和解锁钥匙串。这可以防止不必要的访问。此外，应用程序只能访问自己的项目或与其所属的组共享的项目。</p>
+<p>另一方面，macOS支持多个密钥链。您通常依靠用户使用Keychain Access应用程序管理这些内容，并使用默认钥匙串隐式工作。此外，您可以直接操作钥匙串;例如，创建和管理严格专用于您的应用的钥匙串。</p>
+<p>如果要存储密码等密钥，请将其打包为钥匙串项。这是一种不透明类型，由两部分组成：数据和一组属性。在它插入新项目之前，Keychain Services会对数据进行加密，然后将其与其属性一起包装。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/11/keychain_services_encryption-1-650x256.png" alt="图片"></p>
+<p>使用属性标识和存储元数据或控制对存储项的访问。 将属性指定为表示为CFDictionary的字典的键和值。 您可以在项目<a href="https://developer.apple.com/documentation/security/keychain_services/keychain_items/item_attribute_keys_and_values" target="_blank" rel="noopener">属性键和值</a>中找到可用键的列表。 相应的值可以是字符串，数字，一些其他基本类型或与<a href="https://developer.apple.com/documentation/security" target="_blank" rel="noopener">安全框架</a>打包在一起的常量。</p>
+<p>钥匙串服务提供特殊类型的属性，允许您识别特定项目的类。 在本教程中，您将使用kSecClassGenericPassword和kSecClassInternetPassword来处理通用和Internet密码。</p>
+<p>每个类仅支持一组特殊的属性。 换句话说，并非所有属性都适用于特定的项目类。 您可以在相关的<a href="https://developer.apple.com/documentation/security/keychain_services/keychain_items/item_class_keys_and_values" target="_blank" rel="noopener">项目类值文档</a>中验证它们。</p>
+<blockquote>
+<p>注意：除了操纵密码外，Apple还提供与其他类型项目（如证书，加密密钥和身份）进行交互的机会。 它们分别由kSecClassCertificate，kSecClassKey和kSecClassIdentity类表示。</p>
+</blockquote>
+<h2 id="潜入Keychain-Services-API"><a href="#潜入Keychain-Services-API" class="headerlink" title="潜入Keychain Services API"></a>潜入Keychain Services API</h2><p>由于代码隐藏了来自恶意用户的项目，因此Keychain Services提供了一组与之交互的C函数。 以下是您将用于操纵通用和互联网密码的API：</p>
+<ul>
+<li><a href="https://developer.apple.com/documentation/security/1401659-secitemadd" target="_blank" rel="noopener">SecItemAdd(<em>:</em>:)</a>：使用此功能将一个或多个项目添加到钥匙串。</li>
+<li><a href="https://developer.apple.com/documentation/security/1398306-secitemcopymatching" target="_blank" rel="noopener">SecItemCopyMatching(<em>:</em>:)</a>：此函数返回与搜索查询匹配的一个或多个钥匙串项。 此外，它还可以复制特定钥匙串项的属性。</li>
+<li><a href="https://developer.apple.com/documentation/security/1393617-secitemupdate" target="_blank" rel="noopener">SecItemUpdate(<em>:</em>:)</a>：此功能允许您修改与搜索查询匹配的项目。</li>
+<li><a href="https://developer.apple.com/documentation/security/1395547-secitemdelete" target="_blank" rel="noopener">SecItemDelete(_:)</a>：此函数删除与搜索查询匹配的项目。</li>
+</ul>
+<p>虽然上述函数使用不同的参数进行操作，但它们都返回表示为OSStatus的结果代码。 这是一个32位有符号整数，它可以采用项目<a href="https://developer.apple.com/documentation/security/1542001-security_framework_result_codes" target="_blank" rel="noopener">返回结果键</a>中列出的值之一</p>
+<p>由于OSStatus可能很难理解，因此Apple提供了一个名为<code>SecCopyErrorMessageString(_:_:)</code>的附加API，以获取与这些状态代码对应的人类可读字符串。</p>
+<blockquote>
+<p>注意：除了添加，修改，删除或搜索特定的钥匙串项目外，Apple还提供导出和导入证书，密钥和身份，甚至修改项目访问控制的功能。 如果您想了解更多信息，请查看<a href="https://developer.apple.com/documentation/security/keychain_services/keychain_items" target="_blank" rel="noopener">Keychain Items</a>的文档。</p>
+</blockquote>
+<p>现在您已经掌握了Keychain Services，在下一节中，您将学习如何删除包装器提供的存根方法。</p>
+<h2 id="实现Wrapper的API"><a href="#实现Wrapper的API" class="headerlink" title="实现Wrapper的API"></a>实现Wrapper的API</h2><p>打开<strong>SecureStore.swift</strong>并在<code>setValue(_:for:)</code>中添加以下实现：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> encodedPassword = value.data(using: .utf8) <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="keyword">throw</span> <span class="type">SecureStoreError</span>.string2DataConversionError</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="keyword">var</span> query = secureStoreQueryable.query</span><br><span class="line">query[<span class="type">String</span>(kSecAttrAccount)] = userAccount</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line"><span class="keyword">var</span> status = <span class="type">SecItemCopyMatching</span>(query <span class="keyword">as</span> <span class="type">CFDictionary</span>, <span class="literal">nil</span>)</span><br><span class="line"><span class="keyword">switch</span> status &#123;</span><br><span class="line"><span class="comment">// 4</span></span><br><span class="line"><span class="keyword">case</span> errSecSuccess:</span><br><span class="line">  <span class="keyword">var</span> attributesToUpdate: [<span class="type">String</span>: <span class="type">Any</span>] = [:]</span><br><span class="line">  attributesToUpdate[<span class="type">String</span>(kSecValueData)] = encodedPassword</span><br><span class="line">  </span><br><span class="line">  status = <span class="type">SecItemUpdate</span>(query <span class="keyword">as</span> <span class="type">CFDictionary</span>,</span><br><span class="line">                         attributesToUpdate <span class="keyword">as</span> <span class="type">CFDictionary</span>)</span><br><span class="line">  <span class="keyword">if</span> status != errSecSuccess &#123;</span><br><span class="line">    <span class="keyword">throw</span> error(from: status)</span><br><span class="line">  &#125;</span><br><span class="line"><span class="comment">// 5</span></span><br><span class="line"><span class="keyword">case</span> errSecItemNotFound:</span><br><span class="line">  query[<span class="type">String</span>(kSecValueData)] = encodedPassword</span><br><span class="line">  </span><br><span class="line">  status = <span class="type">SecItemAdd</span>(query <span class="keyword">as</span> <span class="type">CFDictionary</span>, <span class="literal">nil</span>)</span><br><span class="line">  <span class="keyword">if</span> status != errSecSuccess &#123;</span><br><span class="line">    <span class="keyword">throw</span> error(from: status)</span><br><span class="line">  &#125;</span><br><span class="line"><span class="keyword">default</span>:</span><br><span class="line">  <span class="keyword">throw</span> error(from: status)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>顾名思义，此方法允许为特定帐户存储新密码。 如果它无法更新或添加密码，则会抛出<strong>SecureStoreError.unhandledError</strong>，它为其指定本地化描述。</p>
+<p>这是你的代码所做的：</p>
+<ol>
+<li><p>检查它是否可以将值存储为数据类型。 如果这不可能，则会引发转换错误。</p>
+</li>
+<li><p>请求<strong>secureStoreQueryable</strong>实例执行查询并附加您正在查找的帐户。</p>
+</li>
+<li><p>返回与查询匹配的<strong>keychain</strong>项。</p>
+</li>
+<li><p>如果查询成功，则表示该帐户的密码已存在。 在这种情况下，您使用<code>SecItemUpdate(_:_:)</code>替换现有密码的值。</p>
+</li>
+<li><p>如果找不到项目，则该帐户的密码尚不存在。 您可以通过调用<code>SecItemAdd(_:_:)</code>来添加项目。</p>
+</li>
+</ol>
+<p>Keychain Services API使用Core Foundation类型。 要使编译器满意，必须从Core Foundation类型转换为Swift类型，反之亦然。</p>
+<p>在第一种情况下，由于每个键的属性都是CFString类型，因此它在查询字典中作为键的用法需要强制转换为String。 但是，从[String：Any]到CFDictionary的转换使您可以调用C函数。</p>
+<p>现在是时候检索你的密码了。 滚动下面刚刚实现的方法，并用以下内容替换getValue（for :)的实现：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="keyword">var</span> query = secureStoreQueryable.query</span><br><span class="line">query[<span class="type">String</span>(kSecMatchLimit)] = kSecMatchLimitOne</span><br><span class="line">query[<span class="type">String</span>(kSecReturnAttributes)] = kCFBooleanTrue</span><br><span class="line">query[<span class="type">String</span>(kSecReturnData)] = kCFBooleanTrue</span><br><span class="line">query[<span class="type">String</span>(kSecAttrAccount)] = userAccount</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="keyword">var</span> queryResult: <span class="type">AnyObject?</span></span><br><span class="line"><span class="keyword">let</span> status = <span class="built_in">withUnsafeMutablePointer</span>(to: &amp;queryResult) &#123;</span><br><span class="line">  <span class="type">SecItemCopyMatching</span>(query <span class="keyword">as</span> <span class="type">CFDictionary</span>, $<span class="number">0</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">switch</span> status &#123;</span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line"><span class="keyword">case</span> errSecSuccess:</span><br><span class="line">  <span class="keyword">guard</span> </span><br><span class="line">    <span class="keyword">let</span> queriedItem = queryResult <span class="keyword">as</span>? [<span class="type">String</span>: <span class="type">Any</span>],</span><br><span class="line">    <span class="keyword">let</span> passwordData = queriedItem[<span class="type">String</span>(kSecValueData)] <span class="keyword">as</span>? <span class="type">Data</span>,</span><br><span class="line">    <span class="keyword">let</span> password = <span class="type">String</span>(data: passwordData, encoding: .utf8)</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="type">SecureStoreError</span>.data2StringConversionError</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> password</span><br><span class="line"><span class="comment">// 4</span></span><br><span class="line"><span class="keyword">case</span> errSecItemNotFound:</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line"><span class="keyword">default</span>:</span><br><span class="line">  <span class="keyword">throw</span> error(from: status)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>给定特定帐户，此方法将检索与其关联的密码。 同样，如果请求出现问题，代码将抛出<strong>SecureStoreError.unhandledError</strong>。</p>
+<p>以下是您刚添加的代码所发生的情况：</p>
+<ol>
+<li><p>请求secureStoreQueryable以执行查询。除了添加您感兴趣的帐户外，还可以使用其他属性及其相关值来丰富查询。特别是，您要求它返回单个结果，返回与该特定项关联的所有属性，并返回未加密的数据作为结果。</p>
+</li>
+<li><p>使用SecItemCopyMatching（<em>：</em> :)执行搜索。完成后，queryResult将包含对找到的项的引用（如果可用）。 withUnsafeMutablePointer（to：_ :)使您可以访问UnsafeMutablePointer，您可以在闭包内使用和修改以存储结果。</p>
+</li>
+<li><p>如果查询成功，则表示它找到了一个项目。由于结果由包含您要求的所有属性的字典表示，因此您需要先提取数据，然后将其解码为数据类型。</p>
+</li>
+<li><p>如果找不到项目，则返回零值。</p>
+</li>
+</ol>
+<p>添加或检索帐户的密码是不够的。您还需要集成一种删除密码的方法。</p>
+<p>找到removeValue（for :)并添加此实现：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> query = secureStoreQueryable.query</span><br><span class="line">query[<span class="type">String</span>(kSecAttrAccount)] = userAccount</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> status = <span class="type">SecItemDelete</span>(query <span class="keyword">as</span> <span class="type">CFDictionary</span>)</span><br><span class="line"><span class="keyword">guard</span> status == errSecSuccess || status == errSecItemNotFound <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="keyword">throw</span> error(from: status)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>要删除密码，请执行SecItemDelete（_ :)指定您要查找的帐户。 如果您成功删除了密码，或者没有找到任何项目，您的工作就完成了，您就会挽救。 否则，您将抛出未处理的错误，以便让用户知道出错的地方。</p>
+<p>但是，如果要删除与特定服务关联的所有密码，该怎么办？ 您的下一步是实现最终代码以实现此目的。</p>
+<p>找到removeAllValues（）并在其括号内添加以下代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> query = secureStoreQueryable.query</span><br><span class="line">  </span><br><span class="line"><span class="keyword">let</span> status = <span class="type">SecItemDelete</span>(query <span class="keyword">as</span> <span class="type">CFDictionary</span>)</span><br><span class="line"><span class="keyword">guard</span> status == errSecSuccess || status == errSecItemNotFound <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="keyword">throw</span> error(from: status)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>正如您将注意到的，除了传递给SecItemDelete（_ :)函数的查询之外，此方法与前一个方法类似。 在这种情况下，您可以独立于用户帐户删除密码。</p>
+<p>最后，构建框架以验证所有内容是否正确编译。</p>
+<h2 id="连接点"><a href="#连接点" class="headerlink" title="连接点"></a>连接点</h2><p>到目前为止，您所做的所有工作都丰富了包装器的添加，更新，删除和检索功能。 因此，您必须使用符合SecureStoreQueryable的某种类型的实例创建包装器。</p>
+<p>由于您的第一个目标是同时处理通用密码和互联网密码，因此您的下一步是创建两个不同的配置，供消费者创建并注入您的包装器。</p>
+<p>首先，研究如何撰写通用密码的查询。</p>
+<p>打开SecureStoreQueryable.swift并在SecureStoreQueryable定义下面添加以下代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">struct</span> <span class="title">GenericPasswordQueryable</span> </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> service: <span class="type">String</span></span><br><span class="line">  <span class="keyword">let</span> accessGroup: <span class="type">String?</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">init</span>(service: <span class="type">String</span>, accessGroup: <span class="type">String?</span> = <span class="literal">nil</span>) &#123;</span><br><span class="line">    <span class="keyword">self</span>.service = service</span><br><span class="line">    <span class="keyword">self</span>.accessGroup = accessGroup</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>GenericPasswordQueryable是一个简单的结构，它接受服务和访问组作为String参数。</p>
+<p>接下来，在GenericPasswordQueryable定义下添加以下扩展名：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">GenericPasswordQueryable</span>: <span class="title">SecureStoreQueryable</span> </span>&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">var</span> query: [<span class="type">String</span>: <span class="type">Any</span>] &#123;</span><br><span class="line">    <span class="keyword">var</span> query: [<span class="type">String</span>: <span class="type">Any</span>] = [:]</span><br><span class="line">    query[<span class="type">String</span>(kSecClass)] = kSecClassGenericPassword</span><br><span class="line">    query[<span class="type">String</span>(kSecAttrService)] = service</span><br><span class="line">    <span class="comment">// Access group if target environment is not simulator</span></span><br><span class="line">    #<span class="keyword">if</span> !targetEnvironment(simulator)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> accessGroup = accessGroup &#123;</span><br><span class="line">      query[<span class="type">String</span>(kSecAttrAccessGroup)] = accessGroup</span><br><span class="line">    &#125;</span><br><span class="line">    #endif</span><br><span class="line">    <span class="keyword">return</span> query</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>要符合SecureStoreQueryable协议，必须将查询实现为属性。 该查询表示您的包装器能够执行所选功能的方式。</p>
+<p>撰写的查询具有特定的键和值：</p>
+<ol>
+<li><p>由键kSecClass表示的item类具有值kSecClassGenericPassword，因为您正在处理通用密码。 这就是钥匙串推断数据是秘密的并且需要加密的方式。</p>
+</li>
+<li><p>kSecAttrService设置为使用GenericPasswordQueryable的新实例注入的服务参数值。</p>
+</li>
+<li><p>最后，如果您的代码未在模拟器上运行，您还可以将kSecAttrAccessGroup密钥设置为提供的accessGroup值。 这使您可以使用相同的访问组在不同的应用程序之间共享项目。</p>
+</li>
+</ol>
+<p>接下来，构建框架以确保一切正常。</p>
+<blockquote>
+<p>注意：对于类kSecClassGenericPassword的keychain项，主键是kSecAttrAccount和kSecAttrService的组合。 换句话说，元组允许您在Keychain中唯一标识通用密码。</p>
+</blockquote>
+<p>你闪亮的新包装还没有完成！ 下一步是集成功能，允许消费者与互联网密码进行交互。</p>
+<p>滚动到SecureStoreQueryable.swift的末尾并添加以下内容：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">struct</span> <span class="title">InternetPasswordQueryable</span> </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> server: <span class="type">String</span></span><br><span class="line">  <span class="keyword">let</span> port: <span class="type">Int</span></span><br><span class="line">  <span class="keyword">let</span> path: <span class="type">String</span></span><br><span class="line">  <span class="keyword">let</span> securityDomain: <span class="type">String</span></span><br><span class="line">  <span class="keyword">let</span> internetProtocol: <span class="type">InternetProtocol</span></span><br><span class="line">  <span class="keyword">let</span> internetAuthenticationType: <span class="type">InternetAuthenticationType</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>InternetPasswordQueryable是一个结构，可以帮助您在应用程序Keychain中操作Internet密码。</p>
+<p>在符合SecureStoreQueryable之前，请花点时间了解您的API在这种情况下的工作方式。</p>
+<p>如果用户想要处理互联网密码，他们会创建一个新的InternetPasswordQueryable实例，其中internetProtocol和internetAuthenticationType属性绑定到特定域。</p>
+<p>接下来，将以下内容添加到InternetPasswordQueryable实现下面：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">InternetPasswordQueryable</span>: <span class="title">SecureStoreQueryable</span> </span>&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">var</span> query: [<span class="type">String</span>: <span class="type">Any</span>] &#123;</span><br><span class="line">    <span class="keyword">var</span> query: [<span class="type">String</span>: <span class="type">Any</span>] = [:]</span><br><span class="line">    query[<span class="type">String</span>(kSecClass)] = kSecClassInternetPassword</span><br><span class="line">    query[<span class="type">String</span>(kSecAttrPort)] = port</span><br><span class="line">    query[<span class="type">String</span>(kSecAttrServer)] = server</span><br><span class="line">    query[<span class="type">String</span>(kSecAttrSecurityDomain)] = securityDomain</span><br><span class="line">    query[<span class="type">String</span>(kSecAttrPath)] = path</span><br><span class="line">    query[<span class="type">String</span>(kSecAttrProtocol)] = internetProtocol.rawValue</span><br><span class="line">    query[<span class="type">String</span>(kSecAttrAuthenticationType)] = internetAuthenticationType.rawValue</span><br><span class="line">    <span class="keyword">return</span> query</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如通用密码情况所示，查询具有特定的键和值：</p>
+<ul>
+<li>由键kSecClass表示的item类的值为kSecClassInternetPassword，因为您现在正在与Internet密码进行交互。</li>
+<li>kSecAttrPort设置为port参数。</li>
+<li>kSecAttrServer设置为server参数。</li>
+<li>kSecAttrSecurityDomain设置为securityDomain参数。</li>
+<li>kSecAttrPath设置为path参数。</li>
+<li>kSecAttrProtocol绑定到internetProtocol参数的rawValue。</li>
+<li>最后，kSecAttrAuthenticationType绑定到internetAuthenticationType参数的rawValue。</li>
+</ul>
+<p>再次，构建以查看Xcode是否正确编译。</p>
+<blockquote>
+<p>注意：对于类kSecClassInternetPassword的keychain项，主键是kSecAttrAccount，kSecAttrSecurityDomain，kSecAttrServer，kSecAttrProtocol，kSecAttrAuthenticationType，kSecAttrPort和kSecAttrPath的组合。 换句话说，这些值允许您在Keychain中唯一标识Internet密码。</p>
+</blockquote>
+<p>现在是时候看看你辛勤工作的结果了。 可是等等！ 既然您没有创建在模拟器上运行的应用程序，那么您将如何验证它？</p>
+<p>这是单元测试拯救的地方。</p>
+<h2 id="测试行为"><a href="#测试行为" class="headerlink" title="测试行为"></a>测试行为</h2><p>在本节中，您将了解如何为包装器集成单元测试。 特别是，您将测试包装器公开的功能。</p>
+<blockquote>
+<p>注意：如果您是单元测试的新手，并且想要探索该主题，请查看我们惊人的<a href="https://www.raywenderlich.com/709-ios-unit-testing-and-ui-testing-tutorial" target="_blank" rel="noopener">iOS单元测试和UI测试教程</a>。</p>
+</blockquote>
+<h3 id="创建类"><a href="#创建类" class="headerlink" title="创建类"></a>创建类</h3><p>要创建包含所有单元测试的类，请单击文件▸新建▸文件…并选择iOS▸源▸单元测试用例类。 在下一个屏幕上，将类名指定为SecureStoreTests，子类XCTestCase并确保语言为Swift。 单击Next，选择SecureStoreTests组，验证是否已选中SecureStoreTests targets复选框，然后单击Create。</p>
+<p>Xcode将提示一个对话框来创建一个Objective-C桥接头。 单击“不创建”以跳过创建。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/11/keychain_bridging_header-1-650x329.png" alt="图片"></p>
+<p>打开SecureStoreTests.swift文件并删除花括号内的所有代码。</p>
+<p>接下来，在import XCTest语句下面添加以下内容：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@testable</span> <span class="keyword">import</span> SecureStore</span><br></pre></td></tr></table></figure>
+
+<p>这使单元测试访问SecureStore框架中定义的类和方法。</p>
+<blockquote>
+<p>注意：您可能会看到“No such module”错误。 不用担心，当您到本教程的这一部分结束并执行测试时，错误将消失。</p>
+</blockquote>
+<p>接下来，在SecureStoreTests的顶部添加以下属性：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> secureStoreWithGenericPwd: <span class="type">SecureStore!</span></span><br><span class="line"><span class="keyword">var</span> secureStoreWithInternetPwd: <span class="type">SecureStore!</span></span><br></pre></td></tr></table></figure>
+
+<p>接下来，添加一个新的setUp（）方法，如下所示：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">setUp</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">super</span>.setUp()</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">let</span> genericPwdQueryable =</span><br><span class="line">    <span class="type">GenericPasswordQueryable</span>(service: <span class="string">"someService"</span>)</span><br><span class="line">  secureStoreWithGenericPwd =</span><br><span class="line">    <span class="type">SecureStore</span>(secureStoreQueryable: genericPwdQueryable)</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">let</span> internetPwdQueryable =</span><br><span class="line">    <span class="type">InternetPasswordQueryable</span>(server: <span class="string">"someServer"</span>,</span><br><span class="line">                              port: <span class="number">8080</span>,</span><br><span class="line">                              path: <span class="string">"somePath"</span>,</span><br><span class="line">                              securityDomain: <span class="string">"someDomain"</span>,</span><br><span class="line">                              internetProtocol: .https,</span><br><span class="line">                              internetAuthenticationType: .httpBasic)</span><br><span class="line">  secureStoreWithInternetPwd =</span><br><span class="line">    <span class="type">SecureStore</span>(secureStoreQueryable: internetPwdQueryable)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于您测试了通用密码和Internet密码，因此您可以使用两种不同的配置创建包装器的两个实例。 这些配置是您在上一节中开发的配置。</p>
+<p>在您忘记之前，您需要在测试的拆卸阶段清除钥匙串的状态，以便下次可以重新开始。 将此方法添加到类的末尾：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">tearDown</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">try</span>? secureStoreWithGenericPwd.removeAllValues()</span><br><span class="line">  <span class="keyword">try</span>? secureStoreWithInternetPwd.removeAllValues()</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">super</span>.tearDown()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于您应该独立于其他测试隔离和执行每个测试，因此您将删除Keychain中已有的所有密码。 执行顺序无关紧要。</p>
+<p>现在是时候为通用密码添加单元测试了。</p>
+<h2 id="测试通用密码"><a href="#测试通用密码" class="headerlink" title="测试通用密码"></a>测试通用密码</h2><p>在tearDown（）下面添加以下代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testSaveGenericPassword</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> secureStoreWithGenericPwd.setValue(<span class="string">"pwd_1234"</span>, <span class="keyword">for</span>: <span class="string">"genericPassword"</span>)</span><br><span class="line">  &#125; <span class="keyword">catch</span> (<span class="keyword">let</span> e) &#123;</span><br><span class="line">    <span class="type">XCTFail</span>(<span class="string">"Saving generic password failed with \(e.localizedDescription)."</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testReadGenericPassword</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> secureStoreWithGenericPwd.setValue(<span class="string">"pwd_1234"</span>, <span class="keyword">for</span>: <span class="string">"genericPassword"</span>)</span><br><span class="line">    <span class="keyword">let</span> password = <span class="keyword">try</span> secureStoreWithGenericPwd.getValue(<span class="keyword">for</span>: <span class="string">"genericPassword"</span>)</span><br><span class="line">    <span class="type">XCTAssertEqual</span>(<span class="string">"pwd_1234"</span>, password)</span><br><span class="line">  &#125; <span class="keyword">catch</span> (<span class="keyword">let</span> e) &#123;</span><br><span class="line">    <span class="type">XCTFail</span>(<span class="string">"Reading generic password failed with \(e.localizedDescription)."</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testUpdateGenericPassword</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> secureStoreWithGenericPwd.setValue(<span class="string">"pwd_1234"</span>, <span class="keyword">for</span>: <span class="string">"genericPassword"</span>)</span><br><span class="line">    <span class="keyword">try</span> secureStoreWithGenericPwd.setValue(<span class="string">"pwd_1235"</span>, <span class="keyword">for</span>: <span class="string">"genericPassword"</span>)</span><br><span class="line">    <span class="keyword">let</span> password = <span class="keyword">try</span> secureStoreWithGenericPwd.getValue(<span class="keyword">for</span>: <span class="string">"genericPassword"</span>)</span><br><span class="line">    <span class="type">XCTAssertEqual</span>(<span class="string">"pwd_1235"</span>, password)</span><br><span class="line">  &#125; <span class="keyword">catch</span> (<span class="keyword">let</span> e) &#123;</span><br><span class="line">    <span class="type">XCTFail</span>(<span class="string">"Updating generic password failed with \(e.localizedDescription)."</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 4</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testRemoveGenericPassword</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> secureStoreWithGenericPwd.setValue(<span class="string">"pwd_1234"</span>, <span class="keyword">for</span>: <span class="string">"genericPassword"</span>)</span><br><span class="line">    <span class="keyword">try</span> secureStoreWithGenericPwd.removeValue(<span class="keyword">for</span>: <span class="string">"genericPassword"</span>)</span><br><span class="line">    <span class="type">XCTAssertNil</span>(<span class="keyword">try</span> secureStoreWithGenericPwd.getValue(<span class="keyword">for</span>: <span class="string">"genericPassword"</span>))</span><br><span class="line">  &#125; <span class="keyword">catch</span> (<span class="keyword">let</span> e) &#123;</span><br><span class="line">    <span class="type">XCTFail</span>(<span class="string">"Saving generic password failed with \(e.localizedDescription)."</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 5</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testRemoveAllGenericPasswords</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> secureStoreWithGenericPwd.setValue(<span class="string">"pwd_1234"</span>, <span class="keyword">for</span>: <span class="string">"genericPassword"</span>)</span><br><span class="line">    <span class="keyword">try</span> secureStoreWithGenericPwd.setValue(<span class="string">"pwd_1235"</span>, <span class="keyword">for</span>: <span class="string">"genericPassword2"</span>)</span><br><span class="line">    <span class="keyword">try</span> secureStoreWithGenericPwd.removeAllValues()</span><br><span class="line">    <span class="type">XCTAssertNil</span>(<span class="keyword">try</span> secureStoreWithGenericPwd.getValue(<span class="keyword">for</span>: <span class="string">"genericPassword"</span>))</span><br><span class="line">    <span class="type">XCTAssertNil</span>(<span class="keyword">try</span> secureStoreWithGenericPwd.getValue(<span class="keyword">for</span>: <span class="string">"genericPassword2"</span>))</span><br><span class="line">  &#125; <span class="keyword">catch</span> (<span class="keyword">let</span> e) &#123;</span><br><span class="line">    <span class="type">XCTFail</span>(<span class="string">"Removing generic passwords failed with \(e.localizedDescription)."</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里有很多东西，所以要分解它：</p>
+<ol>
+<li>testSaveGenericPassword（）方法验证它是否可以正确保存密码。</li>
+<li>testReadGenericPassword（）首先保存密码然后检索密码，检查密码是否等于预期的密码。</li>
+<li>testUpdateGenericPassword（）验证为同一帐户保存不同的密码时，最新的密码是检索后的预期密码。</li>
+<li>testRemoveGenericPassword（）测试它可以删除特定帐户的密码。</li>
+<li>最后，testRemoveAllGenericPasswords检查从Keychain中删除与特定服务相关的所有密码。</li>
+</ol>
+<p>由于您的包装器可以抛出异常，因此如果出现问题，每个catch块都会使测试失败。</p>
+<h2 id="检查你的工作"><a href="#检查你的工作" class="headerlink" title="检查你的工作"></a>检查你的工作</h2><p>现在是时候验证一切都按预期工作了。 选择TestHost作为Xcode项目的活动方案：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/11/testhost-scheme.png" alt="图片"></p>
+<p>按键盘上的Command-U（或在菜单中选择<strong>Product ▸ Test</strong>）以执行单元测试。</p>
+<blockquote>
+<p>注意：您不需要像通常在教程中那样运行应用程序。 在本教程中，您将通过执行单元测试来检查代码。</p>
+</blockquote>
+<p>显示Test导航器并等待测试执行。 一旦完成，你会发现所有五个测试都是绿色的。太好了！</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2018/11/keychain_green_tests.png" alt="图片"></p>
+<p>接下来，对互联网密码执行相同操作。</p>
+<p>滚动到类的末尾，在最后一个花括号之前添加以下内容：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testSaveInternetPassword</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> secureStoreWithInternetPwd.setValue(<span class="string">"pwd_1234"</span>, <span class="keyword">for</span>: <span class="string">"internetPassword"</span>)</span><br><span class="line">  &#125; <span class="keyword">catch</span> (<span class="keyword">let</span> e) &#123;</span><br><span class="line">    <span class="type">XCTFail</span>(<span class="string">"Saving Internet password failed with \(e.localizedDescription)."</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testReadInternetPassword</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> secureStoreWithInternetPwd.setValue(<span class="string">"pwd_1234"</span>, <span class="keyword">for</span>: <span class="string">"internetPassword"</span>)</span><br><span class="line">    <span class="keyword">let</span> password = <span class="keyword">try</span> secureStoreWithInternetPwd.getValue(<span class="keyword">for</span>: <span class="string">"internetPassword"</span>)</span><br><span class="line">    <span class="type">XCTAssertEqual</span>(<span class="string">"pwd_1234"</span>, password)</span><br><span class="line">  &#125; <span class="keyword">catch</span> (<span class="keyword">let</span> e) &#123;</span><br><span class="line">    <span class="type">XCTFail</span>(<span class="string">"Reading internet password failed with \(e.localizedDescription)."</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testUpdateInternetPassword</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> secureStoreWithInternetPwd.setValue(<span class="string">"pwd_1234"</span>, <span class="keyword">for</span>: <span class="string">"internetPassword"</span>)</span><br><span class="line">    <span class="keyword">try</span> secureStoreWithInternetPwd.setValue(<span class="string">"pwd_1235"</span>, <span class="keyword">for</span>: <span class="string">"internetPassword"</span>)</span><br><span class="line">    <span class="keyword">let</span> password = <span class="keyword">try</span> secureStoreWithInternetPwd.getValue(<span class="keyword">for</span>: <span class="string">"internetPassword"</span>)</span><br><span class="line">    <span class="type">XCTAssertEqual</span>(<span class="string">"pwd_1235"</span>, password)</span><br><span class="line">  &#125; <span class="keyword">catch</span> (<span class="keyword">let</span> e) &#123;</span><br><span class="line">    <span class="type">XCTFail</span>(<span class="string">"Updating internet password failed with \(e.localizedDescription)."</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testRemoveInternetPassword</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> secureStoreWithInternetPwd.setValue(<span class="string">"pwd_1234"</span>, <span class="keyword">for</span>: <span class="string">"internetPassword"</span>)</span><br><span class="line">    <span class="keyword">try</span> secureStoreWithInternetPwd.removeValue(<span class="keyword">for</span>: <span class="string">"internetPassword"</span>)</span><br><span class="line">    <span class="type">XCTAssertNil</span>(<span class="keyword">try</span> secureStoreWithInternetPwd.getValue(<span class="keyword">for</span>: <span class="string">"internetPassword"</span>))</span><br><span class="line">  &#125; <span class="keyword">catch</span> (<span class="keyword">let</span> e) &#123;</span><br><span class="line">    <span class="type">XCTFail</span>(<span class="string">"Removing internet password failed with \(e.localizedDescription)."</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testRemoveAllInternetPasswords</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> secureStoreWithInternetPwd.setValue(<span class="string">"pwd_1234"</span>, <span class="keyword">for</span>: <span class="string">"internetPassword"</span>)</span><br><span class="line">    <span class="keyword">try</span> secureStoreWithInternetPwd.setValue(<span class="string">"pwd_1235"</span>, <span class="keyword">for</span>: <span class="string">"internetPassword2"</span>)</span><br><span class="line">    <span class="keyword">try</span> secureStoreWithInternetPwd.removeAllValues()</span><br><span class="line">    <span class="type">XCTAssertNil</span>(<span class="keyword">try</span> secureStoreWithInternetPwd.getValue(<span class="keyword">for</span>: <span class="string">"internetPassword"</span>))</span><br><span class="line">    <span class="type">XCTAssertNil</span>(<span class="keyword">try</span> secureStoreWithInternetPwd.getValue(<span class="keyword">for</span>: <span class="string">"internetPassword2"</span>))</span><br><span class="line">  &#125; <span class="keyword">catch</span> (<span class="keyword">let</span> e) &#123;</span><br><span class="line">    <span class="type">XCTFail</span>(<span class="string">"Removing internet passwords failed with \(e.localizedDescription)."</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>请注意，上面的代码与之前分析的代码相同。 您刚刚使用secureStoreWithInternetPwd替换了引用secureStoreWithGenericPwd。</p>
+<p>选择TestHost作为活动方案（如果尚未选择），然后按键盘上的Command-U再次进行测试。 现在所有的通用和互联网密码测试都应该是绿色的。</p>
+<p>恭喜！ 您现在有一个可用的独立框架和单元测试。</p>
+<h2 id="然后去哪儿？"><a href="#然后去哪儿？" class="headerlink" title="然后去哪儿？"></a>然后去哪儿？</h2><p>在本教程中，您创建了一个包含Keychain Services API的框架，甚至是集成的单元测试，以证明您的代码按预期工作。惊人！</p>
+<p>您可以更进一步，在我们的教程<a href="https://www.raywenderlich.com/5109-creating-a-framework-for-ios" target="_blank" rel="noopener">创建iOS框架</a>的最后一部分之后与其他人共享或分发您的代码。</p>
+<p>您可以使用本教程顶部或底部的“下载材料”按钮下载项目的完整版本。</p>
+<p>如果您想了解更多信息，请查看<a href="https://developer.apple.com/documentation/security/keychain_services" target="_blank" rel="noopener">Apple Keychain Services</a>的文档。</p>
+<p>值得注意的是，Keychain不仅限于密码。您可以存储信用卡数据或简短笔记等敏感信息。您还可以保存使用<a href="https://developer.apple.com/documentation/security/certificate_key_and_trust_services" target="_blank" rel="noopener">证书，密钥和信任服务</a>管理的加密密钥和证书等项目，以执行安全和经过身份验证的数据事务。</p>
+<p>你从中学到了什么？任何挥之不去的问题？想分享一路上发生的事情吗？你可以在论坛中讨论它。到时候那里见！</p>
+<p>项目工程: <a href="https://koenig-media.raywenderlich.com/uploads/2018/12/SecureStore.zip" target="_blank" rel="noopener">https://koenig-media.raywenderlich.com/uploads/2018/12/SecureStore.zip</a></p>
+
+                
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

@@ -1,0 +1,342 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：装逼技术RunTime的总结篇 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="讲到这里, RunTime的知识点和应用基本上就已经讲完了, 剩下的就靠大家自己在项目中的应用以及累积了.
+这一篇文章主要是
+转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：装逼技术RunTime的总结篇</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：装逼技术RunTime的总结篇</h1>
+        <div class="stuff">
+            <span>十月 11, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/iOS进阶/">iOS进阶</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>讲到这里, RunTime的知识点和应用基本上就已经讲完了, 剩下的就靠大家自己在项目中的应用以及累积了.</p>
+<p>这一篇文章主要是</p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="RunTime基础"><a href="#RunTime基础" class="headerlink" title="RunTime基础"></a>RunTime基础</h2><p>基础路径图:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-Project-Example/master/RunTime/Seven/Images/1.png" alt="1"></p>
+<p>在学习<strong>RunTime</strong>的基础时, 我们要搞清楚一些重要的东西, 一些专业术语:</p>
+<ul>
+<li><strong>SEL</strong></li>
+<li><strong>id</strong></li>
+<li><strong>Class</strong></li>
+<li><strong>Method</strong></li>
+<li><strong>Ivar</strong></li>
+<li><strong>IMP</strong></li>
+<li><strong>Cache</strong></li>
+<li><strong>Property</strong></li>
+</ul>
+<p>我们可以从这些东西里获取到指定类的所有信息, 无论是公开的, 还是私有的, 全部都可以拿到, 并且操作.</p>
+<p><strong>PS: 但操作私有方法的时候, 注意不要用来上架, 除非你有方法让苹果审核的时候通过.</strong></p>
+<h2 id="RunTime进阶"><a href="#RunTime进阶" class="headerlink" title="RunTime进阶"></a>RunTime进阶</h2><p>进阶路径图:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-Project-Example/master/RunTime/Seven/Images/2.png" alt="2"></p>
+<p>在学习RunTime进阶的时候, 我们就要了解更加的深入.</p>
+<h2 id="消息机制"><a href="#消息机制" class="headerlink" title="消息机制:"></a>消息机制:</h2><ul>
+<li><strong>objc_msgSend</strong></li>
+<li><strong>objc_msgSend_fpret</strong></li>
+<li><strong>objc_msgSend_stret</strong></li>
+<li><strong>objc_msgSendSuper</strong></li>
+<li><strong>objc_msgSendSuper_stret</strong></li>
+</ul>
+<h2 id="对象关联"><a href="#对象关联" class="headerlink" title="对象关联:"></a>对象关联:</h2><ul>
+<li><code>objc_setAssociatedObject()</code></li>
+<li><code>objc_getAssociatedObject()</code></li>
+<li><code>objc_removeAssociatedObjects()</code></li>
+</ul>
+<h2 id="对象关联的策略"><a href="#对象关联的策略" class="headerlink" title="对象关联的策略:"></a>对象关联的策略:</h2><ul>
+<li><strong>OBJC_ASSOCIATION_ASSIGN</strong></li>
+<li><strong>OBJC_ASSOCIATION_RETAIN_NONATOMIC</strong></li>
+<li><strong>OBJC_ASSOCIATION_COPY_NONATOMIC</strong></li>
+<li><strong>OBJC_ASSOCIATION_RETAIN</strong></li>
+<li><strong>OBJC_ASSOCIATION_COPY</strong></li>
+</ul>
+<h2 id="动态方法解析"><a href="#动态方法解析" class="headerlink" title="动态方法解析:"></a>动态方法解析:</h2><ul>
+<li><code>resolveInstanceMethod:</code></li>
+<li><strong>YES</strong>, 通过<strong>class_addMethod</strong>消息得到处理, 结束</li>
+<li><strong>NO</strong>, 进入<strong>forwardingTargetForSelector</strong></li>
+<li>指定响应<strong>selector</strong>, 消息得到处理, 结束</li>
+<li>不指定响应<strong>selector</strong></li>
+<li>进入<strong>methodSignatureForSelector</strong>, 指定方法签名, 调用<strong>forwardInvovation</strong>, 通过<strong>anInvocation</strong>做处理, 消息得到处理, 结束</li>
+<li>不指定方法签名, 该消息没有得到处理, 系统报错</li>
+</ul>
+<h2 id="RunTime应用"><a href="#RunTime应用" class="headerlink" title="RunTime应用"></a>RunTime应用</h2><p>应用路径图:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-Project-Example/master/RunTime/Seven/Images/3.png" alt="3"></p>
+<p>在学习完<strong>RunTime</strong>之后, 我们就可以应用到我们的实际开发中.</p>
+<h2 id="Category"><a href="#Category" class="headerlink" title="Category"></a>Category</h2><ul>
+<li>关联对象</li>
+<li>控制对象</li>
+</ul>
+<h2 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h2><ul>
+<li>动态添加方法</li>
+<li>动态交换方法</li>
+<li>动态拦截并替换方法</li>
+<li>动态给方法添加额外功能</li>
+</ul>
+<h2 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h2><ul>
+<li><p>自动归档和解档</p>
+</li>
+<li><p>自动字典转模型</p>
+</li>
+<li><p>字典转模型(模型属性数量大于字典key数量)</p>
+</li>
+<li><p>字典转模型(模型中嵌套模型)</p>
+</li>
+<li><p>字典转模型(数组中嵌套模型)</p>
+</li>
+</ul>
+<h2 id="RunTime实例开发场景"><a href="#RunTime实例开发场景" class="headerlink" title="RunTime实例开发场景"></a>RunTime实例开发场景</h2><p>在实际开发中, 我们有一些实例场景会用到<strong>RunTime</strong>:</p>
+<ul>
+<li>替换<strong>ViewController</strong>的声明周期</li>
+<li>解决集合类因索引的问题崩溃的问题</li>
+<li>防止按钮重复高强度点击</li>
+<li>全局更换控件初始效果</li>
+<li><strong>App</strong>热修复</li>
+<li><strong>App</strong>异常加载的展位图</li>
+<li>全局修改<strong>UINavigationBar</strong>的<strong>backButtonItem</strong></li>
+</ul>
+<p><a href="http://www.jianshu.com/p/f6dad8e1b848" target="_blank" rel="noopener">Runtime Method Swizzling开发实例汇总</a></p>
+<h2 id="RunTime面试题及答案"><a href="#RunTime面试题及答案" class="headerlink" title="RunTime面试题及答案"></a>RunTime面试题及答案</h2><table>
+<thead>
+<tr>
+<th align="left"><strong>问题:</strong> objc在向一个对象发送消息时, 发生了什么?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1.根据对象的<code>isa</code>指针找到类对象<code>id</code>, 在查询类对象里面的<code>methodLists</code>方法函数列表</td>
+</tr>
+<tr>
+<td align="left">2.如果没有在好到, 在沿着<code>superClass</code>, 寻找父类，再在父类<code>methodLists</code>方法列表里面查询</td>
+</tr>
+<tr>
+<td align="left">3.最终找到<code>SEL</code>, 根据<code>id</code>和<code>SEL</code>确认<code>IMP</code>(指针函数), 在发送消息.</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>问题:</strong> 什么时候会报<code>unrecognized selector</code>错误? <code>iOS</code>有哪些机制来避免走到这一步?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1.当发送消息的时候, 我们会根据类里面的<code>methodLists</code>列表去查询我们要动用的<code>SEL</code>, 当查询不到的时候, 我们会一直沿着父类查询</td>
+</tr>
+<tr>
+<td align="left">2.当最终查询不到的时候我们会报<code>unrecognized selector</code>错误, 当系统查询不到方法的时候, 会调用<code>+(BOOL)resolveInstanceMethod:(SEL)sel</code>动态解释的方法来给我一次机会来添加, 调用不到的方法.</td>
+</tr>
+<tr>
+<td align="left">3.或者我们可以再次使用<code>-(id)forwardingTargetForSelector:(SEL)aSelector</code>重定向的方法来告诉系统，该调用什么方法，一来保证不会崩溃.</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>问题:</strong> 能否向编译后得到的类中增加实例变量？能否向运行时创建的类中添加实例变量? 为什么?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1.不能向编译后得到的类增加实例变量.</td>
+</tr>
+<tr>
+<td align="left">2.能向运行时创建的类中添加实例变量.</td>
+</tr>
+<tr>
+<td align="left"><strong>解释:</strong></td>
+</tr>
+<tr>
+<td align="left">1. 编译后的类已经注册在<code>runtime</code>中,类结构体中的<code>objc_ivar_list</code>实例变量的链表和<code>instance_size</code>实例变量的内存大小已经确定，<code>runtime</code>会调用<code>class_setvarlayout</code>或<code>class_setWeaklvarLayout</code>来处理<code>strong``weak</code>引用.所以不能向存在的类中添加实例变量.</td>
+</tr>
+<tr>
+<td align="left">2. 运行时创建的类是可以添加实例变量，调用<code>class_addIvar</code>函数. 但是的在调用<code>objc_allocateClassPair</code>之后，<code>objc_registerClassPair</code>之前,原因同上.</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>问题:</strong> runtime如何实现weak变量的自动置nil?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1.<code>runtime</code>对注册的类, 会进行布局，对于<code>weak</code>对象会放入一个<code>hash</code>表中。 用<code>weak</code>指向的对象内存地址作为<code>key</code>，当此对象的引用计数为<code>0</code>的时候会<code>dealloc</code>.</td>
+</tr>
+<tr>
+<td align="left">2.假如<code>weak</code>指向的对象内存地址是<code>A</code>，那么就会以<code>A</code>为键， 在这个<code>weak</code>表中搜索，找到所有以<code>A</code>为键的<code>weak</code>对象，从而设置为<code>nil</code>.</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>问题:</strong> 给类添加一个属性后，在类结构体里哪些元素会发生变化</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1.<code>instance_size</code> ：实例的内存大小.</td>
+</tr>
+<tr>
+<td align="left">2.<code>objc_ivar_list *ivars</code> : 属性列表.</td>
+</tr>
+</tbody></table>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>好了, 终于到尾声了, 希望大家可以在我的文章里学到知识, 早日迎娶白富美, 走上人生巅峰, 最后附上所有的文章:</p>
+<h2 id="RunTime快速入门"><a href="#RunTime快速入门" class="headerlink" title="RunTime快速入门"></a>RunTime快速入门</h2><ul>
+<li><a href="https://CainLuo.github.io/15033286127687.html">玩转iOS开发：iOS开发中的装逼技术 - RunTime(一)</a></li>
+<li><a href="https://CainLuo.github.io/15034036545472.html">玩转iOS开发：iOS开发中的装逼技术 - RunTime(二)</a></li>
+<li><a href="https://CainLuo.github.io/15034954202343.html">玩转iOS开发：iOS开发中的装逼技术 - RunTime(三)</a></li>
+</ul>
+<h2 id="RunTime应用-1"><a href="#RunTime应用-1" class="headerlink" title="RunTime应用"></a>RunTime应用</h2><ul>
+<li><a href="https://CainLuo.github.io/15065147177317.html">玩转iOS开发：装逼技术RunTime的应用(一)</a></li>
+<li><a href="https://CainLuo.github.io/15069332898903.html">玩转iOS开发：装逼技术RunTime的应用(二)</a></li>
+<li><a href="https://CainLuo.github.io/15074742481003.html">玩转iOS开发：装逼技术RunTime的应用(三)</a></li>
+</ul>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#RunTime基础"><span class="toc-number">1.</span> <span class="toc-text">RunTime基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RunTime进阶"><span class="toc-number">2.</span> <span class="toc-text">RunTime进阶</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#消息机制"><span class="toc-number">3.</span> <span class="toc-text">消息机制:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对象关联"><span class="toc-number">4.</span> <span class="toc-text">对象关联:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对象关联的策略"><span class="toc-number">5.</span> <span class="toc-text">对象关联的策略:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动态方法解析"><span class="toc-number">6.</span> <span class="toc-text">动态方法解析:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RunTime应用"><span class="toc-number">7.</span> <span class="toc-text">RunTime应用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Category"><span class="toc-number">8.</span> <span class="toc-text">Category</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Class"><span class="toc-number">9.</span> <span class="toc-text">Class</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Model"><span class="toc-number">10.</span> <span class="toc-text">Model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RunTime实例开发场景"><span class="toc-number">11.</span> <span class="toc-text">RunTime实例开发场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RunTime面试题及答案"><span class="toc-number">12.</span> <span class="toc-text">RunTime面试题及答案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">13.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RunTime快速入门"><span class="toc-number">14.</span> <span class="toc-text">RunTime快速入门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RunTime应用-1"><span class="toc-number">15.</span> <span class="toc-text">RunTime应用</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

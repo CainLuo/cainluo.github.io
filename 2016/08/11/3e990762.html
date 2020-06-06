@@ -1,0 +1,272 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：iOS中的RunLoop(三) - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="上一章, 我们介绍了RunLoop有关于Mach的一些东西, 看的挺懵逼的, 但是没关系, 只是简单的了解一下就好了, 基本上不会再碰到它了, 除非你想自己撸一个, 接下来我们继续了解完苹果的Run,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：iOS中的RunLoop(三)</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：iOS中的RunLoop(三)</h1>
+        <div class="stuff">
+            <span>八月 11, 2016</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/iOS进阶/">iOS进阶</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>上一章, 我们介绍了<strong>RunLoop</strong>有关于<strong>Mach</strong>的一些东西, 看的挺懵逼的, 但是没关系, 只是简单的了解一下就好了, 基本上不会再碰到它了, 除非你想自己撸一个, 接下来我们继续了解完苹果的<strong>RunLoop</strong>, 如果上一章还没有去看的老铁们, 可以去<a href="https://cainluo.github.io/2016/08/10/406a2749.html">玩转iOS开发：iOS中的RunLoop(二)</a>看看.</p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="Apple味的RunLoop"><a href="#Apple味的RunLoop" class="headerlink" title="Apple味的RunLoop"></a>Apple味的RunLoop</h2><p>我们先来看一段代码:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line">CFRunLoop &#123;</span><br><span class="line">    current mode = kCFRunLoopDefaultMode</span><br><span class="line">    </span><br><span class="line">    common modes = &#123;</span><br><span class="line">        UITrackingRunLoopMode</span><br><span class="line">        kCFRunLoopDefaultMode</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    common mode items = &#123;</span><br><span class="line"> </span><br><span class="line">        <span class="comment">// source0 (manual)</span></span><br><span class="line">        CFRunLoopSource &#123;order =<span class="number">-1</span>, &#123;</span><br><span class="line">            callout = _UIApplicationHandleEventQueue&#125;&#125;</span><br><span class="line">        CFRunLoopSource &#123;order =<span class="number">-1</span>, &#123;</span><br><span class="line">            callout = PurpleEventSignalCallback &#125;&#125;</span><br><span class="line">        CFRunLoopSource &#123;order = <span class="number">0</span>, &#123;</span><br><span class="line">            callout = FBSSerialQueueRunLoopSourceHandler&#125;&#125;</span><br><span class="line"> </span><br><span class="line">        <span class="comment">// source1 (mach port)</span></span><br><span class="line">        CFRunLoopSource &#123;order = <span class="number">0</span>,  &#123;port = <span class="number">17923</span>&#125;&#125;</span><br><span class="line">        CFRunLoopSource &#123;order = <span class="number">0</span>,  &#123;port = <span class="number">12039</span>&#125;&#125;</span><br><span class="line">        CFRunLoopSource &#123;order = <span class="number">0</span>,  &#123;port = <span class="number">16647</span>&#125;&#125;</span><br><span class="line">        CFRunLoopSource &#123;order =<span class="number">-1</span>, &#123;</span><br><span class="line">            callout = PurpleEventCallback&#125;&#125;</span><br><span class="line">        CFRunLoopSource &#123;order = <span class="number">0</span>, &#123;port = <span class="number">2407</span>,</span><br><span class="line">            callout = _ZL20notify_port_callbackP12__CFMachPortPvlS1_&#125;&#125;</span><br><span class="line">        CFRunLoopSource &#123;order = <span class="number">0</span>, &#123;port = <span class="number">1</span>c03,</span><br><span class="line">            callout = __IOHIDEventSystemClientAvailabilityCallback&#125;&#125;</span><br><span class="line">        CFRunLoopSource &#123;order = <span class="number">0</span>, &#123;port = <span class="number">1b</span>03,</span><br><span class="line">            callout = __IOHIDEventSystemClientQueueCallback&#125;&#125;</span><br><span class="line">        CFRunLoopSource &#123;order = <span class="number">1</span>, &#123;port = <span class="number">1903</span>,</span><br><span class="line">            callout = __IOMIGMachPortPortCallback&#125;&#125;</span><br><span class="line"> </span><br><span class="line">        <span class="comment">// Ovserver</span></span><br><span class="line">        CFRunLoopObserver &#123;order = <span class="number">-2147483647</span>, activities = <span class="number">0x1</span>, <span class="comment">// Entry</span></span><br><span class="line">            callout = _wrapRunLoopWithAutoreleasePoolHandler&#125;</span><br><span class="line">        CFRunLoopObserver &#123;order = <span class="number">0</span>, activities = <span class="number">0x20</span>,          <span class="comment">// BeforeWaiting</span></span><br><span class="line">            callout = _UIGestureRecognizerUpdateObserver&#125;</span><br><span class="line">        CFRunLoopObserver &#123;order = <span class="number">1999000</span>, activities = <span class="number">0xa0</span>,    <span class="comment">// BeforeWaiting | Exit</span></span><br><span class="line">            callout = _afterCACommitHandler&#125;</span><br><span class="line">        CFRunLoopObserver &#123;order = <span class="number">2000000</span>, activities = <span class="number">0xa0</span>,    <span class="comment">// BeforeWaiting | Exit</span></span><br><span class="line">            callout = _ZN2CA11Transaction17observer_callbackEP19__CFRunLoopObservermPv&#125;</span><br><span class="line">        CFRunLoopObserver &#123;order = <span class="number">2147483647</span>, activities = <span class="number">0xa0</span>, <span class="comment">// BeforeWaiting | Exit</span></span><br><span class="line">            callout = _wrapRunLoopWithAutoreleasePoolHandler&#125;</span><br><span class="line"> </span><br><span class="line">        <span class="comment">// Timer</span></span><br><span class="line">        CFRunLoopTimer &#123;firing = No, interval = <span class="number">3.1536e+09</span>, tolerance = <span class="number">0</span>,</span><br><span class="line">            next fire date = <span class="number">453098071</span> (<span class="number">-4421.76019</span> @ <span class="number">96223387169499</span>),</span><br><span class="line">            callout = _ZN2CAL14timer_callbackEP16__CFRunLoopTimerPv (QuartzCore.framework)&#125;</span><br><span class="line">    &#125;,</span><br><span class="line"> </span><br><span class="line">    modes ＝ &#123;</span><br><span class="line">        CFRunLoopMode  &#123;</span><br><span class="line">            sources0 =  &#123; <span class="comment">/* same as &amp;#39;common mode items&amp;#39; */</span> &#125;,</span><br><span class="line">            sources1 =  &#123; <span class="comment">/* same as &amp;#39;common mode items&amp;#39; */</span> &#125;,</span><br><span class="line">            observers = &#123; <span class="comment">/* same as &amp;#39;common mode items&amp;#39; */</span> &#125;,</span><br><span class="line">            timers =    &#123; <span class="comment">/* same as &amp;#39;common mode items&amp;#39; */</span> &#125;,</span><br><span class="line">        &#125;,</span><br><span class="line"> </span><br><span class="line">        CFRunLoopMode  &#123;</span><br><span class="line">            sources0 =  &#123; <span class="comment">/* same as &amp;#39;common mode items&amp;#39; */</span> &#125;,</span><br><span class="line">            sources1 =  &#123; <span class="comment">/* same as &amp;#39;common mode items&amp;#39; */</span> &#125;,</span><br><span class="line">            observers = &#123; <span class="comment">/* same as &amp;#39;common mode items&amp;#39; */</span> &#125;,</span><br><span class="line">            timers =    &#123; <span class="comment">/* same as &amp;#39;common mode items&amp;#39; */</span> &#125;,</span><br><span class="line">        &#125;,</span><br><span class="line"> </span><br><span class="line">        CFRunLoopMode  &#123;</span><br><span class="line">            sources0 = &#123;</span><br><span class="line">                CFRunLoopSource &#123;order = <span class="number">0</span>, &#123;</span><br><span class="line">                    callout = FBSSerialQueueRunLoopSourceHandler&#125;&#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            sources1 = (null),</span><br><span class="line">            observers = &#123;</span><br><span class="line">                CFRunLoopObserver &gt;&#123;activities = <span class="number">0xa0</span>, order = <span class="number">2000000</span>,</span><br><span class="line">                    callout = _ZN2CA11Transaction17observer_callbackEP19__CFRunLoopObservermPv&#125;</span><br><span class="line">            )&#125;,</span><br><span class="line">            timers = (null),</span><br><span class="line">        &#125;,</span><br><span class="line"> </span><br><span class="line">        CFRunLoopMode  &#123;</span><br><span class="line">            sources0 = &#123;</span><br><span class="line">                CFRunLoopSource &#123;order = <span class="number">-1</span>, &#123;</span><br><span class="line">                    callout = PurpleEventSignalCallback&#125;&#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            sources1 = &#123;</span><br><span class="line">                CFRunLoopSource &#123;order = <span class="number">-1</span>, &#123;</span><br><span class="line">                    callout = PurpleEventCallback&#125;&#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            observers = (null),</span><br><span class="line">            timers = (null),</span><br><span class="line">        &#125;,</span><br><span class="line">        </span><br><span class="line">        CFRunLoopMode  &#123;</span><br><span class="line">            sources0 = (null),</span><br><span class="line">            sources1 = (null),</span><br><span class="line">            observers = (null),</span><br><span class="line">            timers = (null),</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上面的代码来看, 系统是会默认注册5个Mode, 分别是:</p>
+<ul>
+<li><strong>kCFRunLoopDefaultMode:</strong> <strong>App</strong>里默认的<strong>Mode</strong>, 一般主线程就在这个<strong>Mode</strong>里运行.</li>
+<li><strong>UITrackingRunLoopMode:</strong> <strong>UI</strong>界面跟踪的<strong>Mode</strong>, 用于在<strong>ScrollView</strong>滑动触摸追踪, 保证在页面滑动的时候, 不会受到其他<strong>Mode</strong>影响.</li>
+<li><strong>UIInitializationRunLoopMode:</strong> 这是一个初始化<strong>App</strong>的<strong>Mode</strong>, <strong>App</strong>第一次启动的时候进入的第一个<strong>Mode</strong>, 启动完之后就不会再使用.</li>
+<li><strong>GSEventReceiveRunLoopMode:</strong> 用于系统内部事件处理的<strong>Mode</strong>, 一般开发用不到, 略过.</li>
+<li><strong>kCFRunLoopCommonModes:</strong> 占位符的<strong>Mode</strong>, 没有啥卵用.</li>
+</ul>
+<p>如果你还想了解更多的内部<strong>Mode</strong>, 你可以去看看<a href="http://iphonedevwiki.net/index.php/CFRunLoop" target="_blank" rel="noopener">CFRunLoop</a>这篇文章.</p>
+<p>当<strong>RunLoop</strong>进行回调的时候, 一般是通过很长很长的方法调用出去, 怎么做呢? </p>
+<p>当我们在自己写的代码里, 断点调试, 然后就可以看到一堆栈调用的代码了:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-Project-Example/master/Multithreading/RunLoop/Three/1.png" alt="1"></p>
+<p>整理一番就是酱紫的了:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 通知Observers，即将进入RunLoop</span></span><br><span class="line"><span class="comment">// 此处有Observer会创建AutoreleasePool: _objc_autoreleasePoolPush();</span></span><br><span class="line">__CFRUNLOOP_IS_CALLING_OUT_TO_AN_OBSERVER_CALLBACK_FUNCTION__(kCFRunLoopEntry);</span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 通知 Observers: 即将触发 Timer 回调。</span></span><br><span class="line">    __CFRUNLOOP_IS_CALLING_OUT_TO_AN_OBSERVER_CALLBACK_FUNCTION__(kCFRunLoopBeforeTimers);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 通知 Observers: 即将触发 Source (非基于port的,Source0) 回调。</span></span><br><span class="line">    __CFRUNLOOP_IS_CALLING_OUT_TO_AN_OBSERVER_CALLBACK_FUNCTION__(kCFRunLoopBeforeSources);</span><br><span class="line">    __CFRUNLOOP_IS_CALLING_OUT_TO_A_BLOCK__(block);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 4. 触发 Source0 (非基于port的) 回调。</span></span><br><span class="line">    __CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE0_PERFORM_FUNCTION__(source0);</span><br><span class="line">    __CFRUNLOOP_IS_CALLING_OUT_TO_A_BLOCK__(block);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 5. 通知Observers，即将进入休眠</span></span><br><span class="line">    <span class="comment">// 此处有Observer释放并新建AutoreleasePool: _objc_autoreleasePoolPop(); _objc_autoreleasePoolPush();</span></span><br><span class="line">    __CFRUNLOOP_IS_CALLING_OUT_TO_AN_OBSERVER_CALLBACK_FUNCTION__(kCFRunLoopBeforeWaiting);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 6. sleep to wait msg.</span></span><br><span class="line">    mach_msg() -&gt; mach_msg_trap();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 7. 通知Observers，线程被唤醒</span></span><br><span class="line">        __CFRUNLOOP_IS_CALLING_OUT_TO_AN_OBSERVER_CALLBACK_FUNCTION__(kCFRunLoopAfterWaiting);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 8. 如果是被Timer唤醒的，回调Timer</span></span><br><span class="line">        __CFRUNLOOP_IS_CALLING_OUT_TO_A_TIMER_CALLBACK_FUNCTION__(timer);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 8.1 如果是被dispatch唤醒的，执行所有调用 dispatch_async 等方法放入main queue 的 block</span></span><br><span class="line">        __CFRUNLOOP_IS_SERVICING_THE_MAIN_DISPATCH_QUEUE__(dispatched_block);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 8.2 如果如果Runloop是被 Source1 (基于port的) 的事件唤醒了，处理这个事件</span></span><br><span class="line">        __CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE1_PERFORM_FUNCTION__(source1);</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">while</span> (...);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 9. 通知Observers，即将退出RunLoop</span></span><br><span class="line">    <span class="comment">// 此处有Observer释放AutoreleasePool: _objc_autoreleasePoolPop();</span></span><br><span class="line">    __CFRUNLOOP_IS_CALLING_OUT_TO_AN_OBSERVER_CALLBACK_FUNCTION__(kCFRunLoopExit);</span><br></pre></td></tr></table></figure>
+
+<h2 id="Autorelease-Pool"><a href="#Autorelease-Pool" class="headerlink" title="Autorelease Pool"></a>Autorelease Pool</h2><p>在<strong>App</strong>启动后, 系统会在主线程里先注册两个<strong>Observer</strong>, 回调都是<code>_wrapRunLoopWithAutoreleasePoolHandler()</code>.</p>
+<ul>
+<li><p><strong>Observer1:</strong> 监视即将进入<strong>RunLoop</strong>, 在这个回调内会去调用<code>_objc_autoreleasePoolPush()</code>来创建一个自动释放池, 它的<strong>order</strong>是<strong>-2147483647</strong>, 最高优先级, 酱紫就可以保证创建自动释放池是在其他回调之前.</p>
+</li>
+<li><p><strong>Observer2:</strong> 监听了两件事.</p>
+</li>
+<li><p>第一: 在即将进入<strong>休眠(BeforeWaiting)</strong>的时候调用<code>_objc_autoreleasePoolPop()</code>和<code>_objc_autoreleasePoolPush()</code>.</p>
+</li>
+<li><p>第二: 在即将退出<strong>RunLoop(Exit)</strong>的时候调用<code>_objc_autoreleasePoolPop()</code>来释放自动释放池.</p>
+</li>
+</ul>
+<blockquote>
+<p>注意: 这个Observer2的order是2147483647, 优先级最低, 酱紫就可以保证在处理完所有事情之后再去释放这个自动释放池.</p>
+</blockquote>
+<p>我们在主线程中执行的代码, 一般都是写在事件回调, <strong>Timer</strong>回调内, 酱紫回调就会被<strong>RunLoop</strong>所创建的自动释放池<strong>(Autorelease Pool)</strong>里循环着, 我们不用去担心内存泄漏什么之类的, 也不需要去显示的去创建<strong>Pool</strong>.</p>
+<h2 id="事件响应"><a href="#事件响应" class="headerlink" title="事件响应"></a>事件响应</h2><p>苹果为了处理一些事件响应, 注册了一个<strong>Source1</strong>来接收系统事件, 是基于<strong>Mach Sport</strong>的, 它的回调函数为<code>__IOHIDEventSystemClientQueueCallback()</code>.</p>
+<p>当设备发生触摸/锁屏/摇晃后, 会由<strong>IOKit.framework</strong>生成一个<strong>IOHIDEvent</strong>事件并由<strong>SpringBoard</strong>接收, 更详细的资料可以看看<a href="http://iphonedevwiki.net/index.php/IOHIDFamily" target="_blank" rel="noopener">IOHIDFamily</a>这篇文章.</p>
+<p><strong>SpringBoard</strong>只接收, 按键, 触摸, 加速, 接近传感器等几种事件, 随后会调用<strong>Mach Sport</strong>转发给需要的<strong>App</strong>进程.</p>
+<p>随后系统注册的那个<strong>Source1</strong>就会触发回调, 并且调用<code>_UIApplicationHandleEventQueue()</code>进行应用内部的分发.</p>
+<p>而<code>_UIApplicationHandleEventQueue()</code>会把<strong>IOHIDEvent</strong>处理并包装成<strong>UIEvent</strong>进行处理或分发, 其中包括识别<strong>UIGesture/处理屏幕旋转/发送给UIWindow</strong>等.</p>
+<p>一般<strong>UIButton</strong>的<strong>Action</strong>事件, 以及<strong>touchesBegin / Move/ End / Cancel</strong>等等事件都会在这个回调中完成.</p>
+<h2 id="手势识别"><a href="#手势识别" class="headerlink" title="手势识别"></a>手势识别</h2><p>当<code>_UIApplicationHandleEventQueue()</code>识别了一个手势的时候, 会先去调用<strong>Cancel</strong>将当前处理的<strong>touchesBegin / Move / End</strong>等等回调全部打断, 随后系统就会将对应的<strong>UIGestureRecognizer</strong>标记为待处理.</p>
+<p>苹果注册了一个<strong>Observer</strong>用来监听<strong>RunLoop</strong>的状态, 当检测到即将进入睡眠的事件时<strong>(BeforeWaiting)</strong>, 这个<strong>Observer</strong>的回调函数是<code>_UIGestureRecognizerUpdateObserver()</code>, 它内部会将获取所有刚被标记为待处理的<strong>GestureRecognizer</strong>, 并执行<strong>GestureRecognizer</strong>回调.</p>
+<p>当<strong>UIGestureRecognizer</strong>一旦发生变化, 比如<strong>创建 / 销毁 / 状态改变</strong>的时候, 这个回调都会去处理.</p>
+<h2 id="UI更新"><a href="#UI更新" class="headerlink" title="UI更新"></a>UI更新</h2><p>当我们去操作<strong>UI</strong>界面的时候, 比如改变个<strong>Frame</strong>, 更新了<strong>UIView / Layer</strong>的层次时, 或者手动调用了<strong>UIView / CALayer</strong>的<strong>setNeedsLayout / setNeedsDisplay</strong>方法时, 这个<strong>UIView / CALayer</strong>就会标记为待处理, 然后就会添加到一个全局的容器里.</p>
+<p>刚刚说了系统会注册一个<strong>Observer</strong>来监听即将进入休眠<strong>(BeforeWaiting)</strong>和即将退出<strong>RunLoop(Exit)</strong>事件, 回调会去执行一个名字很长的函数<code>_ZN2CA11Transaction17observer_callbackEP19__CFRunLoopObservermPv()</code>.</p>
+<p>这个函数会将容器里的标记为待处理的<strong>UIView / CAlayer</strong>遍历一遍, 然后执行实际的绘制和调整, 最后就更新UI界面.</p>
+<p>大概的代码逻辑如下: </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">_ZN2CA11Transaction17observer_callbackEP19__CFRunLoopObservermPv()</span><br><span class="line">    QuartzCore:CA::Transaction::observer_callback:</span><br><span class="line">        CA::Transaction::commit();</span><br><span class="line">            CA::Context::commit_transaction();</span><br><span class="line">                CA::Layer::layout_and_display_if_needed();</span><br><span class="line">                    CA::Layer::layout_if_needed();</span><br><span class="line">                        [CALayer layoutSublayers];</span><br><span class="line">                            [UIView layoutSubviews];</span><br><span class="line">                    CA::Layer::display_if_needed();</span><br><span class="line">                        [CALayer display];</span><br><span class="line">                            [UIView drawRect];</span><br></pre></td></tr></table></figure>
+
+<h2 id="定时器"><a href="#定时器" class="headerlink" title="定时器"></a>定时器</h2><p>其实我们比较常用到的<strong>NSTimer</strong>就是<strong>CFRunLoopTimerRef</strong>, 它们之间是可以相互调用的.</p>
+<p>当一个<strong>NSTimer</strong>注册到<strong>RunLoop</strong>时, <strong>RunLoop</strong>会为这个<strong>NSTimer</strong>重复的时间点注册好, 比如<strong>11:10, 11:20, 11:30</strong>这几个时间点.</p>
+<p><strong>RunLoop</strong>为了更好的节省资源, 并不会非常精准的回调这个<strong>Timer</strong>, 在这里有一个<strong>宽容度(Tolerance)</strong>的属性, 用来标记到了该时间之后, 容忍出现最大的误差.</p>
+<p>如果我们设置了三个闹钟, 和刚刚那几个时间点一致, 当我们错过了<strong>11:10</strong>的闹钟, 那么这个时间点就会直接跳过, 不会再延后执行, 会继续往<strong>11:20</strong>执行.</p>
+<p><strong>CADisplayLink</strong>是一个要比<strong>NSTimer</strong>更复杂的定时器, 内部实际操作的是一个<strong>Source</strong>, 刷新的频率是和屏幕一致.</p>
+<p>如果在两次刷新屏幕的时候, 执行了一个比较长时间的任务时, 这里面就会有一帧被跳过(和<strong>NSTimer</strong>跳过的时间一样), 就会造成画面卡顿的现象.</p>
+<p>如果当<strong>TableView</strong>有一帧被跳过, 用户就会非常明显的感觉到卡顿, 这也是为啥我们要针对复杂的页面进项优化, 而<strong>Facebook</strong>开源的<strong>AsyncDisplayLink</strong>就可以很好的解决这个问题, 内部就是运用到了<strong>RunLoop</strong>来进行实现的, 待会会说明.</p>
+<h2 id="PerformSelecter"><a href="#PerformSelecter" class="headerlink" title="PerformSelecter"></a>PerformSelecter</h2><p>当我们调用<strong>NSObject</strong>的<code>performSelecter:afterDelay:</code>后, 其实是会创建一个<strong>Timer</strong>并添加到当前线程的<strong>RunLoop</strong>中, 如果当前这个线程中没有<strong>RunLoop</strong>, 那么该方法就不会有效果.</p>
+<p>当我们调用<code>performSelector:onThread:</code>时, 实际上会创建一个<strong>Timer</strong>并且添加到当前线程中, 同样的, 如果当前线程没有<strong>RunLoop</strong>, 那么这个方法也不会有效果.</p>
+<h2 id="GCD"><a href="#GCD" class="headerlink" title="GCD"></a>GCD</h2><p>在<strong>RunLoop</strong>中, 也会用到<strong>GCD</strong>有关的东西, 比如<code>dispatch_async()</code>.</p>
+<p>当我们使用<code>dispatch_async(dispatch_get_main_queue(), block)</code>的时候, <strong>libDispatch</strong>会向主线程的<strong>RunLoop</strong>发送消息, 这时候<strong>RunLoop</strong>会被唤醒, 并且从消息里拿到这个<strong>block</strong>, 然后在回调<code>__CFRUNLOOP_IS_SERVICING_THE_MAIN_DISPATCH_QUEUE__()</code>里执行这个<strong>block</strong>.</p>
+<p><strong>注意: 这个逻辑只限于dispatch到主线程, 如果是dispatch到其他线程的话, 仍然是由libDispatch处理的.</strong></p>
+<h2 id="Network"><a href="#Network" class="headerlink" title="Network"></a>Network</h2><p>在<strong>iOS</strong>中, 网络请求都是一层一层的继续往上封装的:</p>
+<ul>
+<li><strong>CFSocket:</strong> 最底层的接口, 而且只负责<strong>Socket</strong>通信.</li>
+<li><strong>CFNetwork:</strong> 基于<strong>CFSocket</strong>上封装的一层, <strong>ASIHttpRequest</strong>在这一层来工作.</li>
+<li><strong>NSURLConnection:</strong> 基于<strong>CFNetwork</strong>上更高级的封装, 提供面向对象的接口, 一般开发者是用这一层, 以前的<strong>AFNetworking</strong>就是在这一层上做的封装, 但该类已经被苹果给弃用了.</li>
+<li><strong>NSURLSession:</strong> 在<strong>iOS 7</strong>出现的一个网络请求库, 用来代替<strong>NSURLConnection</strong>的, 虽然说是用来代替, 但也不是马上就搞定, 所以现在前期还是有使用<strong>NSURLConnection</strong>底层的一些东西, 比如<strong>com.apple.NSURLConnectionLoader</strong>线程, 现在的<strong>AFNetwoking</strong>和<strong>Alamofire</strong>就是基于<strong>NSURLSession</strong>上来封装的.</li>
+</ul>
+<p>虽然<strong>NSURLConnection</strong>已经被弃用了, 但我们还是得了解一下它的一些工作逻辑:</p>
+<p>一般我们使用<strong>NSURLConnection</strong>的时候, 会传入一个<strong>Delegate</strong>, 然后当我们调用了<code>[connection start]</code>, 然后<strong>Delegate</strong>就会不停的接收到时间的回调, 为什么?</p>
+<p>那是因为<strong>start</strong>这个函数的内部会获取<strong>CurrentRunLoop</strong>, 然后在其中的<strong>DefaultMode</strong>里添加了4个需要手动触发的<strong>Source0</strong>.</p>
+<p>而<strong>CFMultiplexerSource</strong>是负责各种<strong>Delegate</strong>回调的，<strong>CFHTTPCookieStorage</strong>是处理各种<strong>Cookie</strong>的.</p>
+<p>当我们真正开始网络传输时, 我们就可以看到<strong>NSURLConnection</strong>创建了两条新的线程, 分别是<strong>com.apple.NSURLConnectionLoader</strong>和<strong>com.apple.CFSocket.private</strong>.</p>
+<p>其中<strong>CFSocket</strong>线程是处理底层的<strong>Socket</strong>连接的(所有智能手机都是实现了<strong>Socket</strong>, 而<strong>NSURLConnectionLoader</strong>这个线程内部会使用<strong>RunLoop</strong>来接收底层的<strong>Socket</strong>事件, 并通过之前添加的<strong>Source0</strong>通知到上层的<strong>Delegate</strong>.</p>
+<p>下面有如所示:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/iOS-Project-Example/master/Multithreading/RunLoop/Three/2.png" alt="2"></p>
+<ul>
+<li><strong>NSURLConnectionLoader</strong>中的<strong>RunLoop</strong>通过一些基于<strong>mach port</strong>的<strong>Source</strong>来接收底层<strong>CFSocket</strong>的通知.</li>
+<li>接收到通知之后, 会在合适的时机向<strong>CFMultiplexerSource</strong>或者其他的<strong>Source0</strong>发送通知, 并且唤醒<strong>Delegate</strong>线程的<strong>RunLoop</strong>来让它处理这些通知.</li>
+<li><strong>CFMultiplexerSource</strong>会在<strong>Delegate</strong>线程中的<strong>RunLoop</strong>里对<strong>Delegate</strong>进行实际的回调.</li>
+</ul>
+<h2 id="RunLoop-的实际应用举例"><a href="#RunLoop-的实际应用举例" class="headerlink" title="RunLoop 的实际应用举例"></a>RunLoop 的实际应用举例</h2><h3 id="AFNetworking"><a href="#AFNetworking" class="headerlink" title="AFNetworking"></a>AFNetworking</h3><p>如果早期有人去专门看过<strong>AFNetworking</strong>的源码的话, 就会发现<strong>AFURLConnectionOperation</strong>也用到了<strong>RunLoop</strong>.</p>
+<p>首先我们知道<strong>AFURLConnectionOperation</strong>这个类是基于<strong>NSURLConnection</strong>构建的, 它希望可以再后台线程里可以接收到<strong>Delegate</strong>的回调, 所以<strong>AFNetworking</strong>会为此单独床架弄了一个线程, 并且在这个线程里启用<strong>RunLoop</strong>, 如下代码所示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">+ (void)networkRequestThreadEntryPoint:(id)__unused object &#123;</span><br><span class="line">    </span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        [[NSThread currentThread] setName:@&quot;AFNetworking&quot;];</span><br><span class="line">        </span><br><span class="line">        NSRunLoop *runLoop = [NSRunLoop currentRunLoop];</span><br><span class="line">        </span><br><span class="line">        [runLoop addPort:[NSMachPort port] </span><br><span class="line">                 forMode:NSDefaultRunLoopMode];</span><br><span class="line">                 </span><br><span class="line">        [runLoop run];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">+ (NSThread *)networkRequestThread &#123;</span><br><span class="line"></span><br><span class="line">    static NSThread *_networkRequestThread = nil;</span><br><span class="line">    </span><br><span class="line">    static dispatch_once_t oncePredicate;</span><br><span class="line">    </span><br><span class="line">    dispatch_once(&amp;oncePredicate, ^&#123;</span><br><span class="line">        _networkRequestThread = [[NSThread alloc] initWithTarget:self </span><br><span class="line">                                                        selector:@selector(networkRequestThreadEntryPoint:) </span><br><span class="line">                                                          object:nil];</span><br><span class="line">        </span><br><span class="line">        [_networkRequestThread start];</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    return _networkRequestThread;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们都知道<strong>RunLoop</strong>内部至少要有一个<strong>Source / Timer / Observer</strong>才能够启动, 所以在<strong>AFNetworking</strong>在调用<code>[runloop run]</code>之前, 就创建了一个新的<strong>NSMachPort</strong>添加进去.</p>
+<p>一般来说, 调用者需要持有这个<code>NSMachPort(mach_prot)</code>, 并且在外部线程通过这个<strong>port</strong>发送消息到<strong>loop</strong>内, 但在这段代码里添加<strong>port</strong>只是单纯为了让<strong>RunLoop</strong>不至于会一调用就马上退出, 并没有什么实际的发送消息的作用.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">- (void)start &#123;</span><br><span class="line">    [self.lock lock];</span><br><span class="line">    </span><br><span class="line">    if ([self isCancelled]) &#123;</span><br><span class="line">    </span><br><span class="line">        [self performSelector:@selector(cancelConnection) onThread:[[self class] networkRequestThread] withObject:nil waitUntilDone:NO modes:[self.runLoopModes allObjects]];</span><br><span class="line">    &#125; else if ([self isReady]) &#123;</span><br><span class="line">    </span><br><span class="line">        self.state = AFOperationExecutingState;</span><br><span class="line">        </span><br><span class="line">        [self performSelector:@selector(operationDidStart) onThread:[[self class] networkRequestThread] withObject:nil waitUntilDone:NO modes:[self.runLoopModes allObjects]];</span><br><span class="line">    &#125;</span><br><span class="line">    [self.lock unlock];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当需要后台线程执行任务的时候, <strong>AFNetworking</strong>通过调用<strong>NSObject</strong>的<code>performSelector:onThread:</code>方法, 将这个任务扔到后台线程的<strong>RunLoop</strong>中, 就可以实现后台一直发送消息了.</p>
+<h2 id="AsyncDisplayKit"><a href="#AsyncDisplayKit" class="headerlink" title="AsyncDisplayKit"></a>AsyncDisplayKit</h2><p><a href="https://github.com/facebookarchive/AsyncDisplayKit" target="_blank" rel="noopener">AsyncDisplayKit</a>是<strong>Facebook</strong>封装的库, 这个库呢, 可以用来保证我们做的页面流畅度, 我们简单的来看看它的原理:</p>
+<p>一般来说, <strong>UI</strong>线程中一旦出现比较繁琐额任务时, 就会出现跳帧, 然后就会造成我们所说的卡顿现象, 这些任务一般都分为: 排版, 绘制, UI对象的操作.</p>
+<ul>
+<li><strong>排版:</strong> 一般用于计算视图的大小, 文本的高度,重新计算子视图的排版等等操作.</li>
+<li><strong>绘制:</strong> 一般有<strong>文本绘制(CoreText)</strong>, 图片绘制(预先解压), <strong>元素绘制(Quartz)</strong>等等操作.</li>
+<li><strong>UI对象操作:</strong> 一般包括<strong>UIView / CALayer</strong>等<strong>UI</strong>对象的创建, 设置属性, 销毁等等情况, 比如我们要在TableView上设置一个子视图为圆的时候.</li>
+</ul>
+<p>这里面有两种类型是可以丢到后台线程进行操作的, 但唯独一个类型是必须在主线程中操作, 并且有时候后面的操作需要依赖前面操作的结果, 比如TextView创建时可能会提前计算出文本的大小, AsyncDisplayKit它能做的就是尽量将能放如后台的任务放入后台, 不能的则尽量推迟, 比如视图的创建, 属性的调整等等操作.</p>
+<p>而<strong>AsyncDisplayKit</strong>就有一个名为<strong>ASDisplayNode</strong>的对象, 并在内部封装了<strong>UIVIew / CALayer</strong>, 它和<strong>UIView / CALayer</strong>有类似的属性, 比如<strong>framebackgroundColor</strong>等等</p>
+<p>这些属性都可以再后台线程进行更改, 我们可以只通过<strong>ASDisplayNode</strong>来操作内部的<strong>UIView/ CALayer</strong>, 这样就可以将排版和绘制放入了后台线程.</p>
+<p>但就算如此, 这些属性, 还是需要在某个时间同步到主线程的<strong>UIView / CALayer</strong>中.</p>
+<p><strong>AsyncDisplayKit</strong>其实是仿照了<strong>QuartzCore / UIKit</strong>框架的模式, 实现了一套类似的界面更新机制.</p>
+<p>在主线程的<strong>RunLoop</strong>中添加了一个<strong>Observer</strong>, 监听了<strong>kCFRunLoopBeforeWaiting</strong>和<strong>kCFRunLoopExit</strong>时间, 在收到回调时, 遍历所有之前加入到队列里的待处理任务, 然后一个一个去执行.</p>
+<p>详细代码可以去找到: <a href="https://github.com/facebookarchive/AsyncDisplayKit/blob/73ca6ab5148ddacaad3287a7079ba4d372989502/Source/Details/Transactions/_ASAsyncTransactionGroup.m" target="_blank" rel="noopener">_ASAsyncTransactionGroup</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>到这里为止, 我们已经把<strong>RunLoop</strong>的基本知识摸了个遍, 接下来的就是靠自己在实践中慢慢摸索.</p>
+<p>也可以去看看其他文章:</p>
+<p><a href="http://www.jianshu.com/p/d260d18dd551" target="_blank" rel="noopener">iOS多线程–彻底学会多线程之『RunLoop』</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Apple味的RunLoop"><span class="toc-number">1.</span> <span class="toc-text">Apple味的RunLoop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Autorelease-Pool"><span class="toc-number">2.</span> <span class="toc-text">Autorelease Pool</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#事件响应"><span class="toc-number">3.</span> <span class="toc-text">事件响应</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#手势识别"><span class="toc-number">4.</span> <span class="toc-text">手势识别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UI更新"><span class="toc-number">5.</span> <span class="toc-text">UI更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定时器"><span class="toc-number">6.</span> <span class="toc-text">定时器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PerformSelecter"><span class="toc-number">7.</span> <span class="toc-text">PerformSelecter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GCD"><span class="toc-number">8.</span> <span class="toc-text">GCD</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Network"><span class="toc-number">9.</span> <span class="toc-text">Network</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RunLoop-的实际应用举例"><span class="toc-number">10.</span> <span class="toc-text">RunLoop 的实际应用举例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#AFNetworking"><span class="toc-number">10.1.</span> <span class="toc-text">AFNetworking</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AsyncDisplayKit"><span class="toc-number">11.</span> <span class="toc-text">AsyncDisplayKit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">12.</span> <span class="toc-text">总结</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

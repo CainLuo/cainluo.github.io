@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：iOS 11 新特性《UIKit新特性的基本认识》 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="前两篇, 我们讲了Xcode 9的一些新特性, 可以更加方便我们去写“bug”.
+如果没有看的朋友可以去看看:
+
+玩转iOS开发：iOS 11 新特性《Xcode 9》 (一)
+玩转iOS开发：iO,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：iOS 11 新特性《UIKit新特性的基本认识》</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：iOS 11 新特性《UIKit新特性的基本认识》</h1>
+        <div class="stuff">
+            <span>十一月 06, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/iOS-11/">iOS 11</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>前两篇, 我们讲了<strong>Xcode 9</strong>的一些新特性, 可以更加方便我们去写<strong>“bug”</strong>.</p>
+<p>如果没有看的朋友可以去看看:</p>
+<ul>
+<li><a href="https://cainluo.github.io/2017/11/03/88739438.html">玩转iOS开发：iOS 11 新特性《Xcode 9》 (一)</a></li>
+<li><a href="https://cainluo.github.io/2017/11/05/27420f5a.html">玩转iOS开发：iOS 11 新特性《Xcode 9》 (二)</a></li>
+</ul>
+<p>那么这一次呢, 我们来简单的了解一下, 在<strong>iOS 11</strong>里, <strong>UIKit</strong>更新了一些什么东西, 可以让我们更加快捷的开发.</p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="Paste-configuration"><a href="#Paste-configuration" class="headerlink" title="Paste configuration"></a>Paste configuration</h2><p>我们都知道, 在<strong>iOS</strong>有一个东西叫做<strong>UIMenuController</strong>, 它是一个单例, 可以方便我们简单的去做一些复制, 粘贴等等的操作, 但在<strong>iOS 11</strong>这个粘贴功能进化了, 让我们一起来看看吧, 首先我们要有一个工程项目:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/2.UIKit/Images/1.png" alt="1"></p>
+<p>简单显示的东西就好.</p>
+<p>然后呢, 我们需要有一个用手势操作<strong>UIMenuController</strong>的管理者<strong>MenuManager</strong>, 详细的代码都在工程里, 大家可以去看看.</p>
+<p>在<strong>iOS 11</strong>的时候, 苹果推出了一个东西叫做<strong>UIPasteConfiguration</strong>, 它是直接继承<strong>NSObject</strong>官方解释:</p>
+<blockquote>
+<p>The interface that an object implements to declare its ability to accept specific data types for pasting and for drag and drop activities.</p>
+</blockquote>
+<p>这个东西能用来干嘛呢? </p>
+<h3 id="配置粘贴功能"><a href="#配置粘贴功能" class="headerlink" title="配置粘贴功能"></a>配置粘贴功能</h3><p>在项目里, 我们默认给<strong>TableView</strong>加了长按手势和点击手势, 便于用来控制<strong>UIMenuController</strong>.</p>
+<p>为了方便演示这个配置粘贴的功能, 另外多开了一个控制器, 这里我们需要声明一个全局字符串, 为的就是用来给这个粘贴功能加个唯一的标识:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, copy) NSArray&lt;NSString *&gt; *acceptableTypeIdentifiers;</span><br></pre></td></tr></table></figure>
+
+<p>添加了这个唯一标识, 我们就需要在<strong>Cell</strong>里给<code>copy:</code>的方法加点修改:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)canBecomeFirstResponder &#123;</span><br><span class="line">    </span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (BOOL)canPerformAction:(SEL)action</span><br><span class="line">              withSender:(id)sender &#123;</span><br><span class="line">    </span><br><span class="line">    return action == @selector(copy:);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)copy:(id)sender &#123;</span><br><span class="line">    </span><br><span class="line">    if (self.model == nil) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.model];</span><br><span class="line">    </span><br><span class="line">    [[UIPasteboard generalPasteboard] setData:data</span><br><span class="line">                            forPasteboardType:CELL_TYPE];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里面的<strong>CELL_TYPE</strong>就是全局的唯一标识.</p>
+<p>还有就是要在需要粘贴功能的控制器<strong>PasteViewController</strong>里也配置一下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">UIPasteConfiguration *pasteConfiguration = [[UIPasteConfiguration alloc] initWithAcceptableTypeIdentifiers:@[CELL_TYPE]];</span><br><span class="line">    </span><br><span class="line">self.pasteConfiguration = pasteConfiguration;</span><br></pre></td></tr></table></figure>
+
+<p>并且这里我们还要重写一个方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">- (void)pasteItemProviders:(NSArray&lt;NSItemProvider *&gt; *)itemProviders &#123;</span><br><span class="line">    </span><br><span class="line">    for (NSItemProvider *item in itemProviders) &#123;</span><br><span class="line">        </span><br><span class="line">        [item loadObjectOfClass:TableViewCellModel.class</span><br><span class="line">              completionHandler:^(id&lt;NSItemProviderReading&gt;  _Nullable object, NSError * _Nullable error) &#123;</span><br><span class="line">                 </span><br><span class="line">                 if (object) &#123;</span><br><span class="line">                     </span><br><span class="line">                     TableViewCellModel *model = (TableViewCellModel *)object;</span><br><span class="line">                     </span><br><span class="line">                     dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">                         </span><br><span class="line">                         self.targetTextField.text = [NSString stringWithFormat:@&quot;复制的内容: %@&quot;, model.titleString];</span><br><span class="line">                     &#125;);</span><br><span class="line">                 &#125;</span><br><span class="line">             &#125;];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>用来处理粘贴后的数据.</p>
+<p><strong>PS: 这里的TableViewCellModel是需要遵守一个NSItemProviderReading协议, 并且在内部实现它的协议方法, 详情可以去代码里看看.</strong></p>
+<h2 id="拖放的基本认识"><a href="#拖放的基本认识" class="headerlink" title="拖放的基本认识"></a>拖放的基本认识</h2><p>在<strong>iOS 11</strong>, 苹果终于把拖放的功能添加进来了, 但这个功能真正受益的是<strong>iPad</strong>, 它可以在分屏<strong>App</strong>里实现数据复制和移动, 甚至还可以共享.</p>
+<p>我们在拖动的过程中, 数据会被序列化, 然后呈现在用户拖动的系统控制预览中, 在拖动完成后, 序列化的数据会被复制到目的地, 然后反序列化, 最终将这些信息呈献给用户.</p>
+<p>而最先获得支持的两个控件就是<strong>UITableView</strong>和<strong>UICollectionView</strong>. 现在让我们来新建个工程看看是如何操作.</p>
+<p>这里我们还是一个简单的<strong>TableView</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/2.UIKit/Images/2.png" alt="2"></p>
+<p>这里我们要介绍两个新的代理<strong>UITableViewDragDelegate</strong>, 和<strong>UITableViewDropDelegate</strong>, 一个分别拖动, 一个分别是放下的代理.</p>
+<p>这里我们要声明一个遵守了<strong>NSItemProviderReading</strong>, <strong>NSItemProviderWriting</strong>的Model, 内部实现在工程里查看:</p>
+<p>最终我们去实现拖放功能的就是要去实现那两个代理的方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">#pragma mark - Table View Drag Delegate</span><br><span class="line">- (NSArray&lt;UIDragItem *&gt; *)tableView:(UITableView *)tableView</span><br><span class="line">        itemsForBeginningDragSession:(id&lt;UIDragSession&gt;)session</span><br><span class="line">                         atIndexPath:(NSIndexPath *)indexPath &#123;</span><br><span class="line">    </span><br><span class="line">    ListModel *model = self.dataSource[indexPath.row];</span><br><span class="line">    </span><br><span class="line">    NSItemProvider *itemProvider = [[NSItemProvider alloc] initWithObject:model];</span><br><span class="line">    </span><br><span class="line">    UIDragItem *dragItem = [[UIDragItem alloc] initWithItemProvider:itemProvider];</span><br><span class="line">    </span><br><span class="line">    return @[dragItem];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma mark - Table View Drop Delegate</span><br><span class="line">- (void)tableView:(UITableView *)tableView</span><br><span class="line">performDropWithCoordinator:(id&lt;UITableViewDropCoordinator&gt;)coordinator &#123;</span><br><span class="line">    </span><br><span class="line">    if (!coordinator) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    NSIndexPath *destinationIndexPath = coordinator.destinationIndexPath;</span><br><span class="line">    </span><br><span class="line">    dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">        </span><br><span class="line">        [tableView performBatchUpdates:^&#123;</span><br><span class="line">            </span><br><span class="line">            [coordinator.items enumerateObjectsUsingBlock:^(id&lt;UITableViewDropItem&gt;  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) &#123;</span><br><span class="line">                </span><br><span class="line">                if (!obj) &#123;</span><br><span class="line">                    return;</span><br><span class="line">                &#125;</span><br><span class="line">                </span><br><span class="line">                NSIndexPath *indexPath = obj.sourceIndexPath;</span><br><span class="line"></span><br><span class="line">                ListModel *model = self.dataSource[indexPath.row];</span><br><span class="line"></span><br><span class="line">                [self.dataSource removeObject:model];</span><br><span class="line">                [self.dataSource insertObject:model</span><br><span class="line">                                      atIndex:destinationIndexPath.row];</span><br><span class="line"></span><br><span class="line">                [tableView moveRowAtIndexPath:indexPath</span><br><span class="line">                                  toIndexPath:destinationIndexPath];</span><br><span class="line">            &#125;];</span><br><span class="line">            </span><br><span class="line">        &#125; completion:nil];</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (BOOL)tableView:(UITableView *)tableView</span><br><span class="line">canHandleDropSession:(id&lt;UIDropSession&gt;)session &#123;</span><br><span class="line">    return [session canLoadObjectsOfClass:ListModel.class];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (UITableViewDropProposal *)tableView:(UITableView *)tableView</span><br><span class="line">                  dropSessionDidUpdate:(id&lt;UIDropSession&gt;)session</span><br><span class="line">              withDestinationIndexPath:(nullable NSIndexPath *)destinationIndexPath &#123;</span><br><span class="line">    </span><br><span class="line">    return [[UITableViewDropProposal alloc] initWithDropOperation:UIDropOperationMove</span><br><span class="line">                                                           intent:UITableViewDropIntentInsertAtDestinationIndexPath];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码写完了之后, 别忘了把<strong>TableView</strong>的拖放功能给打开:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_tableView.dragInteractionEnabled = YES;</span><br></pre></td></tr></table></figure>
+
+<p>效果图这里就不放了, 自己去跑跑<strong>Demo</strong>就好了, 个人认为自己写的代码还是挺规整的~~哈哈</p>
+<p>更详细的内容会在后续的文章慢慢讲解.</p>
+<h2 id="TableView侧边栏的改进"><a href="#TableView侧边栏的改进" class="headerlink" title="TableView侧边栏的改进"></a>TableView侧边栏的改进</h2><p>在<strong>iOS 8</strong>的时候, 苹果就为<strong>TableView</strong>引进了侧边栏的功能, 叫做<strong>UITableViewRowAction</strong>, 不过在<strong>iOS 11</strong>的时候, 苹果又增加了一个更加灵活的东西, 叫做<strong>UISwipeActionsConfiguration</strong>:</p>
+<p>我们另外建一个工程来看看, 然后实现我们的配置:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">- (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath &#123;</span><br><span class="line">    </span><br><span class="line">    UIContextualAction *contextualAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal</span><br><span class="line">                                                                                   title:@&quot;Add&quot;</span><br><span class="line">                                                                                 handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) &#123;</span><br><span class="line">                                                                                     </span><br><span class="line">                                                                                     NSLog(@&quot;Add&quot;);</span><br><span class="line">                                                                                 &#125;];</span><br><span class="line">    </span><br><span class="line">    contextualAction.backgroundColor = [UIColor brownColor];</span><br><span class="line">    </span><br><span class="line">    UISwipeActionsConfiguration *swipeActionsCOnfiguration = [UISwipeActionsConfiguration configurationWithActions:@[contextualAction]];</span><br><span class="line">    </span><br><span class="line">    return swipeActionsCOnfiguration;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView</span><br><span class="line">leadingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath &#123;</span><br><span class="line">    </span><br><span class="line">    UIContextualAction *contextualAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal</span><br><span class="line">                                                                                   title:@&quot;Copy&quot;</span><br><span class="line">                                                                                 handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) &#123;</span><br><span class="line">                                                                                     </span><br><span class="line">                                                                                     NSLog(@&quot;Copy&quot;);</span><br><span class="line">                                                                                 &#125;];</span><br><span class="line">    </span><br><span class="line">    contextualAction.backgroundColor = [UIColor blackColor];</span><br><span class="line">    </span><br><span class="line">    UISwipeActionsConfiguration *swipeActionsCOnfiguration = [UISwipeActionsConfiguration configurationWithActions:@[contextualAction]];</span><br><span class="line">    </span><br><span class="line">    return swipeActionsCOnfiguration;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/2.UIKit/Images/3.png" alt="3"><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/2.UIKit/Images/4.png" alt="4"></p>
+<p>关于<strong>TableView</strong>刷新的时候, 我们还有一个专门的<strong>API</strong>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)performBatchUpdates:(void (NS_NOESCAPE ^ _Nullable)(void))updates completion:(void (^ _Nullable)(BOOL finished))completion API_AVAILABLE(ios(11.0), tvos(11.0));</span><br></pre></td></tr></table></figure>
+
+<p>刚刚的拖放功能也是在这里面完成刷新数据源的, 这么做的话, 可以让我们的逻辑结构更加的清晰, 这样子我们也需要在使用dispatch_async(dispatch_get_main_queue(), ^{});<br>去更新了, 爽爽滴~~</p>
+<h2 id="Asset-UIColor的集成"><a href="#Asset-UIColor的集成" class="headerlink" title="Asset UIColor的集成"></a>Asset UIColor的集成</h2><p>在<strong>Xcode 9</strong>里, <strong>Asset</strong>里可以集成<strong>UIColor</strong>的目录, 这样子我们就可以省略声明一大堆的颜色, 详细怎么做呢? 我们一起来看看, 这里随便弄一个项目就好了.</p>
+<p>然后我们在<strong>Assets.xcassets</strong>里添加<strong>Color Set</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/2.UIKit/Images/5.png" alt="5"></p>
+<p>然后添加自己喜欢的颜色值:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/2.UIKit/Images/6.png" alt="6"></p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/2.UIKit/Images/7.png" alt="7"></p>
+<p>这里我们要看看两个<strong>API</strong>, 都是在<strong>iOS 11</strong>之后才出来的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+ (nullable UIColor *)colorNamed:(NSString *)name</span><br><span class="line"></span><br><span class="line">+ (nullable UIColor *)colorNamed:(NSString *)name inBundle:(nullable NSBundle *)bundle compatibleWithTraitCollection:(nullable UITraitCollection *)traitCollection</span><br></pre></td></tr></table></figure>
+
+<p>最终效果:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/2.UIKit/Images/8.png" alt="8"></p>
+<h2 id="新添加的辅助功能"><a href="#新添加的辅助功能" class="headerlink" title="新添加的辅助功能"></a>新添加的辅助功能</h2><p>在讲这个得时候, 这里是需要装有<strong>iOS 11</strong>的真机设备.</p>
+<p>但由于我现在手上没有<strong>iOS 11</strong>的设备, 所以这里暂时不说, 有兴趣的话, 可以到百度去搜搜, 或者等我<strong>iOS 11</strong>设备的时候再更新吧.</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在<strong>iOS 11</strong>更多的东西都是在优化和改进开发的流程, 这篇张文章只是简单的介绍一下而已, 还有更多更深层次的可以自行去查阅苹果的官方文档, 或者是去看看<strong>WWDC</strong>的视频演示:</p>
+<ul>
+<li><strong>Cococa Touch</strong>中的新功能：<a href="https://developer.apple.com/videos/play/wwdc2017/201/" target="_blank" rel="noopener">apple.co/2vy2mOo</a></li>
+<li>更新<strong>iOS 11</strong>的应用程序：<a href="https://developer.apple.com/videos/play/wwdc2017/204/" target="_blank" rel="noopener">apple.co/2syu3Tt</a></li>
+<li>无障碍新功能：<a href="https://developer.apple.com/videos/play/wwdc2017/215/" target="_blank" rel="noopener">apple.co/2r9EASD</a></li>
+</ul>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: <a href="https://github.com/cainluo/iOS-11-Characteristic/tree/master/2.UIKit" target="_blank" rel="noopener">https://github.com/cainluo/iOS-11-Characteristic/tree/master/2.UIKit</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Paste-configuration"><span class="toc-number">1.</span> <span class="toc-text">Paste configuration</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#配置粘贴功能"><span class="toc-number">1.1.</span> <span class="toc-text">配置粘贴功能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#拖放的基本认识"><span class="toc-number">2.</span> <span class="toc-text">拖放的基本认识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TableView侧边栏的改进"><span class="toc-number">3.</span> <span class="toc-text">TableView侧边栏的改进</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Asset-UIColor的集成"><span class="toc-number">4.</span> <span class="toc-text">Asset UIColor的集成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新添加的辅助功能"><span class="toc-number">5.</span> <span class="toc-text">新添加的辅助功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">7.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：iOS 10 新特性《Message Extension》 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="中途因为发生了点事, 所以有一段时间没有写博文了, 现在开始开始慢慢写回, 写的风格也改了一些, 大家不懂得可以去各大博客, 论坛, 等等地方翻翻资料, 祝大家学习愉快.
+注意: 本文的项目是在Xc,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：iOS 10 新特性《Message Extension》</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：iOS 10 新特性《Message Extension》</h1>
+        <div class="stuff">
+            <span>六月 09, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/iOS-10/">iOS 10</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>中途因为发生了点事, 所以有一段时间没有写博文了, 现在开始开始慢慢写回, 写的风格也改了一些, 大家不懂得可以去各大博客, 论坛, 等等地方翻翻资料, 祝大家学习愉快.</p>
+<p><strong>注意: 本文的项目是在Xcode 8.3.3, iOS 10, Mac OS 10.12.5环境下运行的.</strong><br><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="Message"><a href="#Message" class="headerlink" title="Message"></a>Message</h2><p><strong>Message</strong>是苹果在<strong>iOS 10</strong>开放给开发者的库, 虽然说是新的库, 但和在<strong>iOS 8</strong>所使用的方式差不多, 就是<strong>Extension</strong>, 我们都知道<strong>iOS</strong>是封闭系统, 所以就不用抱着会和<strong>Android</strong>那样的开发.</p>
+<p>作为<strong>Extension</strong>有什么好处咧, 按照官方的说法就是, 既可以保证系统的安全, 又可以独立于App之外, 不必绑定父应用程序的一部分.</p>
+<p>这里注明一下, 我这个是<strong>Objective-C</strong>版本的, 如果要找<strong>Swift</strong>版本的话, 可以到这里去<a href="https://github.com/shinobicontrols/iOS10-day-by-day/tree/master/01%20-%20Messages" target="_blank" rel="noopener">Swift-Message</a>.</p>
+<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>创建Message很简单, 打开<strong>Xcode - New Project - iMessage Application</strong>就搞定了.</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/1.Message/Images/1.png" alt="1"></p>
+<p>创建完之后, 我们就可以看到一个<strong>MessageViewController</strong>, 这个是苹果一开始就给我们弄好的控制器, 我们只需要在上面弄我们所需要的东西就好.</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/1.Message/Images/2.png" alt="2"></p>
+<h2 id="两个重要的方法"><a href="#两个重要的方法" class="headerlink" title="两个重要的方法"></a>两个重要的方法</h2><p>这里有两个重要的方法是我们必须知道的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 当我们即将打开Message Extension的时候, 就会调用这个方法</span><br><span class="line">- (void)willBecomeActiveWithConversation:(MSConversation *)conversation;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// 当我们即将操作Message Extension的时候, 就会调用这个方法, 可以选择不同的样式, 然后决定你的Message Extension的显示方式</span><br><span class="line">-</span><br><span class="line">(void)willTransitionToPresentationStyle:(MSMessagesAppPresentationStyle)presentationStyle;</span><br></pre></td></tr></table></figure>
+
+<h2 id="添加新的控制器"><a href="#添加新的控制器" class="headerlink" title="添加新的控制器"></a>添加新的控制器</h2><p>为了可扩展性和低耦合, 我打算把整个<strong>Message Extension</strong>拆的非常零散, 这个时候就需要好几个<strong>Controller</strong>去分别管理它们自己的业务逻辑了.</p>
+<p>这里顺便加一个第三方的库<strong>Masonry</strong>, 感谢<strong>Masonry</strong>作者的无私奉献~~</p>
+<p>我这个Demo里一共有三个自己创建的控制器, 分别是<strong>MessageStartController</strong>, <strong>MessageFinishController</strong>, <strong>MessageChangeController</strong></p>
+<p>由于只是简单的演示, 所以这边就不弄的那么复杂了, 详细的代码自己可以去看看, 也很简单.</p>
+<h3 id="MessagesViewController"><a href="#MessagesViewController" class="headerlink" title="MessagesViewController"></a>MessagesViewController</h3><p>回到我们的<strong>MessagesViewController</strong>, 这里主要讲讲我的代码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> Configure ChildController</span><br><span class="line"></span><br><span class="line"> @param presentationStyle MSMessagesAppPresentationStyle</span><br><span class="line"> @param conversation MSConversation</span><br><span class="line"> */</span><br><span class="line">- (void)configureChildViewControllerWithPresentationStyle:(MSMessagesAppPresentationStyle)presentationStyle</span><br><span class="line">                                             conversation:(MSConversation *)conversation &#123;</span><br><span class="line">    </span><br><span class="line">    // 清除所有的自控制器</span><br><span class="line">    for (UIViewController *childController in self.childViewControllers) &#123;</span><br><span class="line">        </span><br><span class="line">        [childController willMoveToParentViewController:nil];</span><br><span class="line">        [childController.view removeFromSuperview];</span><br><span class="line">        [childController removeFromParentViewController];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    switch (presentationStyle) &#123;</span><br><span class="line">        case MSMessagesAppPresentationStyleCompact:</span><br><span class="line">            </span><br><span class="line">            self.childViewController = [self createMessageStartController];</span><br><span class="line">            </span><br><span class="line">            break;</span><br><span class="line">        case MSMessagesAppPresentationStyleExpanded:&#123;</span><br><span class="line">            </span><br><span class="line">            MSMessage *message = conversation.selectedMessage;</span><br><span class="line">            </span><br><span class="line">            if (message) &#123;</span><br><span class="line">                </span><br><span class="line">                self.childViewController = [self createChangeControllerWithConversation:conversation];</span><br><span class="line"></span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                self.childViewController = [self createFinishControllerWithConversation:conversation];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">            break;</span><br><span class="line">        default:</span><br><span class="line">            break;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 添加子控制器</span><br><span class="line">    [self addChildViewController:self.childViewController];</span><br><span class="line">    </span><br><span class="line">    [self.view addSubview:self.childViewController.view];</span><br><span class="line">    </span><br><span class="line">    [self.childViewController.view mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">        (void)make.edges;</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    [self.childViewController didMoveToParentViewController:self];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>之前也说过, 为了灵活性和低耦合, 上面那个方法就是用来添加和删除子控制器的.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- (void)willBecomeActiveWithConversation:(MSConversation *)conversation &#123;</span><br><span class="line">    </span><br><span class="line">    [self configureChildViewControllerWithPresentationStyle:self.presentationStyle</span><br><span class="line">                                               conversation:conversation];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(void)willTransitionToPresentationStyle:(MSMessagesAppPresentationStyle)presentationStyle &#123;</span><br><span class="line"></span><br><span class="line">    [self configureChildViewControllerWithPresentationStyle:presentationStyle</span><br><span class="line">                                               conversation:self.activeConversation];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面这两个方法就是在<strong>Message Extension</strong>在切换不同样式的时候, 去调用<code>configureChildViewControllerWithPresentationStyle:</code>方法, 来达到在不同样式下可以切换不同的子控制器.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> Configure Message Start Controller</span><br><span class="line"></span><br><span class="line"> @return UIViewController</span><br><span class="line"> */</span><br><span class="line">- (UIViewController *)createMessageStartController &#123;</span><br><span class="line">    </span><br><span class="line">    MessageStartController *childController = [[MessageStartController alloc] init];</span><br><span class="line">    </span><br><span class="line">    [childController setMessageStartBloack:^(UIButton *sender)&#123;</span><br><span class="line">        </span><br><span class="line">        [self requestPresentationStyle:MSMessagesAppPresentationStyleExpanded];</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    return childController;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> Configure Message Finish Controller</span><br><span class="line"> </span><br><span class="line"> @return UIViewController</span><br><span class="line"> */</span><br><span class="line">- (UIViewController *)createFinishControllerWithConversation:(MSConversation *)conversation &#123;</span><br><span class="line">    </span><br><span class="line">    MessageFinishController *finishController = [[MessageFinishController alloc] init];</span><br><span class="line">    </span><br><span class="line">    [finishController setMessageFinishBloack:^(UIButton *sender)&#123;</span><br><span class="line">        </span><br><span class="line">        MSSession *session = [[MSSession alloc] init];</span><br><span class="line">        </span><br><span class="line">        NSString *player = [NSString stringWithFormat:@&quot;%@ - 是否要发送这条内容?&quot;, conversation.localParticipantIdentifier];</span><br><span class="line">        </span><br><span class="line">        [self insertMessageWithCaption:player</span><br><span class="line">                               session:session</span><br><span class="line">                                 image:[UIImage ms_getImageForView:self.view]</span><br><span class="line">                          conversation:conversation];</span><br><span class="line">        </span><br><span class="line">        [self dismiss];</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    return finishController;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> Configure Message Change Controller</span><br><span class="line"> </span><br><span class="line"> @return UIViewController</span><br><span class="line"> */</span><br><span class="line">- (UIViewController *)createChangeControllerWithConversation:(MSConversation *)conversation &#123;</span><br><span class="line">    </span><br><span class="line">    MessageChangeController *changeViewController = [[MessageChangeController alloc] init];</span><br><span class="line">    </span><br><span class="line">    [changeViewController setMessageChangeBloack:^(UIButton *sender)&#123;</span><br><span class="line">        </span><br><span class="line">        MSMessage *message = conversation.selectedMessage;</span><br><span class="line">        </span><br><span class="line">        if (message) &#123;</span><br><span class="line">            </span><br><span class="line">            MSSession *session = [message session];</span><br><span class="line">            </span><br><span class="line">            NSString *player = [NSString stringWithFormat:@&quot;%@ - 是否要发送更改后的内容?&quot;, conversation.localParticipantIdentifier];</span><br><span class="line">            </span><br><span class="line">            [self insertMessageWithCaption:player</span><br><span class="line">                                   session:session</span><br><span class="line">                                     image:[UIImage ms_getImageForView:self.view]</span><br><span class="line">                              conversation:conversation];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        [self dismiss];</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    return changeViewController;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面这三个方法就是用来配置<strong>MessageStartController</strong>, <strong>MessageFinishController</strong>, <strong>MessageChangeController</strong>三个控制器.</p>
+<h2 id="重点"><a href="#重点" class="headerlink" title="重点"></a>重点</h2><p>这里需要重点讲一个方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> 把内容插入到Message中</span><br><span class="line"></span><br><span class="line"> @param caption NSString</span><br><span class="line"> @param session MSSession</span><br><span class="line"> @param image UIImage</span><br><span class="line"> @param conversation MSConversation</span><br><span class="line"> */</span><br><span class="line">- (void)insertMessageWithCaption:(NSString *)caption</span><br><span class="line">                         session:(MSSession *)session</span><br><span class="line">                           image:(UIImage *)image</span><br><span class="line">                    conversation:(MSConversation *)conversation &#123;</span><br><span class="line">    </span><br><span class="line">    MSMessage *message = [[MSMessage alloc] initWithSession:session];</span><br><span class="line">    MSMessageTemplateLayout *templateLayout = [[MSMessageTemplateLayout alloc] init];</span><br><span class="line">    </span><br><span class="line">    templateLayout.caption = caption;</span><br><span class="line">    templateLayout.image = image;</span><br><span class="line">    </span><br><span class="line">    message.layout = templateLayout;</span><br><span class="line">    message.URL = [NSURL URLWithString:@&quot;http://www.baidu.com&quot;];</span><br><span class="line">    </span><br><span class="line">    [conversation insertMessage:message</span><br><span class="line">              completionHandler:nil];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个方法, 可以把我们想要内容插入到<strong>Message Extension</strong>中, 然后发送出去.</p>
+<h2 id="最终效果"><a href="#最终效果" class="headerlink" title="最终效果"></a>最终效果</h2><p><img src="https://raw.githubusercontent.com/CainRun/iOS-10-Characteristic/master/1.Message/Images/3.gif" alt="3"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>文章里只是简单的讲解, 如果还想了解更多的话, 可以自行去查看<a href="https://developer.apple.com/videos/play/wwdc2016/224/" target="_blank" rel="noopener">WWDC 2016</a>的视频讲解.</p>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: <a href="https://github.com/CainRun/iOS-10-Characteristic/tree/master/1.Message" target="_blank" rel="noopener">https://github.com/CainRun/iOS-10-Characteristic/tree/master/1.Message</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Message"><span class="toc-number">1.</span> <span class="toc-text">Message</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建项目"><span class="toc-number">2.</span> <span class="toc-text">创建项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#两个重要的方法"><span class="toc-number">3.</span> <span class="toc-text">两个重要的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加新的控制器"><span class="toc-number">4.</span> <span class="toc-text">添加新的控制器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MessagesViewController"><span class="toc-number">4.1.</span> <span class="toc-text">MessagesViewController</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#重点"><span class="toc-number">5.</span> <span class="toc-text">重点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最终效果"><span class="toc-number">6.</span> <span class="toc-text">最终效果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">8.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

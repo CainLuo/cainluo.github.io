@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：打造一个低耦合可复用的《TableViewController》 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="最近有些变懒了, 学习的步伐放慢了很多, 估计玩懒了身子, 连博客都少写了咯.
+之前有个老铁问我, 怎么去封装一个低耦合可服用的TableViewController, 那时候没多说啥, 直接把我封,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：打造一个低耦合可复用的《TableViewController》</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：打造一个低耦合可复用的《TableViewController》</h1>
+        <div class="stuff">
+            <span>七月 25, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/造轮子/">造轮子</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>最近有些变懒了, 学习的步伐放慢了很多, 估计玩懒了身子, 连博客都少写了咯.</p>
+<p>之前有个老铁问我, 怎么去封装一个低耦合可服用的<strong>TableViewController</strong>, 那时候没多说啥, 直接把我封装的框架丢给他了, 但他还是有很多乱七八糟的问题问我, 干脆直接写一篇博文当成教程好了.</p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="MVVM模式"><a href="#MVVM模式" class="headerlink" title="MVVM模式"></a>MVVM模式</h2><p>由于这里我是用<strong>MVVM</strong>模式来封装的, 这里我就简单点, 通俗点, 易懂点的说说<strong>MVVM</strong>吧.</p>
+<p>很多老铁都习惯于用<strong>MVC</strong>, 虽然有听过<strong>MVVM</strong>, 但也没去咋了解, 其实<strong>MVVM</strong>没有那么复杂, 传统的<strong>MVC</strong>是有<strong>Model</strong>, <strong>Views</strong>, <strong>Controller</strong>, 而<strong>MVVM</strong>只是在这个得基础上加了一个<strong>ViewModel</strong>, 并且弱化了<strong>Controller</strong>的职能.</p>
+<ul>
+<li><p><strong>MVC</strong>: <strong>Model</strong>, <strong>Views</strong>, <strong>Controller</strong></p>
+</li>
+<li><p><strong>MVVM</strong>: <strong>Model</strong>, <strong>Views</strong>, <strong>ViewModel</strong></p>
+</li>
+</ul>
+<p>那么弱化了的<strong>Controller</strong>就负责作为一个粘合剂, 像乐高积木一样, 把<strong>Model</strong>, <strong>Views</strong>, <strong>ViewModel</strong>组装在一起, 成为一个模块, 而<strong>Model</strong>, <strong>Views</strong>, <strong>ViewModel</strong>分别又是独立的个体, 谁都不会离不开谁.</p>
+<p>大概就酱紫吧, 如果有更好的说法, 欢迎各位老铁补充补充哈~~</p>
+<h2 id="动工前的思考"><a href="#动工前的思考" class="headerlink" title="动工前的思考"></a>动工前的思考</h2><p>这里说一下, <strong>CLTableViewController</strong>是我自己封装的<strong>TableViewController</strong>, 由于我比较懒, 所以里面直接集成了<strong>MJRefresh</strong>, 各位老铁随意喷哈.</p>
+<p>这里说一下思路, 由于<strong>TableView</strong>还有<strong>TableViewDataSource</strong>, <strong>TableViewDelegate</strong>, 所以这里我们需要把两个模块分开, 这样子就不会造成代码臃肿的情况啦.</p>
+<p><strong>注意: 这里不包括各位的业务逻辑哈</strong></p>
+<h2 id="封装TableViewDataSource"><a href="#封装TableViewDataSource" class="headerlink" title="封装TableViewDataSource"></a>封装TableViewDataSource</h2><p>刚刚其实还说漏了一个, 除去<strong>TableViewDataSource</strong>, <strong>TableViewDelegate</strong>, 期是还有一个<strong>ViewModel</strong>层, 这个是用来请求数据的.</p>
+<p>现在我们先来看<strong>TableViewDataSource</strong>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h</span><br><span class="line">#import &quot;CLTableViewBaseModel.h&quot;</span><br><span class="line"></span><br><span class="line">@interface CLTableViewDataSource : NSObject &lt;UITableViewDataSource</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong, readonly) CLTableViewBaseModel *cl_viewModel;</span><br><span class="line"></span><br><span class="line">- (instancetype)initTableViewDataSourceWithViewModel:(CLTableViewBaseModel *)viewModel;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;CLTableViewDataSource.h&quot;</span><br><span class="line"></span><br><span class="line">@interface CLTableViewDataSource ()</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong, readwrite) CLTableViewBaseModel *cl_viewModel;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation CLTableViewDataSource</span><br><span class="line"></span><br><span class="line">- (instancetype)initTableViewDataSourceWithViewModel:(CLTableViewBaseModel *)viewModel &#123;</span><br><span class="line">    </span><br><span class="line">    self = [super init];</span><br><span class="line">    </span><br><span class="line">    if (self) &#123;</span><br><span class="line">        </span><br><span class="line">        self.cl_viewModel = viewModel;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSInteger)tableView:(UITableView *)tableView</span><br><span class="line"> numberOfRowsInSection:(NSInteger)section &#123;</span><br><span class="line">    </span><br><span class="line">    return self.cl_viewModel.cl_dataSource.count;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (UITableViewCell *)tableView:(UITableView *)tableView</span><br><span class="line">         cellForRowAtIndexPath:(NSIndexPath *)indexPath &#123;</span><br><span class="line">    </span><br><span class="line">    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@&quot;UITableViewCell&quot;];</span><br><span class="line">    </span><br><span class="line">    if (!cell) &#123;</span><br><span class="line">        </span><br><span class="line">        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault</span><br><span class="line">                                      reuseIdentifier:@&quot;UITableViewCell&quot;];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return cell;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>在<strong>.h</strong>文件里, 只提供了一个供给指定<strong>ViewModel</strong>的初始化方法, 内部的实现, 所返回的数据源数量也是指定<strong>ViewModel</strong>的数组个数, 默认返回一个系统的<strong>UITableViewCell</strong>, 这样子就好了.</p>
+<h2 id="封装TableViewDelegate"><a href="#封装TableViewDelegate" class="headerlink" title="封装TableViewDelegate"></a>封装TableViewDelegate</h2><p>关于<strong>TableViewDelegate</strong>更多是采用系统的特性, 这里就没写什么内部实现了:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h</span><br><span class="line">#import &lt;UIKit/UIKit.h</span><br><span class="line">#import &quot;CLTableViewBaseModel.h&quot;</span><br><span class="line"></span><br><span class="line">@interface CLTableViewDelegate : NSObject &lt;UITableViewDelegate</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong, readonly) CLTableViewBaseModel *cl_viewModel;</span><br><span class="line"></span><br><span class="line">- (instancetype)initTableViewDelegateWithViewModel:(CLTableViewBaseModel *)viewModel;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;CLTableViewDelegate.h&quot;</span><br><span class="line"></span><br><span class="line">@interface CLTableViewDelegate ()</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong, readwrite) CLTableViewBaseModel *cl_viewModel;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation CLTableViewDelegate</span><br><span class="line"></span><br><span class="line">- (instancetype)initTableViewDelegateWithViewModel:(CLTableViewBaseModel *)viewModel &#123;</span><br><span class="line">    </span><br><span class="line">    self = [super init];</span><br><span class="line">    </span><br><span class="line">    if (self) &#123;</span><br><span class="line">        </span><br><span class="line">        self.cl_viewModel = viewModel;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>只定义了一个指定<strong>ViewModel</strong>的初始化方法.</p>
+<h2 id="封装CLTableViewBaseModel"><a href="#封装CLTableViewBaseModel" class="headerlink" title="封装CLTableViewBaseModel"></a>封装CLTableViewBaseModel</h2><p>关于<strong>ViewModel</strong>层, 这里我提供了三个方法, 两个属性:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h</span><br><span class="line">#import &quot;CLTableViewController.h&quot;</span><br><span class="line"></span><br><span class="line">@interface CLTableViewBaseModel : NSObject</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong) NSMutableArray *cl_dataSource;</span><br><span class="line">@property (nonatomic, weak, readonly) CLTableViewController *cl_tableViewController;</span><br><span class="line"></span><br><span class="line">- (instancetype)initTableViewBaseModelWithController:(CLTableViewController *)viewController;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> 通过HTTP请求数据</span><br><span class="line"> */</span><br><span class="line">- (void)cl_tableViewHTTPRequest;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> 配置TableView每一条Cell所显示的分割线</span><br><span class="line"> */</span><br><span class="line">- (void)cl_configTableViewWithDataSource;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;CLTableViewBaseModel.h&quot;</span><br><span class="line"></span><br><span class="line">@interface CLTableViewBaseModel()</span><br><span class="line"></span><br><span class="line">@property (nonatomic, weak, readwrite) CLTableViewController *cl_tableViewController;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation CLTableViewBaseModel</span><br><span class="line"></span><br><span class="line">- (instancetype)initTableViewBaseModelWithController:(CLTableViewController *)viewController &#123;</span><br><span class="line">    </span><br><span class="line">    self = [super init];</span><br><span class="line">    </span><br><span class="line">    if (self) &#123;</span><br><span class="line">        self.cl_tableViewController = viewController;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSMutableArray *)cl_dataSource &#123;</span><br><span class="line">    </span><br><span class="line">    if (!_cl_dataSource) &#123;</span><br><span class="line">        </span><br><span class="line">        _cl_dataSource = [NSMutableArray array];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return _cl_dataSource;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)cl_tableViewHTTPRequest &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)cl_configTableViewWithDataSource &#123;</span><br><span class="line">    </span><br><span class="line">    if (self.cl_dataSource.count  0) &#123;</span><br><span class="line">        </span><br><span class="line">        self.cl_tableViewController.cl_tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>这样子就大功告成了, 接下来就是组装起它们就可以了.</p>
+<h2 id="组装成CLTableViewController"><a href="#组装成CLTableViewController" class="headerlink" title="组装成CLTableViewController"></a>组装成CLTableViewController</h2><p>刚刚我们已经把三个模块写好了, 现在就开始组装:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;CLViewController.h&quot;</span><br><span class="line"></span><br><span class="line">NS_ASSUME_NONNULL_BEGIN</span><br><span class="line">@interface CLTableViewController : CLViewController</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong, readonly) UITableView *cl_tableView;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> 初始化CLTableViewController</span><br><span class="line"></span><br><span class="line"> @param style UITableViewStyle, 默认是UITableViewStylePlain</span><br><span class="line"> @return CLTableViewController</span><br><span class="line"> */</span><br><span class="line">- (instancetype)initTableViewControllerWithStyle:(UITableViewStyle)style;</span><br><span class="line"></span><br><span class="line">- (void)cl_removeRefresh;</span><br><span class="line">- (void)cl_removeHeaderRefresh;</span><br><span class="line">- (void)cl_removeFooterRefresh;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> 下拉刷新方法/上拉加载方法</span><br><span class="line"> */</span><br><span class="line">- (void)cl_dropDownRefresh;</span><br><span class="line">- (void)cl_pullUpRefresh;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> 开始执行下拉操作/结束下拉操作</span><br><span class="line"> */</span><br><span class="line">- (void)cl_dropDownBeginRefresh;</span><br><span class="line">- (void)cl_dropDownEndRefresh;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> 开始执行上拉操作/结束上拉操作</span><br><span class="line"> */</span><br><span class="line">- (void)cl_pullUpBeginRefresh;</span><br><span class="line">- (void)cl_pullUpEndRefresh;</span><br><span class="line"></span><br><span class="line">- (void)cl_setTableViewDelegate:(_Nullable id &lt;UITableViewDelegate)delegate</span><br><span class="line">                     dataSource:(_Nullable id &lt;UITableViewDataSource)dataSource;</span><br><span class="line">@end</span><br><span class="line">NS_ASSUME_NONNULL_END</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;CLTableViewController.h&quot;</span><br><span class="line">#import &quot;MJRefresh.h&quot;</span><br><span class="line">#import &quot;CLTableViewDelegate.h&quot;</span><br><span class="line">#import &quot;CLTableViewBaseModel.h&quot;</span><br><span class="line"></span><br><span class="line">@interface CLTableViewController ()</span><br><span class="line"></span><br><span class="line">@property (nonatomic, assign) UITableViewStyle tableViewStyle;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong, readwrite) UITableView *cl_tableView;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong) CLTableViewDelegate *cl_tableViewDelegate;</span><br><span class="line">@property (nonatomic, strong) CLTableViewBaseModel *cl_ableViewBaseModel;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation CLTableViewController</span><br><span class="line"></span><br><span class="line">- (instancetype)initTableViewControllerWithStyle:(UITableViewStyle)style &#123;</span><br><span class="line">    </span><br><span class="line">    self = [super init];</span><br><span class="line">    </span><br><span class="line">    if (self) &#123;</span><br><span class="line">        </span><br><span class="line">        [self setTableViewStyle:style];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma mark - View Did Load</span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    </span><br><span class="line">    self.view.opaque = YES;</span><br><span class="line">    self.automaticallyAdjustsScrollViewInsets = NO;</span><br><span class="line"></span><br><span class="line">    self.view.backgroundColor = [UIColor whiteColor];</span><br><span class="line">    </span><br><span class="line">    [self cl_addRefresh];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (UITableView *)cl_tableView &#123;</span><br><span class="line">    </span><br><span class="line">    if (!_cl_tableView) &#123;</span><br><span class="line">        </span><br><span class="line">        _cl_tableView = [[UITableView alloc] initWithFrame:self.view.frame</span><br><span class="line">                                                     style:self.tableViewStyle];</span><br><span class="line">        </span><br><span class="line">        if (self.tableViewStyle == UITableViewStylePlain) &#123;</span><br><span class="line">            </span><br><span class="line">            _cl_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        _cl_tableView.opaque = YES;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return _cl_tableView;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)cl_setTableViewDelegate:(id&lt;UITableViewDelegate)delegate</span><br><span class="line">                     dataSource:(id&lt;UITableViewDataSource)dataSource &#123;</span><br><span class="line">    </span><br><span class="line">    self.cl_tableView.delegate   = delegate;</span><br><span class="line">    self.cl_tableView.dataSource = dataSource;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma mark - Table View Delegate</span><br><span class="line">- (CLTableViewDelegate *)cl_tableViewDelegate &#123;</span><br><span class="line">    </span><br><span class="line">    if (!_cl_tableViewDelegate) &#123;</span><br><span class="line">        </span><br><span class="line">        _cl_tableViewDelegate = [[CLTableViewDelegate alloc] initTableViewDelegateWithViewModel:self.cl_ableViewBaseModel];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return _cl_tableViewDelegate;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma mark - Table View Base Model</span><br><span class="line">- (CLTableViewBaseModel *)cl_ableViewBaseModel &#123;</span><br><span class="line">    </span><br><span class="line">    if (!_cl_ableViewBaseModel) &#123;</span><br><span class="line">        _cl_ableViewBaseModel = [[CLTableViewBaseModel alloc] initTableViewBaseModelWithController:self];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return _cl_ableViewBaseModel;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma mark - Refresh</span><br><span class="line">- (void)cl_addRefresh &#123;</span><br><span class="line">    </span><br><span class="line">    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingBlock:^&#123;</span><br><span class="line">        [self cl_dropDownRefresh];</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    self.cl_tableView.mj_header = header;</span><br><span class="line">    </span><br><span class="line">    MJRefreshBackNormalFooter *refreshFooter = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^&#123;</span><br><span class="line">        [self cl_pullUpEndRefresh];</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    self.cl_tableView.mj_footer = refreshFooter;</span><br><span class="line">    </span><br><span class="line">    [self.view addSubview:self.cl_tableView];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)cl_dropDownRefresh &#123;&#125;</span><br><span class="line"></span><br><span class="line">- (void)cl_pullUpRefresh &#123;&#125;</span><br><span class="line"></span><br><span class="line">- (void)cl_dropDownBeginRefresh &#123;</span><br><span class="line">    [self.cl_tableView.mj_header beginRefreshing];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)cl_dropDownEndRefresh &#123;</span><br><span class="line">    [self.cl_tableView.mj_header endRefreshing];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)cl_pullUpBeginRefresh &#123;</span><br><span class="line">    [self.cl_tableView.mj_footer beginRefreshing];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)cl_pullUpEndRefresh &#123;</span><br><span class="line">    [self.cl_tableView.mj_footer endRefreshing];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)cl_removeRefresh &#123;</span><br><span class="line">    </span><br><span class="line">    self.cl_tableView.mj_header = nil;</span><br><span class="line">    self.cl_tableView.mj_footer = nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)cl_removeHeaderRefresh &#123;</span><br><span class="line">    self.cl_tableView.mj_header = nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)cl_removeFooterRefresh &#123;</span><br><span class="line">    self.cl_tableView.mj_footer = nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>完成了!!! 现在封装好了一个属于我们自己的<strong>TableViewController</strong>啦.</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>由于这里封装的比较简单, 如果有更好建议的老铁可以私下留言一下, 我也会跟进优化, 方便大家, 当然我自己封装的框架还有其他, 但是太多了不好一一写出来, 喜欢的话, 可以<strong>Star</strong>一下我的<a href="https://github.com/CainLuo/CLFramework" target="_blank" rel="noopener">CLFramework</a>, 如果有老铁想一起维护一下这个开源库的话, 也可以和我说说.</p>
+<p>关于详细的用法, 大家可以在里面找到<strong>SimpleProject</strong>工程, 里面有我的详细用法.</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MVVM模式"><span class="toc-number">1.</span> <span class="toc-text">MVVM模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动工前的思考"><span class="toc-number">2.</span> <span class="toc-text">动工前的思考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#封装TableViewDataSource"><span class="toc-number">3.</span> <span class="toc-text">封装TableViewDataSource</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#封装TableViewDelegate"><span class="toc-number">4.</span> <span class="toc-text">封装TableViewDelegate</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#封装CLTableViewBaseModel"><span class="toc-number">5.</span> <span class="toc-text">封装CLTableViewBaseModel</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#组装成CLTableViewController"><span class="toc-number">6.</span> <span class="toc-text">组装成CLTableViewController</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

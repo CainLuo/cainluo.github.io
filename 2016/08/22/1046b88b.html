@@ -1,0 +1,267 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：《CocoaPods》安装及使用教程 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="在iOS项目中使用第三方类库可以说是非常常见的事，但是要正确地配置他们有时候是非常繁琐的事情，幸运的是CocoaPods是一个很好的解决方案。
+如需要转载该文章, 请联系作者, 并且注明出处, 以及,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：《CocoaPods》安装及使用教程</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：《CocoaPods》安装及使用教程</h1>
+        <div class="stuff">
+            <span>八月 22, 2016</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/iOS包管理/">iOS包管理</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>在<strong>iOS</strong>项目中使用第三方类库可以说是非常常见的事，但是要正确地配置他们有时候是非常繁琐的事情，幸运的是<strong>CocoaPods</strong>是一个很好的解决方案。</p>
+<p><strong>如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="什么是CocoaPods"><a href="#什么是CocoaPods" class="headerlink" title="什么是CocoaPods"></a>什么是CocoaPods</h2><p><strong>CocoaPods</strong>是<strong>OS X</strong>和<strong>iOS</strong>下的一个第三类库管理工具，通过CocoaPods工具我们可以为项目添加被称为<strong>Pods</strong>的依赖库（这些类库必须是<strong>CocoaPods</strong>本身所支持的），并且可以轻松管理其版本。</p>
+<p><strong>CocoaPods</strong>意义体现在两个方面。</p>
+<ul>
+<li><p>第一，在引入第三方库时它可以自动为我们完成各种各样的配置，包括配置编译阶段、连接器选项、甚至是<strong>ARC</strong>环境下的<strong>-fno-objc-arc</strong>配置等。</p>
+</li>
+<li><p>第二，使用<strong>CocoaPods</strong>可以很方便地查找新的第三方库，这些类库是比较“标准的”，而不是网上随便找到的，这样可以让我们找到真正好用的类库。</p>
+</li>
+</ul>
+<p>接下来我们将介绍<strong>CocoaPods</strong>的使用。</p>
+<h3 id="CocoaPods的核心组件"><a href="#CocoaPods的核心组件" class="headerlink" title="CocoaPods的核心组件"></a>CocoaPods的核心组件</h3><p><strong>CocoaPods</strong>是用<strong>Ruby</strong>写的，并划分成了若干个<strong>Gem</strong>包。</p>
+<p><strong>CocoaPods</strong>在解析执行过程中最重要的几个包的路径分别是：</p>
+<ul>
+<li><p><strong>CocoaPods/CocoaPods</strong></p>
+</li>
+<li><p><strong>CocoaPods/Core</strong></p>
+</li>
+<li><p><strong>CocoaPods/Xcodeproj</strong></p>
+</li>
+</ul>
+<p><strong>CocoaPods / CocoaPod</strong>：这是面向用户的组件，每当执行一个pod命令时，这个组件将被激活。它包括了所有实用<strong>CocoaPods</strong>的功能，并且还能调用其他<strong>gem</strong>包来执行任务。 </p>
+<p><strong>CocoaPods / Core</strong>：<strong>Core gem</strong>提供了与<strong>CocoaPods</strong>相关的文件（主要是<strong>podfile</strong>和<strong>podspecs</strong>）的处理。 </p>
+<p><strong>Podfile</strong>：该文件用于配置项目所需要的第三方库，它可以被高度定制。本文中我们主要在这里做动作。</p>
+<p><strong>Podspec</strong>：该文件描述了一个库将怎样被添加进工程中，<strong>.podspec</strong>文件可以标识该第三方库所需要的源码文件、依赖库、编译选项，以及其他第三方库需要的配置。 </p>
+<p><strong>CocoaPods / Xcodeproj</strong>：这个包负责处理工程文件，它能创建以及修改<strong>.xcodeproj</strong>文件和<strong>.xcworkspace</strong>文件。它也可以作为一个独立的包使用，当你要编写修改项目文件的脚本时，可以考虑使用<strong>CocoaPods/Xcodeproj</strong>。</p>
+<h2 id="更换Ruby源"><a href="#更换Ruby源" class="headerlink" title="更换Ruby源"></a>更换Ruby源</h2><p>检查<strong>Ruby</strong>环境，一般来讲<strong>Mac OS</strong>都是自带<strong>Ruby</strong>环境的，在<strong>Terminal</strong>中输入命令即可查看<strong>Ruby</strong>的版本号</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ruby</span> -v</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainRun/DeveloperDocument/master/%E7%8E%A9%E8%BD%ACiOS%E5%BC%80%E5%8F%91%EF%BC%9A%E3%80%8ACocoaPods%E3%80%8B%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/0.png" alt="0"></p>
+<p>切换<strong>Ruby</strong>源地址</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem sources --<span class="built_in">remove</span> http<span class="variable">s:</span>//rubygems.org/</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainRun/DeveloperDocument/master/%E7%8E%A9%E8%BD%ACiOS%E5%BC%80%E5%8F%91%EF%BC%9A%E3%80%8ACocoaPods%E3%80%8B%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/1.png" alt="1"></p>
+<p>等有反应之后再敲入以下命令</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem sources -<span class="keyword">a</span> http<span class="variable">s:</span>//gems.<span class="keyword">ruby</span>-china.<span class="keyword">com</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainRun/DeveloperDocument/master/%E7%8E%A9%E8%BD%ACiOS%E5%BC%80%E5%8F%91%EF%BC%9A%E3%80%8ACocoaPods%E3%80%8B%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/2.png" alt="2"></p>
+<p>为了验证你的Ruby镜像是并且仅是taobao，可以用以下命令查看：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem sources -<span class="keyword">l</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainRun/DeveloperDocument/master/%E7%8E%A9%E8%BD%ACiOS%E5%BC%80%E5%8F%91%EF%BC%9A%E3%80%8ACocoaPods%E3%80%8B%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/3.png" alt="3"></p>
+<h2 id="安装CocoaPods"><a href="#安装CocoaPods" class="headerlink" title="安装CocoaPods"></a>安装CocoaPods</h2><p>现在我们在<strong>Terminal</strong>中输入以下命令, 输入机子的登录密码, 等待自动完成安装就可以了</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gem install cocoapods</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainRun/DeveloperDocument/master/%E7%8E%A9%E8%BD%ACiOS%E5%BC%80%E5%8F%91%EF%BC%9A%E3%80%8ACocoaPods%E3%80%8B%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/4.png" alt="4"></p>
+<p>安装完成之后就会有以下的提示</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/DeveloperDocument/master/%E7%8E%A9%E8%BD%ACiOS%E5%BC%80%E5%8F%91%EF%BC%9A%E3%80%8ACocoaPods%E3%80%8B%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/5.png" alt="5"></p>
+<p>如果你不确定自己是否安装成功, 可以输入下面这个命令去查看</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainRun/DeveloperDocument/master/%E7%8E%A9%E8%BD%ACiOS%E5%BC%80%E5%8F%91%EF%BC%9A%E3%80%8ACocoaPods%E3%80%8B%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/6.png" alt="6"></p>
+<p>如果有以上的提示, 那就证明你是安装成功的, 如果安装不成功, 继续输入安装命令</p>
+<h2 id="使用CocoaPods"><a href="#使用CocoaPods" class="headerlink" title="使用CocoaPods"></a>使用CocoaPods</h2><p>创建<strong>Xcode</strong>项目(怎么创建<strong>Xcode</strong>项目这里我就不说了), 然后打开<strong>Terminal</strong>直接<strong>cd</strong>到工程的根目录中, 这里我使用一个<strong>Demo</strong></p>
+<p><img src="https://raw.githubusercontent.com/CainRun/DeveloperDocument/master/%E7%8E%A9%E8%BD%ACiOS%E5%BC%80%E5%8F%91%EF%BC%9A%E3%80%8ACocoaPods%E3%80%8B%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/7.png" alt="7"></p>
+<p>Xcode项目中创建Podfile文件, 且编辑</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/DeveloperDocument/master/%E7%8E%A9%E8%BD%ACiOS%E5%BC%80%E5%8F%91%EF%BC%9A%E3%80%8ACocoaPods%E3%80%8B%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/8.png" alt="8"></p>
+<p><img src="https://raw.githubusercontent.com/CainRun/DeveloperDocument/master/%E7%8E%A9%E8%BD%ACiOS%E5%BC%80%E5%8F%91%EF%BC%9A%E3%80%8ACocoaPods%E3%80%8B%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/9.png" alt="9"></p>
+<p>保存<strong>Podfile</strong>文件, 直接运行<strong>CocoaPods</strong>的命令, 如果该开源项目有其他项目的依赖, <strong>CocoaPods</strong>会自动下载对应的依赖项目.</p>
+<blockquote>
+<p>注意: 里面的两端文字并不是自己写得, 是需要去<strong>GitHub</strong>里查看该项目最高支持<strong>iOS版本</strong>是多少, 以及该开源项目是第几个版本.</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/CainRun/DeveloperDocument/master/%E7%8E%A9%E8%BD%ACiOS%E5%BC%80%E5%8F%91%EF%BC%9A%E3%80%8ACocoaPods%E3%80%8B%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/10.png" alt="10"></p>
+<p>由于我们的<strong>CocoaPods</strong>是第一安装, 所以会提示<strong>Setting up CocoaPods master repo</strong>, 这个时候我们只要静静的等待它初始化完, 这个等待的时间会比较长, 耐心等待吧, 骚年们~~要是想知道<strong>CocoaPods</strong>初始化多少了, 我们可以进入到<strong>CocoaPods</strong>的目录, 然后输入</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">du -<span class="keyword">sh</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainRun/DeveloperDocument/master/%E7%8E%A9%E8%BD%ACiOS%E5%BC%80%E5%8F%91%EF%BC%9A%E3%80%8ACocoaPods%E3%80%8B%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/11.png" alt="11"></p>
+<blockquote>
+<p>注意: 如果中途安装失败, 重复命令即可.</p>
+</blockquote>
+<p>初始化结束之后, 我们就可以继续捣鼓了, 但是我们发现, 出错了, 去<a href="https://cocoapods.org" target="_blank" rel="noopener"><strong>CocoaPods</strong></a>官网看了一下, 原来是少添加了一个指定的<strong>target</strong>, 这个<strong>target</strong>是在哪里获取呢? 下面看图~~</p>
+<p><img src="https://raw.githubusercontent.com/CainRun/DeveloperDocument/master/%E7%8E%A9%E8%BD%ACiOS%E5%BC%80%E5%8F%91%EF%BC%9A%E3%80%8ACocoaPods%E3%80%8B%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/12.png" alt="12"></p>
+<p><img src="https://raw.githubusercontent.com/CainRun/DeveloperDocument/master/%E7%8E%A9%E8%BD%ACiOS%E5%BC%80%E5%8F%91%EF%BC%9A%E3%80%8ACocoaPods%E3%80%8B%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/13.png" alt="13"></p>
+<blockquote>
+<p>然后我们再次打开<strong>Podfile</strong>, 编辑它, 保存, 再次<strong>install</strong></p>
+</blockquote>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">target <span class="string">'CollectionViewDemo'</span> <span class="keyword">do</span></span><br><span class="line">   pod <span class="string">'HTHorizontalSelectionList'</span>, <span class="string">'~&gt; 0.7.0'</span></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/CainRun/DeveloperDocument/master/%E7%8E%A9%E8%BD%ACiOS%E5%BC%80%E5%8F%91%EF%BC%9A%E3%80%8ACocoaPods%E3%80%8B%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/14.png" alt="14"></p>
+<p><img src="https://raw.githubusercontent.com/CainRun/DeveloperDocument/master/%E7%8E%A9%E8%BD%ACiOS%E5%BC%80%E5%8F%91%EF%BC%9A%E3%80%8ACocoaPods%E3%80%8B%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/15.png" alt="15"></p>
+<p>OK, 成功了, 我们会看到工程里多了一些文件, 而我们再也不会运行<strong>.xcodeproj</strong>工程文件, 而是运行<strong>.xcworkspace</strong></p>
+<p><img src="https://raw.githubusercontent.com/CainRun/DeveloperDocument/master/%E7%8E%A9%E8%BD%ACiOS%E5%BC%80%E5%8F%91%EF%BC%9A%E3%80%8ACocoaPods%E3%80%8B%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/16.png" alt="16"></p>
+<p><img src="https://raw.githubusercontent.com/CainRun/DeveloperDocument/master/%E7%8E%A9%E8%BD%ACiOS%E5%BC%80%E5%8F%91%EF%BC%9A%E3%80%8ACocoaPods%E3%80%8B%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/17.png" alt="17"></p>
+<p>关于怎么去使用第三方的库这里我就不需要再去说了, 大家都懂的</p>
+<h2 id="升级CocoaPods"><a href="#升级CocoaPods" class="headerlink" title="升级CocoaPods"></a>升级CocoaPods</h2><p>先更新<strong>gem</strong>    </p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gem <span class="keyword">update</span> —<span class="built_in">system</span></span><br></pre></td></tr></table></figure>
+
+<p>删除<strong>rubygems</strong>源</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem sources --<span class="built_in">remove</span> http<span class="variable">s:</span>//rubygems.org/</span><br></pre></td></tr></table></figure>
+
+<p>添加<strong>ruby</strong>淘宝源</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem sources -<span class="keyword">a</span> http<span class="variable">s:</span>//gems.<span class="keyword">ruby</span>-china.<span class="keyword">com</span></span><br></pre></td></tr></table></figure>
+
+<p>测试源是否正确, 和刚开始安装时一样</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem sources -<span class="keyword">l</span></span><br></pre></td></tr></table></figure>
+
+<p>安装<strong>CocoaPods</strong></p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo gem install cocoa pods</span><br><span class="line">pod setup</span><br></pre></td></tr></table></figure>
+
+<p>查看<strong>CocoaPods</strong>版本</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod --<span class="keyword">version</span></span><br></pre></td></tr></table></figure>
+
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是CocoaPods"><span class="toc-number">1.</span> <span class="toc-text">什么是CocoaPods</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CocoaPods的核心组件"><span class="toc-number">1.1.</span> <span class="toc-text">CocoaPods的核心组件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更换Ruby源"><span class="toc-number">2.</span> <span class="toc-text">更换Ruby源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装CocoaPods"><span class="toc-number">3.</span> <span class="toc-text">安装CocoaPods</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用CocoaPods"><span class="toc-number">4.</span> <span class="toc-text">使用CocoaPods</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#升级CocoaPods"><span class="toc-number">5.</span> <span class="toc-text">升级CocoaPods</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

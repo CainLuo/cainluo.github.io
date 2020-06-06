@@ -1,0 +1,410 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RxSwift：12.Beginning RxCocoa - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="在前面几章中, 我们已经了解了RxSwift的基础知识, 它的功能以及如何创建, 订阅和处理Observable对象, 了解这些课题是非常重要的, 以便我们在开发应用程序时正确的使用RxSwift并,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">RxSwift：12.Beginning RxCocoa</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">RxSwift：12.Beginning RxCocoa</h1>
+        <div class="stuff">
+            <span>八月 24, 2019</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/RxSwift/">RxSwift</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>在前面几章中, 我们已经了解了<strong>RxSwift</strong>的基础知识, 它的功能以及如何创建, 订阅和处理<strong>Observable</strong>对象, 了解这些课题是非常重要的, 以便我们在开发应用程序时正确的使用<strong>RxSwift</strong>并避免意外的副作用和一些不必要的结果.</p>
+<p>从现在开始, 你必须要很好的理解如何创建<strong>Observable</strong>对象, 如何订阅它们, 如何处理它们的工作, 以及对<strong>RxSwift</strong>提供的一些重要操作符有一个很好的概述.</p>
+<p>在本章中, 我们将学习另一个框架, 它是<strong>RxSwift</strong>的一部分: <strong>RxCocoa</strong>.</p>
+<p><strong>RxCocoa</strong>适用于所有的平台, 针对每个平台的需求: <strong>iOS(iPhone, iPad , Apple Watch)</strong>, <strong>tvOS</strong>和<strong>macOS</strong>, 每个平台都有一组自定义的封装<strong>API</strong>, 为许多<strong>UIKit</strong>控件和其他的<strong>SDK</strong>类提供一组内置的扩展, 在本章里, 我们将使用为<strong>iOS</strong>设备<strong>iPhone</strong>和<strong>iPad</strong>上封装的<strong>API</strong>.</p>
+<blockquote>
+<p>注意: 目前<strong>iOS</strong>的<strong>RxCocoa</strong>支持是最完整的, 其次是<strong>Apple Watch</strong>和<strong>macOS</strong>. <strong>macOS</strong>目前仍然缺少一些高级的封装<strong>API</strong>, 但是它包含了创建跨平台方案逻辑的所有基础知识, 后续我们将会讲解到.</p>
+</blockquote>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>本章节的项目是一个名为<strong>Wundercast</strong>的<strong>iOS</strong>应用程序, 它使用的是<a href="http://openweathermap.org" target="_blank" rel="noopener">OpenWeatherMap</a>提供的当前天气信息, 在我们的<strong>CocoaPods</strong>已经准备好了我们所需要的依赖库.</p>
+<p>在开始之前, 我们打开<strong>Podfile</strong>并检查项目的依赖关系, 以便我们更好的使用本章将要使用的内容, 如果要添加<strong>RxCocoa</strong>, 我们则需要添加额外的一行代码到<strong>Podfile</strong>中:</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod <span class="string">'RxCocoa'</span>, <span class="string">'~&gt; 4.4'</span></span><br></pre></td></tr></table></figure>
+
+<p>通常来说<strong>RxCocoa</strong>是与<strong>RxSwift</strong>一起发布的, 两个框架公用同一个发布流程, 所以最新的<strong>RxSwift</strong>与<strong>RxCocoa</strong>的版本号是相同的.</p>
+<p>现在我们打开<strong>终端</strong>, 然后去到项目的根目录, 使用<strong>CocoaPods</strong>的经典命令<strong>pod install</strong>命令来引入所有的依赖库, 以便我们可以正常的运行项目.</p>
+<p>这个时候<strong>RxCocoa</strong>就已经是项目的一部分了, 并且创建好了相应的<strong>workspace</strong>, 现在我们打开<strong>workspace</strong>来看看<strong>RxCocoa</strong>里面的内容, 在这个项目中, 我们将会使用到<strong>UITextField</strong>与<strong>UILabel</strong>两个封装好的<strong>API</strong>, 所以我们直接来看看它们里面有的内容是一个不错的方式.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2012/1.png" alt="图片"></p>
+<p>打开<strong>UITextField+Rx.swift</strong>, 我们可以看到里面的代码非常少, 唯一一个就是使用<code>ControlProperty&lt;String?&gt;</code>声明的一些属性.</p>
+<p>你可能会有一个疑惑, 什么是<strong>ControlProperty</strong>? 别担心, 稍后我们就会知道了, 现在需要知道的是, 这是一个非常特殊的<strong>Subject</strong>类型, 可以订阅并设置新值, 而这里的属性名称可以让我们很好的了解到到底是什么内容: <strong>text</strong>就表示该熟悉与<strong>UITextField</strong>的文本内容直接相关了.</p>
+<p>现在打开<strong>UILabel+Rx.swift</strong>, 在这里我们可以看到两个新的属性: <strong>text</strong>和<strong>attributedText</strong>, 这两个名称都与原始的<strong>UILabel</strong>实现的属性名一样, 所以我们理解起来也不困难, 只不过这里使用的是名为<strong>Binder</strong>的新类型.</p>
+<p>它是一种符合<strong>ObserverType</strong>的一种特殊类型, 专用于我们只希望写入新的值, 但又不想订阅的情况, <strong>Binder</strong>通常用于让我们将<strong>UI</strong>与底层逻辑进行绑定, 还有一点就是它不能接受错误事件. 如果向<strong>Binder</strong>发送错误事件, 那么在<strong>Debug</strong>模式下会导致<code>fatalError()</code>, 如果是在<strong>Release</strong>模式下则在日志中输出运行时错误.</p>
+<p>这就是关于<strong>RxCocoa</strong>的简单介绍了, 现在时候来进入正题.</p>
+<h3 id="配置API秘钥"><a href="#配置API秘钥" class="headerlink" title="配置API秘钥"></a>配置API秘钥</h3><p><strong>OpenWeatherMap</strong>需要一个正确的<strong>API</strong>秘钥才能正常工作, 所以我们需要先到<a href="https://home.openweathermap.org/users/sign_up注册一个账号" target="_blank" rel="noopener">https://home.openweathermap.org/users/sign_up注册一个账号</a>.</p>
+<p>注册之后, 我们去到生成<strong>API Key</strong>的页面<a href="https://home.openweathermap.org/api_keys" target="_blank" rel="noopener">https://home.openweathermap.org/api_keys</a>, 然后生成一个新的<strong>key</strong>, 以便我们在这个项目中使用.</p>
+<p>复制粘贴<strong>API</strong>秘钥到<strong>ApiCcontroller.swift</strong>中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">let</span> apiKey = <span class="string">"Your Key"</span></span><br></pre></td></tr></table></figure>
+
+<p>现在, 我们已经准备好了获取天气数据的前期工作了.</p>
+<h2 id="使用RxCocoa的UIKit基础控件"><a href="#使用RxCocoa的UIKit基础控件" class="headerlink" title="使用RxCocoa的UIKit基础控件"></a>使用RxCocoa的UIKit基础控件</h2><p>首先, 确保通过之前我们已经完成了<strong>API</strong>的配置, 现在我们可以输入一些数据, 并要求<strong>API</strong>返回我们指定城市的天气, 温度, 湿度, 以及城市名称. 这个城市名称将对应我们将要显示的数据, 实际上就是我们所输入的名称.</p>
+<h3 id="使用RxCocoa来显示数据"><a href="#使用RxCocoa来显示数据" class="headerlink" title="使用RxCocoa来显示数据"></a>使用RxCocoa来显示数据</h3><p>如果你在之前就已经运行了项目, 那么你可能想知道为什么已经输入了内容, 但并没有从<strong>API</strong>从检索任何数据之前就显示数据. 其实原因很简单, 我们可以确定手动输入的数据时正确的, 因此如果显示内容失败了, 那么问题就在于<strong>API</strong>处理代码的某个地方, 而不是我们的<strong>Rx</strong>逻辑或者是<strong>UI</strong>相关的代码中.</p>
+<p>在<strong>ApiController.swift</strong>中, 你会看到一个符合了<strong>Decodable</strong>的结构体, 它将用于解析<strong>JSON</strong>数据:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Weather</span>: <span class="title">Decodable</span> </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> cityName: <span class="type">String</span></span><br><span class="line">  <span class="keyword">let</span> temperature: <span class="type">Int</span></span><br><span class="line">  <span class="keyword">let</span> humidity: <span class="type">Int</span></span><br><span class="line">  <span class="keyword">let</span> icon: <span class="type">String</span></span><br><span class="line">	... </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>继续往下看, 我们就会找到下面这个方法:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">currentWeather</span><span class="params">(city: String)</span></span> -&gt; <span class="type">Observable</span>&lt;<span class="type">Weather</span>&gt; &#123;</span><br><span class="line">  <span class="comment">// Placeholder call</span></span><br><span class="line">  <span class="keyword">return</span> <span class="type">Observable</span>.just(</span><br><span class="line">    <span class="type">Weather</span>(</span><br><span class="line">      cityName: city,</span><br><span class="line">      temperature: <span class="number">20</span>,</span><br><span class="line">      humidity: <span class="number">90</span>,</span><br><span class="line">      icon: iconNameToChar(icon: <span class="string">"01d"</span>))</span><br><span class="line">	) </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个方法是用用来返回一些假数据的, 在我们从服务器获取到真实的数据之前, 我们都可以使用这些假数据.</p>
+<p>用假数据可以帮助我们简化开发的过程, 即使我们在没有网络的情况下也不妨碍我们正常的开发.</p>
+<p>打开<strong>ViewController.swift</strong>, 这是本项目中存在的唯一一个<strong>UIViewController</strong>, 我们所要做的工作是, 使用<strong>ApiController</strong>来请求数据, 然后再将请求到的数据供后者使用.</p>
+<p>这是一个单向的数据流:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2012/2.png" alt="图片"></p>
+<p>和前面几章所解释的那样, <strong>Observable</strong>对象是能够让所有订阅者知道数据请求回来, 并转换成了我们本地的实体, 从而推动要处理的值.</p>
+<p>因此, 在<strong>UIViewController</strong>的<strong>viewDidLoad</strong>是正确订阅<strong>Observable</strong>的位置, 虽然我们需要尽早的订阅, 但是也要等到<strong>UIView</strong>加载完之后.</p>
+<p>如果延迟订阅的话, 可能会导致我们错过了事件, 或者将数据绑定到<strong>UI</strong>之前只会看到部分<strong>UI</strong>.</p>
+<p>因此, 我们必须在应用程序在创建或请求需要处理并显示给用户的数据之前创建所有订阅.</p>
+<p>现在我们要检索数据了, 将下面的代码添加到<strong>viewDidLoad</strong>的末尾:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ApiController</span>.shared.currentWeather(city: <span class="string">"RxSwift"</span>)</span><br><span class="line">    .observeOn(<span class="type">MainScheduler</span>.instance)</span><br><span class="line">    .subscribe(onNext: &#123; data <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">self</span>.tempLabel.text = <span class="string">"\(data.temperature)° C"</span></span><br><span class="line">        <span class="keyword">self</span>.iconLabel.text = data.icon</span><br><span class="line">        <span class="keyword">self</span>.humidityLabel.text = <span class="string">"\(data.humidity)"</span></span><br><span class="line">        <span class="keyword">self</span>.cityNameLabel.text = data.cityName</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
+
+<p>重新运行应用程序之后, 你将会看到下面的结果:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2012/3.png" alt="图片"></p>
+<p>虽然应用程序正确的显示了虚拟数据, 但是现在有两个问题:</p>
+<ol>
+<li><strong>Xcode</strong>提醒有一个警告</li>
+<li>我们仍然没有使用<strong>UITextField</strong></li>
+</ol>
+<p>第一个问题来自<strong>Xcode</strong>的提示:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2012/4.png" alt="图片"></p>
+<p>这个问题很好解决, 我们只需要和之前文章一样, 添加一个<strong>DisposeBag</strong>即可, 当<strong>UIViewController</strong>被释放后, 那么这些订阅也会随着取消, 避免了内存泄漏的问题, 现在将下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">let</span> bag = <span class="type">DisposeBag</span>()</span><br></pre></td></tr></table></figure>
+
+<p>然后回到前面的代码, 然后使用<code>disposed(by:)</code>方法链接到末尾:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ApiController</span>.shared.currentWeather(city: <span class="string">"RxSwift"</span>)</span><br><span class="line">    .observeOn(<span class="type">MainScheduler</span>.instance)</span><br><span class="line">    .subscribe(onNext: &#123; data <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">self</span>.tempLabel.text = <span class="string">"\(data.temperature)° C"</span></span><br><span class="line">        <span class="keyword">self</span>.iconLabel.text = data.icon</span><br><span class="line">        <span class="keyword">self</span>.humidityLabel.text = <span class="string">"\(data.humidity)%"</span></span><br><span class="line">        <span class="keyword">self</span>.cityNameLabel.text = data.cityName</span><br><span class="line">    &#125;)</span><br><span class="line">    .disposed(by: bag)</span><br></pre></td></tr></table></figure>
+
+<p>这样子就可以在<strong>UIViewController</strong>释放后处理订阅了, 防止浪费资源, 但最重要的一点就是, 可以避免在未处理订阅时可能发生的一些意外的事件或者其他副作用.</p>
+<p>现在我们已经解决了第一个问题, 因此我们可以将注意力转移到文本来, 根据我们前面所说的, <strong>RxCocoa</strong>在<strong>Cocoa</strong>的基础上封装了很多便于我们使用的<strong>API</strong>, 因此我们可以使开始使用此功能来实现我们的最终目标.该框架使用了<strong>Protocol extensions</strong>强大的功能, 并将<strong>rx</strong>的命名空间添加到许多的<strong>UIKit</strong>组件中, 这就意味着我们可以直接使用<code>searchCityName.rx</code>的方式. 查看一下可用的属性和方法:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2012/5.png" alt="图片"></p>
+<p>之前我们已经查看过一个属性: <strong>text</strong>, 这个属性返回一个<strong>Observable</strong>对象, 它是一个<code>ControlProperty&lt;String?&gt;</code>, 它符合了<strong>ObservableType</strong>和<strong>ObserverType</strong>, 因此我们可以订阅它并给它设置新值, 从而来设置文本内容.</p>
+<p>了解了<code>ControlProperty</code>背后的基础知识后, 现在我们可以改进一下代码, 将下面的代码添加到<code>viewDidLoad()</code>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">searchCityName.rx.text</span><br><span class="line">    .orEmpty</span><br><span class="line">    .<span class="built_in">filter</span> &#123; !$<span class="number">0</span>.isEmpty &#125;</span><br><span class="line">    .flatMap &#123; text <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">return</span> <span class="type">ApiController</span>.shared.currentWeather(city: text)</span><br><span class="line">            .catchErrorJustReturn(<span class="type">ApiController</span>.<span class="type">Weather</span>.empty)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码将返回一个带数据的<strong>Observable</strong>, 在<code>.text</code>之后添加了<code>.orEmpty</code>属性, 如果发出的是<strong>nil</strong>, 那么它只会发出一个空的字符串, 相当于<code>.map { $0 ?? &quot;&quot; }</code>, 由于<strong>currentWeather</strong>不接受空值, 所以我们就把它过滤掉, 然后使用<strong>ApiController</strong>来获取天气数据, 之前我们就使用过了, 这里就不做介绍了.</p>
+<p>通过切换到正确的线程来显示数据, 将下面的代码链接到上一段代码的后面:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.observeOn(<span class="type">MainScheduler</span>.instance)</span><br><span class="line">.subscribe(onNext: &#123; data <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">self</span>.tempLabel.text = <span class="string">"\(data.temperature)° C"</span></span><br><span class="line">    <span class="keyword">self</span>.iconLabel.text = data.icon</span><br><span class="line">    <span class="keyword">self</span>.humidityLabel.text = <span class="string">"\(data.humidity)%"</span></span><br><span class="line">    <span class="keyword">self</span>.cityNameLabel.text = data.cityName</span><br><span class="line">&#125;)</span><br><span class="line">.disposed(by: bag)</span><br></pre></td></tr></table></figure>
+
+<p>切换到<strong>MainScheduler</strong>主线程之后, 然后再使用获取到的天气数据来更新所有的<strong>UIKit</strong>控件.</p>
+<blockquote>
+<p>注意: 调度程序的概念超出了本章的范畴, 这里不做多的讲解, 我们将会在后续的教程中了解它.</p>
+</blockquote>
+<p>下面的图片可以来解释我们做的事情:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2012/6.png" alt="图片"></p>
+<p>现在, 无论我们输入什么内容, <strong>UILabel</strong>都会随着来更新, 但现在我们获得的还是虚拟的数据, 现在我们是时候从<strong>API</strong>中获取真实的数据了.</p>
+<blockquote>
+<p>注意: <code>catchErrorJustReturn</code>操作符会在后面有讲解, 它的作用是, 当我们从<strong>API</strong>收到错误时, 需要防止<strong>Observable</strong>被释放. 例如, 如果我们输入了一个无效的城市名称, <strong>API</strong>则会返回一个<strong>404</strong>作为<strong>NSURLSession</strong>的错误, 在这种情况下我们希望返回一个空的响应, 以便在遇到错误时<strong>App</strong>就罢工了.</p>
+</blockquote>
+<h3 id="从OpenWeather-API中获取数据"><a href="#从OpenWeather-API中获取数据" class="headerlink" title="从OpenWeather API中获取数据"></a>从OpenWeather API中获取数据</h3><p>要从<strong>API</strong>中获取实时的天气数据, 我们则需要有网络连接, 以下是<strong>API</strong>返回的<strong>JSON</strong>结构:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"weather"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="number">741</span>,</span><br><span class="line">      <span class="attr">"main"</span>: <span class="string">"Fog"</span>,</span><br><span class="line">      <span class="attr">"description"</span>: <span class="string">"fog"</span>,</span><br><span class="line">      <span class="attr">"icon"</span>: <span class="string">"50d"</span>&#125; </span><br><span class="line">  ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上的数据时与当前天气有关的, <strong>icon</strong>的字段用于显示当前条件正确的图标, 下面的部分则是涉及温度和湿度的数据:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">	"main": &#123;</span><br><span class="line">    "temp": 271.55,</span><br><span class="line">    "pressure": 1043,</span><br><span class="line">    "humidity": 96,</span><br><span class="line">    "temp_min": 268.15,</span><br><span class="line">    "temp_max": 273.15</span><br><span class="line">	&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里的温度不是摄氏度或者华氏度, 别吓到了.</p>
+<p>在<code>ApiController.swift</code>中, 有一个名为<strong>iconNameToChar</strong>的方法, 它接受一个<strong>String</strong>(更准确的说, 是来自<strong>JSON</strong>数据里的<strong>icon</strong>字段), 然后返回一个<strong>String</strong>, 它是天气图片的<strong>UTF-8</strong>编码, 可以非常直观的显示当前的天气, 在同一个文件中农, 还有一个便捷的构造方法<strong>buildRequest</strong>来创建网络请求, 它使用了<strong>RxCocoa</strong>的<strong>URLSession</strong>封装<strong>API</strong>来执行网络请求, 这个方法负责:</p>
+<ul>
+<li>获取基本的<strong>URL</strong>附加参数用于正确构建<strong>GET</strong>或<strong>POST</strong>请求</li>
+<li>使用我们开头申请的<strong>API</strong>秘钥</li>
+<li>设置请求的内容类型为<strong>application/json</strong></li>
+<li>要求使用指定的单位</li>
+<li>返回<strong>Observable</strong>数据, 然后再使用<strong>currentWeather</strong>方法中的<strong>JSONDecoder</strong>进行解码</li>
+</ul>
+<p>最后则返回:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//[...]</span></span><br><span class="line"><span class="keyword">return</span> session.rx.data(request: request)</span><br></pre></td></tr></table></figure>
+
+<p>这是使用了<strong>RxCocoa</strong>对<strong>ULRSection</strong>的<strong>rx</strong>扩展, 它使用了<strong>data</strong>方法, 这是返回一个<code>Observable&lt;data&gt;</code>, 稍后我们将使用<strong>JSONDecoder</strong>来解码此数据.</p>
+<p>从虚拟数据切换到实际请求的数据时非常简单的.</p>
+<p>我们需要使用实际的请求的网络数据来替换<code>Observable.just([...])</code>的调用. <strong>OpenWeatherMap<br> API</strong>的文档<a href="http://openweathermap.org/current解释了如何通过`api.openweathermap.org/data/2.5/weather?q={city" target="_blank" rel="noopener">http://openweathermap.org/current解释了如何通过`api.openweathermap.org/data/2.5/weather?q={city</a> name}`来获取指定城市的当前天气.</p>
+<p>在<strong>ApiController.swift</strong>中, 用下面的代码<code>currentWeather(city:)</code>方法替换:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">currentWeather</span><span class="params">(city: String)</span></span> -&gt; <span class="type">Observable</span>&lt;<span class="type">Weather</span>&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> buildRequest(pathComponent: <span class="string">"weather"</span>, params: [(<span class="string">"q"</span>, city)])</span><br><span class="line">    .<span class="built_in">map</span> &#123; data <span class="keyword">in</span></span><br><span class="line">      <span class="keyword">let</span> decoder = <span class="type">JSONDecoder</span>()</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">try</span> decoder.decode(<span class="type">Weather</span>.<span class="keyword">self</span>, from: data)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该请求返回的是一个<strong>Data</strong>对象, 由于它符合了<strong>Decodable</strong>, 可以将它解码为<strong>Weather</strong>结构.</p>
+<p>一般情况下直观的视图可以帮助我们更好的了解所需要做的事情:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2012/7.png" alt="图片"></p>
+<p>现在我们重新运行项目, 然后输入<strong>London</strong>, 然后就会收到下面的结果:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2012/8.png" alt="图片"></p>
+<p>现在我们的应用程序可以正确显示从服务器请求回来的数据, 到目前为止, 我们已经使用了几个<strong>RxCocoa</strong>的功能, 当我们学习下一部分的<strong>RxCocoa</strong>高级功能时, 你会看到真正的好处.</p>
+<blockquote>
+<p>注意: 如果你有兴趣的话, 可以实验一下删除<strong>flatMap</strong>中的<strong>catchErrorJustReturn</strong>操作符, 一旦我们接收到<strong>404</strong>的错误时, 那么应用程序就会停止工作了, 因为我们的<strong>Observable</strong>对象已经接收到错误事件, 然后停止序列</p>
+</blockquote>
+<h2 id="绑定Observable"><a href="#绑定Observable" class="headerlink" title="绑定Observable"></a>绑定Observable</h2><p>绑定是有一些争议的: 例如, <strong>Apple</strong>从未在<strong>iOS</strong>发布过名为<strong>Cocoa Bindings</strong>的框架, 虽然它一直以来都是<strong>macOS</strong>的重要组成部分. <strong>Mac</strong>的绑定非常先进, 并且在<strong>macOS SDK</strong>中与<strong>Apple</strong>提供的一些特定类有些过分的耦合.</p>
+<p><strong>RxCocoa</strong>提供了一个更加简单的解决方案, 它仅依赖于框架中的包含的几种类型, 由于现在我们对<strong>RxSwift</strong>的代码感到很满意, 因此我们必须非常快速的来使用绑定.</p>
+<p>这里要知道一件很重要的事情, 在<strong>RxCocoa</strong>中, 当顶是一个单向的数据流, 这极大的简化了应用程序中的数据流, 因为你不会在教程中看到双向绑定.</p>
+<h3 id="如何绑定Observables"><a href="#如何绑定Observables" class="headerlink" title="如何绑定Observables"></a>如何绑定Observables</h3><p>理解绑定最简单的方法是将关系视为两个实体类之间的连接:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2012/9.png" alt="图片"></p>
+<ul>
+<li>生产者: 产生内容</li>
+<li>使用者: 使用生产者产生的内容</li>
+</ul>
+<p>消费者是无法返回值的, 这是使用<strong>RxSwift</strong>绑定时的规则.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2012/10.png" alt="图片"></p>
+<blockquote>
+<p>注意: 如果你想稍后实验一下双向绑定(例如, 在数据模型的属性和文本之间), 可以使用以下四个实体类对其建模: 两个生产者和两个使用者, 正如我们想象的那样, 这会大大的增加代码的复杂性, 但如果你喜欢挑战的话, 那么它就可能会有很有趣了.</p>
+</blockquote>
+<p>绑定的基本方法是<code>bind(to:)</code>, 用于将<strong>Observable</strong>绑定到另一个实体, 这需要使用者符合<strong>ObserverType</strong>, 此实体只能作为一个被写入的对象, 不能订阅.</p>
+<p>我们能与<strong>RxSwift</strong>绑定的唯一类型实际是<strong>ObserverType</strong>, 它实际上是我们之前学过的<strong>Subject</strong>, 它不仅可以编写事件, 还可以订阅它, 因为它符合<strong>ObserverType</strong>和<strong>ObservableType</strong>.</p>
+<p>考虑到<strong>UILabel, UITextField, UIImageView</strong>等基本<strong>UI</strong>控件具有可设置或获取的可变数据, 在处理<strong>Cocoa</strong>的命令时, <strong>Subject</strong>就非常重要了.</p>
+<p>重要的是, 要记住<code>bind(to:)</code>可以用于其他地方, 而不是仅仅的将<strong>UI</strong>控件与数据绑定, 例如我们可以使用<code>bind(to:)</code>来创建依赖进程, 因此当某个<strong>Observable</strong>触发了<strong>Subject</strong>之后就执行某些后台的任务, 而不是将内容显示到屏幕上.</p>
+<blockquote>
+<p>注意: 除了符合<strong>ObserverType</strong>的对象外, 还可以在<strong>Replays</strong>上使用<code>bind(to:)</code>, 但是这些<code>bind(to:)</code>是独立用来重载的, 因为<strong>Replays</strong>实际上并不符合<strong>ObserverType</strong>.</p>
+</blockquote>
+<p>最后, 还有一个有趣的事实是<code>bind(to:)</code>实际上是<code>subscribe()</code>的别名或者是语法糖, 调用<code>bind(to: observer)</code>, 它内部就会调用<code>subscribe(observer)</code>, 只是前者的语义更加的直观.</p>
+<h3 id="使用绑定Observable来显示数据"><a href="#使用绑定Observable来显示数据" class="headerlink" title="使用绑定Observable来显示数据"></a>使用绑定Observable来显示数据</h3><p>现在我们已经了解了什么是绑定, 可以开始将它们集成到我们的应用程序中, 在这个过程中, 你将会使得整个代码更加的优雅, 并将搜索结果转换为可重用的数据源.</p>
+<p>第一个更改就是重构使用<code>subscribe(onNext:)</code>将数据分配给正确的<strong>UILabel</strong>的一堆长<strong>Observable</strong>代码, 打开<strong>ViewController.swift</strong>并在<code>viewDidLoad()</code>中将完整的订阅代码替换为下面的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> search = searchCityName.rx.text.orEmpty</span><br><span class="line">    .<span class="built_in">filter</span> &#123; !$<span class="number">0</span>.isEmpty &#125;</span><br><span class="line">    .flatMapLatest &#123; text <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">return</span> <span class="type">ApiController</span>.shared.currentWeather(city: text)</span><br><span class="line">            .catchErrorJustReturn(<span class="type">ApiController</span>.<span class="type">Weather</span>.empty)</span><br><span class="line">    &#125;</span><br><span class="line">    .share(replay: <span class="number">1</span>)</span><br><span class="line">    .observeOn(<span class="type">MainScheduler</span>.instance)</span><br></pre></td></tr></table></figure>
+
+<p>这个更改将使得搜搜结果可以重用, 并将单个请求的数据转换为多用途的<strong>Observable</strong>.</p>
+<p>之后我们将会在介绍<strong>MVVM</strong>的章节中介绍这样子的更改如何的强大, 但是现在只需要知道<strong>Observable</strong>对象是<strong>Rx</strong>可重复使用的实体, 并且正确的建模可以避免构成一个代码长, 阅读难的单次<strong>Observable</strong>, 而是让他成为一个多用途且易于理解的<strong>Observable</strong>.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2012/11.png" alt="图片"></p>
+<p>通过这个小改动, 可以处理来自不同订阅的每个参数, 然后我们分别映射它们所需要的值即可, 例如以下是如何将温度的数据作为字符串从共享的数据源中获取:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">search.<span class="built_in">map</span> &#123; <span class="string">"\($0.temperature)° C"</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这回创建一个<strong>Observable</strong>, 返回将要显示屏幕上的温度信息.</p>
+<p>要尝试创建第一个绑定, 请使用<code>bind(to:)</code>将原始数据源和<strong>UILabel</strong>链接在一起就可以了, 将下面的代码添加到<code>viewDidLoad()</code>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">search.<span class="built_in">map</span> &#123; <span class="string">"\($0.temperature)° C"</span> &#125;</span><br><span class="line">    .bind(to: tempLabel.rx.text)</span><br><span class="line">    .disposed(by: bag)</span><br></pre></td></tr></table></figure>
+
+<p>重新运行一下应用程序, 你就会看到使用<strong>RxCocoa</strong>来绑定的后的温度信息:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2012/12.png" alt="图片"></p>
+<p>现在应用程序正常的显示温度了, 我么可以使用相同的方式来给其他<strong>UILabel</strong>改进一下:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">search.<span class="built_in">map</span> &#123; $<span class="number">0</span>.icon &#125;</span><br><span class="line">    .bind(to: iconLabel.rx.text)</span><br><span class="line">    .disposed(by: bag)</span><br><span class="line"></span><br><span class="line">search.<span class="built_in">map</span> &#123; <span class="string">"\($0.humidity)%"</span> &#125;</span><br><span class="line">    .bind(to: humidityLabel.rx.text)</span><br><span class="line">    .disposed(by: bag)</span><br><span class="line"></span><br><span class="line">search.<span class="built_in">map</span> &#123; $<span class="number">0</span>.cityName &#125;</span><br><span class="line">    .bind(to: cityNameLabel.rx.text)</span><br><span class="line">    .disposed(by: bag)</span><br></pre></td></tr></table></figure>
+
+<p>现在应用程序使用一个名为<strong>search</strong>的单个源<strong>Observable</strong>显示我们从服务器请求的数据, 并将不同的数据分别绑定到屏幕上的每个<strong>UILabel</strong>.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2012/13.png" alt="图片"></p>
+<h2 id="使用特性来改进代码"><a href="#使用特性来改进代码" class="headerlink" title="使用特性来改进代码"></a>使用特性来改进代码</h2><p><strong>RxCocoa</strong>提供了一些更高级的功能, 使得<strong>Cocoa</strong>和<strong>UIKit</strong>的使用变得非常的轻松, 除了<code>bind(to:)</code>之外, 它还提供了<strong>Observables</strong>专门的实现, 其中一些已经被专门用于创建<strong>UI</strong>, 比如: <strong>Traits</strong>, 它是一组专门的<strong>Observable</strong>类,  有助于我们创建简单易用的代码, 尤其是在使用<strong>UI</strong>时, 现在我们一起来看看.</p>
+<blockquote>
+<p>注意: 这非常类似我们刚开始学的<strong>RxSwift</strong>特性一样, <strong>RxCocoa</strong>也有类似的特性, 但如果你喜欢坚持已经熟悉的<strong>Observable</strong>, 那么这个就当做一个可选项.</p>
+</blockquote>
+<h3 id="什么是ControlProperty和Driver"><a href="#什么是ControlProperty和Driver" class="headerlink" title="什么是ControlProperty和Driver?"></a>什么是ControlProperty和Driver?</h3><blockquote>
+<p><strong>Traits</strong> …帮助沟通并确保跨接口边界的<strong>Observable</strong>序列属性。</p>
+</blockquote>
+<p>一开始可能会让人感觉到困惑, 但使用<strong>RxCocoa</strong>特性的规则会使得整个概念更加容易的理解, 这些规则是:</p>
+<ul>
+<li>它们不会出错</li>
+<li>都是在主线程上使用</li>
+<li>它们订阅了主线程调度</li>
+<li>它们共享资源, 但是<strong>Signal</strong>除外</li>
+</ul>
+<p>这些实体确保始终在用户界面中显示某些内容和处理它们.</p>
+<p><strong>RxCocoa</strong>的特性:</p>
+<ul>
+<li><strong>ControlProperty</strong>和<strong>ControlEvent</strong></li>
+<li><strong>Driver</strong></li>
+<li><strong>Signal</strong></li>
+</ul>
+<p><strong>ControlProperty</strong>刚才我们就已经使用过了, 使用它的<strong>rx</strong>命名空间将数据绑定到正确的<strong>UIKit</strong>控件中.</p>
+<p><strong>ControlEvent</strong>则用于监听<strong>UIKit</strong>控件的某个事件,  例如在编辑文本的时候按下键盘的<strong>return</strong>按钮, 如果<strong>UIKit</strong>控件使用<code>UIControl.Events</code>跟踪状态, 那么就表示表示控件的事件可用.</p>
+<p><strong>Driver</strong>是一个特殊的<strong>Observable</strong>对象, 和我们之前解释的内容相同, 因此它不会出错, 确保所有进程都在主线程上执行, 这就避免了再后台线程中更新<strong>UI</strong>.</p>
+<p><strong>Signal</strong>与<strong>Driver</strong>共享着相同的属性, 但它并不共享资源, 因此它不会向订阅者重新发送元素, 这是一个比较不常见的特性, 所以我们基本上不会使用到它.</p>
+<p><strong>Signal</strong>对于建模事件非常有用, 但<strong>Driver</strong>更适合于建模状态.</p>
+<p>一般来说说, 特性是框架的可选部分, 我们没有必要强迫的使用它们. 可以坚持使用<strong>Observable</strong>或者是<strong>Subject</strong>, 同时确保要在正确的调度中正确的创建任务, 如果你在编译时需要进行一些检查, 并且在处理<strong>UI</strong>时需要可预测的规则, 那么这些特性就非常强大, 并且可以为我们节省很多时间, 比如我们很容易忘记调用<code>.observeOn(MainScheduler.instance)</code>, 从而在后台线程中创建更新<strong>UI</strong>的进程.</p>
+<p>如果<strong>Driver</strong>和<strong>ControlProperty</strong>现在看起来很难理解, 请不用担心, 就像我们刚开始学习<strong>RxSwift</strong>一样, 一旦我们深入学习之后, 就可以慢慢的掌握了.</p>
+<h3 id="使用Driver和ControlProperty改进项目"><a href="#使用Driver和ControlProperty改进项目" class="headerlink" title="使用Driver和ControlProperty改进项目"></a>使用Driver和ControlProperty改进项目</h3><p>在了解了一些理论之后, 是时候将这些好的概念应用到我们的应用程序中了, 确保所有任务都是在正确的线程中执行的, 并确保不会出现任何错误来停止订阅.</p>
+<p>第一步是将<strong>Observable</strong>的数据转换为<strong>Driver</strong>, 在<code>viewDidLoad()</code>中查找到定义所<strong>search</strong>常量的地方, 并用下面的代码来替换:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> search = searchCityName.rx.text.orEmpty</span><br><span class="line">    .<span class="built_in">filter</span> &#123; !$<span class="number">0</span>.isEmpty &#125;</span><br><span class="line">    .flatMapLatest &#123; text <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">return</span> <span class="type">ApiController</span>.shared.currentWeather(city: text)</span><br><span class="line">            .catchErrorJustReturn(<span class="type">ApiController</span>.<span class="type">Weather</span>.empty)</span><br><span class="line">    &#125;</span><br><span class="line">    .asDriver(onErrorJustReturn: <span class="type">ApiController</span>.<span class="type">Weather</span>.empty)</span><br></pre></td></tr></table></figure>
+
+<p>这里的关键代码就是底部的: <code>.asDriver(...)</code>, 这是将<strong>Observable</strong>转换为<strong>Driver</strong>的方法, <strong>onErrorJustReturn</strong>的参数将<strong>Observable</strong>遇到错误事件时所发出的默认值, 从而消除了<strong>Driver</strong>本身发出错误事件的可能性.</p>
+<p>你可能会注意到自动完成为<code>asDriver(onErrorJustReturn:)</code>提供了一些其他的变体:</p>
+<ul>
+<li><code>asDriver(onErrorDriveWith:)</code>: 使用此方法, 你可以手动处理错误并返回一个新的<strong>Driver</strong></li>
+<li><code>asDriver(onErrorRecover:)</code> 可以与其他现有的<strong>Driver</strong>一起使用, 这有助于恢复刚刚遇到错误事件的当前<strong>Driver</strong></li>
+</ul>
+<p>但是现在问题来了, 由于我们改了代码, 现在工程跑不起来, 说找不到<code>bind(to:)</code>方法, 怎么办?</p>
+<p>没关系, 有一个名为<strong>drive</strong>的方法, 因此我们可以使用<strong>drive</strong>来替换所有的<code>bind(to:)</code>, 现在我们只需要将四个<code>bind(to:)</code>替换为<code>drive</code>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">search.<span class="built_in">map</span> &#123; <span class="string">"\($0.temperature)° C"</span> &#125;</span><br><span class="line">    .drive(tempLabel.rx.text)</span><br><span class="line">    .disposed(by: bag)</span><br><span class="line"></span><br><span class="line">search.<span class="built_in">map</span> &#123; $<span class="number">0</span>.icon &#125;</span><br><span class="line">    .drive(iconLabel.rx.text)</span><br><span class="line">    .disposed(by: bag)</span><br><span class="line"></span><br><span class="line">search.<span class="built_in">map</span> &#123; <span class="string">"\($0.humidity)%"</span> &#125;</span><br><span class="line">    .drive(humidityLabel.rx.text)</span><br><span class="line">    .disposed(by: bag)</span><br><span class="line"></span><br><span class="line">search.<span class="built_in">map</span> &#123; $<span class="number">0</span>.cityName &#125;</span><br><span class="line">    .drive(cityNameLabel.rx.text)</span><br><span class="line">    .disposed(by: bag)</span><br></pre></td></tr></table></figure>
+
+<p>现在我们恢复了应用程序的正确<strong>UI</strong>行为, 同时利用了<strong>Driver</strong>强大的功能, <strong>Driver</strong>的工作方式和<code>bind(to:)</code>非常类似. 在使用<strong>RxCocoa</strong>的特性时, 名称的差异可以更好的表达意图.</p>
+<p>虽然我们现在的应用程序利用了许多<strong>RxCocoa</strong>的地方, 但仍然有很多地方可以改进, 比如每次输入一个字符都会去请求一次<strong>API</strong>, 这么频繁的调用是非常浪费资源的, 我们可以改改这个地方.</p>
+<p>找到下面的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> search = searchCityName.rx.text.orEmpty</span><br></pre></td></tr></table></figure>
+
+<p>用下面的代码去替换:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> search = searchCityName.rx.controlEvent(.editingDidEndOnExit)</span><br><span class="line">    .<span class="built_in">map</span> &#123; <span class="keyword">self</span>.searchCityName.text ?? <span class="string">""</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在应用程序仅在用户点击”搜索”按钮时才会去请求数据, 没有了许多无意义的网络请求. 我们还删除了对<code>currentWeather(city:)</code>返回的<strong>Observable</strong>的<code>catchErrorJustReturn()</code>的调用.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2012/14.png" alt="图片"></p>
+<p>原始的方式是使用单个的<strong>Observable</strong>来更新整个<strong>UI</strong>, 现在我们细分出多个模块, 从<strong>subscribe</strong>切换到<strong>bindTo</strong>, 并在<strong>UIViewController</strong>中重用相同的<strong>Observable</strong>, 这种方式非常具有可重用和易用性.</p>
+<p>例如, 如果当前要将大气压的数据添加到用户界面, 则只需要将属性添加到数据结构中, 然后再添加另一个<strong>UILabel</strong>, 再将属性映射到<strong>UILabel</strong>中就好了.</p>
+<h2 id="处理RxCocoa"><a href="#处理RxCocoa" class="headerlink" title="处理RxCocoa"></a>处理RxCocoa</h2><p>本章的最后一个课题有些超出了项目的范畴, 纯粹是理论知识, 在文章开头的时候<strong>UIViewController</strong>都会有一个<strong>DisposeBag</strong>, 用于取消分配到<strong>UIViewController</strong>的订阅, 但是在我们这个例子中并没有在所有的闭包中使用<strong>weak</strong>或<strong>unowned</strong>, 这是为啥呢?</p>
+<p>答案很简单: 因为这个应用程序中就只有一个<strong>UIViewController</strong>, 当应用程序运行的时候, <strong>UIViewController</strong>总是显示在屏幕上, 所以我们不需要防止循环引用或者是浪费内存.</p>
+<h3 id="RxCocoa中的Unowned与weak对比"><a href="#RxCocoa中的Unowned与weak对比" class="headerlink" title="RxCocoa中的Unowned与weak对比"></a>RxCocoa中的Unowned与weak对比</h3><p>使用<strong>weak</strong>和<strong>unowned</strong>与我们平常使用的<strong>Swift</strong>闭包规则相同, 并且在调用<strong>Rx</strong>闭包变体时就要注意了, 例如<code>subscribe(onNext:)</code>使用的是一个逃逸闭包, 那么使用<strong>weak</strong>或<strong>unowned</strong>则是一个很好的方案, 就会导致闭包的循环引用, 然后订阅就永远不会被释放,</p>
+<p>使用<strong>weak</strong>就意味着我们可以使用一个可选的<strong>self</strong>, 和使用<strong>unowned</strong>则不需要对<strong>self</strong>进行可选引用, 这就以为着使用<strong>unowned</strong>时需要非常的谨慎, 实际上它是一个强解包, 如果强解包的对象是不存在的话, 那么应用程序就会直接闪退.</p>
+<p>基于这些种种的问题, 所以<a href="https://github.com/raywenderlich/Swift-style-guide#extension-object-lifetime" target="_blank" rel="noopener">raywenderlich的Swift指南</a>建议不要使用<strong>unowned</strong>.</p>
+<h2 id="接下来去哪"><a href="#接下来去哪" class="headerlink" title="接下来去哪?"></a>接下来去哪?</h2><p>在本章中, 我们简单的了解了<strong>RxCocoa</strong>, 这是一个非常大的框架, 现在我们只是简单的使用和探索了它的一小部分, 但起码这是一个很好的开头, 在下一章中, 你讲了解如何改进应用程序, 添加专用的<strong>RxCocoa</strong>扩展功能, 以及如何使用<strong>RxSwift</strong>和<strong>RxCocoa</strong>添加g鞥多高级的功能.</p>
+<p>在这之前, 花一些时间来使用<strong>RxCocoa</strong>和<strong>.rx</strong>的扩展名, 考虑到这个框架有很多方便的扩展, 我们先来看几个例子.</p>
+<h3 id="UIButton"><a href="#UIButton" class="headerlink" title="UIButton"></a>UIButton</h3><p>正常的开发中, 通常在<strong>UIViewController</strong>里都会有一个<strong>UIButton</strong>, 并且我们想获取这个<strong>UIButton</strong>的点击事件流, 那么问你只需要使用<code>button.rx.tap</code>也就是<code>ControlEvent&lt;Void&gt;</code>就可以获取到这个点击事件流了.</p>
+<p>它还具有<strong>Bool</strong>类型d额<strong>isEnabled</strong>属性, 它适用于所有继承与<strong>UIControl</strong>的子类.</p>
+<h3 id="UIActivityIndicatorView"><a href="#UIActivityIndicatorView" class="headerlink" title="UIActivityIndicatorView"></a>UIActivityIndicatorView</h3><p>在<strong>iOS</strong>中<strong>UIActivityIndicatorView</strong>是非常常用的<strong>UIKit</strong>组件之一, 它有下面的扩展属性:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">var</span> isAnimating: <span class="type">Binder</span>&lt;<span class="type">Bool</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>同样的, 这个属性名也可以解释使用来做什么的, 这和系统提供的<strong>isAnimating</strong>属性一致.</p>
+<p>就像<strong>UILabel</strong>一样, 这个属性也是属于<strong>Binder</strong>类型, 而它可以绑定到一个<strong>Observable</strong>对象来通知后台的活动, 在我们之前学过的第<strong>10</strong>章, 如果你感兴趣的话, 可以使用它来改进一下代码.</p>
+<h3 id="UIProgressView"><a href="#UIProgressView" class="headerlink" title="UIProgressView"></a>UIProgressView</h3><p>这算是一个不太常用的系统组件, 但它也有响应的拓展属性:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">var</span> progress: <span class="type">Binder</span>&lt;<span class="type">Float</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>和其他组件一样, <strong>UIProgressBar</strong>可以绑定到一个<strong>Observable</strong>对象, 例如: 我们使用<code>uploadFile()</code>函数正在上传文件到服务器, 这个时候我们可以拿到发出的字节数和总字节数, 就和下面的代码一样:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> progressBar = <span class="type">UIProgressBar</span>()</span><br><span class="line"><span class="keyword">let</span> uploadFileObs = uploadFile(data: fileData)</span><br><span class="line"></span><br><span class="line">uploadFileObs</span><br><span class="line">  .<span class="built_in">map</span> &#123; sent, totalToSend <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">return</span> sent / totalToSend</span><br><span class="line">  &#125;</span><br><span class="line">  .bind(to: progressBar.rx.progress)</span><br><span class="line">  .disposed(by: bag)</span><br></pre></td></tr></table></figure>
+
+<p>每次获得的结果时就更新进度条, 这样子用户就能知道上传的进度, 现在该你去试试了, 你在这些扩展方法花的事件越多, 那么在下一章和你将来要开发的应用程序中使用它们就会越来越顺手.</p>
+<blockquote>
+<p>注意: <strong>RxCocoa</strong>是一个不断改进的框架, 如果你觉得哪些控件缺少了扩展, 你可以向官方提<strong>Pull Request</strong>, 然后不断的完善.</p>
+</blockquote>
+<h3 id="回顾一下RxSwift和RxCocoa的特性"><a href="#回顾一下RxSwift和RxCocoa的特性" class="headerlink" title="回顾一下RxSwift和RxCocoa的特性"></a>回顾一下RxSwift和RxCocoa的特性</h3><p>如果你觉得你被<strong>RxSwift</strong>和<strong>RxCocoa</strong>特性和实体的数量吓到了, 但其实并没有那么多, 这里有一个总结的表就阐述完了:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%2012/15.png" alt="图片"></p>
+<h2 id="挑战"><a href="#挑战" class="headerlink" title="挑战"></a>挑战</h2><h3 id="挑战-将摄氏度转换为华氏度"><a href="#挑战-将摄氏度转换为华氏度" class="headerlink" title="挑战: 将摄氏度转换为华氏度"></a>挑战: 将摄氏度转换为华氏度</h3><p>在本章中你要做的挑战就是添加一个摄氏度转为华氏度的功能, 这个挑战可以通过不同的方式实现:</p>
+<ul>
+<li>将<strong>API</strong>的请求从<strong>Metric</strong>更改为<strong>Imperial</strong></li>
+<li>或者是使用数学计算法来转换摄氏度的值: <strong>温度 * 1.8 + 32</strong>.</li>
+</ul>
+<p>从技术上来说, 每种解决方案都会有一定的障碍需要克服的, 第一种方案需要更改<strong>ApiController.swift</strong>, 并添加<strong>Subject</strong>来处理更改请求的新数据.</p>
+<p>第二种方案可能更加容易的实现, 你可以搜索<strong>Observable</strong>与<strong>UISwitch</strong>的控件属性来实现这个目标, 本章推荐使用这个解决方案, 尤其是当你考虑到之后的教程中有更高级的用法和体系结构时.</p>
+<p>一般来说, 尽量务实, 不要过度的设计这个解决方案, 在下一章中, 你会看到<strong>RxCocoa</strong>的更多高级用法, 现在花点时间来熟悉一下<strong>RxCocoa</strong>的基础吧.</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始"><span class="toc-number">1.</span> <span class="toc-text">开始</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#配置API秘钥"><span class="toc-number">1.1.</span> <span class="toc-text">配置API秘钥</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用RxCocoa的UIKit基础控件"><span class="toc-number">2.</span> <span class="toc-text">使用RxCocoa的UIKit基础控件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用RxCocoa来显示数据"><span class="toc-number">2.1.</span> <span class="toc-text">使用RxCocoa来显示数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从OpenWeather-API中获取数据"><span class="toc-number">2.2.</span> <span class="toc-text">从OpenWeather API中获取数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#绑定Observable"><span class="toc-number">3.</span> <span class="toc-text">绑定Observable</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#如何绑定Observables"><span class="toc-number">3.1.</span> <span class="toc-text">如何绑定Observables</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用绑定Observable来显示数据"><span class="toc-number">3.2.</span> <span class="toc-text">使用绑定Observable来显示数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用特性来改进代码"><span class="toc-number">4.</span> <span class="toc-text">使用特性来改进代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是ControlProperty和Driver"><span class="toc-number">4.1.</span> <span class="toc-text">什么是ControlProperty和Driver?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用Driver和ControlProperty改进项目"><span class="toc-number">4.2.</span> <span class="toc-text">使用Driver和ControlProperty改进项目</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#处理RxCocoa"><span class="toc-number">5.</span> <span class="toc-text">处理RxCocoa</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RxCocoa中的Unowned与weak对比"><span class="toc-number">5.1.</span> <span class="toc-text">RxCocoa中的Unowned与weak对比</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#接下来去哪"><span class="toc-number">6.</span> <span class="toc-text">接下来去哪?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#UIButton"><span class="toc-number">6.1.</span> <span class="toc-text">UIButton</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UIActivityIndicatorView"><span class="toc-number">6.2.</span> <span class="toc-text">UIActivityIndicatorView</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UIProgressView"><span class="toc-number">6.3.</span> <span class="toc-text">UIProgressView</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#回顾一下RxSwift和RxCocoa的特性"><span class="toc-number">6.4.</span> <span class="toc-text">回顾一下RxSwift和RxCocoa的特性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#挑战"><span class="toc-number">7.</span> <span class="toc-text">挑战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#挑战-将摄氏度转换为华氏度"><span class="toc-number">7.1.</span> <span class="toc-text">挑战: 将摄氏度转换为华氏度</span></a></li></ol></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

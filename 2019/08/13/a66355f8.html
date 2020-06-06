@@ -1,0 +1,393 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RxSwift：8.Transforming Operators in Practice - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="在前一章中, 我们了解了RxSwift响应式编程背后的工作: map和flatMap的动态组合, 除此之外, 我们也可以使用这两个操作符来转换Observable对象, 但是在开发一个程序中, 很少,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">RxSwift：8.Transforming Operators in Practice</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">RxSwift：8.Transforming Operators in Practice</h1>
+        <div class="stuff">
+            <span>八月 13, 2019</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/RxSwift/">RxSwift</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>在前一章中, 我们了解了<strong>RxSwift</strong>响应式编程背后的工作: <strong>map</strong>和<strong>flatMap</strong>的动态组合, 除此之外, 我们也可以使用这两个操作符来转换<strong>Observable</strong>对象, 但是在开发一个程序中, 很少不使用这两个操作符, 当我们使用的越多, 经验就越丰富, 代码也就写的越短.</p>
+<p>我们已经在之前的实例中尝试过这些<strong>map</strong>操作符了, 现在我们准备来一个真实的项目, 就像我们之前的的几个章节实践一样, 我们将会有一个开始的项目, 其中包含了很多非<strong>Rx</strong>的代码, 我们会通过一系列任务来完成该项目的开发, 在这个过程中, 我们将会学习到更多关于<strong>map</strong>和<strong>flatMap</strong>的知识点, 以及我们应该在什么情况下去使用它们.</p>
+<blockquote>
+<p>注意: 在本章中, 你需要了解<strong>RxSwift</strong>转换操作符的基本知识, 如果你还没有读过第7章, 请先读一遍再回到本章.</p>
+</blockquote>
+<p>言归正传, 现在就让我们开始吧.</p>
+<h2 id="GitFeed"><a href="#GitFeed" class="headerlink" title="GitFeed"></a>GitFeed</h2><p>如果我们想做回到在<strong>RxSwift</strong>的远程仓库中有什么最新的事项, 那该怎么获取呢? 在本章中, 我们将会构建一个项目来获取这些事件.</p>
+<p>在本章中, 我们所需要做的工作就是现实<strong>GitHub</strong>仓库中的所有事件, 例如有最新的<strong>like</strong>, <strong>fork</strong>等等, 现在我们要开始使用<strong>GitFeed</strong>, 请打开本章的<strong>starter</strong>项目, 使用<strong>CocoaPods</strong>安装项目所需的所有依赖包, 并打开<strong>GitFeed.xcworkspace</strong>.</p>
+<p>该应用程序是一个简单的导航控制器项目, 具有一个<strong>UITableViewController</strong>, 我们将会在这里显示从<strong>GitHub</strong>的<strong>JSON API</strong>获取最新的动态.</p>
+<blockquote>
+<p>注意: 该项目被设置为只显示<a href="https://github.com/ReactiveX/RxSwift" target="_blank" rel="noopener">RxSwift</a>的动态, 如果你想改为其他仓库的话, 也可以自行更改.</p>
+</blockquote>
+<p>现在我们运行一下, 就会看到默认的显示:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%208/1.png" alt="图片"></p>
+<p>现在看上去好像没有什么太复杂的事情发生, 但很快我们就会遇到了.</p>
+<p>该项目有两个不同的需求:</p>
+<ul>
+<li>主要内容是我们需要获取<strong>GitHub</strong>的<strong>JSON API</strong>, 接收<strong>JSON</strong>的响应, 并将其转换为对象集合.</li>
+<li>其次是将我们获取到的对象持久化到磁盘, 并在从服务器中获取的动态事件之前将它们显示在列表当中.</li>
+</ul>
+<p>这两个需求是互补的, 并且可以让我们有更多机会去使用<strong>map</strong>和<strong>flatMap</strong>来建模.</p>
+<h2 id="从Web获取数据"><a href="#从Web获取数据" class="headerlink" title="从Web获取数据"></a>从Web获取数据</h2><p>如果你以前使用过<strong>URLSession</strong>并且对它的工作流程有大致的了解, 那是最好的, 如果没有也没关系, 这里我们将会使用<strong>URLSession</strong>进行网络通信, 将我们创建的<strong>webURL</strong>和参数的<strong>URLRequest</strong>发送到服务器, 然后我们就可以接受到服务器的响应了.</p>
+<p>根据我们目前对<strong>RxSwift</strong>的了解, 想<strong>URLSession</strong>类添加<strong>Rx</strong>的扩展并不难, 虽然我们会在后续的章节中会详细讲解, 但在本章中, 我们将会简单的使用<strong>RxCocoa</strong>已经封装好的东西来解决这个问题.</p>
+<p>如果我们查看一下<strong>GitFeed</strong>的<strong>Podfile</strong>文件, 你将会注意到我们导入了一个名为<strong>RxSwift</strong>和一个名为<strong>RxCocoa</strong>的库.</p>
+<p><strong>RxCocoa</strong>是一个基于<strong>RxSwift</strong>封装的一个库, 它实现了苹果平台许多<strong>API</strong>来帮助开发者来使用<strong>RxSwift</strong>进行开发, 为了让<strong>RxSwift</strong>本身尽可能的接近其他的<strong>Rx</strong>库(例如<strong>RxJS</strong>, <strong>RxJava</strong>和<strong>RxPython</strong>)之间共享的公共<strong>Rx API</strong>, 所有额外的功能都被抽离到<strong>RxCocoa</strong>中, 我们将会在后续的章节中讲解到.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%208/2.png" alt="图片"></p>
+<p>在本章中, 我们将会使用<strong>RxCocoa</strong>默认的<strong>URLSession</strong>扩展, 从<strong>GitHub</strong>API中快速获取<strong>JSON</strong>.</p>
+<h3 id="使用map构建网络请求"><a href="#使用map构建网络请求" class="headerlink" title="使用map构建网络请求"></a>使用<strong>map</strong>构建网络请求</h3><p>现在我们的第一个任务就是构建一个<strong>URLRequest</strong>, 并用它来与<strong>GitHub</strong>的服务器进行通信, 现在我们使用的是非响应式方式, 但不用担心, 在后面我们将会重构它.</p>
+<p>打开<strong>ActivityController.swift</strong>, 我们会在<code>viewDidLoad()</code> 配置<strong>UIViewController</strong>的<strong>UI</strong>, 当我们完成时, 将会调用<code>refresh()</code>方法, <code>refresh()</code>方法会依次调用<code>fetchEvents(repo:)</code>, 并将仓库名称<strong>ReactiveX/RxSwift</strong>传递过去.</p>
+<p>我们将会在<code>fetchEvents(repo:)</code>中添加本小节的大部分代码, 首先我们添加下面的内容:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> response = <span class="type">Observable</span>.from([repo])</span><br></pre></td></tr></table></figure>
+
+<p>现在我们要开始构建<strong>web</strong>请求, 首先我们需要一个简单的字符串, 也就是仓库的全名, 我们现在是从字符串入手, 而不是直接构建一个<strong>URLRequest</strong>, 这样子我们就可以灵活的使用<strong>Observable</strong>对象的输入, 这意味着当我们需要修改时并不会遇到很多的问题.</p>
+<p>接下来, 我们将拼接我们需要获取的<strong>URL</strong>地址:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.<span class="built_in">map</span> &#123; urlString -&gt; <span class="type">URL</span> <span class="keyword">in</span></span><br><span class="line">  <span class="keyword">return</span> <span class="type">URL</span>(string: <span class="string">"https://api.github.com/repos/\(urlString)/events"</span>)!</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里我们<strong>map</strong>操作符强制转换成<strong>URL</strong>, 然后我们将使用获得的<strong>URL</strong>来访问最新动态事件的<strong>JSON</strong>. 通常我们在这个闭包中, 不需要写成显式的输入和输出类型, 编译器会帮我们解决这些问题的.</p>
+<p>但是, 在有多个<strong>map</strong>或者是<strong>flatMap</strong>操作符链接在一起的时候, 这个时候我们就需要帮助一下编译器, 它有时候会在计算的过程中将正确的类型丢失了, 所以我们就需要显式的声明输出类型来帮助它.</p>
+<p>言归正传, 现在我们已经有一个<strong>URL</strong>了, 我们可以继续将它转换为一个完整的请求:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.<span class="built_in">map</span> &#123; url -&gt; <span class="type">URLRequest</span> <span class="keyword">in</span></span><br><span class="line">  <span class="keyword">return</span> <span class="type">URLRequest</span>(url: url)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个很简单, 就是通过<strong>map</strong>操作符将<strong>URL</strong>转换成<strong>URLRequest</strong>.</p>
+<p>现在我们已经通过链接多个<strong>map</strong>操作符来创建复杂的转换了:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%208/3.png" alt="图片"></p>
+<p>现在是时候使用<strong>flatMap</strong>来获取一些<strong>JSON</strong>数据了.</p>
+<h2 id="使用flatMap获取web响应"><a href="#使用flatMap获取web响应" class="headerlink" title="使用flatMap获取web响应"></a>使用flatMap获取web响应</h2><p>在前一章中, 我们学习了<strong>flatMap</strong>来将<strong>Observable</strong>元素展开, 它是一个非常常见的异步转换操作符, 让我们看看它是怎么工作的.</p>
+<p>当我们链接几个转换操作符的时候, 将会在同步中进行, 也就是所有转换都将处理完事件之后才会继续往下走:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%208/4.png" alt="图片"></p>
+<p>当我们链接一个<strong>flatMap</strong>的时候, 我们就可以实现不同的效果:</p>
+<ul>
+<li>我们可以立即将<strong>Observable</strong>对象发出的元素展开, 例如字符串或者是数字数组创建的<strong>Observable</strong>对象.</li>
+<li>我们将一些<strong>Observable</strong>对象的异步工作展开, 并将这些操作完成之后, 才让链接的部分继续往下工作.</li>
+</ul>
+<p>在代码中我们需要做的是:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%208/5.png" alt="图片"></p>
+<p>如果我们要做到图上这点的话, 我们需要将下面的代码添加到工程中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.flatMap &#123; request -&gt; <span class="type">Observable</span>&lt;(response: <span class="type">HTTPURLResponse</span>, data: <span class="type">Data</span>)&gt; <span class="keyword">in</span></span><br><span class="line">	<span class="keyword">return</span> <span class="type">URLSession</span>.shared.rx.response(request: request)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们在<strong>RxCocoa</strong>中使用了<strong>URLSession</strong>对象上的<code>response(request:)</code>方法, 该方法返回一个<code>Observable&lt;(response: HTTPURLResponse, data: Data)&gt;</code>, 当应用程序从<strong>web</strong>服务器接收到完整的响应时就会完成了.</p>
+<blockquote>
+<p>注意: 由于<code>response(request:)</code>在没有连接或<strong>URL</strong>格式不正确的情况可能会出错, 这会在后续的章节中讲解.</p>
+</blockquote>
+<p>在我们刚刚编写的代码中, <strong>flatMap</strong>允许我们发送<strong>web</strong>请求并接收服务器的响应, 不需要额外的协议或者代理, 非常的省事, 我们可以自由的混搭<strong>map</strong>和<strong>flatMap</strong>, 并实现像这种线性的异步代码.</p>
+<p>最后, 我们要允许对<strong>web</strong>请求的结果进行更多的订阅, 这个时候我们将会使用<code>share(replay:,scope:)</code>来共享<strong>Observable</strong>对象, 并将最后发出的事件保存在缓冲区中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.share(replay: <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这里与我们之前学过的第<strong>6</strong>章不同, 这次使用的是<code>share(replay:, scope:)</code>, 下面我们来讲解一下这有什么区别</p>
+<h2 id="share-和share-replay-1"><a href="#share-和share-replay-1" class="headerlink" title="share()和share(replay: 1)"></a>share()和share(replay: 1)</h2><p><code>URLSession.rx.response(request:)</code>将我们的请求发送到服务器, 在接收到响应后, 仅会返回一次数据的<code>.next</code>事件, 然后就结束.</p>
+<p>在这种情况下, 如果<strong>Observable</strong>对象完成了, 我们再次订阅它, 那么就会创建一个新的订阅, 并且会再次向服务器发送相同的请求,</p>
+<p>为了防止这种情况的出现, 我们可以使用<code>share(replay:scope:)</code>. 该操作符保存最近发出的<strong>replay</strong>元素缓冲区, 并将它们提供给任何新订阅的观察者们, 所以当我们的请求已经完成后, 又有一个新的订阅者订阅, 这个时候我们就可以通过<code>share(replay:scope:)</code>将缓存的元素发送出去.</p>
+<p>在这里, 我们有两种保存元素的方式: <code>.while</code>和<code>.forever</code>, 前者是将元素缓存, 直到没有订阅者为止, 而后者将永远的缓存元素, 虽然听起来不错, 但我们要考虑到内存管理.</p>
+<p>我们来看看这两种方式的解释:</p>
+<ul>
+<li><strong>.forever</strong>: 永远缓存网络的响应, 新订阅者会在这里获取到缓存中的响应.</li>
+<li><strong>.whileConnected</strong>: 缓冲后的网络请求将会保留到没有更多订阅者的时候就会丢弃, 如果有新的订阅者, 则会重新去请求.</li>
+</ul>
+<p>使用<code>share(replay: scope:)</code>的场景是, 在已经完成了的序列上使用它, 或者是在频繁被加载并多次被订阅的序列上使用它, 通过使用这种方式, 我们可以避免重新创建新的<strong>Observable</strong>对象.</p>
+<p>如果我们希望新的观察者自动接收最后发出的<strong>n</strong>个事件, 也可以使用这个方法.</p>
+<h2 id="转换响应内容"><a href="#转换响应内容" class="headerlink" title="转换响应内容"></a>转换响应内容</h2><p>在我们发出<strong>web</strong>请求之间, 我们做了很多的转换操作, 然后再接收到它的响应事件时, 我们也会做很多的操作, 这是必须的事情.</p>
+<p>仔细想想, <strong>URLSession</strong>累会返回一个<strong>Data</strong>对象, 而这个对象并不是我们可以直接就拿来使用的, 我们需要将它转换成我们需要的内容, 再去使用它.</p>
+<p>现在我们将创建响应<strong>Observable</strong>对象的订阅, 将订阅的作用就是将从<strong>web</strong>服务器获取的响应数据转换成我们需要的对象, 在我们刚刚编写的最后一段代码中换行后添加下面的新代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">response</span><br><span class="line">  .<span class="built_in">filter</span> &#123; response, <span class="number">_</span> <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">200</span>..&lt;<span class="number">300</span> ~= response.statusCode</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里我们使用<strong>filter</strong>操作符将所有的错误响应代码都过滤掉, 现在我们只允许状态码<strong>200~300</strong>通过, 这是<strong>HTTP</strong>请求中所有成功的状态码.</p>
+<blockquote>
+<p>注意: 如果你没了解过<strong>HTTP</strong>响应的代码, 可以到<strong>Wikipedia</strong>上看看: <a href="https://bit.ly/1fFATGL" target="_blank" rel="noopener">https://bit.ly/1fFATGL</a>.</p>
+</blockquote>
+<p>这里有一个”<strong>~=</strong>“的运算符, 它是知名度比较少的<strong>Swift</strong>操作符之一, 它是用来判断使用范围的, 作用是用来判断右边的值是否在左边的值范围内.</p>
+<p>还要注意一下, 我们是将错误代码忽略掉, 而不是让<strong>Observable</strong>对象发送错误事件. 这样子是为了让代码暂时保持简单, 在后续的章节中, 你会看到使用<strong>Rx</strong>是可以非常容易的处理错误.</p>
+<p>接收到的服务器响应数据通常都是<strong>JSON</strong>格式, 我们将会使用符合解析的结构来来尝试解码接收到的响应数据.</p>
+<p>在工程中打开<strong>Event.swift</strong>文件, 你将会看到一个模型结构, 它遵循<strong>Cadable</strong>协议.</p>
+<p>回到<strong>ActivityController.swift</strong>之后, 我们将刚刚的的代码后天添加一个<strong>map</strong>操作符:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.<span class="built_in">map</span> &#123; <span class="number">_</span>, data -&gt; [<span class="type">Event</span>] <span class="keyword">in</span></span><br><span class="line">  <span class="keyword">let</span> decoder = <span class="type">JSONDecoder</span>()</span><br><span class="line">  <span class="keyword">let</span> events = <span class="keyword">try</span>? decoder.decode([<span class="type">Event</span>].<span class="keyword">self</span>, from: data)</span><br><span class="line">  <span class="keyword">return</span> events ?? []</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们来解释一下这段代码:</p>
+<ul>
+<li>这里和我们之前做的不太一样, 我们将获取响应数据, 并不需要响应对象</li>
+<li>创建一个<strong>JSONDecoder</strong>, 并尝试将接收到的响应数据解码为一个<strong>Event</strong>数组</li>
+<li>如果解码失败的话则返回空数据, 否则则返回<strong>events</strong></li>
+</ul>
+<p>通过使用运算, <strong>RxSwift</strong>强制我们封装了这些离散的代码片段, 这有一个好处就是, 保证在编译时总是检查输入和输出的类型.</p>
+<p>我们现在差不多完成了对响应<strong>API</strong>的处理, 但是在刷新<strong>UI</strong>之前, 我们还有几件事情需要做, 首先我们需要过滤掉空的对象:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.<span class="built_in">filter</span> &#123; objects <span class="keyword">in</span></span><br><span class="line">  <span class="keyword">return</span> !objects.isEmpty</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这将会丢弃丢弃任何不包含<strong>event</strong>的任何响应, 虽然我们只获取了新的<strong>event</strong>, 但现在留意一下, 说不定哪天就会遇到相同的情况.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%208/6.png" alt="图片"></p>
+<p>最后, 我们是时候结束这个看起来很长的转换了, 并开始着手更新<strong>UI</strong>了, 为了简化代码, 我们将在一个单独的方法中编写更新<strong>UI</strong>的diam, 现在我们将下面的代码添加到最后一个操作符链:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.subscribe(onNext: &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] newEvents <span class="keyword">in</span></span><br><span class="line">  <span class="keyword">self</span>?.processEvents(newEvents)</span><br><span class="line">&#125;)</span><br><span class="line">.disposed(by: bag)</span><br></pre></td></tr></table></figure>
+
+<h3 id="处理响应"><a href="#处理响应" class="headerlink" title="处理响应"></a>处理响应</h3><p>现在我们该来添加一些额外的效果了, 我们从一个简单的字符串开始构建一个<strong>web</strong>请求, 然后发送到<strong>GitHub</strong>的服务器, 最后接收到一个响应.</p>
+<p>接下来我们将接收到的<strong>JSON</strong>数据转换成本地的<strong>Swift</strong>对象, 现在我们时候将这些数据展示给用户看了.</p>
+<p>在<strong>ActivityController</strong>中已经有一个名为<code>processEvents(_:)</code>的占位符方法了, 在此方法中, 我们将从存储的<strong>Event</strong>列表中获取最后的<strong>50</strong>个动态, 并将这些动态存储到<strong>UIViewController</strong>的<strong>Subject</strong>属性中, 因为我们还没有学习如何将序列与<strong>Subject</strong>绑定, 所以我们需要一步一步的来:</p>
+<p>将下面的代码添加到<code>processEvents()</code>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> updateEvents = newEvents + events.value</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> updateEvents.<span class="built_in">count</span> &gt; <span class="number">50</span> &#123;</span><br><span class="line">  updateEvents = [<span class="type">Event</span>](updateEvents.<span class="keyword">prefix</span>(upTo: <span class="number">50</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">events.accept(updateEvents)</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>events.accept(_:)</code>将新获取的<strong>Event</strong>追加到列表中, 此外我们将列表限制了最多<strong>50</strong>个对象, 这样我们就仅在<strong>UITableView</strong>中显示最新的动态.</p>
+<p>最后, 我们设置完城之后, 就准备更新<strong>UI</strong>了, 因为数据源已经包含在<strong>ActivityController</strong>中, 所以只需要刷新一下<strong>UITableView</strong>就可以显示数据了, 在<code>processEvents(_:)</code>的最后加上下面的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tableView.reloadData()</span><br></pre></td></tr></table></figure>
+
+<p>运行程序后, 我们就会看到来自<strong>GitHub</strong>最新的动态, 根据<strong>GitHub</strong>返回的数据的情况, 我们显示的数据可能是不同的.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%208/7.png" alt="图片"></p>
+<p>然后, 在某个时候, 应用程序会突然就崩溃了, 这时你会注意到<strong>Xcode</strong>中显示了一个提示信息:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%208/8.png" alt="图片"></p>
+<p>可惜的是, 我们还没有去学习如何使用<strong>RxSwift</strong>管理线程, 所以这里我们只能用比较笨的方式:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">DispatchQueue</span>.main.async &#123;</span><br><span class="line">  <span class="keyword">self</span>.tableView.reloadData()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于我们在<code>viewDidLoad()</code>中添加了一个<strong>UIRefreshControl</strong>空间, 所以我们可以尝试下拉<strong>UITableView</strong>, 拉到一定的距离时, <strong>UIRefreshControl</strong>就会调用<code>refresh()</code>方法, 并重新加载数据.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%208/9.png" alt="图片"></p>
+<p>这个时候我们会发现一个小问题, 就是加载完数据之后, <strong>UIRefreshControl</strong>不会消失, 这个需要我们在<code>self.tableView.reloadData()</code>下面添加多一行代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">self</span>.refreshControl?.endRefreshing()</span><br></pre></td></tr></table></figure>
+
+<p><code>endRefreshing()</code>方法将会隐藏掉<strong>UIRefreshControl</strong>并将<strong>UITableView</strong>回复到默认的状态.</p>
+<p>到目前为止, 我们已经可以很好的掌握如何以及如何使用<strong>map</strong>和<strong>flatMap</strong>, 在本章的其他地方, 我们将会对<strong>GitFeed</strong>相中进行一些收尾工作, 让该项目更加的完善.</p>
+<p>后面我们将会在本章末尾的挑战中, 完成一些<strong>Observable</strong>的转换任务.</p>
+<h2 id="将对象持久化到磁盘中"><a href="#将对象持久化到磁盘中" class="headerlink" title="将对象持久化到磁盘中"></a>将对象持久化到磁盘中</h2><p>在本节中, 我们将处理开头介绍中, 将对象持久化到磁盘, 因此当用户打开应用程序时, 他们就会立即看到您上次获取的事件.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%208/10.png" alt="图片"></p>
+<p>在这个项目中, 我们把<strong>Event</strong>持久化到<strong>.plist</strong>文件中, 要存储的对象比较少, 所以我们使用<strong>.plist</strong>文件就足够了, 在后续的教程中, 我们将会了解其他的持久化数据的方法.</p>
+<p>首先, 我们在<strong>ActivityController</strong>中添加一个新的属性:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">let</span> eventsFileURL = cachedFileURL(<span class="string">"events.json"</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>eventsFileURL</strong>是存储在设备磁盘上的文件<strong>URL</strong>, 现在我们该来实现<strong>cachedFileURL</strong>函数的时候了, 该函数获取一个<strong>URL</strong>, 然后我们就可以使用它来读写文件, 在<strong>UIViewController</strong>类</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">cachedFileURL</span><span class="params">(<span class="number">_</span> fileName: String)</span></span> -&gt; <span class="type">URL</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="type">FileManager</span></span><br><span class="line">    .<span class="keyword">default</span></span><br><span class="line">    .urls(<span class="keyword">for</span>: .cachesDirectory, <span class="keyword">in</span>: .allDomainsMask)</span><br><span class="line">    .first!</span><br><span class="line">    .appendingPathComponent(fileName)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在, 我们找到<code>processEvents(_:)</code>然后将下面的代码添加进去:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> encoder = <span class="type">JSONEncoder</span>()</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> eventsData = <span class="keyword">try</span>? encoder.encode(updateEvents) &#123;</span><br><span class="line">  <span class="keyword">try</span>? eventsData.write(to: eventsFileURL, options: .atomicWrite)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这段代码中, 我们尝试将<strong>updatedEvents</strong>编码成一个<strong>Data</strong>对象, 接下调用<code>write(to:options:)</code>来将编码后的数据保存在本地, 这个方法将会为其提供创建文件或覆盖现有文件的<strong>URL</strong>.</p>
+<p>这非常的简单, 我们在<code>processEvents(_:)</code>方法中添加了一个额外的事件, 现在我们将<strong>Event</strong>添加到磁盘感觉是没问题的, 那么在哪里可以添加代码来读取<strong>Event</strong>呢?</p>
+<p>我们只需要从文件中读取一次对象, 所以我们可以在<code>viewDidLoad()</code>中执行, 在这里, 我们将检查是否有存储的<strong>Event</strong>文件, 如果有就将内容加载到<strong>UITableView</strong>中.</p>
+<p>找到<code>viewDidLoad()</code>方法, 将下面的代码添加到<code>refresh()</code>的上方:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> decoder = <span class="type">JSONDecoder</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> eventsData = <span class="keyword">try</span>? <span class="type">Data</span>(contentsOf: eventsFileURL),</span><br><span class="line">  <span class="keyword">let</span> persistedEvents = <span class="keyword">try</span>? decoder.decode([<span class="type">Event</span>].<span class="keyword">self</span>, from: eventsData) &#123;</span><br><span class="line">  events.accept(persistedEvents)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码和我们之前将对象保存到磁盘的代码类似, 但作用是相反的.</p>
+<p>首先从磁盘读取数据, 然后我们创建了一个<strong>JSONDecoder</strong>, 并尝试将数据解码, 还原成一个<strong>Event</strong>数组, 如果能够获取到数据, 就使用<strong>events</strong>的<code>accept</code>方法, 将<strong>Event</strong>数组添加到名为<strong>events</strong>的<strong>BehaviorReplay</strong>中, 如果出错了则什么都不用理会.</p>
+<p>现在我们先将应用程序从模拟器或者是真机上删除, 然后运行应用程序, 等待数据加载完后, 我们让<strong>Xcode</strong>停止运行, 再次从模拟器或真机上打开应用程序, 我们就会看<strong>UITableView</strong>是会显示我们之前保存在本地的数据.</p>
+<h2 id="向URLRequest添加一个last-modified请求头"><a href="#向URLRequest添加一个last-modified请求头" class="headerlink" title="向URLRequest添加一个last-modified请求头"></a>向URLRequest添加一个last-modified请求头</h2><p>为了可以再次练习<strong>flatMap</strong>和<strong>map</strong>操作符, 我们将优化当前<strong>GitFeed</strong>的代码, 只请求它以前没有获取过的<strong>Event</strong>. 这样, 如果没有人<strong>fork</strong>或者是<strong>like</strong>, 那么我们就会收到服务器空的响应, 从而节省数据流量和处理的资源.</p>
+<p>首先我们在<strong>ActivityController</strong>中添加一个新属性, 它使用来用创建和覆盖存储文件的文件名:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">let</span> modifiedFileURL = cachedFileURL(<span class="string">"modified.txt"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这次我们不需要使用<strong>.plist</strong>文件了, 因为我们只需要存储一个字符串, 比如<strong>Mon, 30 May 2017 04:30:00 GMT</strong>. 这是一个名为<strong>Last-Modified</strong>的请求头, 当我们第一次请求的时候, 服务器会将它与<strong>JSON</strong>数据一起发送给我们, 我们只需要在下一个请求中将相同的请求头发回给服务器就可以了, 这样子我们就把它留给服务器来确定我们最后一次获取的是什么动态, 以及在这之后是否有新的动态.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%208/11.png" alt="图片"></p>
+<p>与前面对<strong>Events</strong>列表所做的一样, 我们将使用<strong>Subject</strong>来跟踪最后的动态, 将下面的代码添加到<strong>ActivityController</strong>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">let</span> lastModified = <span class="type">BehaviorRelay</span>&lt;<span class="type">String?</span>&gt;(value: <span class="literal">nil</span>)</span><br></pre></td></tr></table></figure>
+
+<p>然后找到<code>viewDidLoad()</code>方法, 并在调用<code>refresh()</code>方法的上面添加下面这段代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> lastModifiedString = <span class="keyword">try</span>? <span class="type">String</span>(contentsOf: modifiedFileURL, encoding: .utf8) &#123;</span><br><span class="line">  lastModified.accept(lastModifiedString)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果你以前将<strong>Last-Modified</strong>请求头的值存储到文件中, 那么我们就使用<code>Data(contentsOf:)</code>方法将其取出, 然后用该数据创建一个字符串, 最后再将这个字符串传递给<strong>lastModified</strong>.</p>
+<p>首先过滤掉错误的响应, 我们找到<code>fetchEvents()</code>方法, 并在该方法的底部添加第二个<strong>Observable</strong>的响应订阅:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">response</span><br><span class="line">  .<span class="built_in">filter</span> &#123; response, <span class="number">_</span> <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">200</span>..&lt;<span class="number">400</span> ~= response.statusCode</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来我们需要做的是:</p>
+<ul>
+<li>过滤所有不包含<strong>Last-Modified</strong>请求头的响应</li>
+<li>获取请求头的值</li>
+<li>再次过滤请求头的值, 值保留不为空的请求头</li>
+</ul>
+<p>这个看起来好像需要做很多工作, 或者你已经有计划使用一个<strong>filter</strong>, <strong>map</strong>或者更多的操作符, 但是在本小节中, 我们只使用一个<strong>flatMap</strong>来进行过滤.</p>
+<p>将下面的代码添加到刚刚的序列中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.flatMap &#123; response, <span class="number">_</span> -&gt; <span class="type">Observable</span>&lt;<span class="type">String</span>&gt; <span class="keyword">in</span></span><br><span class="line">  <span class="keyword">guard</span> <span class="keyword">let</span> value = response.allHeaderFields[<span class="string">"Last-Modified"</span>] <span class="keyword">as</span>? <span class="type">String</span> <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="type">Observable</span>.empty()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="type">Observable</span>.just(value)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们使用<strong>guard</strong>来检查响应是否包含一个名为<strong>Last-Modified</strong>的<strong>HTTP</strong>请求头, 该请求头的值是否可以转换为字符串.</p>
+<p>如果强制转换成功, 则返回一个的<code>Observable&lt;String&gt;</code>对象, 否则就返回一个<code>Observable.empty()</code>, 该对象不会发出任何元素:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%208/12.png" alt="图片"></p>
+<p>现在我们已经获得了请求头所需的值, 然后我们就可以更新<strong>lastModified</strong>属性并将该值存储到磁盘中, 将下面的代码添加到之前的<strong>flatMap</strong>操作符后面:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">.subscribe(onNext: &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] modifiedHeader <span class="keyword">in</span></span><br><span class="line">  <span class="keyword">guard</span> <span class="keyword">let</span> <span class="keyword">self</span> = <span class="keyword">self</span> <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line">  <span class="keyword">self</span>.lastModified.accept(modifiedHeader)</span><br><span class="line">  <span class="keyword">try</span>? modifiedHeader.write(to: <span class="keyword">self</span>.modifiedFileURL, atomically: <span class="literal">true</span>, encoding: .utf8)</span><br><span class="line">&#125;)</span><br><span class="line">.disposed(by: bag)</span><br></pre></td></tr></table></figure>
+
+<p>在<strong>Subscribe</strong>的<code>.onNext</code>闭包中, 我们使用<code>accept(_)</code>方法将最新的日期添加到<strong>lastModified</strong>中, 然后调用<code>modifiedHeader.write(to:, atomically:, encoding:)</code>将其保存到磁盘中, 最后将订阅添加到<strong>disposeBag</strong>.</p>
+<p>现在我们需要在向<strong>GitHub</strong>请求的<strong>API</strong>中使用该请求头的值, 找到<code>fetchEvents(repo:)</code>方法, 然后找到我们使用<strong>map</strong>操作符创建的<strong>URLRequest</strong>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.<span class="built_in">map</span> &#123; url -&gt; <span class="type">URLRequest</span> <span class="keyword">in</span></span><br><span class="line">  <span class="keyword">return</span> <span class="type">URLRequest</span>(url: url)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们使用下面的代码去替换它:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.<span class="built_in">map</span> &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] url -&gt; <span class="type">URLRequest</span> <span class="keyword">in</span></span><br><span class="line">  <span class="keyword">var</span> request = <span class="type">URLRequest</span>(url: url)</span><br><span class="line">  <span class="keyword">if</span> <span class="keyword">let</span> modifiedHeader = <span class="keyword">self</span>?.lastModified.value &#123;</span><br><span class="line">    request.addValue(modifiedHeader, forHTTPHeaderField: <span class="string">"Last-Modified"</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> request</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这段代码中, 我们像之前那样创建了一个<strong>URLRequest</strong>, 但是我们在这里增加了一个额外的条件:</p>
+<ul>
+<li>如果<strong>lastModified</strong>有值, 那么我们就将该值添加到请求头里, 无论是从本地文件加载的, 还是从服务器获取的</li>
+</ul>
+<p>这个额外的请求头会告诉<strong>GitHub</strong>, 我们对请求头的值之前的任何事件都不敢兴趣, 这样子做不仅可以节省流量, 而且不返回任何数据的请求也不会纳入<strong>GitHub API</strong>的请求限制.</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%208/13.png" alt="图片"></p>
+<p>在本章中, 我们了解了<strong>map</strong>和<strong>flatMap</strong>在不同场景下的使用示例, 虽然我们在搭建这个项目的时候, 仍然使用了一些比较笨的方法来处理主线程上的问题.</p>
+<p>但这个没有关系, 在<strong>challenge</strong>部分里, 我们将会给项目添加线程策略, 以便能够在后台线程上进行转换, 完成后并切换到主线程上更新<strong>UI</strong>, 这样子将会保证我们的应用程序可以快速的响应.</p>
+<p>在另一个挑战中, 你将会看到如何通过添加更多的<strong>map</strong>和<strong>flatMap</strong>操作符来轻松的扩展项目.</p>
+<p>一旦你完成了这些挑战, 那么你就可以进入下一章的学习当中, 在下一章里, 你将会学习到如何组合操作符来简化复杂的订阅.</p>
+<h2 id="挑战"><a href="#挑战" class="headerlink" title="挑战"></a>挑战</h2><h3 id="挑战-获取TopRepos并为GitFeed添加一些趣味"><a href="#挑战-获取TopRepos并为GitFeed添加一些趣味" class="headerlink" title="挑战: 获取TopRepos并为GitFeed添加一些趣味"></a>挑战: 获取TopRepos并为GitFeed添加一些趣味</h3><p>在这个挑战中, 我们将再进行一个<strong>map</strong>和<strong>flatMap</strong>练习, 我们将会给<strong>GitFeed</strong>添加一些有趣的东西:</p>
+<ul>
+<li>我们将发现一些热门的<strong>Swift</strong>库, 并在我们的项目中显示他们的动态, 而不是像之前那样只获取给定远程仓库的最新动态</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%208/14.png" alt="图片"></p>
+<p>这样子看起来, 好像工作量非常大, 但是最终你会发现其实就只有实际航代码而已.</p>
+<p>首先, 我们将<code>fetchEvents(repo:)</code>中的<code>let response = Observable.from([repo])</code>替换为下面的代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> response = <span class="type">Observable</span>.from([<span class="string">"https://api.github.com/search/repositories?q=language:swift&amp;per_page=5"</span>])</span><br></pre></td></tr></table></figure>
+
+<p>这个<strong>API</strong>的的作用是只返回前<strong>5</strong>页流行的<strong>Swift</strong>库, 由于在该<strong>API</strong>的调用中没有指定的其他的参数, <strong>GitHub</strong>将根据返回结果的<strong>综合评分(score)</strong>来进行排序, 这是<strong>GitHub</strong>比较隐秘的属性, 和搜索的结果都有关联.</p>
+<blockquote>
+<p>注意: <strong>GitHub JSON API</strong>是一个很好的工具, 我们可以随意获取我们想要的数据, 比如趋势库, 公告活动等等, 如果你感兴趣的话, 可以去看看: <a href="https://developer.github.com/v3/" target="_blank" rel="noopener">https://developer.github.com/v3/</a>.</p>
+</blockquote>
+<p>现在按照与本章完成相同的方式继续将字符串转换为<strong>URL</strong>, 并将该<strong>URL</strong>转换为<strong>URLRequest</strong>, 这个时候我们就不需要包含<strong>Last-Modified</strong>了.</p>
+<p>由于我们不需要使用请求头, 所以我们可以直接使用<code>URLSession.shared.rx.json(request: request)</code>来获取<strong>JSON</strong>数据, 而不是直接使用<strong>Data</strong>.</p>
+<p>现在最后一步就是, 我们将需要以<strong>[String: Any]</strong>字典的形式来获取<strong>JSON</strong>数据, 而我们所需要的数据则在一个名为<strong>items</strong>的<strong>key</strong>中.</p>
+<p>这里包含了用户名和仓库名, 例如<strong>icanzilb/EasyAnimation</strong>、<strong>realm/real -cocoa</strong>、<strong>ReactiveX/RxSwift</strong>等等。</p>
+<p>我们使用<strong>flatMap</strong>来进行转换, 假设这里有任何一个失败了, 那么就直接返回<code>Observable.empty()</code>, 否则则返回<code>Observable&lt;String&gt;</code>.</p>
+<p>现在我们可以将瞎现有的代码链接到<strong>flatMap</strong>中, 就像下面的代码一样:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> response = <span class="type">Observable</span>.from([<span class="string">"https://api.github.com/search/</span></span><br><span class="line"><span class="string">repositories?q=language:swift&amp;per_page=5"</span>])</span><br><span class="line"><span class="comment">// [map to convert to to URLRequest]</span></span><br><span class="line"><span class="comment">// [flatMap to fetch JSON back]</span></span><br><span class="line"><span class="comment">// [flatMap to convert JSON to list of repo names,</span></span><br><span class="line"><span class="comment">//   and create Observable from that list]</span></span><br><span class="line"><span class="comment">// [existing code follows below]</span></span><br><span class="line">.<span class="built_in">map</span> &#123; urlString -&gt; <span class="type">URL</span> <span class="keyword">in</span></span><br><span class="line">  <span class="keyword">return</span> <span class="type">URL</span>(string: <span class="string">"https://api.github.com/repos/\(urlString)/events?</span></span><br><span class="line"><span class="string">per_page=5"</span>)!</span><br><span class="line">&#125;</span><br><span class="line">.<span class="built_in">map</span> &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] url -&gt; <span class="type">URLRequest</span> <span class="keyword">in</span></span><br><span class="line">  <span class="keyword">var</span> request = <span class="type">URLRequest</span>(url: url)</span><br><span class="line">... &#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在, 每次启动应用程序或者是下拉<strong>UIRefreshControl</strong>, 我们就会得到<strong>Swift</strong>库里的前<strong>5</strong>页的列表.</p>
+<p>如果你觉得获取的东西太多了, 我们可以修改<strong>URL</strong>中的<code>per_page=5</code>来限制服务器的响应数据, 然后将这些动态保存在本地, 并用最新的数据来呈现给用户:</p>
+<p><img src="https://raw.githubusercontent.com/CainLuo/RxSwiftLearn/master/Chapter%208/15.png" alt="图片"></p>
+<p>如果你还想尝试更多, 可以按照日期和其他有趣的方式来组合对动态进行排序, 你还能想到其他的排序或者过滤方式吗?</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#GitFeed"><span class="toc-number">1.</span> <span class="toc-text">GitFeed</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从Web获取数据"><span class="toc-number">2.</span> <span class="toc-text">从Web获取数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用map构建网络请求"><span class="toc-number">2.1.</span> <span class="toc-text">使用map构建网络请求</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用flatMap获取web响应"><span class="toc-number">3.</span> <span class="toc-text">使用flatMap获取web响应</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#share-和share-replay-1"><span class="toc-number">4.</span> <span class="toc-text">share()和share(replay: 1)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#转换响应内容"><span class="toc-number">5.</span> <span class="toc-text">转换响应内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#处理响应"><span class="toc-number">5.1.</span> <span class="toc-text">处理响应</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#将对象持久化到磁盘中"><span class="toc-number">6.</span> <span class="toc-text">将对象持久化到磁盘中</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#向URLRequest添加一个last-modified请求头"><span class="toc-number">7.</span> <span class="toc-text">向URLRequest添加一个last-modified请求头</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#挑战"><span class="toc-number">8.</span> <span class="toc-text">挑战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#挑战-获取TopRepos并为GitFeed添加一些趣味"><span class="toc-number">8.1.</span> <span class="toc-text">挑战: 获取TopRepos并为GitFeed添加一些趣味</span></a></li></ol></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

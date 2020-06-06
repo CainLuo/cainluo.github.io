@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：iOS 11 新特性《高级拖放》 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="在这之前, 我们已经知道了iOS 11的拖拽功能, 也试过在单个视图里拖拽和跨视图的拖拽, 但好像和我们在看WWDC 2017里的不太一样, 这次我们把最后的一点讲完, 就是跨App的拖拽.
+如果没,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：iOS 11 新特性《高级拖放》</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：iOS 11 新特性《高级拖放》</h1>
+        <div class="stuff">
+            <span>十二月 12, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/iOS-11/">iOS 11</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>在这之前, 我们已经知道了<strong>iOS 11</strong>的拖拽功能, 也试过在单个视图里拖拽和跨视图的拖拽, 但好像和我们在看<strong>WWDC 2017</strong>里的不太一样, 这次我们把最后的一点讲完, 就是跨App的拖拽.</p>
+<p>如果没有了解过之前的文章, 那么可以去看看之前的文章:</p>
+<p><a href="https://cainluo.github.io/2017/11/06/5d36fc3f.html">玩转iOS开发：iOS 11 新特性《UIKit新特性的基本认识》</a><br><a href="https://cainluo.github.io/2017/11/10/40e1e32f.html">玩转iOS开发：iOS 11 新特性《UICollectionView的拖拽》</a></p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="UIDragInteractionDelegate和UIDropInteractionDelegate代理"><a href="#UIDragInteractionDelegate和UIDropInteractionDelegate代理" class="headerlink" title="UIDragInteractionDelegate和UIDropInteractionDelegate代理"></a>UIDragInteractionDelegate和UIDropInteractionDelegate代理</h2><p>这次重点说的是两个代理协议<strong>UIDragInteractionDelegate</strong>和<strong>UIDropInteractionDelegate</strong>.</p>
+<p>这两个协议里分别定义了拖放的行为, 它们的核心功能跟<strong>UICollectionViewDragDelegate</strong>和<strong>UICollectionViewDropDelegate</strong>类似, 只不过提供了更多的自定义选项, 特别是在动画和安全性方面.</p>
+<p>当在拖动的源<strong>App</strong>开始拖动, 就会生成一个拖动的会话, 用来监督拖动的对象, 拖动到目标的<strong>App</strong>时, 就会生成一个放置的会话, 而<strong>UIDragSession</strong>和<strong>UIDropSession</strong>的目的是为拖放代理所提供的拖动对象的信心, 无论是实际的数据还是它们的位置都有.</p>
+<p>为了可以接受拖动, 我们需要在源App里有一个<strong>UIDragInteraction</strong>并且配置好一个<strong>UIDragInteractionDelegate</strong>, 这时候我们在视图上拖动对象时, 委托就会返回一个或者多个的<strong>UIDragItem</strong>对象, 每个<strong>UIDragItem</strong>都会使用<strong>NSItemProvider</strong>来共享被拖动的对象.</p>
+<p>而在拖放时, 我们就需要有一个包含<strong>UIDropInteraction</strong>的视图, 它会咨询对应的<strong>UIDropInteractionDelegate</strong>是否可以处理拖放操作, 最后代理可以从拖放会话中拿到<strong>UIDragItem</strong>对象, 并使用<strong>NSItemProvider</strong>来加载对应的数据.</p>
+<h2 id="创建源应用程序"><a href="#创建源应用程序" class="headerlink" title="创建源应用程序"></a>创建源应用程序</h2><p>刚刚就把大致的思路讲完了, 现在我们来直接捣鼓一下源<strong>App</strong>.</p>
+<h3 id="创建源应用程序工程"><a href="#创建源应用程序工程" class="headerlink" title="创建源应用程序工程"></a>创建源应用程序工程</h3><p>这里我们创建一个源程序, 配置一个<strong>UIDragInteraction</strong>并且实现<strong>UIDragInteractionDelegate</strong>协议.</p>
+<p>UI界面这里就不展示了, 就一个<strong>UILabel</strong>和一个<strong>UIImageView</strong>, 配置好<strong>UI</strong>之后, 我们来捣鼓其他东西:</p>
+<h3 id="配置UIDragInteraction"><a href="#配置UIDragInteraction" class="headerlink" title="配置UIDragInteraction"></a>配置UIDragInteraction</h3><p>在启动拖放之前, 我们需要把<strong>UIImageView</strong>的某个属性<strong>userInteractionEnabled</strong>设置为<strong>YES</strong>.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.imageView.userInteractionEnabled = YES;</span><br></pre></td></tr></table></figure>
+
+<p>添加<strong>UIDragInteraction</strong>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">UIDragInteraction *dragInteraction = [[UIDragInteraction alloc] initWithDelegate:self];</span><br><span class="line">    </span><br><span class="line">[self.view addInteraction:dragInteraction];</span><br></pre></td></tr></table></figure>
+
+<p>实现数据共享的代理方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- (NSArray&lt;UIDragItem *&gt; *)dragInteraction:(UIDragInteraction *)interaction</span><br><span class="line">                  itemsForBeginningSession:(id&lt;UIDragSession&gt;)session &#123;</span><br><span class="line">    </span><br><span class="line">    if (!self.imageModel) &#123;</span><br><span class="line">        return @[];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    NSItemProvider *itemProvider = [[NSItemProvider alloc] initWithObject:self.imageModel];</span><br><span class="line">    </span><br><span class="line">    UIDragItem *dragItem = [[UIDragItem alloc] initWithItemProvider:itemProvider];</span><br><span class="line">    </span><br><span class="line">    return @[dragItem];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>设置一下拖动时预览的页面:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">- (UITargetedDragPreview *)dragInteraction:(UIDragInteraction *)interaction</span><br><span class="line">                     previewForLiftingItem:(UIDragItem *)item</span><br><span class="line">                                   session:(id&lt;UIDragSession&gt;)session &#123;</span><br><span class="line">    </span><br><span class="line">    UIView *dragView = interaction.view;</span><br><span class="line">    </span><br><span class="line">    if (!dragView &amp;&amp; !self.imageModel) &#123;</span><br><span class="line">        </span><br><span class="line">        return [[UITargetedDragPreview alloc] initWithView:interaction.view];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    ImageDragView *imageDragView = [[ImageDragView alloc] initWithTitle:self.imageModel.title</span><br><span class="line">                                                                  image:self.imageModel.image];</span><br><span class="line">    </span><br><span class="line">    UIDragPreviewParameters *dragPreviewParameters = [[UIDragPreviewParameters alloc] init];</span><br><span class="line">    </span><br><span class="line">    dragPreviewParameters.visiblePath = [UIBezierPath bezierPathWithRoundedRect:imageDragView.bounds</span><br><span class="line">                                                                   cornerRadius:20];</span><br><span class="line">    </span><br><span class="line">    CGPoint dragPoint = [session locationInView:dragView];</span><br><span class="line">    </span><br><span class="line">    UIDragPreviewTarget *dragPreviewTarget = [[UIDragPreviewTarget alloc] initWithContainer:dragView</span><br><span class="line">                                                                                     center:dragPoint];</span><br><span class="line">    </span><br><span class="line">    return [[UITargetedDragPreview alloc] initWithView:imageDragView</span><br><span class="line">                                            parameters:dragPreviewParameters</span><br><span class="line">                                                target:dragPreviewTarget];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (UITargetedDragPreview *)dragInteraction:(UIDragInteraction *)interaction</span><br><span class="line">                  previewForCancellingItem:(UIDragItem *)item</span><br><span class="line">                               withDefault:(UITargetedDragPreview *)defaultPreview &#123;</span><br><span class="line">    </span><br><span class="line">    UIView *superView = self.imageView.superview;</span><br><span class="line">    </span><br><span class="line">    if (!superView) &#123;</span><br><span class="line">        </span><br><span class="line">        return defaultPreview;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    UIDragPreviewTarget *dragPreviewTarget = [[UIDragPreviewTarget alloc] initWithContainer:superView</span><br><span class="line">                                                                                     center:self.imageView.center];</span><br><span class="line">    </span><br><span class="line">    return [[UITargetedDragPreview alloc] initWithView:self.imageView</span><br><span class="line">                                            parameters:[[UIDragPreviewParameters alloc] init]</span><br><span class="line">                                                target:dragPreviewTarget];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后, 我们来设置一下是否要限制这个拖放会话, 如果设置为YES, 系统就会取消掉我们的拖放会话, 所以这里我们要设置为<strong>NO</strong>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)dragInteraction:(UIDragInteraction *)interaction</span><br><span class="line">sessionIsRestrictedToDraggingApplication:(id&lt;UIDragSession&gt;)session &#123;</span><br><span class="line">    </span><br><span class="line">    return NO;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样子源程序就基本上可以了.</p>
+<h2 id="创建目标App"><a href="#创建目标App" class="headerlink" title="创建目标App"></a>创建目标App</h2><p>在目标<strong>App</strong>里, 我们也有对应的内容, 但多了一个清除内容的按钮, 这里我们也要设置一下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    </span><br><span class="line">    self.clearButton.springLoaded = YES;</span><br><span class="line">    </span><br><span class="line">    UIDropInteraction *dropInteraction = [[UIDropInteraction alloc] initWithDelegate:self];</span><br><span class="line">    </span><br><span class="line">    [self.view addInteraction:dropInteraction];</span><br><span class="line">    </span><br><span class="line">    [self display];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (IBAction)clearAction:(UIButton *)sender &#123;</span><br><span class="line">    </span><br><span class="line">    self.imageModel = nil;</span><br><span class="line">    self.titleLabel.text = @&quot;&quot;;</span><br><span class="line">    </span><br><span class="line">    [self display];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)display &#123;</span><br><span class="line">    </span><br><span class="line">    if (!self.imageModel) &#123;</span><br><span class="line">     </span><br><span class="line">        self.imageView.image = nil;</span><br><span class="line">        self.titleLabel.text = @&quot;&quot;;</span><br><span class="line">        </span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    self.imageView.image = self.imageModel.image;</span><br><span class="line">    self.titleLabel.text = self.imageModel.title;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>做好前期设置之后, 我们就需要去实现对应的<strong>UIDropInteractionDelegate</strong>的代理方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)dropInteraction:(UIDropInteraction *)interaction</span><br><span class="line">       canHandleSession:(id&lt;UIDropSession&gt;)session &#123;</span><br><span class="line">    </span><br><span class="line">    return [session canLoadObjectsOfClass:[ImageModel class]];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (UIDropProposal *)dropInteraction:(UIDropInteraction *)interaction</span><br><span class="line">                   sessionDidUpdate:(id&lt;UIDropSession&gt;)session &#123;</span><br><span class="line">    </span><br><span class="line">    return [[UIDropProposal alloc] initWithDropOperation:UIDropOperationCopy];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)dropInteraction:(UIDropInteraction *)interaction</span><br><span class="line">            performDrop:(id&lt;UIDropSession&gt;)session &#123;</span><br><span class="line">    </span><br><span class="line">    UIDragItem *dropItem = session.items.lastObject;</span><br><span class="line">    </span><br><span class="line">    if (!dropItem) &#123;</span><br><span class="line">        </span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    session.progressIndicatorStyle = UIDropSessionProgressIndicatorStyleNone;</span><br><span class="line">    </span><br><span class="line">    self.progress = [dropItem.itemProvider loadObjectOfClass:[ImageModel class]</span><br><span class="line">                                           completionHandler:^(id&lt;NSItemProviderReading&gt;  _Nullable object, NSError * _Nullable error) &#123;</span><br><span class="line">        </span><br><span class="line">                                               self.imageModel = (ImageModel *)object;</span><br><span class="line"></span><br><span class="line">                                               if (!self.imageModel) &#123;</span><br><span class="line">                                                   </span><br><span class="line">                                                   return;</span><br><span class="line">                                               &#125;</span><br><span class="line">                                               </span><br><span class="line">                                               dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">                                                   </span><br><span class="line">                                                   [self display];</span><br><span class="line">                                                   </span><br><span class="line">                                                   [self.loadingView removeFromSuperview];</span><br><span class="line">                                                   self.loadingView = nil;</span><br><span class="line">                                               &#125;);</span><br><span class="line">                                           &#125;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)dropInteraction:(UIDropInteraction *)interaction</span><br><span class="line">                   item:(UIDragItem *)item</span><br><span class="line">willAnimateDropWithAnimator:(id&lt;UIDragAnimating&gt;)animator &#123;</span><br><span class="line">    </span><br><span class="line">    NSProgress *progress    = self.progress;</span><br><span class="line">    UIView *interactionView = interaction.view;</span><br><span class="line">    </span><br><span class="line">    if (!interactionView || !progress) &#123;</span><br><span class="line">        </span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    self.loadingView = [[LoadingView alloc] initWithFrame:interactionView.bounds</span><br><span class="line">                                                 progress:progress];</span><br><span class="line">    </span><br><span class="line">    [interactionView addSubview:self.loadingView];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里为了更好的用户体验, 添加了一个加载进度的视图<strong>LoadingView</strong>, 代码的话, 可以自行到工程里寻找.</p>
+<h2 id="配置公共数据模型"><a href="#配置公共数据模型" class="headerlink" title="配置公共数据模型"></a>配置公共数据模型</h2><p>刚刚我们已经把源应用和目标应用都写好了, 这里我们需要重点提一下这个共享的数据模型<strong>ImageModel</strong>.</p>
+<p>在这里面, 我们要去遵守<strong>NSItemProviderReading</strong>, <strong>NSItemProviderWriting</strong>和<strong>NSCoding</strong>三个协议.</p>
+<p>并且对应的去实现它们各自的方法:</p>
+<p><strong>NSCoding</strong>协议方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#pragma mark - NSCoding</span><br><span class="line">- (instancetype)initWithCoder:(NSCoder *)aDecoder &#123;</span><br><span class="line">    </span><br><span class="line">    UIImage *image  = [UIImage imageWithData:[aDecoder decodeObjectForKey:@&quot;image&quot;]];</span><br><span class="line">    NSString *title = [aDecoder decodeObjectForKey:@&quot;title&quot;];</span><br><span class="line"></span><br><span class="line">    return [self initWithTitle:title image:image];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)encodeWithCoder:(NSCoder *)aCoder &#123;</span><br><span class="line">    </span><br><span class="line">    [aCoder encodeObject:UIImagePNGRepresentation(self.image)</span><br><span class="line">                  forKey:@&quot;image&quot;];</span><br><span class="line">    [aCoder encodeObject:self.title</span><br><span class="line">                  forKey:@&quot;title&quot;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>NSItemProviderReading</strong>协议方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">+ (nullable instancetype)objectWithItemProviderData:(NSData *)data</span><br><span class="line">                                     typeIdentifier:(NSString *)typeIdentifier</span><br><span class="line">                                              error:(NSError **)outError &#123;</span><br><span class="line">    if ([typeIdentifier isEqualToString:IMAGE_TYPE]) &#123;</span><br><span class="line">        </span><br><span class="line">        ImageModel *imageModel = [NSKeyedUnarchiver unarchiveObjectWithData:data];</span><br><span class="line">        </span><br><span class="line">        return [[self alloc] initWithImageModel:imageModel];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (NSArray&lt;NSString *&gt; *)readableTypeIdentifiersForItemProvider &#123;</span><br><span class="line">    </span><br><span class="line">    return @[IMAGE_TYPE];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>NSItemProviderWriting</strong>协议方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">- (nullable NSProgress *)loadDataWithTypeIdentifier:(NSString *)typeIdentifier</span><br><span class="line">                   forItemProviderCompletionHandler:(void (^)(NSData * _Nullable data, NSError * _Nullable error))completionHandler &#123;</span><br><span class="line">    </span><br><span class="line">    if ([typeIdentifier isEqualToString:(__bridge NSString *)kUTTypePNG]) &#123;</span><br><span class="line">        </span><br><span class="line">        NSData *imageData = UIImagePNGRepresentation(self.image);</span><br><span class="line">        </span><br><span class="line">        if (imageData) &#123;</span><br><span class="line">            </span><br><span class="line">            completionHandler(imageData, nil);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            </span><br><span class="line">            completionHandler(nil, nil);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else if ([typeIdentifier isEqualToString:(__bridge NSString *)kUTTypePlainText]) &#123;</span><br><span class="line">        </span><br><span class="line">        completionHandler([self.title dataUsingEncoding:NSUTF8StringEncoding], nil);</span><br><span class="line">        </span><br><span class="line">    &#125; else if ([typeIdentifier isEqualToString:IMAGE_TYPE]) &#123;</span><br><span class="line">        </span><br><span class="line">        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self];</span><br><span class="line">        </span><br><span class="line">        completionHandler(data, nil);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (NSArray&lt;NSString *&gt; *)writableTypeIdentifiersForItemProvider &#123;</span><br><span class="line">    </span><br><span class="line">    return @[IMAGE_TYPE, (__bridge NSString *)kUTTypePNG, (__bridge NSString *)kUTTypePlainText];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样子就可以了, 在<strong>Demo</strong>里我并没有把这个公共的数据模型打包成<strong>Framework</strong>, 但如果是在实际项目中, 建议打包好成对应的<strong>Framework</strong>.</p>
+<blockquote>
+<p>PS: <strong>kUTTypePNG</strong>和<strong>kUTTypePlainText</strong>是属于<strong>MobileCoreServices</strong>框架里的, 并且是<strong>CFString</strong>类型, 如果要使用, 记得先导入<code>&lt;MobileCoreServices/MobileCoreServices.h&gt;</code>并且转换成<strong>NSString</strong>类型, 这些都是<strong>iOS</strong>系统所提供的, 还有更多的类型可以到<strong>UICoreTypes.h</strong>头文件里查看.</p>
+</blockquote>
+<h2 id="最终效果"><a href="#最终效果" class="headerlink" title="最终效果"></a>最终效果</h2><p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/5.AdvancedDragAndDrop/Images/1.png" alt="1"></p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-11-Characteristic/master/5.AdvancedDragAndDrop/Images/2.png" alt="2"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>拖放的内容讲到这里基本上就已经结束了, 但别以为就完了咯, 还有很多东西需要我们去学习下面就放几个视频地址给大家了解更多:</p>
+<ul>
+<li>介绍拖放: <a href="https://developer.apple.com/videos/play/wwdc2017/203/" target="_blank" rel="noopener">apple.co/2vO46Q4</a></li>
+<li>掌握拖放: <a href="https://developer.apple.com/videos/play/wwdc2017/213/" target="_blank" rel="noopener">apple.co/2vOhvYA</a></li>
+<li>拖放数据传输: <a href="https://developer.apple.com/videos/play/wwdc2017/227/" target="_blank" rel="noopener">apple.co/2tszCCm</a></li>
+</ul>
+<p>第三方的视频:</p>
+<ul>
+<li>多个数据表示和自定义视图: <a href="https://videos.raywenderlich.com/screencasts/839-ios-11-drag-and-drop-with-multiple-data-representations-and-custom-views" target="_blank" rel="noopener">bit.ly/2eGhceO</a></li>
+<li><strong>UITableView</strong>和<strong>UICollectionView</strong>: <a href="https://videos.raywenderlich.com/screencasts/826-ios-11-drag-and-drop-with-table-and-collection-views" target="_blank" rel="noopener">bit.ly/2unOBAH</a></li>
+</ul>
+<p>前面我们写了很多关于<strong>com.xxx.xxx</strong>的东西, 其实叫做<strong>UTI</strong>, 下面有两篇关于<strong>UTI</strong>的官方文章:</p>
+<ul>
+<li><a href="https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/understanding_utis/understand_utis_conc/understand_utis_conc.html" target="_blank" rel="noopener">UTI</a></li>
+<li><a href="https://developer.apple.com/library/content/documentation/Miscellaneous/Reference/UTIRef/Introduction/Introduction.html" target="_blank" rel="noopener">UTIs</a></li>
+</ul>
+<h2 id="工程"><a href="#工程" class="headerlink" title="工程"></a>工程</h2><p><a href="https://github.com/cainluo/iOS-11-Characteristic/tree/master/5.AdvancedDragAndDrop" target="_blank" rel="noopener">https://github.com/cainluo/iOS-11-Characteristic/tree/master/5.AdvancedDragAndDrop</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#UIDragInteractionDelegate和UIDropInteractionDelegate代理"><span class="toc-number">1.</span> <span class="toc-text">UIDragInteractionDelegate和UIDropInteractionDelegate代理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建源应用程序"><span class="toc-number">2.</span> <span class="toc-text">创建源应用程序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建源应用程序工程"><span class="toc-number">2.1.</span> <span class="toc-text">创建源应用程序工程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置UIDragInteraction"><span class="toc-number">2.2.</span> <span class="toc-text">配置UIDragInteraction</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建目标App"><span class="toc-number">3.</span> <span class="toc-text">创建目标App</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置公共数据模型"><span class="toc-number">4.</span> <span class="toc-text">配置公共数据模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最终效果"><span class="toc-number">5.</span> <span class="toc-text">最终效果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程"><span class="toc-number">7.</span> <span class="toc-text">工程</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

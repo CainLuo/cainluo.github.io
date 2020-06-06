@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玩转iOS开发：Xcode 9.0使用第三方库以及打包Framework的问题 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="今天想测试一些第三方的库, 打算做个Demo的, 但发现死活运行不了, 一直给我挂掉, 我就纳闷了, 于是乎就有了这篇文章.
+关于怎么打包Framework可以去看看之前的两篇文章玩转iOS开发：A,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">玩转iOS开发：Xcode 9.0使用第三方库以及打包Framework的问题</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">玩转iOS开发：Xcode 9.0使用第三方库以及打包Framework的问题</h1>
+        <div class="stuff">
+            <span>九月 26, 2017</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/Xcode/">Xcode</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>今天想测试一些第三方的库, 打算做个<strong>Demo</strong>的, 但发现死活运行不了, 一直给我挂掉, 我就纳闷了, 于是乎就有了这篇文章.</p>
+<p>关于怎么打包<strong>Framework</strong>可以去看看之前的两篇文章<a href="https://cainluo.github.io/2016/08/22/56036f72.html">玩转iOS开发：Aggregate脚本版本《模拟器与真机静态Framework合成教程》</a>, <a href="https://cainluo.github.io/2016/08/22/9a109611.html">玩转iOS开发：非脚本版本《模拟器与真机静态Framework合成教程》</a>, 这里就不多做解释了.</p>
+<p><strong>转载声明:如需要转载该文章, 请联系作者, 并且注明出处, 以及不能擅自修改本文.</strong></p>
+<h2 id="Xcode-9拖入文件的问题"><a href="#Xcode-9拖入文件的问题" class="headerlink" title="Xcode 9拖入文件的问题"></a>Xcode 9拖入文件的问题</h2><p>这里使用<strong>Masonry</strong>作为示范, 新建一个工程, 拖入进去:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-Project-Example/master/Xcode/Project/Images/1.png" alt="1"></p>
+<p>然后在<strong>Project-&gt;Build Settings-&gt;Other Linker Flags</strong>添加<strong>-ObjC</strong></p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-Project-Example/master/Xcode/Project/Images/2.png" alt="2"></p>
+<p>然后运行.</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-Project-Example/master/Xcode/Project/Images/3.png" alt="3"></p>
+<p>发现挂掉了, 还报了一个<code>-[UIView mas_makeConstraints:] unrecognized selector sent to instance</code>错误.</p>
+<p>不应该啊, 我已经添加了<strong>-ObjC</strong>, 应该是可以的, 找了半天, 终于找到问题了, <strong>Project-&gt;Build Phases-&gt;Compile Sources</strong>居然没有自动链接<strong>Masonry</strong>的<strong>.m</strong>文件:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-Project-Example/master/Xcode/Project/Images/4.png" alt="4"></p>
+<p>既然没有链接, 那就手动添加吧:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-Project-Example/master/Xcode/Project/Images/5.png" alt="5"></p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-Project-Example/master/Xcode/Project/Images/6.png" alt="6"></p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-Project-Example/master/Xcode/Project/Images/7.png" alt="7"></p>
+<p>添加完成了, 再运行, 哦了~运行成功:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-Project-Example/master/Xcode/Project/Images/8.png" alt="8"></p>
+<h2 id="Xcode-9-0打包Framework的问题"><a href="#Xcode-9-0打包Framework的问题" class="headerlink" title="Xcode 9.0打包Framework的问题"></a>Xcode 9.0打包Framework的问题</h2><p>用<strong>Xcode 9.0</strong>创建一个新工程, 添加<strong>Masonry</strong>的文件进去: </p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-Project-Example/master/Xcode/Project/Images/9.png" alt="9"></p>
+<p>修改最低支持的<strong>iOS</strong>版本:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-Project-Example/master/Xcode/Project/Images/10.png" alt="10"></p>
+<p>然后移动可查看的<strong>.h</strong>头文件, 卧槽…居然没有链接<strong>.h</strong>文件, 那就自己手动添加吧:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-Project-Example/master/Xcode/Project/Images/11.png" alt="11"></p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-Project-Example/master/Xcode/Project/Images/12.png" alt="12"></p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-Project-Example/master/Xcode/Project/Images/13.png" alt="13"></p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-Project-Example/master/Xcode/Project/Images/14.png" alt="14"></p>
+<p>添加好之后, 就运行一下, 发现正常啦:</p>
+<p><img src="https://raw.githubusercontent.com/cainluo/iOS-Project-Example/master/Xcode/Project/Images/5.png" alt="15"></p>
+<h2 id="工程地址"><a href="#工程地址" class="headerlink" title="工程地址"></a>工程地址</h2><p>项目地址: <a href="https://github.com/cainluo/iOS-Project-Example/tree/master/Xcode" target="_blank" rel="noopener">https://github.com/cainluo/iOS-Project-Example/tree/master/Xcode</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Xcode-9拖入文件的问题"><span class="toc-number">1.</span> <span class="toc-text">Xcode 9拖入文件的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Xcode-9-0打包Framework的问题"><span class="toc-number">2.</span> <span class="toc-text">Xcode 9.0打包Framework的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程地址"><span class="toc-number">3.</span> <span class="toc-text">工程地址</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>
