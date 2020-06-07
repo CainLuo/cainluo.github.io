@@ -1,0 +1,299 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>UICollectionView自定义布局教程：Pinterest - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="建立一个受Pinterest应用启发的UICollectionView自定义布局，并学习如何缓存属性和动态调整单元格大小。
+下载资料
+
+更新说明：Andriy Kharchyshyn已针对Xcode,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">UICollectionView自定义布局教程：Pinterest</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">UICollectionView自定义布局教程：Pinterest</h1>
+        <div class="stuff">
+            <span>六月 07, 2020</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/UICollectionView/">UICollectionView</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>建立一个受<code>Pinterest</code>应用启发的<code>UICollectionView</code>自定义布局，并学习如何缓存属性和动态调整单元格大小。</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2019/09/UICollectionView-Custom-Layout.zip" target="_blank" rel="noopener">下载资料</a></p>
+<blockquote>
+<p>更新说明：<code>Andriy Kharchyshyn</code>已针对<code>Xcode 11</code>，<code>Swift 5</code>和<code>iOS 13</code>更新了本教程。<code>ParideBroggi</code>撰写了原文。</p>
+</blockquote>
+<p><code>iOS 6</code>中引入的<code>UICollectionView</code>已成为iOS开发人员中最受欢迎的UI元素之一。 如此吸引人的是数据层和表示层之间的分隔，这取决于一个单独的对象来处理布局。 然后，布局负责确定视图的位置和视觉属性。</p>
+<p>您可能使用了默认流程布局，即UIKit提供的布局类。 这是基本的网格布局，带有一些自定义设置。</p>
+<p>但是，您也可以实现自己的自定义布局，以任意方式排列视图。 这使集合视图变得灵活而强大。</p>
+<p>在此<code>UICollectionView</code>自定义布局教程中，您将创建一个受流行的Pinterest应用启发的布局。</p>
+<p>在此过程中，您将学到：</p>
+<ul>
+<li>关于自定义布局。</li>
+<li>如何计算和缓存布局属性。</li>
+<li>如何处理动态大小的单元格。</li>
+</ul>
+<blockquote>
+<p>注意：本教程需要<code>UICollectionView</code>的基本知识。 如果您不熟悉它，可以在我们的书面或视频教程系列中了解更多信息：</p>
+<ul>
+<li><a href="http://www.raywenderlich.com/78550/beginning-ios-collection-views-swift-part-1" target="_blank" rel="noopener">UICollectionView Tutorial Part 1: Getting Started</a></li>
+<li><a href="http://www.raywenderlich.com/78551/beginning-ios-collection-views-swift-part-2" target="_blank" rel="noopener">UICollectionView Tutorial Part 2: Reusable Views and Cell Selection</a></li>
+<li><a href="http://www.raywenderlich.com/93980/video-tutorial-collection-views-part-0-introduction" target="_blank" rel="noopener">Video Tutorial: Collection Views Part 0: Introduction</a></li>
+</ul>
+</blockquote>
+<p>准备好欣赏收藏视图了吗？ 继续阅读！</p>
+<h2 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h2><p>通过单击本教程顶部或底部的下载材料按钮，下载项目材料。 在Xcode中打开启动项目。</p>
+<p>生成并运行项目。 您会看到以下内容：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2017/08/pinterest-layout-updated-initial.png" alt="图片"></p>
+<p>该应用程序展示了<code>RWDevCon</code>的照片库。您可以浏览照片，并查看与会人员在会议上的乐趣。</p>
+<p>画廊使用具有标准流程布局的集合视图。乍一看，看起来还可以。但是您当然可以改善布局设计。</p>
+<p>照片没有完全填满内容区域。长字幕会被截断。用户体验是无聊的和静态的，因为所有单元的大小都相同。</p>
+<p>您可以使用自定义布局来改进设计，其中每个单元都可以自由调整为完全适合其需求的大小。</p>
+<h2 id="创建自定义集合视图布局"><a href="#创建自定义集合视图布局" class="headerlink" title="创建自定义集合视图布局"></a>创建自定义集合视图布局</h2><p>首先，为您的画廊创建自定义布局类，以创建令人惊叹的收藏集视图。</p>
+<p>集合视图布局是抽象类<code>UICollectionViewLayout</code>的子类。它们定义了集合视图中每个项目的视觉属性。</p>
+<p>各个属性是<code>UICollectionViewLayoutAttributes</code>的实例。这些包含集合视图中每个项目的属性，例如项目的框架或变换。</p>
+<p>在<code>Layouts</code>组中创建一个新文件。从<code>iOS</code> ▸ <code>Source</code>列表中选择<code>Cocoa Touch Class</code>。将其命名为<code>PinterestLayout</code>并使其成为<code>UICollectionViewLayout</code>的子类。</p>
+<p>接下来，配置收集视图以使用新布局。打开<code>Main.storyboard</code>。在<code>Photo Stream View Controller</code>场景中选择<code>Collection View</code>，如下所示：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2017/08/pinterest-layout-updated-interface-builder.png" alt="图片"></p>
+<p>接下来，打开<code>Attributes</code>检查器。 在布局下拉列表中选择自定义。 然后在<code>class</code>下拉列表中选择<code>PinterestLayout</code>：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2017/09/storyboard_change_layout.png" alt="图片"></p>
+<p>好的-是时候看看它的外观了。 生成并运行您的应用程序：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2015/05/build_and_run_empty_collection-281x500.png" alt="图片"></p>
+<p><img src="https://www.gameartguppy.com/wp-content/uploads/2017/06/basic-confused-2.png" alt="图片"></p>
+<p>不要惊慌！ 信不信由你，这是一个好兆头。</p>
+<p>这意味着集合视图正在使用您的自定义布局类。 单元格未显示，因为<code>PinterestLayout</code>尚未实现布局过程中涉及的任何方法。</p>
+<h3 id="核心布局流程"><a href="#核心布局流程" class="headerlink" title="核心布局流程"></a>核心布局流程</h3><p>考虑一下集合视图的布局过程。 这是集合视图和布局对象之间的协作。 当集合视图需要一些布局信息时，它要求您的布局对象通过以特定顺序调用某些方法来提供它：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2015/05/layout-lifecycle-667x500.png" alt="图片"></p>
+<p>您的布局子类必须实现以下方法：</p>
+<ul>
+<li><code>collectionViewContentSize</code>：此方法返回集合视图内容的宽度和高度。您必须实现它才能返回整个收藏夹视图内容的高度和宽度，而不仅仅是可见内容。集合视图在内部使用此信息来配置其滚动视图的内容大小。</li>
+<li><code>prepare()</code>：每当即将进行布局操作时，<code>UIKit</code>都会调用此方法。您可以借此机会准备并执行所需的任何计算，以确定集合视图的大小和项目的位置。</li>
+<li><code>layoutAttributesForElements(in :)</code>：在此方法中，您将返回给定矩形内所有项目的布局属性。您将属性作为<code>UICollectionViewLayoutAttributes</code>数组返回到集合视图。</li>
+<li><code>layoutAttributesForItem(at :)</code>：此方法向集合视图提供按需布局信息。您需要覆盖它，并在请求的<code>indexPath</code>处返回该项目的布局属性。</li>
+</ul>
+<p>好的，所以您知道您需要实现什么。但是，如何计算这些属性？</p>
+<h2 id="计算布局属性"><a href="#计算布局属性" class="headerlink" title="计算布局属性"></a>计算布局属性</h2><p>对于这种布局，您需要动态计算每个项目的高度，因为您事先不知道照片的高度。 您将声明一个协议，该协议将在<code>PinterestLayout</code>需要时提供此信息。</p>
+<p>现在，回到代码。 打开<code>PinterestLayout.swift</code>。 在<code>PinterestLayout</code>类之前添加以下委托协议声明：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">protocol</span> <span class="title">PinterestLayoutDelegate</span>: <span class="title">AnyObject</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">collectionView</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="number">_</span> collectionView: UICollectionView,</span></span></span><br><span class="line"><span class="function"><span class="params">    heightForPhotoAtIndexPath indexPath: IndexPath)</span></span> -&gt; <span class="type">CGFloat</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此代码声明了<code>PinterestLayoutDelegate</code>协议。 它具有一种要求照片高度的方法。 您将很快在<code>PhotoStreamViewController</code>中实现此协议。</p>
+<p>实施布局方法之前，还有另一件事要做。 您需要声明一些有助于布局过程的属性。</p>
+<p>将以下内容添加到<code>PinterestLayout</code>中：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="keyword">weak</span> <span class="keyword">var</span> delegate: <span class="type">PinterestLayoutDelegate?</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">let</span> numberOfColumns = <span class="number">2</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">let</span> cellPadding: <span class="type">CGFloat</span> = <span class="number">6</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">var</span> cache: [<span class="type">UICollectionViewLayoutAttributes</span>] = []</span><br><span class="line"></span><br><span class="line"><span class="comment">// 4</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">var</span> contentHeight: <span class="type">CGFloat</span> = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">var</span> contentWidth: <span class="type">CGFloat</span> &#123;</span><br><span class="line">  <span class="keyword">guard</span> <span class="keyword">let</span> collectionView = collectionView <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">let</span> insets = collectionView.contentInset</span><br><span class="line">  <span class="keyword">return</span> collectionView.bounds.width - (insets.<span class="keyword">left</span> + insets.<span class="keyword">right</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 5</span></span><br><span class="line"><span class="keyword">override</span> <span class="keyword">var</span> collectionViewContentSize: <span class="type">CGSize</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="type">CGSize</span>(width: contentWidth, height: contentHeight)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码定义了一些您稍后需要提供布局信息的属性。逐步解释如下：</p>
+<ol>
+<li>这保留了对委托的引用。</li>
+<li>这是用于配置布局的两个属性：列数和单元格填充。</li>
+<li>这是一个用于缓存计算出的属性的数组。调用<code>prepare()</code>时，将计算所有项目的属性并将其添加到缓存中。当集合视图稍后请求布局属性时，您可以有效地查询缓存，而不必每次都重新计算它们。</li>
+<li>这声明了两个属性来存储内容大小。您在添加照片时增加<code>contentHeight</code>，并根据集合视图的宽度及其内容插图计算<code>contentWidth</code>。</li>
+<li><code>collectionViewContentSize</code>返回集合视图内容的大小。您可以使用前面步骤中的<code>contentWidth</code>和<code>contentHeight</code>来计算大小。</li>
+</ol>
+<p>您已经准备好计算集合视图项目的属性。现在，它将由框架组成。要了解您将如何执行此操作，请查看下图：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2015/05/customlayout-calculations1-667x500.png" alt="图片"></p>
+<p>您将根据每个项目的列以及上一个项目在同一列中的位置来计算每个项目的框架。 为此，您可以跟踪框架的<code>xOffset</code>和<code>yOffset</code>作为上一项的位置。</p>
+<p>首先，请使用该项目所属列的起始<code>X</code>坐标来计算水平位置，然后添加单元格填充。 垂直位置是该列中先前项目的起始位置加上该先前项目的高度。 整个项目的高度是图像高度和内容填充的总和。</p>
+<p>您将在<code>prepare()</code>中进行此操作。 您的主要目标是为布局中的每个项目计算一个<code>UICollectionViewLayoutAttributes</code>实例。</p>
+<p>将以下方法添加到<code>PinterestLayout</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">prepare</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="comment">// 1</span></span><br><span class="line">  <span class="keyword">guard</span> </span><br><span class="line">    cache.isEmpty, </span><br><span class="line">    <span class="keyword">let</span> collectionView = collectionView </span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 2</span></span><br><span class="line">  <span class="keyword">let</span> columnWidth = contentWidth / <span class="type">CGFloat</span>(numberOfColumns)</span><br><span class="line">  <span class="keyword">var</span> xOffset: [<span class="type">CGFloat</span>] = []</span><br><span class="line">  <span class="keyword">for</span> column <span class="keyword">in</span> <span class="number">0</span>..&lt;numberOfColumns &#123;</span><br><span class="line">    xOffset.append(<span class="type">CGFloat</span>(column) * columnWidth)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">var</span> column = <span class="number">0</span></span><br><span class="line">  <span class="keyword">var</span> yOffset: [<span class="type">CGFloat</span>] = .<span class="keyword">init</span>(repeating: <span class="number">0</span>, <span class="built_in">count</span>: numberOfColumns)</span><br><span class="line">    </span><br><span class="line">  <span class="comment">// 3</span></span><br><span class="line">  <span class="keyword">for</span> item <span class="keyword">in</span> <span class="number">0</span>..&lt;collectionView.numberOfItems(inSection: <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> indexPath = <span class="type">IndexPath</span>(item: item, section: <span class="number">0</span>)</span><br><span class="line">      </span><br><span class="line">    <span class="comment">// 4</span></span><br><span class="line">    <span class="keyword">let</span> photoHeight = delegate?.collectionView(</span><br><span class="line">      collectionView,</span><br><span class="line">      heightForPhotoAtIndexPath: indexPath) ?? <span class="number">180</span></span><br><span class="line">    <span class="keyword">let</span> height = cellPadding * <span class="number">2</span> + photoHeight</span><br><span class="line">    <span class="keyword">let</span> frame = <span class="type">CGRect</span>(x: xOffset[column],</span><br><span class="line">                       y: yOffset[column],</span><br><span class="line">                       width: columnWidth,</span><br><span class="line">                       height: height)</span><br><span class="line">    <span class="keyword">let</span> insetFrame = frame.insetBy(dx: cellPadding, dy: cellPadding)</span><br><span class="line">      </span><br><span class="line">    <span class="comment">// 5</span></span><br><span class="line">    <span class="keyword">let</span> attributes = <span class="type">UICollectionViewLayoutAttributes</span>(forCellWith: indexPath)</span><br><span class="line">    attributes.frame = insetFrame</span><br><span class="line">    cache.append(attributes)</span><br><span class="line">      </span><br><span class="line">    <span class="comment">// 6</span></span><br><span class="line">    contentHeight = <span class="built_in">max</span>(contentHeight, frame.maxY)</span><br><span class="line">    yOffset[column] = yOffset[column] + height</span><br><span class="line">    </span><br><span class="line">    column = column &lt; (numberOfColumns - <span class="number">1</span>) ? (column + <span class="number">1</span>) : <span class="number">0</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>依次采用每个编号的注释：</p>
+<ol>
+<li><p>仅当缓存为空且集合视图存在时，才计算布局属性。</p>
+</li>
+<li><p>根据列的宽度为每列声明并用x坐标填充<code>xOffset</code>数组。 <code>yOffset</code>数组跟踪每一列的<code>y</code>位置。您将<code>yOffset</code>中的每个值初始化为<code>0</code>，因为这是每列中第一项的偏移量。</p>
+</li>
+<li><p>循环浏览第一部分中的所有项目，因为此特定布局只有一个部分。</p>
+</li>
+<li><p>执行帧计算。 <code>width</code>是先前计算的<code>cellWidth</code>，其中删除了单元格之间的填充。向代表询问照片的高度，然后根据该高度以及顶部和底部的预定义<code>cellPadding</code>计算框架高度。</p>
+<p>如果没有委托集，请使用默认单元格高度。然后，将其与当前列的<code>x</code>和<code>y</code>偏移量结合使用，以创建该属性使用的<code>insetFrame</code>。</p>
+</li>
+<li><p>创建<code>UICollectionViewLayoutAttributes</code>的实例，使用<code>insetFrame</code>设置其框架，然后将属性附加到缓存。</p>
+</li>
+<li><p>展开<code>contentHeight</code>以说明新计算项目的框架。然后，基于该帧为当前列推进<code>yOffset</code>。最后，前进该列，以便将下一项放置在下一列中。</p>
+</li>
+</ol>
+<blockquote>
+<p>注意：由于每当集合视图的布局变得无效时都会调用<code>prepare()</code>，因此在典型的实现中，很多情况下您可能需要在此处重新计算属性。 例如，当方向更改时，<code>UICollectionView</code>的边界可能会更改。 如果在集合中添加或删除项目，它们也可能会更改。</p>
+<p>这些案例不在本教程的讨论范围之内，但是在非平凡的实现中意识到它们很重要。</p>
+</blockquote>
+<p>现在，您需要覆盖<code>layoutAttributesForElements(in :)</code>。 集合视图在<code>prepare()</code>之后调用它，以确定哪些项目在给定的矩形中可见。</p>
+<p>将以下代码添加到<code>PinterestLayout</code>的末尾：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">layoutAttributesForElements</span><span class="params">(<span class="keyword">in</span> rect: CGRect)</span></span> </span><br><span class="line">    -&gt; [<span class="type">UICollectionViewLayoutAttributes</span>]? &#123;</span><br><span class="line">  <span class="keyword">var</span> visibleLayoutAttributes: [<span class="type">UICollectionViewLayoutAttributes</span>] = []</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Loop through the cache and look for items in the rect</span></span><br><span class="line">  <span class="keyword">for</span> attributes <span class="keyword">in</span> cache &#123;</span><br><span class="line">    <span class="keyword">if</span> attributes.frame.intersects(rect) &#123;</span><br><span class="line">      visibleLayoutAttributes.append(attributes)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> visibleLayoutAttributes</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这里，您可以遍历缓存中的属性，并检查它们的框架是否与集合视图提供的矩形相交。</p>
+<p>您可以将所有与该矩形相交的框架的属性添加到<code>visibleLayoutAttributes</code>中，该框架最终返回到集合视图。</p>
+<p>您必须实现的最后一个方法是<code>layoutAttributesForItem(at :)</code>。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">layoutAttributesForItem</span><span class="params">(at indexPath: IndexPath)</span></span> </span><br><span class="line">    -&gt; <span class="type">UICollectionViewLayoutAttributes?</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> cache[indexPath.item]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这里，您可以从缓存中检索和返回与请求的indexPath相对应的布局属性。</p>
+<h2 id="与UIViewController连接"><a href="#与UIViewController连接" class="headerlink" title="与UIViewController连接"></a>与UIViewController连接</h2><p>必须先实现布局委托，然后才能看到实际的布局。 在计算项目框架的高度时，<code>PinterestLayout</code>依靠此来提供照片和标题的高度。</p>
+<p>打开<code>PhotoStreamViewController.swift</code>。 在文件末尾添加以下扩展名以实现<code>PinterestLayoutDelegate</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">PhotoStreamViewController</span>: <span class="title">PinterestLayoutDelegate</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">collectionView</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">      <span class="number">_</span> collectionView: UICollectionView,</span></span></span><br><span class="line"><span class="function"><span class="params">      heightForPhotoAtIndexPath indexPath:IndexPath)</span></span> -&gt; <span class="type">CGFloat</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> photos[indexPath.item].image.size.height</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这里，您可以为布局提供照片的确切高度。</p>
+<p>接下来，在对super的调用下面的<code>viewDidLoad()</code>内部添加以下代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> layout = collectionView?.collectionViewLayout <span class="keyword">as</span>? <span class="type">PinterestLayout</span> &#123;</span><br><span class="line">  layout.delegate = <span class="keyword">self</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这会将<code>PhotoStreamViewController</code>设置为布局的委托。</p>
+<p>是时候看看事情如何发展了！ 生成并运行您的应用程序。 您会看到根据照片的高度正确放置了单元并调整了大小：</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2017/08/pinterest-layout-updated-final.png" alt="图片"></p>
+<p>现在，您已经构建了一个完全自定义的集合视图布局。 做得好！</p>
+<h2 id="然后去哪儿？"><a href="#然后去哪儿？" class="headerlink" title="然后去哪儿？"></a>然后去哪儿？</h2><p>您可以通过单击本教程顶部或底部的“下载材料”按钮，下载本教程中所有代码的最终项目。</p>
+<p>通过比您想象的更少的工作，您已经创建了自己的类似Pinterest的自定义布局！</p>
+<p>如果您想了解有关自定义布局的更多信息，请考虑以下资源：</p>
+<ul>
+<li><p>阅读<a href="https://developer.apple.com/library/ios/documentation/WindowsViews/Conceptual/CollectionViewPGforIOS/Introduction/Introduction.html#//apple_ref/doc/uid/TP40012334-CH1-SW1" target="_blank" rel="noopener">iOS集合视图编程指南</a>中的<a href="https://developer.apple.com/library/ios/documentation/WindowsViews/Conceptual/CollectionViewPGforIOS/CreatingCustomLayouts/CreatingCustomLayouts.html" target="_blank" rel="noopener">创建自定义布局</a>部分，其中详细介绍了这个主题。</p>
+</li>
+<li><p>遵循我们的<a href="https://videos.raywenderlich.com/courses/65-custom-collection-view-layout/lessons/1" target="_blank" rel="noopener">自定义集合视图布局视频教程系列</a>。在那里，你可以学习到如何根据流行的iOS应用程序创建令人惊叹的自定义布局。您还将深入研究一些高级主题，如创建交互式布局和操作滚动行为。</p>
+</li>
+</ul>
+<p>如果您对本教程有任何疑问或意见，请随时加入以下论坛讨论！</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2019/09/UICollectionView-Custom-Layout.zip" target="_blank" rel="noopener">下载资料</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#入门"><span class="toc-number">1.</span> <span class="toc-text">入门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建自定义集合视图布局"><span class="toc-number">2.</span> <span class="toc-text">创建自定义集合视图布局</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#核心布局流程"><span class="toc-number">2.1.</span> <span class="toc-text">核心布局流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#计算布局属性"><span class="toc-number">3.</span> <span class="toc-text">计算布局属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#与UIViewController连接"><span class="toc-number">4.</span> <span class="toc-text">与UIViewController连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#然后去哪儿？"><span class="toc-number">5.</span> <span class="toc-text">然后去哪儿？</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

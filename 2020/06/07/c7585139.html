@@ -1,0 +1,375 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>UISplitViewController教程：入门 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="下载资料]
+了解如何将iOS应用程序拆分为两个部分，并在此UISplitViewController教程的每一侧显示视图控制器。
+
+更新说明: Adam Rush为Xcode 11，iOS 13和S,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">UISplitViewController教程：入门</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">UISplitViewController教程：入门</h1>
+        <div class="stuff">
+            <span>六月 07, 2020</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/UISplitViewController/">UISplitViewController</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p><a href="https://koenig-media.raywenderlich.com/uploads/2019/09/MathMonsters-1.zip" target="_blank" rel="noopener">下载资料</a>]</p>
+<p>了解如何将<strong>iOS</strong>应用程序拆分为两个部分，并在此<strong>UISplitViewController</strong>教程的每一侧显示视图控制器。</p>
+<blockquote>
+<p>更新说明: <strong>Adam Rush</strong>为<strong>Xcode 11</strong>，<strong>iOS 13</strong>和<strong>Swift 5</strong>更新了本教程.<strong>Brad Johnson</strong>写了原文。</p>
+</blockquote>
+<p>应用程序通常需要提供拆分视图以提供整洁的导航模型。 这方面的一个例子是<strong>Mail.app</strong>，它在<strong>iPad</strong>上使用左侧有文件夹列表的分割视图，然后是右侧选定的邮件项目。 <strong>Apple</strong>为我们构建了一个非常方便的视图控制器，称为<strong>UISplitViewController</strong>，它可以直接回到<strong>iPad</strong>的低端。 在这个<strong>UISplitViewController</strong>教程中，您将学习如何驯服它！ 此外，自<strong>iOS 8</strong>起，分割视图控制器可在<strong>iPad</strong>和<strong>iPhone</strong>上运行。</p>
+<p>在本教程中，您将从头开始创建一个通用应用程序，它使用<strong>Split View Controller</strong>来显示<strong>Math Ninja</strong>中的怪物列表。 数学忍者是由<strong>Razeware</strong>团队自己开发的游戏！: ]</p>
+<p>您将使用<strong>Split View Controller</strong>来处理导航和显示。 它适用于iPhone和iPad。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/07/Screenshot-Cat-Bot-650x487.jpg" alt="图片"></p>
+<blockquote>
+<p>注意: 本教程重点介绍<strong>Split View Controller</strong>。 您应该已经熟悉了首先创建iOS应用程序的基础知识，例如<a href="https://www.raywenderlich.com/811496-auto-layout-tutorial-in-ios-getting-started" target="_blank" rel="noopener">AutoLayout</a>和<a href="https://www.raywenderlich.com/464-storyboards-tutorial-for-ios-part-1" target="_blank" rel="noopener">Storyboards</a>。</p>
+</blockquote>
+<h2 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h2><p>单击<strong>File ▸ New ▸ Project…</strong>.在Xcode中创建一个新项目。 选择<strong>iOS ▸ Application ▸ Single View App</strong>模板。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/07/New-Project-Screenshot-650x466.png" alt="图片"></p>
+<p>将项目命名为<strong>MathMonsters</strong>。 将语言保持为迅捷。 将用户界面设置为<strong>Storyboard</strong>。 取消选中所有复选框。 然后单击“下一步”完成项目的创建。</p>
+<p>虽然您可以使用<strong>Master-Detail App</strong>模板作为起点，但您将从头开始使用<strong>Single View App</strong>模板。 这将使您更好地了解<strong>UISplitViewController</strong>的工作原理。 在将来的项目中使用<strong>UISplitViewController</strong>时，这些知识将非常有用。</p>
+<p>是时候创建UI了，所以打开<strong>Main.storyboard</strong>。</p>
+<p>删除<strong>Storyboard</strong>中的默认初始视图控制器场景。 同时从项目导航器中删除<strong>ViewController.swift</strong>，确保在询问时选择<strong>Move to Trash</strong>。</p>
+<p>将<strong>Split View Controller</strong>拖到空的<strong>Storyboard</strong>中: </p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/08/Split-View-Controller-Screenshot-650x469.png" alt="图片"></p>
+<p>这将为您的<strong>Storyboard</strong>添加几个元素: </p>
+<ul>
+<li><p>Split View Controller: 此拆分视图将包含应用程序的其余部分，并且是应用程序的根目录。</p>
+</li>
+<li><p>Navigation Controller: 此<strong>UINavigationController</strong>将是主视图控制器的根视图。 这是拆分视图的左侧窗格，当在<strong>iPad</strong>上或在较大的<strong>iPhone</strong>（如<strong>iPhone 8 Plus</strong>）上横向显示时。</p>
+<p>在<strong>Split View Controller</strong>中，您将看到导航控制器具有称为主视图控制器的关系<strong>segue</strong>。 这允许您在主视图控制器中创建整个导航层次结构，而无需影响<strong>Detail View Controller</strong>。</p>
+</li>
+<li><p>View Controller: 这将最终显示所有怪物的详细信息。 如果查看<strong>Split View Controller</strong>，您将看到视图控制器具有称为<strong>Detail View Controller</strong>的关系<strong>segue</strong>: </p>
+</li>
+</ul>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2017/10/SplitView3-650x412.png" alt="图片"></p>
+<ul>
+<li>Table View Controller: 这是主UINavigationController的根视图控制器。 它最终将显示怪物列表。</li>
+</ul>
+<blockquote>
+<p>注意: <strong>Xcode</strong>会警告您表视图的原型单元缺少重用标识符。 暂时不要担心。 你很快就会解决它。</p>
+</blockquote>
+<p>由于您从<strong>Storyboard</strong>中删除了默认的初始视图控制器，因此您需要告诉<strong>Storyboard</strong>您希望<strong>Split View Controller</strong>成为初始视图控制器。</p>
+<p>选择“<strong>Split View Controller</strong>”，然后打开“属性”检查器。 选中<strong>Is Initial View Controller</strong>选项。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2017/10/SwiftSplitView4-650x226.png" alt="图片"></p>
+<p>您将在分割视图控制器的左侧看到一个箭头。 这告诉你它是这个<strong>Storyboard</strong>的初始视图控制器。</p>
+<p>在<strong>iPad</strong>模拟器上构建并运行应用程序。 将模拟器旋转到横向。</p>
+<p>您应该看到一个空的<strong>Split View Controller</strong>: </p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2017/10/SwiftSplitView5.png" alt="图片"></p>
+<p>现在可以在任何<strong>iPhone</strong>模拟器上运行它，除了一个加大尺寸的手机，它足够大，可以像<strong>iPad</strong>一样运行。 你会看到它开始全屏显示细节视图。 它还允许您点击导航栏上的后退按钮以弹回主视图控制器: </p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2017/12/fixed1-618x500.png" alt="图片"></p>
+<p>在除了横向大型<strong>Plus</strong>或<strong>Max</strong>设备之外的<strong>iPhone</strong>上，分割视图控制器将像传统的主从细节应用程序一样，带有导航控制器来回推送和弹出。 这是内置功能，开发人员只需要很少的额外配置。万岁！</p>
+<p>您需要显示自己的视图控制器而不是这些默认控制器。 是时候开始创建它们了。</p>
+<h2 id="创建自定义视图控制器"><a href="#创建自定义视图控制器" class="headerlink" title="创建自定义视图控制器"></a>创建自定义视图控制器</h2><p><strong>Storyboard</strong>具有视图控制器层次结构集: <strong>Split View Controller</strong>，其主视图控制器和<strong>Detail View Controller</strong>作为其子视图。 现在，您需要实现代码方面以获取要显示的数据。</p>
+<p>转到<strong>File ▸ New ▸ File…</strong>并选择<strong>iOS ▸ Source ▸ Cocoa Touch Class</strong>类模板。 将类命名为<strong>MasterViewController</strong>，并使其成为<strong>UITableViewController</strong>的子类。 确保未选中“<strong>同时创建XIB文件</strong>”复选框，并将“语言”设置为“<strong>Swift</strong>”。 单击<strong>Next</strong>，然后单击<strong>Create</strong>。</p>
+<p>打开<strong>MasterViewController.swift</strong>。</p>
+<p>向下滚动到<code>numberOfSections(in:)</code>中。 删除此方法。 只返回一个部分时不需要它。</p>
+<p>接下来，找到<code>tableView(_:numberOfRowsInSection:)</code>并用以下内容替换实现: </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">tableView</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="number">_</span> tableView: UITableView, </span></span></span><br><span class="line"><span class="function"><span class="params">  numberOfRowsInSection section: Int)</span></span> </span><br><span class="line">    -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">10</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后，取消注释<code>tableView(_:cellForRowAt:)</code>并将其实现替换为以下内容: </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">tableView</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="number">_</span> tableView: UITableView, </span></span></span><br><span class="line"><span class="function"><span class="params">  cellForRowAt indexPath: IndexPath)</span></span> </span><br><span class="line">    -&gt; <span class="type">UITableViewCell</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> cell = tableView.dequeueReusableCell(withIdentifier: <span class="string">"Cell"</span>, <span class="keyword">for</span>: indexPath)</span><br><span class="line">  <span class="keyword">return</span> cell</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样，当你稍后测试这个东西时，你将看到十个空行。</p>
+<p>打开<strong>Main.storyboard</strong>。 选择<strong>Root View Controller</strong>并切换<strong>Identity</strong>检查器。 将类更改为<strong>MasterViewController</strong>。</p>
+<p>此外，您需要确保在表视图中为原型单元格提供重用标识符。 如果没有，它会在<strong>Storyboard</strong>试图加载时导致崩溃。</p>
+<p>在主视图控制器中，选择原型单元。 在“属性”检查器中，将“标识符”更改为“单元格”。 同时将单元格样式更改为基本。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2017/11/set-table-view-cell-identifier-and-style.png" alt="图片"></p>
+<p>在<strong>iPad</strong>或<strong>iPhone</strong>模拟器中构建和运行。 你会注意到虽然有十行，但都标有标题，点击一行不会做任何事情。 这是因为您尚未指定<strong>Detail View Controller</strong>。</p>
+<p>现在，您将为细节方创建视图控制器。</p>
+<p>转到<strong>File ▸ New ▸ File…</strong>并选择 <strong>iOS ▸ Source ▸ Cocoa Touch Class</strong>模板。 将类命名为<strong>DetailViewController</strong>，并使其成为<strong>UIViewController</strong>的子类。 确保未选中“<strong>同时创建XIB文件</strong>”复选框，并将“语言”设置为“<strong>Swift</strong>”。</p>
+<p>单击<strong>Next</strong>，然后单击<strong>Create</strong>。</p>
+<p>打开<strong>Main.storyboard</strong>并在<strong>View Controller Scene</strong>中选择视图控制器。 在<strong>Identity</strong>检查器中，将<strong>Class</strong>更改为<strong>DetailViewController</strong>。</p>
+<p>然后将标签拖到<strong>Detail View Controller</strong>的中间。 使用“自动布局”将标签固定到容器的水平和垂直中心。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2017/11/horizontal-and-vertical-center-in-container.png" alt="图片"></p>
+<p>双击标签将其文本更改为<strong>Hello，World</strong>！ 所以当你稍后测试它时你会知道它正在工作。</p>
+<p>建立并运行。 此时，您应该看到自定义视图控制器。</p>
+<p>在<strong>iPad</strong>上:</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2017/10/SwiftSplitView10.png" alt="图片"></p>
+<p>在<strong>iPhone</strong>上:</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2017/12/fixed2-618x500.png" alt="图片"></p>
+<p>整洁不是它！ 您现在已经获得了拆分视图的基础，每个位都有自定义视图控制器。 接下来你需要添加那些讨厌的怪物。: ]</p>
+<h2 id="制作你的模型"><a href="#制作你的模型" class="headerlink" title="制作你的模型"></a>制作你的模型</h2><p>接下来，您需要为要显示的数据定义模型。 在学习<strong>Split View Controller</strong>的基础知识时，您不希望复杂化，因此您将使用没有数据持久性的简单模型。</p>
+<p>首先，创建一个表示要显示的怪物的类。 转到<strong>File ▸ New ▸ File…</strong>，选择<strong>iOS ▸ Source ▸ Swift</strong>文件模板，然后单击下一步。 将文件命名为<strong>Monster</strong>，然后单击“创建”。</p>
+<p>您将创建一个简单的类，其中包含有关要显示的每个怪物的属性属性。 您还将实现一些方法来创建新的怪物并访问每个怪物武器的图像。</p>
+<p>用以下内容替换<strong>Monster.swift</strong>的内容: </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Weapon</span> </span>&#123;</span><br><span class="line">  <span class="keyword">case</span> blowgun, ninjaStar, fire, sword, smoke</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> image: <span class="type">UIImage</span> &#123;</span><br><span class="line">    <span class="keyword">switch</span> <span class="keyword">self</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> .blowgun:</span><br><span class="line">      <span class="keyword">return</span> <span class="type">UIImage</span>(named: <span class="string">"blowgun.png"</span>)!</span><br><span class="line">    <span class="keyword">case</span> .fire:</span><br><span class="line">      <span class="keyword">return</span> <span class="type">UIImage</span>(named: <span class="string">"fire.png"</span>)!</span><br><span class="line">    <span class="keyword">case</span> .ninjaStar:</span><br><span class="line">      <span class="keyword">return</span> <span class="type">UIImage</span>(named: <span class="string">"ninjastar.png"</span>)!</span><br><span class="line">    <span class="keyword">case</span> .smoke:</span><br><span class="line">      <span class="keyword">return</span> <span class="type">UIImage</span>(named: <span class="string">"smoke.png"</span>)!</span><br><span class="line">    <span class="keyword">case</span> .sword:</span><br><span class="line">      <span class="keyword">return</span> <span class="type">UIImage</span>(named: <span class="string">"sword.png"</span>)!</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Monster</span> </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> name: <span class="type">String</span></span><br><span class="line">  <span class="keyword">let</span> description: <span class="type">String</span></span><br><span class="line">  <span class="keyword">let</span> iconName: <span class="type">String</span></span><br><span class="line">  <span class="keyword">let</span> weapon: <span class="type">Weapon</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">init</span>(name: <span class="type">String</span>, description: <span class="type">String</span>, iconName: <span class="type">String</span>, weapon: <span class="type">Weapon</span>) &#123;</span><br><span class="line">    <span class="keyword">self</span>.name = name</span><br><span class="line">    <span class="keyword">self</span>.description = description</span><br><span class="line">    <span class="keyword">self</span>.iconName = iconName</span><br><span class="line">    <span class="keyword">self</span>.weapon = weapon</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> icon: <span class="type">UIImage?</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="type">UIImage</span>(named: iconName)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这定义了枚举和类。 枚举是为了跟踪不同种类的武器，包括每种武器的图像。 该类将使用简单的初始化程序保存怪物信息以创建怪物实例。</p>
+<p>这是用于定义模型的。 接下来，您将它连接到您的主视图！</p>
+<h2 id="显示怪物列表"><a href="#显示怪物列表" class="headerlink" title="显示怪物列表"></a>显示怪物列表</h2><p>打开<strong>MasterViewController.swift</strong>并向该类添加一个新属性: </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> monsters = [</span><br><span class="line">    <span class="type">Monster</span>(name: <span class="string">"Cat-Bot"</span>, description: <span class="string">"MEE-OW"</span>,</span><br><span class="line">            iconName: <span class="string">"meetcatbot"</span>, weapon: .sword),</span><br><span class="line">    <span class="type">Monster</span>(name: <span class="string">"Dog-Bot"</span>, description: <span class="string">"BOW-WOW"</span>,</span><br><span class="line">            iconName: <span class="string">"meetdogbot"</span>, weapon: .blowgun),</span><br><span class="line">    <span class="type">Monster</span>(name: <span class="string">"Explode-Bot"</span>, description: <span class="string">"BOOM!"</span>,</span><br><span class="line">            iconName: <span class="string">"meetexplodebot"</span>, weapon: .smoke),</span><br><span class="line">    <span class="type">Monster</span>(name: <span class="string">"Fire-Bot"</span>, description: <span class="string">"Will Make You Steamed"</span>,</span><br><span class="line">            iconName: <span class="string">"meetfirebot"</span>, weapon: .ninjaStar),</span><br><span class="line">    <span class="type">Monster</span>(name: <span class="string">"Ice-Bot"</span>, description: <span class="string">"Has A Chilling Effect"</span>,</span><br><span class="line">            iconName: <span class="string">"meeticebot"</span>, weapon: .fire),</span><br><span class="line">    <span class="type">Monster</span>(name: <span class="string">"Mini-Tomato-Bot"</span>, description: <span class="string">"Extremely Handsome"</span>,</span><br><span class="line">            iconName: <span class="string">"meetminitomatobot"</span>, weapon: .ninjaStar)</span><br><span class="line">  ]</span><br></pre></td></tr></table></figure>
+
+<p>这可以保存用于填充表视图的怪物数组。</p>
+<p>找到<code>tableView(_:numberOfRowsInSection:)</code>并将return语句替换为以下内容: </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> monsters.<span class="built_in">count</span></span><br></pre></td></tr></table></figure>
+
+<p>这将根据数组的大小返回怪物数量。</p>
+<p>接下来，找到<code>tableView(_:cellForRowAtIndexPath:)</code>并在最终的return语句之前添加以下代码: </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> monster = monsters[indexPath.row]</span><br><span class="line">cell.textLabel?.text = monster.name</span><br></pre></td></tr></table></figure>
+
+<p>这将根据正确的怪物配置单元格。 这就是桌面视图，它只是显示每个怪物的名字。</p>
+<p>构建并运行应用程序。</p>
+<p>你应该在风景<strong>iPad</strong>的左侧看到怪物机器人列表: </p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2017/11/LoadedTableView-iPad.png" alt="图片"></p>
+<p>在<strong>iPhone</strong>:</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2017/12/fixed3-618x500.png" alt="图片"></p>
+<p>请记住，在紧凑宽度的<strong>iPhone</strong>上，您可以在详细信息屏幕上的导航堆栈中开始一层深度。 您可以点击后退按钮查看表格视图。</p>
+<h2 id="更新主视图控制器的标题"><a href="#更新主视图控制器的标题" class="headerlink" title="更新主视图控制器的标题"></a>更新主视图控制器的标题</h2><p>导航栏自动设置初始视图控制器的标题，即<strong>RootViewController</strong>。</p>
+<p>打开<strong>Main.storyboard</strong>，选择<strong>Root View Controller</strong>并双击<strong>NavigationBar</strong>。</p>
+<p>将其更改为怪物列表。 这比<strong>Root View Controller</strong>好得多。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/07/Monster-List-Name-650x469.png" alt="图片"></p>
+<h2 id="显示机器人详细信息"><a href="#显示机器人详细信息" class="headerlink" title="显示机器人详细信息"></a>显示机器人详细信息</h2><p>现在表视图显示了怪物列表，现在是时候按顺序获取详细视图了。</p>
+<p>打开<strong>Main.storyboard</strong>，选择<strong>Detail View Controller</strong>并删除之前放下的标签。</p>
+<p>使用下面的屏幕截图作为指导，将以下控件拖到<strong>DetailViewController</strong>的视图中(有关要添加的内容的详细列表，请参阅下面的内容):</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/09/Screenshot-2019-09-01-at-21.26.14-650x482.png" alt="图片"></p>
+<p>以下是您需要添加的内容: </p>
+<ul>
+<li>其余视图将进入的容器视图。这应该与屏幕顶部对齐并在屏幕中水平居中。</li>
+<li>一个<strong>95×95</strong>的图像视图，距离容器视图顶部<strong>8</strong>个像素，距离左侧<strong>20</strong>个像素。这是为了显示怪物的图像。</li>
+<li>与图像视图顶部对齐的标签，字体系统粗体，大小为<strong>30</strong>，文本为<strong>Monster Name</strong>。将其顶部与图像的顶部对齐，并将其设置为图像右侧的<strong>8</strong>个像素。同时使其尾部边距容器视图的右侧8像素。</li>
+<li>下面有两个带有字体系统的标签，尺寸为<strong>24</strong>.一个标签应与图像视图底部对齐。另一个标签应位于第一个标签下方。它们的左边缘应该对齐，它们应该垂直间隔<strong>8</strong>个像素。同时将这些标签的尾部设置为距离包含视图右侧<strong>8</strong>个像素。他们应该有标题描述和首选的杀人方式。</li>
+<li>一个<strong>70×70</strong>的图像视图，用于显示武器图像，左对齐，首选方式杀死标签，8像素垂直间距。同时将其底部设置为距离包含视图底部8个像素。</li>
+</ul>
+<p>让自动布局使用适当的约束尤其重要，因为这个应用程序是通用的，自动布局确保布局适应<strong>iPad</strong>和<strong>iPhone</strong>。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/07/device-device_shiny-ui-320x320.png" alt="图片"></p>
+<blockquote>
+<p>注意: 自动布局可能是一个滑溜溜的恶魔！ 如果您遇到任何麻烦，我强烈建议您查看我们的<a href="https://www.raywenderlich.com/7478-beginning-auto-layout" target="_blank" rel="noopener">Beginning Auto Layout教程系列</a>。</p>
+</blockquote>
+<p>这就是现在的自动布局。 接下来，您需要将这些视图挂钩到某些出口。</p>
+<p>打开<strong>DetailViewController.swift</strong>并将以下属性添加到类的顶部: </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> nameLabel: <span class="type">UILabel!</span></span><br><span class="line"><span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> descriptionLabel: <span class="type">UILabel!</span></span><br><span class="line"><span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> iconImageView: <span class="type">UIImageView!</span></span><br><span class="line"><span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> weaponImageView: <span class="type">UIImageView!</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> monster: <span class="type">Monster?</span> &#123;</span><br><span class="line">  <span class="keyword">didSet</span> &#123;</span><br><span class="line">    refreshUI()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这里，您为刚刚创建的需要动态更改的各种<strong>UI</strong>元素添加了属性。 您还为此视图控制器应显示的<strong>Monster</strong>对象添加了一个属性。</p>
+<p>接下来，将以下帮助器方法添加到类中: </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">refreshUI</span><span class="params">()</span></span> &#123;</span><br><span class="line">  loadViewIfNeeded()</span><br><span class="line">  nameLabel.text = monster?.name</span><br><span class="line">  descriptionLabel.text = monster?.description</span><br><span class="line">  iconImageView.image = monster?.icon</span><br><span class="line">  weaponImageView.image = monster?.weapon.image</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>无论何时切换怪物，您都希望UI自行刷新并更新插座中显示的详细信息。 你甚至可以在视图加载之前更改怪物并触发方法。 因此，您调用<code>loadViewIfNeeded()</code>以保证视图已加载且其出口已连接。</p>
+<p>现在，打开<strong>Main.storyboard</strong>。 在“文档大纲”中右键单击“详细信息视图控制器”对象以显示插座列表。 从每个项目右侧的圆圈拖动到视图以连接出口。</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2017/11/outlet-connections.png" alt="图片"></p>
+<p>请记住，图标图像视图是左上角的大图像视图。 武器图像视图是首选杀死标签的方式下面较小的一个。</p>
+<p>转到<strong>SceneDelegate.swift</strong>并使用以下内容替换<code>scene(_:willConnectTo:options :)</code>的实现: </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">guard</span> </span><br><span class="line">  <span class="keyword">let</span> splitViewController = window?.rootViewController <span class="keyword">as</span>? <span class="type">UISplitViewController</span>,</span><br><span class="line">  <span class="keyword">let</span> leftNavController = splitViewController.viewControllers.first </span><br><span class="line">    <span class="keyword">as</span>? <span class="type">UINavigationController</span>,</span><br><span class="line">  <span class="keyword">let</span> masterViewController = leftNavController.viewControllers.first </span><br><span class="line">    <span class="keyword">as</span>? <span class="type">MasterViewController</span>,</span><br><span class="line">  <span class="keyword">let</span> detailViewController = splitViewController.viewControllers.last </span><br><span class="line">    <span class="keyword">as</span>? <span class="type">DetailViewController</span></span><br><span class="line">  <span class="keyword">else</span> &#123; <span class="built_in">fatalError</span>() &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> firstMonster = masterViewController.monsters.first</span><br><span class="line">detailViewController.monster = firstMonster</span><br></pre></td></tr></table></figure>
+
+<p><strong>Split View Controller</strong>具有一个数组属性<strong>viewControllers</strong>，其中包含主控制器和<strong>Detail View Controller</strong>。 在您的情况下，主视图控制器实际上是导航控制器。 因此，要获取实际的<strong>MasterViewController</strong>实例，请使用导航控制器的第一个视图控制器。</p>
+<p>要获取<strong>Detail View Controller</strong>，请查看<strong>Split View Controller</strong>的<strong>viewControllers</strong>数组中的第二个视图控制器。</p>
+<p>本教程的下载资料包含一个名为<strong>MonsterArt</strong>的文件夹将包含这些图像的文件夹拖到<strong>Xcode</strong>中的<strong>Assets.xcassets</strong>中。</p>
+<p>构建并运行应用程序，您应该在右侧看到一些怪物细节。</p>
+<p>在<strong>iPad</strong>上的横向: </p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/07/Screenshot-Cat-Bot-650x487.jpg" alt="图片"></p>
+<p>在<strong>iPhone</strong>上:</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/07/Group-609x500.png" alt="图片"></p>
+<p>请注意，在<strong>MasterViewController</strong>上选择一个怪物什么也没做，你就永远陷入了<strong>Cat-Bot</strong>。 这就是你接下来要做的事情！</p>
+<h2 id="用细节勾勒大师"><a href="#用细节勾勒大师" class="headerlink" title="用细节勾勒大师"></a>用细节勾勒大师</h2><p>关于如何在这两个视图控制器之间进行最佳通信的策略有很多。 在<strong>Master-Detail App</strong>模板中，主视图控制器具有对<strong>Detail View Controller</strong>的引用。 这意味着主视图控制器可以在选择行时在<strong>Detail View Controller</strong>上设置属性。</p>
+<p>这适用于在详细信息窗格中只有一个视图控制器的简单应用程序。 但是，您将遵循<strong>UISplitViewController</strong>类引用中建议的方法来处理更复杂的应用程序并使用委托。</p>
+<p>打开<strong>MasterViewController.swift</strong>并在<strong>MasterViewController</strong>类定义上面添加以下协议定义: </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">protocol</span> <span class="title">MonsterSelectionDelegate</span>: <span class="title">class</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">monsterSelected</span><span class="params">(<span class="number">_</span> newMonster: Monster)</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这定义了一个带有单个方法的协议，<code>monsterSelected(_:)</code>。 <strong>Detail View Controller</strong>将实现此方法，并且主视图控制器将在用户选择怪物时向其发送消息。</p>
+<p>接下来，更新<strong>MasterViewController</strong>以添加符合委托协议的对象的属性: </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">weak</span> <span class="keyword">var</span> delegate: <span class="type">MonsterSelectionDelegate?</span></span><br></pre></td></tr></table></figure>
+
+<p>基本上，这意味着委托属性需要是一个实现了<code>monsterSelected(_ :)</code>的对象。 在用户选择怪物后，该对象将负责处理其视图中需要发生的事情。</p>
+<p>由于您希望<strong>DetailViewController</strong>在用户选择怪物时更新，因此您需要实现委托。</p>
+<p>打开<strong>DetailViewController.swift</strong>并在文件的最后添加一个类扩展: </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">DetailViewController</span>: <span class="title">MonsterSelectionDelegate</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">monsterSelected</span><span class="params">(<span class="number">_</span> newMonster: Monster)</span></span> &#123;</span><br><span class="line">    monster = newMonster</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>类扩展非常适合分离委托协议并将方法组合在一起。 在此扩展中，您说<strong>DetailViewController</strong>符合<strong>MonsterSelectionDelegate</strong>。 然后，您实现一个必需的方法。</p>
+<p>现在委托方法已准备就绪，您需要从主方面调用它。</p>
+<p>打开<strong>MasterViewController.swift</strong>并添加以下方法: </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">tableView</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="number">_</span> tableView: UITableView, </span></span></span><br><span class="line"><span class="function"><span class="params">    didSelectRowAt indexPath: IndexPath)</span></span> &#123;</span><br><span class="line">  <span class="keyword">let</span> selectedMonster = monsters[indexPath.row]</span><br><span class="line">  delegate?.monsterSelected(selectedMonster)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实现<code>tableView(_:didSelectRowAt:)</code>意味着只要用户在表视图中选择一行，您就会收到通知。 您需要做的就是通知新怪物的怪物选择代表。</p>
+<p>最后，返回<strong>SceneDelegate.swift</strong>。 在<code>scene(_:willConnectTo:options:)</code>中，在方法的最后添加以下代码: </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">masterViewController.delegate = detailViewController</span><br></pre></td></tr></table></figure>
+
+<p>这是两个视图控制器之间的最终连接。</p>
+<p>在<strong>iPad</strong>上构建并运行应用程序。 你现在应该可以在怪物之间进行选择，如下所示: </p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/07/Explode-Bot-650x487.png" alt="图片"></p>
+<p>到目前为止，拆分视图非常好！ 但是还有一个问题: 如果你在<strong>iPhone</strong>上运行它，从主表视图中选择怪物不会显示<strong>Detail View Controller</strong>。 您现在需要进行一些小修改，以确保拆分视图也适用于<strong>iPhone</strong>。</p>
+<p>打开<strong>MasterViewController.swift</strong>。 找到<code>tableView(_:didSelectRowAt:)</code>并将以下内容添加到方法的末尾: </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> detailViewController = delegate <span class="keyword">as</span>? <span class="type">DetailViewController</span> &#123;</span><br><span class="line">  splitViewController?.showDetailViewController(detailViewController, sender: <span class="literal">nil</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先，您需要确保委托已设置，并且它是一个<strong>DetailViewController</strong>实例，正如您所期望的那样。 然后在<strong>Split View Controller</strong>上调用<code>showDetailViewController(_:sender:)</code>并传入<strong>Detail View Controller</strong>。 <strong>UIViewController</strong>的每个子类都有一个继承属性<strong>splitViewController</strong>，它将引用它包含视图控制器（如果存在）。</p>
+<p>此新代码仅更改<strong>iPhone</strong>上应用程序的行为，导致导航控制器在您选择新怪物时将细节控制器推入堆栈。 它不会改变<strong>iPad</strong>实现的行为，因为在<strong>iPad</strong>上，细节视图控制器始终可见。</p>
+<p>进行此更改后，在<strong>iPhone</strong>上运行它现在应该正常运行。 只需添加几行代码，您就可以在<strong>iPad</strong>和<strong>iPhone</strong>上使用功能齐全的分割视图控制器。 不错！</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/07/Group-2-609x500.png" alt="图片"></p>
+<h2 id="iPad纵向分割视图控制器"><a href="#iPad纵向分割视图控制器" class="headerlink" title="iPad纵向分割视图控制器"></a>iPad纵向分割视图控制器</h2><p>以纵向模式在<strong>iPad</strong>中运行应用程序。 起初，似乎没有办法进入左侧菜单。</p>
+<p>但请尝试从屏幕左侧滑动。 很酷吧？ 点按菜单外的任意位置即可隐藏它。</p>
+<p>内置的滑动功能非常酷，但是如果你想让导航栏顶部有一个显示菜单的按钮，类似于它在<strong>iPhone</strong>上的表现怎么办？ 要做到这一点，您需要对应用程序进行一些小的修改。</p>
+<p>首先，打开<strong>Main.storyboard</strong>并将<strong>Detail View Controller</strong>嵌入到导航控制器中。 您可以通过选择<strong>Detail View Controller</strong>，然后选择<strong>Editor ▸ Embed In ▸ Navigation Controller</strong>来完成此操作。</p>
+<p>您的<strong>Storyboard</strong>现在看起来像这样: </p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/07/New-Storyboard-529x500.png" alt="图片"></p>
+<p>现在打开<strong>MasterViewController.swift</strong>并找到<code>tableView(_:didSelectRowAt :)</code>。 通过调用<code>showDetailViewController(_:sender:)</code>将if块更改为以下内容: </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> </span><br><span class="line">  <span class="keyword">let</span> detailViewController = delegate <span class="keyword">as</span>? <span class="type">DetailViewController</span>,</span><br><span class="line">  <span class="keyword">let</span> detailNavigationController = detailViewController.navigationController &#123;</span><br><span class="line">    splitViewController?</span><br><span class="line">      .showDetailViewController(detailNavigationController, sender: <span class="literal">nil</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在，您将显示<strong>Detail View Controller</strong>的导航控制器，而不是显示<strong>Detail View Controller</strong>。 无论如何，导航控制器的根目录是<strong>Detail View Controller</strong>，因此您仍然可以看到与之前相同的内容，只需将其包含在导航控制器中。</p>
+<p>在运行应用程序之前，最后要进行两项更改。</p>
+<p>首先，在<strong>SceneDelegate.swift</strong>更新<code>scene(_willConnectTo:options:)</code>中，通过替换初始化<strong>detailViewController</strong>的行来解释<strong>DetailViewController</strong>现在包含在导航控制器中的事实: </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> detailViewController = </span><br><span class="line">  (splitViewController.viewControllers.last <span class="keyword">as</span>? <span class="type">UINavigationController</span>)?</span><br><span class="line">    .topViewController <span class="keyword">as</span>? <span class="type">DetailViewController</span></span><br></pre></td></tr></table></figure>
+
+<p>由于<strong>Detail View Controller</strong>包含在导航控制器中，因此现在有两个步骤来访问它。</p>
+<p>最后，在方法结束之前添加以下行。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">detailViewController.navigationItem.leftItemsSupplementBackButton = <span class="literal">true</span></span><br><span class="line">detailViewController.navigationItem.leftBarButtonItem = </span><br><span class="line">  splitViewController.displayModeButtonItem</span><br></pre></td></tr></table></figure>
+
+<p>这告诉<strong>Detail View Controller</strong>用一个按钮替换其左侧导航项，该按钮将切换<strong>Split View Controller</strong>的显示模式。 在iPhone上运行时不会改变任何东西，但在iPad上，你会在左上角看到一个按钮来切换表视图显示。</p>
+<p>在iPad上运行应用程序纵向并检查出来: </p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2019/07/Cat-Bot-Portrait-iPad-375x500.png" alt="图片"></p>
+<p>呜！ 现在，您可以在纵向和横向上在iPad和iPhone上运行良好的效果！: ]</p>
+<h2 id="然后去哪儿？"><a href="#然后去哪儿？" class="headerlink" title="然后去哪儿？"></a>然后去哪儿？</h2><p>对于新应用程序，您可能会使用Master-Detail模板来节省时间，这样您就可以启动<strong>Split View Controller</strong>。 但是现在你已经看到了如何从头开始使用UISplitViewController并更好地了解它是如何工作的。 既然您已经看到将主 - 细节模式融入您的通用应用程序是多么容易，那么请前往并应用您所学到的知识！</p>
+<p>如果您对跨设备的<strong>Split View Controller</strong>的更多详细信息感兴趣，请查看我们关于<a href="https://videos.raywenderlich.com/courses/7-split-view-controllers/lessons/1" target="_blank" rel="noopener"><strong>Split View Controller</strong>的简短视频教程系列</a>。</p>
+<p>如果您有任何问题或意见，请加入以下论坛讨论。</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2019/09/MathMonsters-1.zip" target="_blank" rel="noopener">下载资料</a>]</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#入门"><span class="toc-number">1.</span> <span class="toc-text">入门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建自定义视图控制器"><span class="toc-number">2.</span> <span class="toc-text">创建自定义视图控制器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#制作你的模型"><span class="toc-number">3.</span> <span class="toc-text">制作你的模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#显示怪物列表"><span class="toc-number">4.</span> <span class="toc-text">显示怪物列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更新主视图控制器的标题"><span class="toc-number">5.</span> <span class="toc-text">更新主视图控制器的标题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#显示机器人详细信息"><span class="toc-number">6.</span> <span class="toc-text">显示机器人详细信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用细节勾勒大师"><span class="toc-number">7.</span> <span class="toc-text">用细节勾勒大师</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#iPad纵向分割视图控制器"><span class="toc-number">8.</span> <span class="toc-text">iPad纵向分割视图控制器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#然后去哪儿？"><span class="toc-number">9.</span> <span class="toc-text">然后去哪儿？</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

@@ -1,0 +1,350 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>UICollectionView教程:入门 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="
+更新提示:Brody Eller针对iOS 12、Xcode 10和Swift 4.2更新了本教程。布兰登·特雷比特斯基(Brandon Trebitowski)是原著的作者。
+
+在本教程中，你将,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">UICollectionView教程:入门</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">UICollectionView教程:入门</h1>
+        <div class="stuff">
+            <span>六月 07, 2020</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/UIKit/">UIKit</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <blockquote>
+<p><em>更新提示</em>:Brody Eller针对iOS 12、Xcode 10和Swift 4.2更新了本教程。布兰登·特雷比特斯基(Brandon Trebitowski)是原著的作者。</p>
+</blockquote>
+<p>在本教程中，你将通过创建你自己的基于网格的照片浏览应用程序来体验UICollectionView。</p>
+<p>iOS照片应用程序通过多种布局以时尚的方式显示照片。您可以查看您的照片在一个漂亮的网格视图:</p>
+<p>iOS照片应用程序通过多种布局以时尚的方式显示照片。您可以查看您的照片在一个漂亮的网格视图:</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2014/08/Photos-Photos.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2014/08/Photos-Photos-666x500.png" alt="iOS Photos App"></a></p>
+<p>或者您可以查看您的相册作为堆栈:</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2014/08/Photos-album.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2014/08/Photos-album-666x500.png" alt="iOS Photos app in album view"></a></p>
+<p>你甚至可以用一个很酷的按压手势在两个布局之间切换。”哇，我想在我的应用中使用它! “你可能会这样想。</p>
+<p><code>UICollectionView</code>使得添加你自己的自定义布局和布局过渡(比如照片应用中的那些)变得非常简单。</p>
+<p>您并不局限于堆栈和网格，因为集合视图是非常可定制的。你可以使用它们来制作圆形布局，覆盖流风格布局，脉冲新闻风格布局-几乎任何你能想到的!</p>
+<p>好消息是，如果您熟悉<code>UITableView</code>，那么您在获取集合视图时就没有问题。使用它们非常类似于表视图数据源和委托模式。</p>
+<p>当你完成本教程时，你将知道使用集合视图的基础知识，并准备开始在你的应用程序中使用这项惊人的技术!</p>
+<h2 id="UICollectionView的剖析"><a href="#UICollectionView的剖析" class="headerlink" title="UICollectionView的剖析"></a>UICollectionView的剖析</h2><p>首先，看一下已完成项目的示例。<code>UICollectionView</code>包含几个关键组件，如下所示:</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv-1.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv-1.png" alt="Components of the finished application"></a></p>
+<p>逐一看看这些组件:</p>
+<ol>
+<li><p><code>UICollectionView</code>: 显示内容的主视图，类似于<code>UITableView</code>与表视图一样，集合视图也是一个<code>UIScrollView</code>子类。</p>
+</li>
+<li><p><code>UICollectionViewCell</code>: 这类似于表视图中的<code>UITableViewCell</code>。这些单元格构成视图的内容，并作为子视图添加到集合视图。单元格可以通过编程或在接口构建器内部创建。</p>
+</li>
+</ol>
+<p>3.<code>Supplementary Views</code>: 如果你有额外的信息，你需要显示，不应该在单元格，但仍然在收集视图的某处，你应该使用补充视图。这些通常用于页眉或页脚。</p>
+<blockquote>
+<p>注: 集合视图也可以有<code>Decoration Views</code>——如果你想添加一些额外的视图来增强集合视图的外观(但它们并不真正包含有用的数据)，你应该使用装饰视图。背景图片或其他视觉装饰是装饰视图的好例子。在本教程中，您不会使用装饰视图，因为它需要您编写一个自定义布局类。</p>
+</blockquote>
+<h3 id="使用UICollectionViewLayout"><a href="#使用UICollectionViewLayout" class="headerlink" title="使用UICollectionViewLayout"></a>使用UICollectionViewLayout</h3><p>除了上面描述的可视组件，集合视图还有一个布局对象，它负责内容的大小、位置和其他几个属性。布局对象是<code>UICollectionViewLayout</code>的子类。布局可以在运行时交换，并且集合视图甚至可以自动动画切换从一个布局到另一个!</p>
+<p>你可以子类化<code>UICollectionViewLayout</code>来创建你自己的自定义布局，但是苹果已经慷慨地为开发者提供了一个基本的基于流的布局，叫做<code>UICollectionViewFlowLayout</code>。元素根据它们的大小一个接一个地布局，非常像网格视图。您可以使用这个布局类，或者子类化它来获得一些有趣的行为和视觉效果。</p>
+<p>在本教程中，您将深入了解这些元素。现在，是时候将您的手与项目的混合!</p>
+<h2 id="引入FlickrSearch"><a href="#引入FlickrSearch" class="headerlink" title="引入FlickrSearch"></a>引入FlickrSearch</h2><p>在本教程的其余部分，你将创建一个名为<em>FlickrSearch</em>的很酷的照片浏览应用程序。它允许你在流行的照片分享网站Flickr上搜索一个词，它会下载并以网格视图显示任何匹配的照片，正如你在上面的截图中看到的那样。</p>
+<p>准备好开始了吗?打开FlickrSearch启动程序项目。项目文件可以在本教程的顶部或底部使用“下载材料”按钮下载。</p>
+<p>在里面，你会发现一个空视图控制器和一些用于与Flickr接口的文件。在你继续前进之前先四处看看。</p>
+<h2 id="开始你的Collection"><a href="#开始你的Collection" class="headerlink" title="开始你的Collection"></a>开始你的Collection</h2><p>打开<code>Main.storyboard</code>并拖拽一个<code>Collection View Controller</code>。转到<code>Editor ▸ Embed in ▸ Navigation Controller</code>创建一个<code>Navigation Controller</code>，并自动设置集合视图控制器为根。</p>
+<p>你现在应该有一个像这样的布局在<code>Storyboard</code>:</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv4.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv4-650x282.png" alt="Storyboard with navigation controller and UICollectionViewController"></a></p>
+<p>接下来，选择你安装的<code>Navigation Controller</code>并将其作为<code>Attributes inspector</code>中的初始视图控制器:</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv-5.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv-5-650x321.png" alt="Setting UINavigationController as initial view controller"></a></p>
+<p>聚焦在<code>Collection view Controller</code>上，选择里面的<code>UICollectionView</code>，并将背景色改为<code>white</code>:</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv10.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv10-650x275.png" alt="Setting UICollectionViewController background to white"></a></p>
+<blockquote>
+<p>注意:想知道“滚动方向”属性是干什么的?这个属性是特定于“UICollectionViewFlowLayout”的，默认值是<em>Vertical</em>。垂直流布局意味着布局类将在视图顶部从左到右放置项目，直到到达视图的右边缘，然后向下移动到下一行。如果视图中元素太多，无法同时容纳，用户可以垂直滚动查看更多元素。</p>
+</blockquote>
+<p>相反，水平流布局将项目从上到下横跨视图的左边缘，直到它到达下边缘。用户可以水平滚动屏幕，看到屏幕上不适合的项目。在本教程中，您将坚持使用更常见的“垂直”集合视图。</p>
+<p>在集合视图中选择单个单元格，并使用属性检查器将<em>Reuse Identifier</em>设置为<em>FlickrCell</em>。这在表视图中也应该很熟悉——数据源将使用此标识符来退出队列或创建新单元格。</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2018/11/FlickrCellScreenShot.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2018/11/FlickrCellScreenShot-650x343.png" alt="Set the reuse identifier string to FlickrCell"></a></p>
+<h3 id="添加搜索"><a href="#添加搜索" class="headerlink" title="添加搜索"></a>添加搜索</h3><p>将文本字段拖放到集合视图上方导航栏的中心。用户将在这里输入他们的搜索文本。在属性检查器中将搜索字段的<code>Placeholder Text</code>设置为<code>Search</code>，将<code>Return Key</code>设置为<code>Search</code>:</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv6.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv6-650x462.png" alt="Adding a text field for searching"></a></p>
+<p>接下来，从文本框control-drag到集合视图控制器，选择<code>delegate</code>出口:</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv7.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv7.png" alt="Connecting the text field delegate"></a></p>
+<h3 id="继承你的UICollectionViewController"><a href="#继承你的UICollectionViewController" class="headerlink" title="继承你的UICollectionViewController"></a>继承你的UICollectionViewController</h3><p><code>UICollectionViewController</code>做了很多，但你通常需要创建一个子类。现在这样做。在<code>File short - term</code>中，选择<code>iOS的源代码 - Cocoa Touch Class</code>模板，然后点击<code>Next</code>。将新类命名为<code>FlickrPhotosViewController</code>，使其成为<code>UICollectionViewController</code>的子类。模板有很多代码，但是理解它的作用的最好方法是从头开始。</p>
+<p>打开<code>FlickrPhotosViewController.swift</code>并将文件中的代码替换为以下代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"></span><br><span class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">FlickrPhotosViewController</span>: <span class="title">UICollectionViewController</span> </span>&#123;</span><br><span class="line">  <span class="comment">// MARK: - Properties</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">let</span> reuseIdentifier = <span class="string">"FlickrCell"</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来，在<code>reuseIdentifier</code>常量的正下方添加一个名为<code>sectionInsets</code>的常量，这个常量以后会用到:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">let</span> sectionInsets = <span class="type">UIEdgeInsets</span>(top: <span class="number">50.0</span>, </span><br><span class="line">                                         <span class="keyword">left</span>: <span class="number">20.0</span>, </span><br><span class="line">                                         bottom: <span class="number">50.0</span>, </span><br><span class="line">                                         <span class="keyword">right</span>: <span class="number">20.0</span>)</span><br></pre></td></tr></table></figure>
+
+<p>您将在完成本教程的过程中填补其余的空白。</p>
+<p>返回<code>Main.storyboard</code>，选择集合视图控制器，在标识符检查器中，将<code>Class</code>设置为<code>FlickrPhotosViewController</code>以匹配你的新类:</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv-9.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv-9-650x131.png" alt="Set the UICollectionViewController subclass"></a></p>
+<h2 id="获取Flickr照片"><a href="#获取Flickr照片" class="headerlink" title="获取Flickr照片"></a>获取Flickr照片</h2><p>这个部分的第一个任务是把这个部分的标题快速念十遍。</p>
+<p>好吧,开个玩笑。,)</p>
+<p><code>Flickr</code>是一个非常棒的图片共享服务，它有一个可供开发人员使用的公开访问的非常简单的<code>API</code>。通过<code>API</code>，您可以搜索照片、添加照片、评论照片，等等。</p>
+<p>要使用<code>Flickr API</code>，需要一个<code>API</code>密钥。如果你正在做一个真正的项目，我建议你在这里注册:<a href="http://www.flickr.com/services/api/keys/apply/。" target="_blank" rel="noopener">http://www.flickr.com/services/api/keys/apply/。</a></p>
+<p>然而，对于这样的测试项目，<code>Flickr</code>有一个样本键，它们会经常旋转出来。您可以使用密钥而不需要注册。只需在: <a href="http://www.flickr.com/services/api/explore/?method=flickr.photos.search" target="_blank" rel="noopener">http://www.flickr.com/services/api/explore/?method=flickr.photos.search</a> 执行任何搜索，并从底部的<code>URL</code>中复制<code>API</code>键—它遵循<code>&amp;api_key=</code>，一直到下一个<code>&amp;</code>。将它粘贴到文本编辑器的某个地方，以便以后使用。</p>
+<p>例如，如果<code>URL</code>为:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://api.flickr.com/services/rest/?method=flickr.photos.search&amp;api_key=6593783 efea8e7f6dfc6b70bc03d2afb&amp;format=rest&amp;api_sig=f24f4e98063a9b8ecc8b522b238d5e2f</span><br></pre></td></tr></table></figure>
+
+<p>那么API key为:6593783efea8e7f6dfc6b70bc03d2afb</p>
+<blockquote>
+<p>注意:如果您使用示例API密钥，请注意它几乎每天都在变化。因此，如果您已经花了几天时间学习本教程，您可能会发现您需要经常获得一个新的API密钥。因此，如果你打算花几天时间在这个项目上，从Flickr获得自己的API键可能会更容易。</p>
+</blockquote>
+<h3 id="Flickr-API类"><a href="#Flickr-API类" class="headerlink" title="Flickr API类"></a>Flickr API类</h3><p>因为本教程是关于<code>UICollectionView</code>而不是<code>Flickr API</code>，所以有一组抽象<code>Flickr</code>搜索代码的类可供你使用。</p>
+<p><code>Flickr</code>支持由两个类组成，一个结构和一个枚举:</p>
+<ul>
+<li><code>FlickrSearchResults</code>:一个结构，它封装了搜索词和搜索结果。</li>
+<li><code>FlickrPhoto</code>:关于<code>Flickr</code>检索到的照片的数据——缩略图、图片和元数据信息，比如它的ID。<code>FlickrSearchResults</code>包含这些对象的数组。</li>
+<li><code>Flickr</code>:提供一个简单的基于块的<code>API</code>来执行搜索并返回一个<code>FlickrSearchResult</code>。</li>
+<li><code>Result</code>:用于从<code>Flickr API</code>返回结果的枚举。</li>
+</ul>
+<p>请随意查看代码——它非常简单，可能会激发您在自己的项目中使用Flickr !</p>
+<p>在搜索<code>Flickr</code>之前，需要输入一个<code>API</code>密钥。打开<code>Flickr.swift</code>并将<code>apiKey</code>的值替换为您之前获得的<code>API</code>密钥。它应该是这样的:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> apiKey = <span class="string">"hh7ef5ce0a54b6f5b8fbc36865eb5b32"</span></span><br></pre></td></tr></table></figure>
+
+<p>当你准备好了，继续下一节-是时候做一些准备工作之前，连接到Flickr。</p>
+<h3 id="准备数据结构"><a href="#准备数据结构" class="headerlink" title="准备数据结构"></a>准备数据结构</h3><p>您将构建这个项目，以便每次执行搜索之后，它都会在collection视图中显示一个新的<em>section</em>和结果(而不是简单地替换上一节)。换句话说，如果你搜索<em>“忍者”</em>和<em>“海盗”，</em>在集合视图中将会有一部分忍者和一部分海盗。这是灾难的秘诀!</p>
+<p>要做到这一点，需要一个数据结构，这样就可以单独保存每个部分的数据。“FlickrSearchResults”数组可以很好地完成这个任务。</p>
+<p>打开<code>FlickrPhotosViewController.swift</code>并在<code>sectionInsets</code>常量下面添加以下属性:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">var</span> searches: [<span class="type">FlickrSearchResults</span>] = []</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">let</span> flickr = <span class="type">Flickr</span>()</span><br></pre></td></tr></table></figure>
+
+<p><code>searches</code>是一个数组，它会跟踪<code>app</code>中进行的所有搜索，<code>flickr</code>是一个对象的引用，它会为你做搜索。接下来，在文件底部添加以下扩展名:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MARK: - Private</span></span><br><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">extension</span> <span class="title">FlickrPhotosViewController</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">photo</span><span class="params">(<span class="keyword">for</span> indexPath: IndexPath)</span></span> -&gt; <span class="type">FlickrPhoto</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> searches[indexPath.section].searchResults[indexPath.row]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>photo(for:)</code>是一个方便的方法，它将获得与集合视图中的索引路径相关的特定照片。你会为特定的索引路径访问很多照片，你不想重复代码。</p>
+<h3 id="得到好的结果"><a href="#得到好的结果" class="headerlink" title="得到好的结果"></a>得到好的结果</h3><p>您现在已经准备好启动Flickr搜索了!当用户在键入查询后点击<em>Search</em>时，您希望执行搜索。你已经将文本字段的委托outlet连接到你的集合视图控制器。现在你可以做点什么了。</p>
+<p>打开<code>FlickrPhotosViewController.swift</code>和添加一个扩展名来保存文本字段的委托方法:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MARK: - Text Field Delegate</span></span><br><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">FlickrPhotosViewController</span> : <span class="title">UITextFieldDelegate</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">textFieldShouldReturn</span><span class="params">(<span class="number">_</span> textField: UITextField)</span></span> -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">    <span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">let</span> activityIndicator = <span class="type">UIActivityIndicatorView</span>(style: .gray)</span><br><span class="line">    textField.addSubview(activityIndicator)</span><br><span class="line">    activityIndicator.frame = textField.bounds</span><br><span class="line">    activityIndicator.startAnimating()</span><br><span class="line">    </span><br><span class="line">    flickr.searchFlickr(<span class="keyword">for</span>: textField.text!) &#123; searchResults <span class="keyword">in</span></span><br><span class="line">      activityIndicator.removeFromSuperview()</span><br><span class="line">      </span><br><span class="line">      <span class="keyword">switch</span> searchResults &#123;</span><br><span class="line">      <span class="keyword">case</span> .error(<span class="keyword">let</span> error) :</span><br><span class="line">        <span class="comment">// 2</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"Error Searching: \(error)"</span>)</span><br><span class="line">      <span class="keyword">case</span> .results(<span class="keyword">let</span> results):</span><br><span class="line">        <span class="comment">// 3</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"Found \(results.searchResults.count) matching \(results.searchTerm)"</span>)</span><br><span class="line">        <span class="keyword">self</span>.searches.insert(results, at: <span class="number">0</span>)     </span><br><span class="line">        <span class="comment">// 4</span></span><br><span class="line">        <span class="keyword">self</span>.collectionView?.reloadData()</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    textField.text = <span class="literal">nil</span></span><br><span class="line">    textField.resignFirstResponder()</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以下是代码的解释:</p>
+<ol>
+<li>添加活动视图之后，使用<code>Flickr</code>包装器类在<code>Flickr</code>中异步搜索与给定搜索项匹配的照片。当搜索完成时，完成块被调用，并带有<code>FlickrPhoto</code>对象的结果集和一个错误(如果有的话)。</li>
+<li>将任何错误记录到控制台。显然，在生产应用程序中，您希望向用户显示这些错误。</li>
+<li>记录结果并将它们添加到搜索数组的开头。</li>
+<li>刷新UI以显示新数据。您使用<code>reloadData()</code>，它的工作方式与在表视图中一样。</li>
+</ol>
+<p>构建并运行你的应用程序。在文本框中执行搜索，你会在控制台中看到一个日志消息，显示搜索结果的数量，类似如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Found 20 matching bananas</span><br></pre></td></tr></table></figure>
+
+<p>注意，Flickr助手将结果限制为20，以保持加载时间。</p>
+<p>不幸的是，你在你的收藏视图中看不到任何照片!与表视图一样，除非实现相关的数据源和委托方法，否则集合视图做不了很多事情。</p>
+<h2 id="提供UICollectionView"><a href="#提供UICollectionView" class="headerlink" title="提供UICollectionView"></a>提供UICollectionView</h2><p>在使用表视图时，必须设置数据源和委托，以便提供数据来显示和处理事件(如行选择)。</p>
+<p>类似地，在使用集合视图时，还必须设置数据源和委托。它们的作用如下:</p>
+<ul>
+<li>DataSource: <code>UICollectionViewDataSource</code>返回关于集合视图及其视图中的项目数量的信息。</li>
+<li>Delegate: <code>UICollectionViewDelegate</code>，在事件发生时被通知，例如单元格被选择，突出显示，或删除。</li>
+</ul>
+<p><code>UICollectionViewFlowLayout</code>也有一个委托协议——<code>UICollectionViewDelegateFlowLayout</code>。它允许您调整布局的行为，配置诸如单元格间距、滚动方向等内容。</p>
+<p>在本节中，你将在你的视图控制器上实现所需的<code>UICollectionViewDataSource</code>和<code>UICollectionViewDelegateFlowLayout</code>方法，因此你被设置为与你的集合视图一起工作。<code>UICollectionViewDelegate</code>方法不是本教程所必需的，但是您将在[本教程]中使用它们(<a href="https://www.raywenderlich.com/136161/uicollectionview-tutorial-reus-views-selec-reordered)。" target="_blank" rel="noopener">https://www.raywenderlich.com/136161/uicollectionview-tutorial-reus-views-selec-reordered)。</a></p>
+<h3 id="UICollectionViewDataSource"><a href="#UICollectionViewDataSource" class="headerlink" title="UICollectionViewDataSource"></a>UICollectionViewDataSource</h3><p>打开<code>FlickrPhotosViewController.swift</code>，为<code>UICollectionViewDataSource</code>协议添加以下扩展名:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MARK: - UICollectionViewDataSource</span></span><br><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">FlickrPhotosViewController</span> </span>&#123;</span><br><span class="line">  <span class="comment">//1</span></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">numberOfSections</span><span class="params">(<span class="keyword">in</span> collectionView: UICollectionView)</span></span> -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> searches.<span class="built_in">count</span></span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//2</span></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">collectionView</span><span class="params">(<span class="number">_</span> collectionView: UICollectionView,</span></span></span><br><span class="line"><span class="function"><span class="params">                               numberOfItemsInSection section: Int)</span></span> -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> searches[section].searchResults.<span class="built_in">count</span></span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//3</span></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">collectionView</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="number">_</span> collectionView: UICollectionView,</span></span></span><br><span class="line"><span class="function"><span class="params">    cellForItemAt indexPath: IndexPath</span></span></span><br><span class="line"><span class="function"><span class="params">  )</span></span> -&gt; <span class="type">UICollectionViewCell</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> cell = collectionView</span><br><span class="line">      .dequeueReusableCell(withReuseIdentifier: reuseIdentifier, <span class="keyword">for</span>: indexPath)</span><br><span class="line">    cell.backgroundColor = .black</span><br><span class="line">    <span class="comment">// Configure the cell</span></span><br><span class="line">    <span class="keyword">return</span> cell</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这些方法非常简单:</p>
+<ol>
+<li>每个区段有一个搜索，所以区段的数目是<code>searches</code>数组的计数。</li>
+<li><code>section</code>中的项数是来自相关<code>FlickrSearch</code>对象的<code>searchResults</code>数组的计数。</li>
+<li>这是一个占位符方法，只返回一个空白单元格。稍后您将填充它。注意，集合视图<em>要求</em>您注册一个具有重用标识符的单元，否则将出现运行时错误。</li>
+</ol>
+<p>构建并再次运行，并执行搜索。你应该会看到20个新电池，尽管现在看起来有点暗淡:</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2018/12/rw-cv11.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2018/12/rw-cv11-650x488.png" alt="A collection view with a lot of back cells"></a></p>
+<h3 id="UICollectionViewFlowLayoutDelegate"><a href="#UICollectionViewFlowLayoutDelegate" class="headerlink" title="UICollectionViewFlowLayoutDelegate"></a>UICollectionViewFlowLayoutDelegate</h3><p>如前所述，每个集合视图都有一个关联的布局。您正在为这个项目使用预先制作的流布局，因为它很好，易于使用，并且提供了您正在寻找的网格视图样式。</p>
+<p>还在<code>FlickrPhotosViewController.swift</code>，在你的<code>flickr</code>常数下面添加以下常数:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">let</span> itemsPerRow: <span class="type">CGFloat</span> = <span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>接下来，添加<code>UICollectionViewDelegateFlowLayout</code>扩展，以允许视图控制器遵循流布局委托协议:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MARK: - Collection View Flow Layout Delegate</span></span><br><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">FlickrPhotosViewController</span> : <span class="title">UICollectionViewDelegateFlowLayout</span> </span>&#123;</span><br><span class="line">  <span class="comment">//1</span></span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">collectionView</span><span class="params">(<span class="number">_</span> collectionView: UICollectionView,</span></span></span><br><span class="line"><span class="function"><span class="params">                      layout collectionViewLayout: UICollectionViewLayout,</span></span></span><br><span class="line"><span class="function"><span class="params">                      sizeForItemAt indexPath: IndexPath)</span></span> -&gt; <span class="type">CGSize</span> &#123;</span><br><span class="line">    <span class="comment">//2</span></span><br><span class="line">    <span class="keyword">let</span> paddingSpace = sectionInsets.<span class="keyword">left</span> * (itemsPerRow + <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">let</span> availableWidth = view.frame.width - paddingSpace</span><br><span class="line">    <span class="keyword">let</span> widthPerItem = availableWidth / itemsPerRow</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="type">CGSize</span>(width: widthPerItem, height: widthPerItem)</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//3</span></span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">collectionView</span><span class="params">(<span class="number">_</span> collectionView: UICollectionView,</span></span></span><br><span class="line"><span class="function"><span class="params">                      layout collectionViewLayout: UICollectionViewLayout,</span></span></span><br><span class="line"><span class="function"><span class="params">                      insetForSectionAt section: Int)</span></span> -&gt; <span class="type">UIEdgeInsets</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> sectionInsets</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 4</span></span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">collectionView</span><span class="params">(<span class="number">_</span> collectionView: UICollectionView,</span></span></span><br><span class="line"><span class="function"><span class="params">                      layout collectionViewLayout: UICollectionViewLayout,</span></span></span><br><span class="line"><span class="function"><span class="params">                      minimumLineSpacingForSectionAt section: Int)</span></span> -&gt; <span class="type">CGFloat</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> sectionInsets.<span class="keyword">left</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是如何工作的:</p>
+<ol>
+<li><code>collectionView(_:layout:sizeForItemAt:)</code>负责告诉布局给定单元格的大小。</li>
+<li>在这里，你计算出填充所占用的空间总量。将有<code>n+1</code>大小均匀的空间，其中“n”是行中的项数。空间大小可以从左边的部分插入。从视图的宽度中减去这个值，然后除以一行中的项数，就得到了每个项的宽度。然后以正方形的形式返回大小。</li>
+<li><code>collectionView(_:layout:insetForSectionAt:)</code>返回单元格、页眉和页脚之间的间距。常量用于存储该值。</li>
+<li>此方法控制布局中每行之间的间距。你想要这个匹配左右的填充。</li>
+</ol>
+<p>构建并再次运行，并执行搜索。看哪!比以前更大的黑色方块!</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv12.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv12-650x488.png" alt="A collection view with large black cells"></a></p>
+<p>有了这个基础设施，现在就可以在屏幕上实际显示一些照片了!</p>
+<h2 id="创建自定义UICollectionViewCells"><a href="#创建自定义UICollectionViewCells" class="headerlink" title="创建自定义UICollectionViewCells"></a>创建自定义UICollectionViewCells</h2><p><code>UICollectionView</code>的一个优点是，像表格视图一样，很容易在故事板编辑器中可视化地设置集合视图。你可以将集合视图拖放到你的视图控制器中，并在故事板编辑器中为你的单元格设计布局!是时候看看它是如何工作的了。</p>
+<p>打开<code>main.storyboard</code>并选择集合视图。通过在大小检查器中设置单元格大小为200×200，给自己一些空间来工作:</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv13.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv13-650x130.png" alt="Changing the cell size in the storyboard"></a></p>
+<blockquote>
+<p>注意: 设置这个大小不会影响应用程序中的单元格，因为你已经实现了委派方法为每个单元格指定了大小，它会覆盖故事板中设置的任何东西。</p>
+</blockquote>
+<p>将图像视图拖到单元格上并拉伸它，使它完全占据整个单元格。在图像视图仍然选中的情况下，打开大头针菜单，取消选中<code>Constrain to margins</code>，在周围添加<code>0</code>点的约束:</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv14.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv14-635x500.png" alt="Adding an image view which fills the cell"></a></p>
+<p>在图像视图仍然被选中的情况下，在属性检查器中将其<code>mode</code>改为<code>Aspect Fit</code>，这样图像就不会以任何方式被裁剪或拉伸:</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv-18.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv-18-650x455.png" alt="Setting the image view content mode to aspect fit"></a></p>
+<h3 id="子类化UICollectionViewCell"><a href="#子类化UICollectionViewCell" class="headerlink" title="子类化UICollectionViewCell"></a>子类化UICollectionViewCell</h3><p><code>UICollectionViewCell</code>除了改变背景颜色之外不允许进行太多的自定义。您几乎总是希望创建自己的子类，以便轻松访问添加的任何内容子视图。</p>
+<p>选择<code>*File ▸ New ▸ File</code> 和选择 <code>iOS ▸ Source ▸ Cocoa Touch Class</code>模板。点击<code>Next</code>。将新类命名为<code>FlickrPhotoCell</code>，使其成为<code>UICollectionViewCell</code>的子类。</p>
+<p>打开<code>main.storyboard</code>并选择单元格。在身份检查器中，设置单元格的类为<code>FlickrPhotoCell</code>:</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv15.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv15-650x224.png" alt="Specifying the collection view cell subclass"></a></p>
+<p>打开<code>Assistant editor</code>，确保它显示<code>FlickrPhotoCell.swift</code>，然后从图像视图<code>control-drag</code>到类中添加一个新的出口，命名为<code>imageView</code>:</p>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2016/06/ConnectImageOutlet-650x234.png" alt="Connect Image Outlet"></p>
+<p>现在您有了一个带有图像视图的自定义单元格类。是时候在上面放一张照片了! 打开<code>FlickrPhotosViewController.swift</code>并将<code>collectionView(_:cellForItemAt:)</code>替换为:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">collectionView</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="number">_</span> collectionView: UICollectionView, </span></span></span><br><span class="line"><span class="function"><span class="params">  cellForItemAt indexPath: IndexPath</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span> -&gt; <span class="type">UICollectionViewCell</span> &#123;</span><br><span class="line">  <span class="comment">//1</span></span><br><span class="line">  <span class="keyword">let</span> cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier,</span><br><span class="line">                                                <span class="keyword">for</span>: indexPath) <span class="keyword">as</span>! <span class="type">FlickrPhotoCell</span></span><br><span class="line">  <span class="comment">//2</span></span><br><span class="line">  <span class="keyword">let</span> flickrPhoto = photo(<span class="keyword">for</span>: indexPath)</span><br><span class="line">  cell.backgroundColor = .white</span><br><span class="line">  <span class="comment">//3</span></span><br><span class="line">  cell.imageView.image = flickrPhoto.thumbnail</span><br><span class="line">    </span><br><span class="line">  <span class="keyword">return</span> cell</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这与前面定义的占位符方法略有不同。</p>
+<ol>
+<li>返回的细胞现在是一个<code>FlickrPhotoCell</code>。</li>
+<li>您需要使用前面的便利方法获得表示要显示的照片的<code>FlickrPhoto</code>。</li>
+<li>使用缩略图填充图像视图。</li>
+</ol>
+<p>构建并运行，执行搜索，您将最终看到您一直在搜索的图片!</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv19.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2016/06/rw-cv19-374x500.png" alt="A collection view displaying images"></a></p>
+<p>是的! 成功!</p>
+<p>在这一点上，你现在已经有了一个完整的<code>UICollectionView</code>的工作示例(非常酷)。拍拍自己的背!您可以从下面下载完成的项目。</p>
+<h2 id="从这里到哪里去"><a href="#从这里到哪里去" class="headerlink" title="从这里到哪里去?"></a>从这里到哪里去?</h2><p>但还有更多! 查看<a href="https://www.raywenderlich.com/136161/uicollectionview-tutorial-reus-views-selec-reordered" target="_blank" rel="noopener">本教程</a>，通过教你如何增强刚刚构建的应用程序:</p>
+<ul>
+<li>添加自定义头集合视图。</li>
+<li>轻松移动单元格通过拖动他们。</li>
+<li>实现单格选择，以提供细节视图。</li>
+<li>实现多细胞选择太!</li>
+</ul>
+<p>与此同时，如果你对你目前所学到的有任何问题或评论，请加入下面的论坛讨论!</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#UICollectionView的剖析"><span class="toc-number">1.</span> <span class="toc-text">UICollectionView的剖析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用UICollectionViewLayout"><span class="toc-number">1.1.</span> <span class="toc-text">使用UICollectionViewLayout</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引入FlickrSearch"><span class="toc-number">2.</span> <span class="toc-text">引入FlickrSearch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开始你的Collection"><span class="toc-number">3.</span> <span class="toc-text">开始你的Collection</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#添加搜索"><span class="toc-number">3.1.</span> <span class="toc-text">添加搜索</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#继承你的UICollectionViewController"><span class="toc-number">3.2.</span> <span class="toc-text">继承你的UICollectionViewController</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#获取Flickr照片"><span class="toc-number">4.</span> <span class="toc-text">获取Flickr照片</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Flickr-API类"><span class="toc-number">4.1.</span> <span class="toc-text">Flickr API类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#准备数据结构"><span class="toc-number">4.2.</span> <span class="toc-text">准备数据结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#得到好的结果"><span class="toc-number">4.3.</span> <span class="toc-text">得到好的结果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#提供UICollectionView"><span class="toc-number">5.</span> <span class="toc-text">提供UICollectionView</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#UICollectionViewDataSource"><span class="toc-number">5.1.</span> <span class="toc-text">UICollectionViewDataSource</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UICollectionViewFlowLayoutDelegate"><span class="toc-number">5.2.</span> <span class="toc-text">UICollectionViewFlowLayoutDelegate</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建自定义UICollectionViewCells"><span class="toc-number">6.</span> <span class="toc-text">创建自定义UICollectionViewCells</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#子类化UICollectionViewCell"><span class="toc-number">6.1.</span> <span class="toc-text">子类化UICollectionViewCell</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从这里到哪里去"><span class="toc-number">7.</span> <span class="toc-text">从这里到哪里去?</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>
