@@ -1,0 +1,292 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>多个UISplitViewController教程 - CainLuo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="iOS,CainLuo,Swift,Objective-C,OC,swift,objective-c,oc,"> 
+    <meta name="description" content="这个UISplitViewController教程向你展示了如何使用多个UISplitViewController创建一个自适应布局的笔记记录应用程序。
+下载资料
+
+注意: 该教程使用Swift 4,"> 
+    <meta name="author" content="CainLuo"> 
+    <link rel="alternative" href="atom.xml" title="CainLuo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">CainLuo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://cainluo.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">多个UISplitViewController教程</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">多个UISplitViewController教程</h1>
+        <div class="stuff">
+            <span>六月 07, 2020</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/UISplitViewController/">UISplitViewController</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>这个<code>UISplitViewController</code>教程向你展示了如何使用多个<code>UISplitViewController</code>创建一个自适应布局的笔记记录应用程序。</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2018/12/FlickrSearch-3.zip" target="_blank" rel="noopener">下载资料</a></p>
+<blockquote>
+<p>注意: 该教程使用Swift 4.2, iOS 12, Xcode 10</p>
+</blockquote>
+<p>现代iOS应用程序的一个重要部分是需要适应它运行的设备和环境。在iPad上运行的应用程序有很多水平空间，除非它是在分屏或滑动列模式下运行。你的应用程序应该优雅地适应所有可能的布局。</p>
+<p><code>UISplitViewController</code>是一个非常通用的组件，它可以适应所有的trait集合，开发人员在简单的情况下几乎不需要修改。在本教程中，您将学习简单的情况下，您将加倍乐趣，通过放置分屏视图<em>内</em>您的分屏视图，以增加一个额外的层次结构!</p>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>使用页面顶部或底部的<code>下载材料</code>按钮下载启动程序。</p>
+<p>项目应用程序，<code>TreeWorld</code>，类似于Notes应用程序-有一个简单的文件夹文件系统，可以包含文件。文件中包含可以编辑的文本。</p>
+<p>先看看这个项目。展开<code>TreeWorld</code>文件夹, 打开<code>TreeWorld-Starter</code>文件夹中的<code>TreeWorld.xcodeproj</code>文件。</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2018/08/project-expanded.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2018/08/project-expanded-217x320.png" alt="expanded project"></a></p>
+<h3 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h3><p>展开<code>模型层</code>文件夹。内部是一个核心数据模型，有两个实体:</p>
+<ul>
+<li><code>File</code>表示文件系统中的一个节点。</li>
+<li><code>Content</code>表示一个文本容器。</li>
+</ul>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2018/08/data-model.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2018/08/data-model-480x305.png" alt="core data model"></a></p>
+<p>Xcode自动生成<code>File.swift</code>和<code>Content.swift</code>，以便您可以在项目中使用它们。</p>
+<p><code>CoreDataStack.swift</code>是一个简单的核心数据设置，当你后台应用时，它还会保存模型。</p>
+<p>模型遵循以下任意规则:</p>
+<ol>
+<li>文件夹是将<code>isFolder</code>设置为<code>true</code>的文件。</li>
+<li>一个文件夹永远不会有一个<code>Content</code>对象。</li>
+<li>文件夹不能包含文件夹。</li>
+<li>文件是将<code>isFolder</code>设置为<code>false</code>的文件。</li>
+<li>文件夹可以包含任意数量的子文件。</li>
+<li>文件必须有一个<code>Content</code>对象。</li>
+<li>文件永远不会有子文件。</li>
+</ol>
+<p><code>FileDataSource.swift</code>是一组用于<code>File</code>对象的查询和业务逻辑，它包含上述规则。</p>
+<h3 id="Views"><a href="#Views" class="headerlink" title="Views"></a>Views</h3><p>在<code>Presentation Layer ▸ Member View Controllers</code>组中是一组预先制作的视图控制器和故事板，你将在这个应用程序中使用。</p>
+<p><code>EditorViewController.swift</code>是一个允许您编辑“文件”的“内容”对象的视图。</p>
+<p><code>FileListViewController.swift</code>是一个<code>UITableViewController</code>，用于显示“File”对象。<code>FileDataSource</code>类提供了<code>UITableViewDataSource</code>和<code>UITableViewDelegate</code>的实现来将不必要的逻辑排除在视图控制器之外。</p>
+<p><code>PlaceholderViewController.swift</code>显示一条消息。</p>
+<p>如果你愿意，你可以以后再调查。它们由熟悉的UIKit组件组成，应该不会让你感到惊讶。</p>
+<p><code>Presentation Layer ▸ Root View Controller</code>的内部是<code>RootViewController.swift</code>。在本教程中，您将在此文件中进行大部分更改。它将充当所有视图的协调器。</p>
+<p>在目标设置中选择iPad Pro(9.7英寸)模拟器。构建和运行。</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2018/08/target-settings.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2018/08/target-settings-480x52.png" alt="target settings"></a></p>
+<p>您应该会看到一个绿色的视图出现。你准备好要分开了。</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2018/09/start-state2.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2018/09/start-state2-427x320.png" alt="initial starter state"></a></p>
+<h2 id="安装根拆分视图控制器"><a href="#安装根拆分视图控制器" class="headerlink" title="安装根拆分视图控制器"></a>安装根拆分视图控制器</h2><p>在本节中，您将创建并安装用于所有布局的根“UISplitViewController”。</p>
+<h3 id="创建分屏视图控制器"><a href="#创建分屏视图控制器" class="headerlink" title="创建分屏视图控制器"></a>创建分屏视图控制器</h3><p>在项目导航器中选择文件夹<code>Presentation Layer ▸ View Controllers ▸ Root View Controller</code>。使用<code>Command-N</code>或<code>(File ▸ New ▸ New File…)</code>添加一个新文件。</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2018/08/new-swift-file.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2018/08/new-swift-file-444x320.png" alt="New file dialog"></a></p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2018/09/new-swift-file2.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2018/09/new-swift-file2-404x320.png" alt="New file dialog commit"></a></p>
+<ol>
+<li>选择一个新的<code>Swift</code>文件。</li>
+<li>点击<code>下一步</code>。</li>
+<li>命名文件<code>RootViewController+ViewFactory</code>。</li>
+<li>点击<code>创建</code>。</li>
+</ol>
+<p>打开<code>RootViewController+ViewFactory.swift</code>并添加以下代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">RootViewController</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">freshSplitViewTemplate</span><span class="params">()</span></span> -&gt; <span class="type">UISplitViewController</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="built_in">split</span> = <span class="type">UISplitViewController</span>()</span><br><span class="line">    <span class="built_in">split</span>.preferredDisplayMode = .allVisible</span><br><span class="line">    <span class="keyword">let</span> navigation = <span class="type">UINavigationController</span>()</span><br><span class="line">    <span class="built_in">split</span>.viewControllers = [navigation]</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">split</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里，你实例化一个<code>UISplitViewController</code>和一个<code>UINavigationController</code>。然后你设置导航控制器作为拆分的主视图控制器。</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2018/08/Split-view-primer.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2018/08/Split-view-primer-427x320.png" alt="split view primer"></a></p>
+<p><code>UISplitViewController</code>有一个主视图控制器和一个辅助视图控制器。你可以通过<code>viewControllers</code>属性设置和获取这些控制器。</p>
+<p>为了确保主视图和辅助视图同时可见，可以将<code>preferredDisplayMode</code>属性设置为<code>.allvisible</code>。</p>
+<p>打开<code>RootViewController.swift</code>并将此代码添加到主类的主体中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> rootSplitSmallFraction: <span class="type">CGFloat</span> = <span class="number">0.25</span></span><br><span class="line"><span class="keyword">let</span> rootSplitLargeFraction: <span class="type">CGFloat</span> = <span class="number">0.33</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">lazy</span> <span class="keyword">var</span> rootSplitView: <span class="type">UISplitViewController</span> = &#123;</span><br><span class="line">  <span class="keyword">let</span> <span class="built_in">split</span> = freshSplitViewTemplate()</span><br><span class="line">  <span class="built_in">split</span>.preferredPrimaryColumnWidthFraction = rootSplitLargeFraction</span><br><span class="line">  <span class="built_in">split</span>.delegate = <span class="keyword">self</span></span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">split</span></span><br><span class="line">&#125;()</span><br><span class="line"></span><br><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">  installRootSplit()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">installRootSplit</span><span class="params">()</span></span> &#123;</span><br><span class="line">  view.addSubview(rootSplitView.view)</span><br><span class="line">  view.pinToInside(rootSplitView.view)</span><br><span class="line">  addChild(rootSplitView)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>将此扩展名添加到文件的末尾:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">RootViewController</span>: <span class="title">UISplitViewControllerDelegate</span> </span>&#123;</span><br><span class="line">  <span class="comment">//you'll add to this later</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这个片段中，您创建了一个<code>UISplitViewController</code>并将其嵌入到<code>RootViewController</code>中。还将主视图设置为可用宽度的33%。</p>
+<p>构建和运行。您应该会在左上角看到主视图的空导航栏。还没有太多可看的。</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2018/09/install-split2.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2018/09/install-split2-427x320.png" alt="initial split install"></a></p>
+<h2 id="管理状态"><a href="#管理状态" class="headerlink" title="管理状态"></a>管理状态</h2><p>现在需要设置一些基础设施。应用程序可以有三种可能的选择状态，你想要跟踪:</p>
+<ol>
+<li>没有什么选择</li>
+<li>文件夹选</li>
+<li>文件选择</li>
+</ol>
+<p>在项目导航器中选择文件夹<code>Presentation Layer ▸ View State</code>。新建一个Swift文件<code>(Command-N)</code>，命名为<code>SelectionState</code>。</p>
+<p>将以下代码添加到文件中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">SelectionState</span> </span>&#123;</span><br><span class="line">  <span class="keyword">case</span> noSelection</span><br><span class="line">  <span class="keyword">case</span> folderSelected</span><br><span class="line">  <span class="keyword">case</span> fileSelected</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在，在<code>View State</code>文件夹中创建第二个文件。将该文件命名为<code>StateCoordinator.swift</code>。</p>
+<p>将此代码添加到<code>StateCoordinator.swift</code>正文中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="class"><span class="keyword">protocol</span> <span class="title">StateCoordinatorDelegate</span>: <span class="title">class</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">gotoState</span><span class="params">(<span class="number">_</span> nextState: SelectionState, file: File?)</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StateCoordinator</span>: <span class="title">NSObject</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 3</span></span><br><span class="line">  <span class="keyword">private</span>(<span class="keyword">set</span>) <span class="keyword">var</span> state: <span class="type">SelectionState</span> = .noSelection</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">weak</span> <span class="keyword">var</span> delegate: <span class="type">StateCoordinatorDelegate?</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">init</span>(delegate: <span class="type">StateCoordinatorDelegate</span>) &#123;</span><br><span class="line">    <span class="keyword">self</span>.delegate = delegate</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 4</span></span><br><span class="line">  <span class="keyword">private</span>(<span class="keyword">set</span>) <span class="keyword">var</span> selectedFile: <span class="type">File?</span> &#123;</span><br><span class="line">    <span class="keyword">didSet</span> &#123;</span><br><span class="line">      <span class="keyword">guard</span> <span class="keyword">let</span> file = selectedFile <span class="keyword">else</span> &#123;</span><br><span class="line">        state = .noSelection</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">      &#125;</span><br><span class="line">      state = file.isFolder ? .folderSelected : .fileSelected</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 5</span></span><br><span class="line">  <span class="keyword">var</span> selectedFolder: <span class="type">File?</span> &#123;</span><br><span class="line">    <span class="keyword">guard</span> <span class="keyword">let</span> file = selectedFile <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> file.isFolder ? file : file.parent</span><br><span class="line">  &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一步一步复习:</p>
+<ol>
+<li>首先，声明一个委托协议<code>StateCoordinatorDelegate</code>，以允许另一个对象对<code>StateCoordinator</code>中的更改做出反应。</li>
+<li>接下来，声明<code>StateCoordinator</code>类。这个类的任务是跟踪当前选中的“文件”。当选择或删除一个“文件”时，类将更改为适当的<code>SelectionState</code>。</li>
+<li><code>StateCoordinator</code>有两个属性:一个用于<code>SelectionState</code>，它是公开只读的，另一个是对<code>StateCoordinatorDelegate</code>的弱引用。</li>
+<li><code>selectedFile</code>属性是公开只读的，并使用一个<code>property observer</code>来更改“状态”。</li>
+<li><code>selectedFolder</code>属性会被计算并允许您获得当前选择的顶级文件夹。</li>
+</ol>
+<p>现在，将此扩展添加到<code>StateCoordinator.swift</code>的末尾:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span>  <span class="title">StateCoordinator</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">didSelectFile</span><span class="params">(<span class="number">_</span> file: File?)</span></span> &#123;</span><br><span class="line">    selectedFile = file</span><br><span class="line">    delegate?.gotoState(state, file: selectedFile)</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">didDeleteFile</span><span class="params">(parentFolder: File?)</span></span> &#123;</span><br><span class="line">    selectedFile = parentFolder</span><br><span class="line">    state = .noSelection</span><br><span class="line">    delegate?.gotoState(state, file: selectedFile)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里有两个公共api，允许调用者以托管方式更改状态。</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2018/09/StateCoordinator2.png" target="_blank" rel="noopener"><img src="https://koenig-media.raywenderlich.com/uploads/2018/09/StateCoordinator2-298x320.png" alt="state coordinator api"></a></p>
+<p><code>didSelectFile(_:)</code>告诉<code>StateCoordinator</code>一个<code>File</code>被选中了。这样做的效果是设置“状态”并通知下游委托发生了这种情况。</p>
+<p><code>didDeleteFile(parentFolder:)</code>几乎与<code>didSelectFile</code>相同，但它确保<code>state</code>在通知委托之前被设置为<code>noSelection</code>。</p>
+<p>更新根视图控制器</p>
+<p><code>RootViewController</code>需要拥有一个<code>StateCoordinator</code>来协调状态更改。</p>
+<p>打开<code>RootViewController.swift</code>。</p>
+<p>将此扩展添加到<code>RootViewController.swift</code>的末尾:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">RootViewController</span>: <span class="title">StateCoordinatorDelegate</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">gotoState</span><span class="params">(<span class="number">_</span> nextState: SelectionState, file: File?)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在<code>viewDidLoad()</code>上面添加这两个属性:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> dataStack = <span class="type">CoreDataStack</span>()</span><br><span class="line"><span class="built_in">lazy</span> <span class="keyword">var</span> stateCoordinator: <span class="type">StateCoordinator</span> = <span class="type">StateCoordinator</span>(delegate: <span class="keyword">self</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在这里，您向<code>RootViewController</code>添加一个<code>StateCoordinator</code>实例，并确保<code>RootViewController</code>符合<code>StateCoordinatorDelegate</code>。<code>RootViewController</code>现在可以对应用程序中的选择变化做出反应。</p>
+<p><code>dataStack</code>会保存你在<code>app</code>中创建的数据。</p>
+<h3 id="正在更新文件数据源"><a href="#正在更新文件数据源" class="headerlink" title="正在更新文件数据源"></a>正在更新文件数据源</h3><p><code>FileDataSource</code>将向<code>StateCoordinator</code>发送选择操作。你需要添加一个属性到<code>FileDataSource</code>。</p>
+<p>在项目导航器中打开文件夹<code>Model Layer</code>。打开<code>FileDataSource.swift</code>。</p>
+<p>将这个属性添加到主类<code>init(context:presenter:rootFolder:)</code>上面:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> stateCoordinator: <span class="type">StateCoordinator?</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="安装文件列表表视图"><a href="#安装文件列表表视图" class="headerlink" title="安装文件列表表视图"></a>安装文件列表表视图</h2><p>现在你已经有了足够的结构来在根拆分视图中安装一个<code>FileListViewController</code>。首先，您需要向视图工厂扩展添加几个助手。</p>
+<h3 id="更新视图工厂"><a href="#更新视图工厂" class="headerlink" title="更新视图工厂"></a>更新视图工厂</h3><p>打开<code>RootViewController+ViewFactory.swift</code>。</p>
+<p>将这些方法添加到扩展体中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">configureFileList</span><span class="params">(<span class="number">_</span> fileList: FileListViewController,</span></span></span><br><span class="line"><span class="function"><span class="params">                       title: String,</span></span></span><br><span class="line"><span class="function"><span class="params">                       rootFolder: File?)</span></span> &#123;</span><br><span class="line">  <span class="keyword">let</span> datasource = <span class="type">FileDataSource</span>(context: dataStack.viewContext,</span><br><span class="line">                                  presenter: fileList,</span><br><span class="line">                                  rootFolder: rootFolder)</span><br><span class="line">  datasource.stateCoordinator = stateCoordinator</span><br><span class="line">  fileList.fileDataSource = datasource</span><br><span class="line">  fileList.title = title</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">primaryNavigation</span><span class="params">(<span class="number">_</span> <span class="built_in">split</span>: UISplitViewController)</span></span></span><br><span class="line">  -&gt; <span class="type">UINavigationController</span> &#123;</span><br><span class="line">  <span class="keyword">guard</span> <span class="keyword">let</span> nav = <span class="built_in">split</span>.viewControllers.first</span><br><span class="line">    <span class="keyword">as</span>? <span class="type">UINavigationController</span> <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">fatalError</span>(<span class="string">"Project config error - primary view doesn't have Navigation"</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> nav</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>方法<code>configureFileList(_:title:rootFolder:)</code>获取一个<code>FileListViewController</code>，创建一个<code>FileDataSource</code>并将其分配给<code>FileListViewController</code>。给<code>FileDataSource</code>一个对<code>StateCoordinator</code>的引用。</p>
+<p>接下来，<code>primaryNavigation(_:)</code>从分屏视图的主视图中恢复<code>UINavigationController</code>。对于这个应用程序，导航控制器应该始终存在，所以你抛出一个<code>fatalError</code>来警告你，当一个错误已经创建。</p>
+<h3 id="正在安装文件列表"><a href="#正在安装文件列表" class="headerlink" title="正在安装文件列表"></a>正在安装文件列表</h3><p>现在，您已经准备好安装<code>FileListViewController</code>了。</p>
+<p>打开<code>RootViewController</code>。然后找到方法<code>installRootSplit()</code>。</p>
+<p>在<code>addChild(rootSplitView)</code>后面添加以下代码:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> fileList = <span class="type">FileListViewController</span>.freshFileList()</span><br><span class="line"><span class="keyword">let</span> navigation = primaryNavigation(rootSplitView)</span><br><span class="line">navigation.viewControllers = [fileList]</span><br><span class="line">configureFileList(fileList, title: <span class="string">"Folders"</span>, rootFolder: <span class="literal">nil</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在这个片段中，你从一个故事板实例化一个<code>FileListViewController</code>。然后从分屏视图中恢复<code>UINavigationController</code>并将文件列表指定为导航的根视图控制器。</p>
+<p>构建和运行。你现在可以在父类<code>UINavigationController</code>中看到<code>FileListViewController</code>。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='345ba2c1d8d1b80e1a7c'
+        data-cs='170576df7da58eb1ff647403d422c689a68072c7'
+        data-r='Blog-comments'
+        data-o='CainLuo'
+        data-a='CainLuo'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始"><span class="toc-number">1.</span> <span class="toc-text">开始</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#模型"><span class="toc-number">1.1.</span> <span class="toc-text">模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Views"><span class="toc-number">1.2.</span> <span class="toc-text">Views</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装根拆分视图控制器"><span class="toc-number">2.</span> <span class="toc-text">安装根拆分视图控制器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建分屏视图控制器"><span class="toc-number">2.1.</span> <span class="toc-text">创建分屏视图控制器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#管理状态"><span class="toc-number">3.</span> <span class="toc-text">管理状态</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#正在更新文件数据源"><span class="toc-number">3.1.</span> <span class="toc-text">正在更新文件数据源</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装文件列表表视图"><span class="toc-number">4.</span> <span class="toc-text">安装文件列表表视图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#更新视图工厂"><span class="toc-number">4.1.</span> <span class="toc-text">更新视图工厂</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#正在安装文件列表"><span class="toc-number">4.2.</span> <span class="toc-text">正在安装文件列表</span></a></li></ol></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>
