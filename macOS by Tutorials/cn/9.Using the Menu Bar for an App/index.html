@@ -1,0 +1,8406 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="Cain Luo">
+      
+      
+      <link rel="icon" href="../../../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.5.0">
+    
+    
+  
+    <title>Vapor:  macOS的教程 &rarr;  9.为一个应用程序使用菜单栏</title>
+  
+
+    
+  
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.2e8b5541.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+
+    
+  <link rel="stylesheet" type="text/css" href="../../../styles/carbon.css">
+
+    
+  
+  <script src="../../../scripts/carbon.js"></script>
+
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="black">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#7" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="Cain Blog" class="md-header__button md-logo" aria-label="Cain Blog" data-md-component="logo">
+      
+  <img src="../../../assets/favicon.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Cain Blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              9.为一个应用程序使用菜单栏
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="black"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="black"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Cain Blog" class="md-nav__button md-logo" aria-label="Cain Blog" data-md-component="logo">
+      
+  <img src="../../../assets/favicon.png" alt="logo">
+
+    </a>
+    Cain Blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          Modern Concurrency in Swift
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Modern Concurrency in Swift" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          Modern Concurrency in Swift
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Modern%20Concurrency%20in%20Swift/en/1.Section%20I%20Modern%20Concurrency%20in%20Swift/" class="md-nav__link">
+        1.Section I Modern Concurrency in Swift
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Modern%20Concurrency%20in%20Swift/en/2.Chapter%201%20Why%20Modern%20Swift%20Concurrency/" class="md-nav__link">
+        2.Chapter 1 Why Modern Swift Concurrency
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Modern%20Concurrency%20in%20Swift/en/3.Chapter%202%20Getting%20Started%20With%20asyncawait/" class="md-nav__link">
+        3.Chapter 2 Getting Started With asyncawait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Modern%20Concurrency%20in%20Swift/en/4.Chapter%203%20AsyncSequence%20%26%20Intermediate%20Task/" class="md-nav__link">
+        4.Chapter 3 AsyncSequence & Intermediate Task
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Modern%20Concurrency%20in%20Swift/en/5.Chapter%204%20Custom%20Asynchronous%20Sequences%20With%20AsyncStream/" class="md-nav__link">
+        5.Chapter 4 Custom Asynchronous Sequences With AsyncStream
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Modern%20Concurrency%20in%20Swift/en/6.Chapter%205%20Intermediate%20asyncawait%20%26%20CheckedContinuation/" class="md-nav__link">
+        6.Chapter 5 Intermediate asyncawait & CheckedContinuation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Modern%20Concurrency%20in%20Swift/en/7.Chapter%206%20Testing%20Asynchronous%20Code/" class="md-nav__link">
+        7.Chapter 6 Testing Asynchronous Code
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Modern%20Concurrency%20in%20Swift/en/8.Chapter%207%20Concurrent%20Code%20With%20TaskGroup/" class="md-nav__link">
+        8.Chapter 7 Concurrent Code With TaskGroup
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Modern%20Concurrency%20in%20Swift/en/9.Chapter%208%20Getting%20Started%20With%20Actors/" class="md-nav__link">
+        9.Chapter 8 Getting Started With Actors
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Modern%20Concurrency%20in%20Swift/en/10.Chapter%209%20Global%20Actors/" class="md-nav__link">
+        10.Chapter 9 Global Actors
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Modern%20Concurrency%20in%20Swift/en/11.Chapter%2010%20Actors%20in%20a%20Distributed%20System/" class="md-nav__link">
+        11.Chapter 10 Actors in a Distributed System
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Modern%20Concurrency%20in%20Swift/en/12.Conclusion/" class="md-nav__link">
+        12.Conclusion
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Unity Apprentice
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Unity Apprentice" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Unity Apprentice
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Unity%20Apprentice/en/1.Section%20I%20Creating%20Your%20First%20Game/" class="md-nav__link">
+        1.Section I Creating Your First Game
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Unity%20Apprentice/en/2.Getting%20Started/" class="md-nav__link">
+        2.Getting Started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Unity%20Apprentice/en/3.Installing%20%26%20Using%20the%20Unity%20Editor/" class="md-nav__link">
+        3.Installing & Using the Unity Editor
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Unity%20Apprentice/en/4.GameObjects%20%26%20Prefabs/" class="md-nav__link">
+        4.GameObjects & Prefabs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Unity%20Apprentice/en/5.Creating%20%26%20Using%20Scripts%20With%20C%23/" class="md-nav__link">
+        5.Creating & Using Scripts With C#
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Unity%20Apprentice/en/6.Section%20II%20Now%20You%27re%20Building%20With%20Components/" class="md-nav__link">
+        6.Section II Now You're Building With Components
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Unity%20Apprentice/en/7.Setting%20Up%20a%20Scene/" class="md-nav__link">
+        7.Setting Up a Scene
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Unity%20Apprentice/en/8.Input%20%26%20Collisions/" class="md-nav__link">
+        8.Input & Collisions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Unity%20Apprentice/en/9.User%20Interfaces/" class="md-nav__link">
+        9.User Interfaces
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Unity%20Apprentice/en/10.Scriptable%20Objects/" class="md-nav__link">
+        10.Scriptable Objects
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Unity%20Apprentice/en/11.Section%20III%20Smart%20Enemies%20%26%20the%20Bigger%20Picture/" class="md-nav__link">
+        11.Section III Smart Enemies & the Bigger Picture
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Unity%20Apprentice/en/12.Basic%20AI%20%26%20Navigation/" class="md-nav__link">
+        12.Basic AI & Navigation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Unity%20Apprentice/en/13.Advanced%20Camera%20Controls%20With%20Cinemachine/" class="md-nav__link">
+        13.Advanced Camera Controls With Cinemachine
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Unity%20Apprentice/en/14.Asynchronous%20Functions%2C%20Coroutines%20%26%20Object%20Pooling/" class="md-nav__link">
+        14.Asynchronous Functions, Coroutines & Object Pooling
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Unity%20Apprentice/en/15.Section%20IV%20Cooking%20Up%20Animations/" class="md-nav__link">
+        15.Section IV Cooking Up Animations
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Unity%20Apprentice/en/16.Basic%20Animation%20Principles/" class="md-nav__link">
+        16.Basic Animation Principles
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Unity%20Apprentice/en/17.Advanced%20Animation%20Principles/" class="md-nav__link">
+        17.Advanced Animation Principles
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Unity%20Apprentice/en/18.Advanced%20Scriptable%20Objects/" class="md-nav__link">
+        18.Advanced Scriptable Objects
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Unity%20Apprentice/en/19.Conclusion/" class="md-nav__link">
+        19.Conclusion
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Living by the Code
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Living by the Code" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Living by the Code
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/1.Community/" class="md-nav__link">
+        1.Community
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/2.An%20Interview%20with%20Britt%20Barak/" class="md-nav__link">
+        2.An Interview with Britt Barak
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/3.An%20Interview%20with%20Ellen%20Shapiro/" class="md-nav__link">
+        3.An Interview with Ellen Shapiro
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/4.An%20Interview%20with%20Antonio%20Leiva/" class="md-nav__link">
+        4.An Interview with Antonio Leiva
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/5.An%20Interview%20with%20Lara%20Martin/" class="md-nav__link">
+        5.An Interview with Lara Martin
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/6.An%20Interview%20with%20Sarah%20Olson/" class="md-nav__link">
+        6.An Interview with Sarah Olson
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/7.An%20Interview%20with%20Paco%20Este%CC%81vez%20GarcI%CC%81a/" class="md-nav__link">
+        7.An Interview with Paco Estévez GarcÍa
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/8.An%20Interview%20with%20Corey%20Leigh%20Latislaw/" class="md-nav__link">
+        8.An Interview with Corey Leigh Latislaw
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/9.An%20Interview%20with%20Zarah%20Dominguez/" class="md-nav__link">
+        9.An Interview with Zarah Dominguez
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/10.An%20Interview%20with%20Juhani%20Lehtima%CC%88ki/" class="md-nav__link">
+        10.An Interview with Juhani Lehtimäki
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/11.An%20Interview%20with%20Erik%20Hellman/" class="md-nav__link">
+        11.An Interview with Erik Hellman
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/12.An%20Interview%20with%20Eduardo%20Castello%CC%81%20Ferrer/" class="md-nav__link">
+        12.An Interview with Eduardo Castelló Ferrer
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/13.An%20Interview%20with%20Ash%20Furrow/" class="md-nav__link">
+        13.An Interview with Ash Furrow
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/14.An%20Interview%20with%20Hadi%20Hariri/" class="md-nav__link">
+        14.An Interview with Hadi Hariri
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/15.An%20Interview%20with%20Roman%20Elizarov/" class="md-nav__link">
+        15.An Interview with Roman Elizarov
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/16.Getting%20to%20Work/" class="md-nav__link">
+        16.Getting to Work
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/17.An%20Interview%20with%20John%20Sundell/" class="md-nav__link">
+        17.An Interview with John Sundell
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/18.An%20Interview%20with%20Felix%20Krause/" class="md-nav__link">
+        18.An Interview with Felix Krause
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/19.An%20Interview%20with%20Joe%20Birch/" class="md-nav__link">
+        19.An Interview with Joe Birch
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/20.An%20Interview%20with%20Gabriel%20Peal/" class="md-nav__link">
+        20.An Interview with Gabriel Peal
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/21.An%20Interview%20with%20Marin%20Todorov/" class="md-nav__link">
+        21.An Interview with Marin Todorov
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/22.An%20Interview%20with%20Mike%20Wolfson/" class="md-nav__link">
+        22.An Interview with Mike Wolfson
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/23.An%20Interview%20with%20Ty%20Smith/" class="md-nav__link">
+        23.An Interview with Ty Smith
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/24.An%20Interview%20with%20Marcin%20Moskala/" class="md-nav__link">
+        24.An Interview with Marcin Moskala
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/25.An%20Interview%20with%20In%CC%83aki%20Villar/" class="md-nav__link">
+        25.An Interview with Iñaki Villar
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/26.An%20Interview%20with%20Oluwasegun%20Famisa/" class="md-nav__link">
+        26.An Interview with Oluwasegun Famisa
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/27.An%20Interview%20with%20Fernando%20Cejas/" class="md-nav__link">
+        27.An Interview with Fernando Cejas
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living by the Code/en/28.An Interview with Tanner Wayne Nelson.md.md" class="md-nav__link">
+        28.An Interview with Tanner Wayne Nelson.md
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/29.An%20Interview%20with%20Annyce%20Davis/" class="md-nav__link">
+        29.An Interview with Annyce Davis
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/30.An%20Interview%20with%20Rau%CC%81l%20Raja%20Marti%CC%81nez/" class="md-nav__link">
+        30.An Interview with Raúl Raja Martínez
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/31.An%20Interview%20with%20Paul%20Blundell/" class="md-nav__link">
+        31.An Interview with Paul Blundell
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living by the Code/en/32.An Interview with César Valiente.md.md" class="md-nav__link">
+        32.An Interview with César Valiente.md
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/33%20An%20Interview%20with%20Israel%20Ferrer%20Camacho/" class="md-nav__link">
+        33 An Interview with Israel Ferrer Camacho
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/34.Leadership/" class="md-nav__link">
+        34.Leadership
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/35.An%20Interview%20with%20Dr.%20Joseph%20Howard/" class="md-nav__link">
+        35.An Interview with Dr. Joseph Howard
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/36.An%20Interview%20with%20Ray%20Wenderlich/" class="md-nav__link">
+        36.An Interview with Ray Wenderlich
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/37.An%20Interview%20with%20Cate%20Huston/" class="md-nav__link">
+        37.An Interview with Cate Huston
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/38.An%20Interview%20with%20Cyril%20Mottier/" class="md-nav__link">
+        38.An Interview with Cyril Mottier
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/39.An%20Interview%20with%20Huyen%20Tue%20Dao/" class="md-nav__link">
+        39.An Interview with Huyen Tue Dao
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/40.An%20Interview%20with%20Marcin%20Krzyzanowski/" class="md-nav__link">
+        40.An Interview with Marcin Krzyzanowski
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/41.An%20Interview%20with%20Mike%20Nakhimovich/" class="md-nav__link">
+        41.An Interview with Mike Nakhimovich
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/42.An%20Interview%20with%20Danny%20Preussler/" class="md-nav__link">
+        42.An Interview with Danny Preussler
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Living%20by%20the%20Code/en/43.An%20Interview%20with%20Mark%20Allison/" class="md-nav__link">
+        43.An Interview with Mark Allison
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Git Apprentice
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Git Apprentice" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Git Apprentice
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Git%20Apprentice/cn/1.Section%20I%20Beginning%20Git/" class="md-nav__link">
+        1.Section I Beginning Git
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Git%20Apprentice/cn/2.A%20Crash%20Course%20in%20Git/" class="md-nav__link">
+        2.A Crash Course in Git
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Git%20Apprentice/cn/3.Cloning%20a%20Repo/" class="md-nav__link">
+        3.Cloning a Repo
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Git%20Apprentice/cn/4.Committing%20Your%20Changes/" class="md-nav__link">
+        4.Committing Your Changes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Git%20Apprentice/cn/5.The%20Staging%20Area/" class="md-nav__link">
+        5.The Staging Area
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Git%20Apprentice/cn/6.Ignoring%20Files%20in%20Git/" class="md-nav__link">
+        6.Ignoring Files in Git
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Git%20Apprentice/cn/7.Git%20Log%20%26%20History/" class="md-nav__link">
+        7.Git Log & History
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Git%20Apprentice/cn/8.Branching/" class="md-nav__link">
+        8.Branching
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Git%20Apprentice/cn/9.Merging/" class="md-nav__link">
+        9.Merging
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Git%20Apprentice/cn/10.Syncing%20With%20a%20Remote/" class="md-nav__link">
+        10.Syncing With a Remote
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Git%20Apprentice/cn/11.Creating%20a%20Repository/" class="md-nav__link">
+        11.Creating a Repository
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Git%20Apprentice/cn/12.Conclusion/" class="md-nav__link">
+        12.Conclusion
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Git%20Apprentice/cn/13.Section%20II%20Appendices/" class="md-nav__link">
+        13.Section II Appendices
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Git%20Apprentice/cn/14.A%20Appendix%20A%20Installing%20%26%20Configuring%20Git/" class="md-nav__link">
+        14.A Appendix A Installing & Configuring Git
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          App Design Apprentice
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="App Design Apprentice" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          App Design Apprentice
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../App%20Design%20Apprentice/en/1.Section%20I%20Design%20%26%20Tool%20Fundamentals/" class="md-nav__link">
+        1.Section I Design & Tool Fundamentals
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../App%20Design%20Apprentice/en/2.Book%20Overview%20%26%20App%20Preview/" class="md-nav__link">
+        2.Book Overview & App Preview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../App%20Design%20Apprentice/en/3.Workspace%20Tour%20%26%20Figma%20Fundamentals/" class="md-nav__link">
+        3.Workspace Tour & Figma Fundamentals
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../App%20Design%20Apprentice/en/4.App%20Teardowns/" class="md-nav__link">
+        4.App Teardowns
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../App%20Design%20Apprentice/en/5.Section%20II%20Components%20%26%20Design%20Systems/" class="md-nav__link">
+        5.Section II Components & Design Systems
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../App%20Design%20Apprentice/en/6.Wireframing%20%26%20Screen%20Layout/" class="md-nav__link">
+        6.Wireframing & Screen Layout
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../App%20Design%20Apprentice/en/7.Reusable%20Elements%20%26%20Data/" class="md-nav__link">
+        7.Reusable Elements & Data
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../App%20Design%20Apprentice/en/8.Typography/" class="md-nav__link">
+        8.Typography
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../App%20Design%20Apprentice/en/9.Colors/" class="md-nav__link">
+        9.Colors
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../App%20Design%20Apprentice/en/10.Design%20Systems/" class="md-nav__link">
+        10.Design Systems
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../App%20Design%20Apprentice/en/11.Section%20III%20Interactive%20prototypes%20%26%20Developer%20Handoff/" class="md-nav__link">
+        11.Section III Interactive prototypes & Developer Handoff
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../App%20Design%20Apprentice/en/12.Transitions%20%26%20Animations/" class="md-nav__link">
+        12.Transitions & Animations
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../App%20Design%20Apprentice/en/13.Feedback%20%26%20Testing/" class="md-nav__link">
+        13.Feedback & Testing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../App%20Design%20Apprentice/en/14.Insights%20%26%20Next%20Steps/" class="md-nav__link">
+        14.Insights & Next Steps
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../App%20Design%20Apprentice/en/15.Conclusion/" class="md-nav__link">
+        15.Conclusion
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          Auto Layout by Tutorials
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Auto Layout by Tutorials" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Auto Layout by Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Auto%20Layout%20by%20Tutorials/en/1.Section%20I%20Beginning%20Auto%20Layout/" class="md-nav__link">
+        1.Section I Beginning Auto Layout
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Auto%20Layout%20by%20Tutorials/en/2.Introducing%20Auto%20Layout/" class="md-nav__link">
+        2.Introducing Auto Layout
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Auto%20Layout%20by%20Tutorials/en/3.Construct%20Auto%20Layout%20with%20the%20Interface%20Builder/" class="md-nav__link">
+        3.Construct Auto Layout with the Interface Builder
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Auto%20Layout%20by%20Tutorials/en/4.Stack%20View/" class="md-nav__link">
+        4.Stack View
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Auto%20Layout%20by%20Tutorials/en/5.Section%20II%20Intermediate%20Auto%20Layout/" class="md-nav__link">
+        5.Section II Intermediate Auto Layout
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Auto%20Layout%20by%20Tutorials/en/6.Construct%20Auto%20Layout%20with%20Code/" class="md-nav__link">
+        6.Construct Auto Layout with Code
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Auto%20Layout%20by%20Tutorials/en/7.Scroll%20View/" class="md-nav__link">
+        7.Scroll View
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Auto%20Layout%20by%20Tutorials/en/8.Self-Sizing%20Views/" class="md-nav__link">
+        8.Self-Sizing Views
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Auto%20Layout%20by%20Tutorials/en/9.Layout%20Guides/" class="md-nav__link">
+        9.Layout Guides
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Auto%20Layout%20by%20Tutorials/en/10.Content-Hugging%20%26%20Compression-Resistance%20Priorities/" class="md-nav__link">
+        10.Content-Hugging & Compression-Resistance Priorities
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Auto%20Layout%20by%20Tutorials/en/11.Animating%20Auto%20Layout%20Constraints/" class="md-nav__link">
+        11.Animating Auto Layout Constraints
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Auto%20Layout%20by%20Tutorials/en/12.Adaptive%20Layout/" class="md-nav__link">
+        12.Adaptive Layout
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Auto%20Layout%20by%20Tutorials/en/13.Dynamic%20Type/" class="md-nav__link">
+        13.Dynamic Type
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Auto%20Layout%20by%20Tutorials/en/14.Internationalization%20%26%20Localization/" class="md-nav__link">
+        14.Internationalization & Localization
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Auto%20Layout%20by%20Tutorials/en/15.Common%20Auto%20Layout%20Issues/" class="md-nav__link">
+        15.Common Auto Layout Issues
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Auto%20Layout%20by%20Tutorials/en/16.Section%20III%20Advanced%20Auto%20Layout/" class="md-nav__link">
+        16.Section III Advanced Auto Layout
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Auto%20Layout%20by%20Tutorials/en/17.Under%20the%20Hood%20of%20Auto%20Layout/" class="md-nav__link">
+        17.Under the Hood of Auto Layout
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Auto%20Layout%20by%20Tutorials/en/18.Optimizing%20Auto%20Layout%20Performance/" class="md-nav__link">
+        18.Optimizing Auto Layout Performance
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Auto%20Layout%20by%20Tutorials/en/19.Layout%20Prototyping%20with%20Playgrounds/" class="md-nav__link">
+        19.Layout Prototyping with Playgrounds
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Auto%20Layout%20by%20Tutorials/en/20.Auto%20Layout%20for%20External%20Displays/" class="md-nav__link">
+        20.Auto Layout for External Displays
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Auto%20Layout%20by%20Tutorials/en/21.Designing%20Custom%20Controls/" class="md-nav__link">
+        21.Designing Custom Controls
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Auto%20Layout%20by%20Tutorials/en/22.Conclusion/" class="md-nav__link">
+        22.Conclusion
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7">
+          SwiftUI Animations by Tutorials
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="SwiftUI Animations by Tutorials" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          SwiftUI Animations by Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI Animations by Tutorials/en/1.Introducing SwiftUI Animations" class="md-nav__link">
+        1.Introducing SwiftUI Animations
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI Animations by Tutorials/en/2.Getting to Know SwiftUI Animations" class="md-nav__link">
+        2.Getting to Know SwiftUI Animations
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI Animations by Tutorials/en/3.View Transitions" class="md-nav__link">
+        3.View Transitions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI Animations by Tutorials/en/4.Drawing Custom Components" class="md-nav__link">
+        4.Drawing Custom Components
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI Animations by Tutorials/en/5.Applying Complex Transformations & Interactions" class="md-nav__link">
+        5.Applying Complex Transformations & Interactions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI Animations by Tutorials/en/6.Intro to Custom Animations" class="md-nav__link">
+        6.Intro to Custom Animations
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI Animations by Tutorials/en/7.Complex Custom Animations" class="md-nav__link">
+        7.Complex Custom Animations
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI Animations by Tutorials/en/8.Time-Based Animations" class="md-nav__link">
+        8.Time-Based Animations
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI Animations by Tutorials/en/9.Combining Animations" class="md-nav__link">
+        9.Combining Animations
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI Animations by Tutorials/en/10.Recreating a Real-World Animation" class="md-nav__link">
+        10.Recreating a Real-World Animation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI Animations by Tutorials/en/11.Conclusion" class="md-nav__link">
+        11.Conclusion
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          Flutter Apprentice
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Flutter Apprentice" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Flutter Apprentice
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/1.Section%20I%20Build%20Your%20First%20Flutter%20App/" class="md-nav__link">
+        1.Section I Build Your First Flutter App
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/2.Getting%20Started/" class="md-nav__link">
+        2.Getting Started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/3.Hello%2C%20Flutter/" class="md-nav__link">
+        3.Hello, Flutter
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/4.Section%20II%20Everything%E2%80%99s%20a%20Widget/" class="md-nav__link">
+        4.Section II Everything’s a Widget
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/5.Basic%20Widgets/" class="md-nav__link">
+        5.Basic Widgets
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/6.Understanding%20Widgets/" class="md-nav__link">
+        6.Understanding Widgets
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/7.Scrollable%20Widgets/" class="md-nav__link">
+        7.Scrollable Widgets
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/8.Interactive%20Widgets/" class="md-nav__link">
+        8.Interactive Widgets
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/9.Section%20III%20Navigating%20Between%20Screens/" class="md-nav__link">
+        9.Section III Navigating Between Screens
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/10.Routes%20%26%20Navigation/" class="md-nav__link">
+        10.Routes & Navigation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/11.Deep%20Links%20%26%20Web%20URLs/" class="md-nav__link">
+        11.Deep Links & Web URLs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/12.Section%20IV%20Networking%2C%20Persistence%20and%20State/" class="md-nav__link">
+        12.Section IV Networking, Persistence and State
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/13.Handling%20Shared%20Preferences/" class="md-nav__link">
+        13.Handling Shared Preferences
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/14.Serialization%20With%20JSON/" class="md-nav__link">
+        14.Serialization With JSON
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/15.Networking%20in%20Flutter/" class="md-nav__link">
+        15.Networking in Flutter
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/16.Using%20a%20Network%20Library/" class="md-nav__link">
+        16.Using a Network Library
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/17.Managing%20State/" class="md-nav__link">
+        17.Managing State
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/18.Working%20With%20Streams/" class="md-nav__link">
+        18.Working With Streams
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/19.Saving%20Data%20With%20SQLite/" class="md-nav__link">
+        19.Saving Data With SQLite
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/20.Section%20V%20Deployment/" class="md-nav__link">
+        20.Section V Deployment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/21.Platform-Specific%20App%20Assets/" class="md-nav__link">
+        21.Platform-Specific App Assets
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/22.Build%20%26%20Release%20an%20Android%20App/" class="md-nav__link">
+        22.Build & Release an Android App
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/23.Build%20%26%20Release%20an%20iOS%20App/" class="md-nav__link">
+        23.Build & Release an iOS App
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/24.Section%20VI%20Working%20With%20Firebase%20Cloud%20Firestore/" class="md-nav__link">
+        24.Section VI Working With Firebase Cloud Firestore
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/25.Firebase%20Cloud%20Firestore/" class="md-nav__link">
+        25.Firebase Cloud Firestore
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/26.Conclusion/" class="md-nav__link">
+        26.Conclusion
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/27.Appendices/" class="md-nav__link">
+        27.Appendices
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/28.A%20Appendix%20A%20Chapter%205%20Solution%201/" class="md-nav__link">
+        28.A Appendix A Chapter 5 Solution 1
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Flutter%20Apprentice/en/29.B%20Appendix%20B%20Chapter%205%20Solution%202/" class="md-nav__link">
+        29.B Appendix B Chapter 5 Solution 2
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9">
+          Dart Apprentice-Fundamentals
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Dart Apprentice-Fundamentals" data-md-level="1">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          Dart Apprentice-Fundamentals
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Fundamentals/en/1.Hello%2C%20Dart%21/" class="md-nav__link">
+        1.Hello, Dart!
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Fundamentals/en/2.Expressions%2C%20Variables%20%26%20Constants/" class="md-nav__link">
+        2.Expressions, Variables & Constants
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Fundamentals/en/3.Types%20%26%20Operations/" class="md-nav__link">
+        3.Types & Operations
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Fundamentals/en/4.Strings/" class="md-nav__link">
+        4.Strings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Fundamentals/en/5.Control%20Flow/" class="md-nav__link">
+        5.Control Flow
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Fundamentals/en/6.Loops/" class="md-nav__link">
+        6.Loops
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Fundamentals/en/7.Functions/" class="md-nav__link">
+        7.Functions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Fundamentals/en/8.Classes/" class="md-nav__link">
+        8.Classes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Fundamentals/en/9.Constructors/" class="md-nav__link">
+        9.Constructors
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Fundamentals/en/10.Static%20Members/" class="md-nav__link">
+        10.Static Members
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Fundamentals/en/11.Nullability/" class="md-nav__link">
+        11.Nullability
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Fundamentals/en/12.Lists/" class="md-nav__link">
+        12.Lists
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Fundamentals/en/13.Sets/" class="md-nav__link">
+        13.Sets
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Fundamentals/en/14.Maps/" class="md-nav__link">
+        14.Maps
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Fundamentals/en/15.Iterables/" class="md-nav__link">
+        15.Iterables
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Fundamentals/en/16.Conclusion/" class="md-nav__link">
+        16.Conclusion
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10" type="checkbox" id="__nav_10" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10">
+          Data Structures & Algorithms in Dart
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Data Structures & Algorithms in Dart" data-md-level="1">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          Data Structures & Algorithms in Dart
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/1.Section%20I%20Introduction/" class="md-nav__link">
+        1.Section I Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/2.Why%20Learn%20Data%20Structures%20%26%20Algorithms/" class="md-nav__link">
+        2.Why Learn Data Structures & Algorithms
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/3.Complexity/" class="md-nav__link">
+        3.Complexity
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/4.Basic%20Data%20Structures%20in%20Dart/" class="md-nav__link">
+        4.Basic Data Structures in Dart
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/5.Section%20II%20Elementary%20Data%20Structures/" class="md-nav__link">
+        5.Section II Elementary Data Structures
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/6.Stacks/" class="md-nav__link">
+        6.Stacks
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/7.Linked%20Lists/" class="md-nav__link">
+        7.Linked Lists
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/8.Queues/" class="md-nav__link">
+        8.Queues
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/9.Section%20III%20Trees/" class="md-nav__link">
+        9.Section III Trees
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/10.Trees/" class="md-nav__link">
+        10.Trees
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/12.Binary%20Trees/" class="md-nav__link">
+        12.Binary Trees
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/13.Binary%20Search%20Trees/" class="md-nav__link">
+        13.Binary Search Trees
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/14.AVL%20Trees/" class="md-nav__link">
+        14.AVL Trees
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/15.Tries/" class="md-nav__link">
+        15.Tries
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/16.Binary%20Search/" class="md-nav__link">
+        16.Binary Search
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/17.Heaps/" class="md-nav__link">
+        17.Heaps
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/18.Priority%20Queues/" class="md-nav__link">
+        18.Priority Queues
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/19.Section%20IV%20Sorting%20Algorithms/" class="md-nav__link">
+        19.Section IV Sorting Algorithms
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/20.O%28n%C2%B2%29%20Sorting%20Algorithms/" class="md-nav__link">
+        20.O(n²) Sorting Algorithms
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/21.Merge%20Sort/" class="md-nav__link">
+        21.Merge Sort
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/22.Radix%20Sort/" class="md-nav__link">
+        22.Radix Sort
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/23.Heapsort/" class="md-nav__link">
+        23.Heapsort
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/24.Quicksort/" class="md-nav__link">
+        24.Quicksort
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/25.Section%20V%20Graphs/" class="md-nav__link">
+        25.Section V Graphs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/26.Graphs/" class="md-nav__link">
+        26.Graphs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/27.Breadth-First%20Search/" class="md-nav__link">
+        27.Breadth-First Search
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/28.Depth-First%20Search/" class="md-nav__link">
+        28.Depth-First Search
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/29.Dijkstra%E2%80%99s%20Algorithm/" class="md-nav__link">
+        29.Dijkstra’s Algorithm
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/30.Conclusion/" class="md-nav__link">
+        30.Conclusion
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/31.Section%20VI%20Challenge%20Solutions/" class="md-nav__link">
+        31.Section VI Challenge Solutions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/32.Chapter%204%20Solutions/" class="md-nav__link">
+        32.Chapter 4 Solutions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/33.Chapter%205%20Solutions/" class="md-nav__link">
+        33.Chapter 5 Solutions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/34.Chapter%206%20Solutions/" class="md-nav__link">
+        34.Chapter 6 Solutions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/35.Chapter%207%20Solutions/" class="md-nav__link">
+        35.Chapter 7 Solutions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/36.Chapter%208%20Solutions/" class="md-nav__link">
+        36.Chapter 8 Solutions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/37.Chapter%209%20Solutions/" class="md-nav__link">
+        37.Chapter 9 Solutions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/38.Chapter%2010%20Solutions/" class="md-nav__link">
+        38.Chapter 10 Solutions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/39.Chapter%2011%20Solutions/" class="md-nav__link">
+        39.Chapter 11 Solutions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/40.Chapter%2012%20Solutions/" class="md-nav__link">
+        40.Chapter 12 Solutions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/41.Chapter%2013%20Solutions/" class="md-nav__link">
+        41.Chapter 13 Solutions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/42.Chapter%2014%20Solutions/" class="md-nav__link">
+        42.Chapter 14 Solutions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/43.Chapter%2015%20Solutions/" class="md-nav__link">
+        43.Chapter 15 Solutions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/44.Chapter%2016%20Solutions/" class="md-nav__link">
+        44.Chapter 16 Solutions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/45.Chapter%2017%20Solutions/" class="md-nav__link">
+        45.Chapter 17 Solutions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/46.Chapter%2018%20Solutions/" class="md-nav__link">
+        46.Chapter 18 Solutions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/47.Chapter%2019%20Solutions/" class="md-nav__link">
+        47.Chapter 19 Solutions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/48.Chapter%2020%20Solutions/" class="md-nav__link">
+        48.Chapter 20 Solutions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/49.Chapter%2021%20Solutions/" class="md-nav__link">
+        49.Chapter 21 Solutions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/50.Chapter%2022%20Solutions/" class="md-nav__link">
+        50.Chapter 22 Solutions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Dart/en/51.Chapter%2023%20Solutions/" class="md-nav__link">
+        51.Chapter 23 Solutions
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_11" type="checkbox" id="__nav_11" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11">
+          Swift中的数据结构和算法
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Swift中的数据结构和算法" data-md-level="1">
+        <label class="md-nav__title" for="__nav_11">
+          <span class="md-nav__icon md-icon"></span>
+          Swift中的数据结构和算法
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/1.Section%20I%20Introduction/" class="md-nav__link">
+        1.第一节简介
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/2.Why%20Learn%20Data%20Structures%20%26%20Algorithms/" class="md-nav__link">
+        2.为什么学习数据结构和算法
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/3.Complexity/" class="md-nav__link">
+        3.复杂性
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/4.Swift%20Standard%20Library/" class="md-nav__link">
+        4.Swift标准库
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/5.Section%20II%20Elementary%20Data%20Structures/" class="md-nav__link">
+        5.第二节基本数据结构
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/6.Stacks/" class="md-nav__link">
+        6.堆栈
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/7.Stack%20Challenges/" class="md-nav__link">
+        7.堆栈挑战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/8.Linked%20Lists/" class="md-nav__link">
+        8.链接列表
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/9.Linked%20List%20Challenges/" class="md-nav__link">
+        9.链接列表的挑战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/10.Queues/" class="md-nav__link">
+        10.队列
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/11.Queue%20Challenges/" class="md-nav__link">
+        11.排队挑战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/12.Section%20III%20Trees/" class="md-nav__link">
+        12.第三节树
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/13.Trees/" class="md-nav__link">
+        13.树
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/14.Tree%20Challenges/" class="md-nav__link">
+        14.树的挑战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/15.Binary%20Trees/" class="md-nav__link">
+        15.二叉树
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/16.Binary%20Tree%20Challenges/" class="md-nav__link">
+        16.二叉树的挑战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/17.Binary%20Search%20Trees/" class="md-nav__link">
+        17.二叉树搜索
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/18.Binary%20Search%20Tree%20Challenges/" class="md-nav__link">
+        18.二叉树搜索的挑战.md
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/19.AVL%20Trees/" class="md-nav__link">
+        19.AVL树
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/20.AVL%20Tree%20Challenges/" class="md-nav__link">
+        20.AVL树的挑战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/21.Tries/" class="md-nav__link">
+        21.尝试
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/22.Trie%20Challenges/" class="md-nav__link">
+        22.尝试的挑战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/23.Binary%20Search/" class="md-nav__link">
+        23.二分搜索
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/24.Binary%20Search%20Challenges/" class="md-nav__link">
+        24.二分搜索的挑战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/25.Heaps/" class="md-nav__link">
+        25.堆
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/26.Heap%20Challenges/" class="md-nav__link">
+        26.堆的挑战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/27.Priority%20Queues/" class="md-nav__link">
+        27.优先队列
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/28.Priority%20Queue%20Challenges/" class="md-nav__link">
+        28.优先队列的挑战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/29.Section%20IV%20Sorting%20Algorithms/" class="md-nav__link">
+        29.第四节排序算法
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/30.O%28n%C2%B2%29%20Sorting%20Algorithms/" class="md-nav__link">
+        30.O(n²)排序算法
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/31.O%28n%C2%B2%29%20Sorting%20Challenges/" class="md-nav__link">
+        31.O(n²)排序的挑战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/32.Merge%20Sort/" class="md-nav__link">
+        32.合并排序
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/33.Merge%20Sort%20Challenges/" class="md-nav__link">
+        33.合并排序的挑战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/34.Radix%20Sort/" class="md-nav__link">
+        34.基数排序
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/35.Radix%20Sort%20Challenges/" class="md-nav__link">
+        35.基数排序的挑战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/36.Heapsort/" class="md-nav__link">
+        36.堆垛
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/37.Heapsort%20Challenges/" class="md-nav__link">
+        37.堆垛的挑战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/38.Quicksort/" class="md-nav__link">
+        38.筛选
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/39.Quicksort%20Challenges/" class="md-nav__link">
+        39.筛选的挑战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/40.Section%20V%20Graphs/" class="md-nav__link">
+        40.第五节图表
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/41.Graphs/" class="md-nav__link">
+        41.图表
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/42.Graph%20Challenges/" class="md-nav__link">
+        42.图表挑战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/43.Breadth-First%20Search/" class="md-nav__link">
+        43.广度优先搜索
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/44.Breadth-First%20Search%20Challenges/" class="md-nav__link">
+        44.广度优先搜索的挑战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/45.Depth-First%20Search/" class="md-nav__link">
+        45.深度优先搜索
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/46.Depth-First%20Search%20Challenges/" class="md-nav__link">
+        46.深度优先搜索的挑战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/47.Dijkstra%E2%80%99s%20Algorithm/" class="md-nav__link">
+        47.迪克斯特拉的算法
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/48.Dijkstra%E2%80%99s%20Algorithm%20Challenges/" class="md-nav__link">
+        48.迪克斯特拉算法的挑战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/49.Prim%E2%80%99s%20Algorithm/" class="md-nav__link">
+        49.普利姆的算法
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/50.Prim%E2%80%99s%20Algorithm%20Challenges/" class="md-nav__link">
+        50.普利姆算法的挑战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Data%20Structures%20%26%20Algorithms%20in%20Swift/cn/51.Conclusion/" class="md-nav__link">
+        51.结语
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_12" type="checkbox" id="__nav_12" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_12">
+          Dart Apprentice-Beyond the Basics
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Dart Apprentice-Beyond the Basics" data-md-level="1">
+        <label class="md-nav__title" for="__nav_12">
+          <span class="md-nav__icon md-icon"></span>
+          Dart Apprentice-Beyond the Basics
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Beyond%20the%20Basics/en/1.String%20Manipulation/" class="md-nav__link">
+        1.String Manipulation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Beyond%20the%20Basics/en/2.Anonymous%20Functions/" class="md-nav__link">
+        2.Anonymous Functions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Beyond%20the%20Basics/en/3.Inheritance/" class="md-nav__link">
+        3.Inheritance
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Beyond%20the%20Basics/en/4.Abstract%20Classes/" class="md-nav__link">
+        4.Abstract Classes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Beyond%20the%20Basics/en/5.Interfaces/" class="md-nav__link">
+        5.Interfaces
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Beyond%20the%20Basics/en/6.Mixins/" class="md-nav__link">
+        6.Mixins
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Beyond%20the%20Basics/en/7.Extension%20Methods/" class="md-nav__link">
+        7.Extension Methods
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Beyond%20the%20Basics/en/8.Generics/" class="md-nav__link">
+        8.Generics
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Beyond%20the%20Basics/en/9.Enhanced%20Enums/" class="md-nav__link">
+        9.Enhanced Enums
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Beyond%20the%20Basics/en/10.Error%20Handling/" class="md-nav__link">
+        10.Error Handling
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Beyond%20the%20Basics/en/11.Concurrency/" class="md-nav__link">
+        11.Concurrency
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Beyond%20the%20Basics/en/12.Futures/" class="md-nav__link">
+        12.Futures
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Beyond%20the%20Basics/en/13.Streams/" class="md-nav__link">
+        13.Streams
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Beyond%20the%20Basics/en/14.Isolates/" class="md-nav__link">
+        14.Isolates
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Dart%20Apprentice-Beyond%20the%20Basics/en/15.Conclusion/" class="md-nav__link">
+        15.Conclusion
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_13" type="checkbox" id="__nav_13" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_13">
+          Real-World Flutter by Tutorials
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Real-World Flutter by Tutorials" data-md-level="1">
+        <label class="md-nav__title" for="__nav_13">
+          <span class="md-nav__icon md-icon"></span>
+          Real-World Flutter by Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Real-World%20Flutter%20by%20Tutorials/en/1.Setting%20up%20Your%20Environment/" class="md-nav__link">
+        1.Setting up Your Environment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Real-World%20Flutter%20by%20Tutorials/en/2.Mastering%20the%20Repository%20Pattern/" class="md-nav__link">
+        2.Mastering the Repository Pattern
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Real-World%20Flutter%20by%20Tutorials/en/3.Managing%20State%20With%20Cubits%20%26%20the%20Bloc%20Library/" class="md-nav__link">
+        3.Managing State With Cubits & the Bloc Library
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Real-World%20Flutter%20by%20Tutorials/en/4.Validating%20Forms%20With%20Cubits/" class="md-nav__link">
+        4.Validating Forms With Cubits
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Real-World%20Flutter%20by%20Tutorials/en/5.Managing%20Complex%20State%20With%20Blocs/" class="md-nav__link">
+        5.Managing Complex State With Blocs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Real-World%20Flutter%20by%20Tutorials/en/6.Authenticating%20Users/" class="md-nav__link">
+        6.Authenticating Users
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Real-World%20Flutter%20by%20Tutorials/en/7.Routing%20%26%20Navigating/" class="md-nav__link">
+        7.Routing & Navigating
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Real-World%20Flutter%20by%20Tutorials/en/8.Deep%20Linking/" class="md-nav__link">
+        8.Deep Linking
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Real-World%20Flutter%20by%20Tutorials/en/9.Internationalizing%20%26%20Localizing/" class="md-nav__link">
+        9.Internationalizing & Localizing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Real-World%20Flutter%20by%20Tutorials/en/10.Dynamic%20Theming%20%26%20Dark%20Mode/" class="md-nav__link">
+        10.Dynamic Theming & Dark Mode
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Real-World%20Flutter%20by%20Tutorials/en/11.Creating%20Your%20Own%20Widget%20Catalog/" class="md-nav__link">
+        11.Creating Your Own Widget Catalog
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Real-World%20Flutter%20by%20Tutorials/en/12.Supporting%20the%20Development%20Lifecycle%20With%20Firebase/" class="md-nav__link">
+        12.Supporting the Development Lifecycle With Firebase
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Real-World%20Flutter%20by%20Tutorials/en/13.Running%20Live%20Experiments%20With%20AB%20Testing%20%26%20Feature%20Flags/" class="md-nav__link">
+        13.Running Live Experiments With AB Testing & Feature Flags
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Real-World%20Flutter%20by%20Tutorials/en/14.Automated%20Testing/" class="md-nav__link">
+        14.Automated Testing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Real-World%20Flutter%20by%20Tutorials/en/15.Automating%20Test%20Executions%20%26%20Build%20Distributions/" class="md-nav__link">
+        15.Automating Test Executions & Build Distributions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Real-World%20Flutter%20by%20Tutorials/en/16.Conclusion/" class="md-nav__link">
+        16.Conclusion
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_14" type="checkbox" id="__nav_14" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_14">
+          macOS的教程
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="macOS的教程" data-md-level="1">
+        <label class="md-nav__title" for="__nav_14">
+          <span class="md-nav__icon md-icon"></span>
+          macOS的教程
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1.Section%20I%20Your%20First%20App%20On%20This%20Day/" class="md-nav__link">
+        1.第一节：你在这一天的第一个应用程序
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.Designing%20the%20Data%20Model/" class="md-nav__link">
+        2.设计数据模型
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3.Working%20With%20Windows/" class="md-nav__link">
+        3.使用Windows工作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../4.Adding%20Menus%20%26%20Toolbars/" class="md-nav__link">
+        4.添加菜单和工具条
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../5.Using%20Tables%20%26%20Custom%20Views/" class="md-nav__link">
+        5.使用表和自定义视图
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../6.Setting%20Preferences%20%26%20Icons/" class="md-nav__link">
+        6.设置首选项和图标
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../7.Why%20Write%20a%20macOS%20App/" class="md-nav__link">
+        7.为什么要写一个macOS应用程序
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../8.Section%20II%20Building%20a%20Menu%20Bar%20App/" class="md-nav__link">
+        8.第二节：构建一个菜单栏应用程序
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          9.为一个应用程序使用菜单栏
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        9.为一个应用程序使用菜单栏
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    设置应用程序
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    将应用程序转换为一个菜单栏应用程序
+  </a>
+  
+    <nav class="md-nav" aria-label="将应用程序转换为一个菜单栏应用程序">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    摆脱窗口和菜单
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    设置状态栏项目
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#infoplist" class="md-nav__link">
+    配置Info.plist
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appkit" class="md-nav__link">
+    为什么是AppKit？
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    添加模型
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    静态菜单项目
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    动态菜单项
+  </a>
+  
+    <nav class="md-nav" aria-label="动态菜单项">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    清除菜单
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    添加到菜单中
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    把它全部连接起来
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    为菜单项目设计风格
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    创建一个自定义视图
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    使用自定义视图
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    挑战
+  </a>
+  
+    <nav class="md-nav" aria-label="挑战">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    挑战赛: 改变颜色
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    关键点
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    从这里开始，该往哪里走？
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10.Working%20with%20Timers%2C%20Alerts%20%26%20Notifications/" class="md-nav__link">
+        10.使用计时器、警报和通知的工作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11.Adding%20Your%20Own%20Tasks/" class="md-nav__link">
+        11.添加你自己的任务
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12.Section%20III%20Building%20a%20Document-based%20App/" class="md-nav__link">
+        12.第三节：构建一个基于文档的应用程序
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13.Creating%20A%20Document-Based%20App/" class="md-nav__link">
+        13.创建一个基于文档的应用程序
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14.Adding%20Menu%20Controls/" class="md-nav__link">
+        14.添加菜单控件
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15.Section%20IV%20Advanced%20Wizardry/" class="md-nav__link">
+        15.第四节：高级魔法师
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16.Diving%20Deeper%20Into%20Your%20Mac/" class="md-nav__link">
+        16.更深入地了解你的Mac
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17.Adding%20the%20Interface/" class="md-nav__link">
+        17.添加界面
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18.Automation%20for%20Your%20App/" class="md-nav__link">
+        18.为您的应用程序提供自动化服务
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19.Section%20V%20Distributing%20Your%20macOS%20Apps/" class="md-nav__link">
+        19.第五节：分发你的macOS应用程序
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20.Using%20the%20Mac%20App%20Store/" class="md-nav__link">
+        20.使用Mac应用程序商店
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21.Distributing%20Externally/" class="md-nav__link">
+        21.对外分发
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22.Conclusion/" class="md-nav__link">
+        22.总结
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_15" type="checkbox" id="__nav_15" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_15">
+          Swift服务端Vapor
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Swift服务端Vapor" data-md-level="1">
+        <label class="md-nav__title" for="__nav_15">
+          <span class="md-nav__icon md-icon"></span>
+          Swift服务端Vapor
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/1.Section%20I%20Creating%20a%20Simple%20Web%20API/" class="md-nav__link">
+        Section I: 创建一个简单的网络API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/2.Chapter%201%20Introduction/" class="md-nav__link">
+        1.简介
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/3.Chapter%202%20Hello%2C%20Vapor%21/" class="md-nav__link">
+        2.你好, Vapor
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/4.Chapter%203%20HTTP%20Basics/" class="md-nav__link">
+        3.HTTP基础知识
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/5.Chapter%204%20Async/" class="md-nav__link">
+        4.异步
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/6.Chapter%205%20Fluent%20%26%20Persisting%20Models/" class="md-nav__link">
+        5.Fluent和持久化模型
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/7.Chapter%206%20Configuring%20a%20Database/" class="md-nav__link">
+        6.配置数据库
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/8.Chapter%207%20CRUD%20Database%20Operations/" class="md-nav__link">
+        7.CRUD数据库操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/9.Chapter%208%20Controllers/" class="md-nav__link">
+        8.控制器
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/10.Chapter%209%20Parent-Child%20Relationships/" class="md-nav__link">
+        9.父子关系
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/11.Chapter%2010%20Sibling%20Relationships/" class="md-nav__link">
+        10.同级关系
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/12.Chapter%2011%20Testing/" class="md-nav__link">
+        11.测试
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/13.Chapter%2012%20Creating%20a%20Simple%20iPhone%20App%2C%20Part%201/" class="md-nav__link">
+        12.创建一个简单的iPhone App, 第1部分
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/14.Chapter%2013%20Creating%20a%20Simple%20iPhone%20App%2C%20Part%202/" class="md-nav__link">
+        13.创建一个简单的iPhone App, 第2部分
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/15.Section%20II%20Making%20a%20Simple%20Web%20App/" class="md-nav__link">
+        Section II: 制作一个简单的网络应用程序
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/16.Chapter%2014%20Templating%20with%20Leaf/" class="md-nav__link">
+        14.用Leaf进行模板设计
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/17.Chapter%2015%20Beautifying%20Pages/" class="md-nav__link">
+        15.美化页面
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/18.Chapter%2016%20Making%20a%20Simple%20Web%20App%2C%20Part%201/" class="md-nav__link">
+        16.制作一个简单的Web应用程序，第1部分
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/19.Chapter%2017%20Making%20a%20Simple%20Web%20App%2C%20Part%202/" class="md-nav__link">
+        17.制作一个简单的Web应用程序，第2部分
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/20.Section%20III%20Validation%2C%20Users%20%26%20Authentication/" class="md-nav__link">
+        Section III: 验证、用户和认证
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/21.Chapter%2018%20API%20Authentication%2C%20Part%201/" class="md-nav__link">
+        18.API认证，第1部分
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/22.Chapter%2019%20API%20Authentication%2C%20Part%202/" class="md-nav__link">
+        19.API认证，第2部分
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/23.Chapter%2020%20Web%20Authentication%2C%20Cookies%20%26%20Sessions/" class="md-nav__link">
+        20.Web认证、Cookies和Sessions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/24.Chapter%2021%20Validation/" class="md-nav__link">
+        21.验证
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/25.Chapter%2022%20Google%20Authentication/" class="md-nav__link">
+        22.Google验证
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/26.Chapter%2023%20GitHub%20Authentication/" class="md-nav__link">
+        23.GitHub验证
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/27.Chapter%2024%20Sign%20in%20with%20Apple%20Authentication/" class="md-nav__link">
+        24.使用苹果认证登录
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/28.Section%20IV%20Advanced%20Server-Side%20Swift/" class="md-nav__link">
+        Section IV: 高级服务器端Swift
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/29.Chapter%2025%20Password%20Reset%20%26%20Emails/" class="md-nav__link">
+        25.密码重置和电子邮件
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/30.Chapter%2026%20Adding%20Profile%20Pictures/" class="md-nav__link">
+        26.添加个人资料图片
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/31.Chapter%2027%20DatabaseAPI%20Versioning%20%26%20Migration/" class="md-nav__link">
+        27.数据库/API版本和迁移
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/32.Chapter%2028%20Caching/" class="md-nav__link">
+        28.缓存
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/33.Chapter%2029%20Middleware/" class="md-nav__link">
+        29.中间件
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/34.Chapter%2030%20WebSockets/" class="md-nav__link">
+        30.WebSockets
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/35.Chapter%2031%20Advanced%20Fluent/" class="md-nav__link">
+        31.Fluent进阶
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/36.Section%20V%20Production%20%26%20External%20Deployment/" class="md-nav__link">
+        Section V: 生产和外部部署
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/37.Chapter%2032%20Deploying%20with%20Heroku/" class="md-nav__link">
+        32.使用Heroku进行部署
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/38.Chapter%2033%20Deploying%20with%20Docker/" class="md-nav__link">
+        33.使用Docker进行部署
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/39.Chapter%2034%20Deploying%20with%20AWS/" class="md-nav__link">
+        34.使用AWS进行部署
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/40.Chapter%2035%20Production%20Concerns%20%26%20Redis/" class="md-nav__link">
+        35.生产方面的关注
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/41.Chapter%2036%20Microservices%2C%20Part%201/" class="md-nav__link">
+        36.微服务，第1部分
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Server-Side-Swift-with-Vapor/cn/42.Chapter%2037%20Microservices%2C%20Part%202/" class="md-nav__link">
+        37.微服务，第2部分
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_16" type="checkbox" id="__nav_16" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_16">
+          Swift专家
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Swift专家" data-md-level="1">
+        <label class="md-nav__title" for="__nav_16">
+          <span class="md-nav__icon md-icon"></span>
+          Swift专家
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Expert-Swift/cn/1.Section%20I%20Core%20Concepts/" class="md-nav__link">
+        第一节：核心概念
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Expert-Swift/cn/2.Chapter%201%20Introduction/" class="md-nav__link">
+        1.简介
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Expert-Swift/cn/3.Chapter%202%20Types%20%26%20Mutation/" class="md-nav__link">
+        2.类型与变异
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Expert-Swift/cn/4.Chapter%203%20Protocols/" class="md-nav__link">
+        3.协议
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Expert-Swift/cn/5.Chapter%204%20Generics/" class="md-nav__link">
+        4.泛型
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Expert-Swift/cn/6.Section%20II%20Standard%20Library/" class="md-nav__link">
+        第二节：标准库
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Expert-Swift/cn/7.Chapter%205%20Numerics%20%26%20Ranges/" class="md-nav__link">
+        5.数字与区间
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Expert-Swift/cn/8.Chapter%206%20Sequences%2C%20Collections%20%26%20Algorithms/" class="md-nav__link">
+        6.序列、集合和算法
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Expert-Swift/cn/9.Chapter%207%20Strings/" class="md-nav__link">
+        7.字符串
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Expert-Swift/cn/10.Chapter%208%20Codable/" class="md-nav__link">
+        8.Codable
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Expert-Swift/cn/11.Chapter%209%20Unsafe/" class="md-nav__link">
+        9.不安全
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Expert-Swift/cn/12.Section%20III%20Techniques/" class="md-nav__link">
+        第三部分：技术
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Expert-Swift/cn/13.Chapter%2010%20Higher-Order%20Functions/" class="md-nav__link">
+        10.高阶函数
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Expert-Swift/cn/14.Chapter%2011%20Functional%20Reactive%20Programming/" class="md-nav__link">
+        11.功能性反应式编程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Expert-Swift/cn/15.Chapter%2012%20Objective-C%20Interoperability/" class="md-nav__link">
+        12.Objective-C的互操作性
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Expert-Swift/cn/16.Chapter%2013%20Instrumentation/" class="md-nav__link">
+        13.仪器仪表
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Expert-Swift/cn/17.Chapter%2014%20API%20Design%20Tips%20%26%20Tricks/" class="md-nav__link">
+        14.API设计技巧和窍门
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_17" type="checkbox" id="__nav_17" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_17">
+          iOS驱动式测试教程
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="iOS驱动式测试教程" data-md-level="1">
+        <label class="md-nav__title" for="__nav_17">
+          <span class="md-nav__icon md-icon"></span>
+          iOS驱动式测试教程
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../iOS-Test-Driven-Development-by-Tutorials/cn/1.Section%20I%20Hello%2C%20TDD%21/" class="md-nav__link">
+        第一节：你好，TDD!
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../iOS-Test-Driven-Development-by-Tutorials/cn/2.What%20Is%20TDD%3F/" class="md-nav__link">
+        1.什么是TDD？
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../iOS-Test-Driven-Development-by-Tutorials/cn/3.The%20TDD%20Cycle/" class="md-nav__link">
+        2.TDD周期
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../iOS-Test-Driven-Development-by-Tutorials/cn/4.TDD%20App%20Setup/" class="md-nav__link">
+        3.TDD应用程序设置
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../iOS-Test-Driven-Development-by-Tutorials/cn/5.Section%20II%20Beginning%20TDD/" class="md-nav__link">
+        第二节：开始TDD
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../iOS-Test-Driven-Development-by-Tutorials/cn/6.Test%20Expressions/" class="md-nav__link">
+        4.测试表达式
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../iOS-Test-Driven-Development-by-Tutorials/cn/7.Test%20Expectations/" class="md-nav__link">
+        5.测试期望
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../iOS-Test-Driven-Development-by-Tutorials/cn/8.Dependency%20Injection%20%26%20Mocks/" class="md-nav__link">
+        6.依赖性注入和Mocks
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../iOS-Test-Driven-Development-by-Tutorials/cn/9.Section%20III%20TDD%20With%20Networking/" class="md-nav__link">
+        第三节：带网络的TDD
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../iOS-Test-Driven-Development-by-Tutorials/cn/10.Introducing%20Dog%20Patch/" class="md-nav__link">
+        7.Dog Patch介绍
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../iOS-Test-Driven-Development-by-Tutorials/cn/11.RESTful%20Networking/" class="md-nav__link">
+        8.RESTful网络
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../iOS-Test-Driven-Development-by-Tutorials/cn/12.Using%20the%20Network%20Client/" class="md-nav__link">
+        9.使用网络客户端
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../iOS-Test-Driven-Development-by-Tutorials/cn/13.ImageClient/" class="md-nav__link">
+        10.ImageClient
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../iOS-Test-Driven-Development-by-Tutorials/cn/14.Section%20IV%20TDD%20in%20Legacy%20Apps/" class="md-nav__link">
+        第四节：遗留应用程序中的TDD
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../iOS-Test-Driven-Development-by-Tutorials/cn/15.Legacy%20Problems/" class="md-nav__link">
+        11.遗留问题
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../iOS-Test-Driven-Development-by-Tutorials/cn/16.Dependency%20Maps/" class="md-nav__link">
+        12.依赖关系图
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../iOS-Test-Driven-Development-by-Tutorials/cn/17.Breaking%20Up%20Dependencies/" class="md-nav__link">
+        13.打破依赖关系
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../iOS-Test-Driven-Development-by-Tutorials/cn/18.Modularizing%20Dependencies/" class="md-nav__link">
+        14.模块化的依赖关系
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../iOS-Test-Driven-Development-by-Tutorials/cn/19.Adding%20Features%20to%20Existing%20Classes/" class="md-nav__link">
+        15.为现有的类添加功能
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_18" type="checkbox" id="__nav_18" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_18">
+          SwiftUI学徒
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="SwiftUI学徒" data-md-level="1">
+        <label class="md-nav__title" for="__nav_18">
+          <span class="md-nav__icon md-icon"></span>
+          SwiftUI学徒
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/1.Section%20I%20Your%20first%20app%20HIITFit/" class="md-nav__link">
+        第一节：你的第一个应用程序HIITFit
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/2.Chapter%201%20Checking%20Your%20Tools/" class="md-nav__link">
+        第1章：检查你的工具
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/3.Chapter%202%20Planning%20a%20Paged%20App/" class="md-nav__link">
+        第2章：规划一个分页的应用程序
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/4.Chapter%203%20Prototyping%20the%20Main%20View/" class="md-nav__link">
+        第3章：主视图的原型设计
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/5.Chapter%204%20Prototyping%20Supplementary%20Views/" class="md-nav__link">
+        第4章：原型设计补充视图
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/6.Chapter%205%20Organizing%20Your%20App%E2%80%99s%20Data/" class="md-nav__link">
+        第5章：组织你的应用程序的数据
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/7.Chapter%206%20Adding%20Functionality%20to%20Your%20App/" class="md-nav__link">
+        第6章：在你的应用程序中添加功能
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/8.Chapter%207%20Observing%20Objects/" class="md-nav__link">
+        第7章：观察物体
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/9.Chapter%208%20Saving%20Settings/" class="md-nav__link">
+        第8章：保存设置
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/10.Chapter%209%20Saving%20History%20Data/" class="md-nav__link">
+        第9章：保存历史数据
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/11.Chapter%2010%20Refining%20Your%20App/" class="md-nav__link">
+        第10章：完善你的应用程序
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/12.Chapter%2011%20Understanding%20Property%20Wrappers/" class="md-nav__link">
+        第11章：了解属性包装器
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/13.Chapter%2012%20Apple%20App%20Development%20Ecosystem/" class="md-nav__link">
+        第12章：苹果应用开发生态系统
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/14.Section%20II%20Your%20second%20app%20Cards/" class="md-nav__link">
+        第二节：你的第二个应用程序卡
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/15.Chapter%2013%20Outlining%20a%20Photo%20Collage%20App/" class="md-nav__link">
+        第13章：勾勒出一个照片拼贴的应用程序
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/16.Chapter%2014%20Gestures/" class="md-nav__link">
+        第14章：手势
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/17.Chapter%2015%20Structures%2C%20Classes%20%26%20Protocols/" class="md-nav__link">
+        第15章：结构、类和协议
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/18.Chapter%2016%20Adding%20Assets%20to%20Your%20App/" class="md-nav__link">
+        第16章：向你的应用程序添加资产
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/19.Chapter%2017%20Interfacing%20With%20UIKit/" class="md-nav__link">
+        第17章：与UIKit的接口
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/20.Chapter%2018%20Paths%20%26%20Custom%20Shapes/" class="md-nav__link">
+        第18章：路径和自定义形状
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/21.Chapter%2019%20Saving%20Files/" class="md-nav__link">
+        第19章：保存文件
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/22.Chapter%2020%20Delightful%20UX%20%E2%80%94%20Layout/" class="md-nav__link">
+        第20章：愉快的用户体验--版面设计
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/23.Chapter%2021%20Delightful%20UX%20%E2%80%94%20Final%20Touches/" class="md-nav__link">
+        第21章：愉悦的用户体验--最后的修饰
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/24.Section%20III%20Your%20third%20app%20RWFreeView/" class="md-nav__link">
+        第三节：你的第三个应用程序RWFreeView
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/25.Chapter%2022%20Lists%20%26%20Navigation/" class="md-nav__link">
+        第22章：列表与导航
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/26.Chapter%2023%20Just%20Enough%20Web%20Stuff/" class="md-nav__link">
+        第23章：足够的网络东西
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/27.Chapter%2024%20Downloading%20Data/" class="md-nav__link">
+        第24章：下载数据
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/28.Chapter%2025%20Implementing%20Filter%20Options/" class="md-nav__link">
+        第25章：实施过滤器选项
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SwiftUI-Apprentice/cn/29.Chapter%2026%20Widgets/" class="md-nav__link">
+        第26章：小工具
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_19" type="checkbox" id="__nav_19" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_19">
+          Swift的异步编程Combine
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Swift的异步编程Combine" data-md-level="1">
+        <label class="md-nav__title" for="__nav_19">
+          <span class="md-nav__icon md-icon"></span>
+          Swift的异步编程Combine
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/1.Section%20I%20Introduction%20to%20Combine/" class="md-nav__link">
+        第一部分：Combine简介
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/2.Chapter%201%20Hello%2C%20Combine%21/" class="md-nav__link">
+        第1章：你好，Combine!
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/3.Chapter%202%20Publishers%20%26%20Subscribers/" class="md-nav__link">
+        第2章：Publishers和Subscribers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/4.Section%20II%20Operators/" class="md-nav__link">
+        第二部分：操作符
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/5.Chapter%203%20Transforming%20Operators/" class="md-nav__link">
+        第3章：变换运算符
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/6.Chapter%204%20Filtering%20Operators/" class="md-nav__link">
+        第4章：Filtering操作符
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/7.Chapter%205%20Combining%20Operators/" class="md-nav__link">
+        第5章：Combining操作符
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/8.Chapter%206%20Time%20Manipulation%20Operators/" class="md-nav__link">
+        第6章：时间操纵操作符
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/9.Chapter%207%20Sequence%20Operators/" class="md-nav__link">
+        第7章：Sequence操作符
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/10.Chapter%208%20In%20Practice%20Project%20Collage/" class="md-nav__link">
+        第8章：实践项目Collage
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/11.Section%20III%20Combine%20in%20Action/" class="md-nav__link">
+        第三部分：Combine的事件
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/12.Chapter%209%20Networking/" class="md-nav__link">
+        第9章：网络
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/13.Chapter%2010%20Debugging/" class="md-nav__link">
+        第10章：调试
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/14.Chapter%2011%20Timers/" class="md-nav__link">
+        第11章：计时器
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/15.Chapter%2012%20Key-Value%20Observing/" class="md-nav__link">
+        第12章：键值观察
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/16.Chapter%2013%20Resource%20Management/" class="md-nav__link">
+        第13章：资源管理
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/17.Chapter%2014%20In%20Practice%20Project%20News/" class="md-nav__link">
+        第14章：实践："新闻"项目
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/18.Section%20IV%20Advanced%20Combine/" class="md-nav__link">
+        第四部分：高级Combine
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/19.Chapter%2015%20In%20Practice%20Combine%20%26%20SwiftUI/" class="md-nav__link">
+        第15章：实践Combine & SwiftUI
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/20.Chapter%2016%20Error%20Handling/" class="md-nav__link">
+        第16章：Error处理
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/21.Chapter%2017%20Schedulers/" class="md-nav__link">
+        第17章：调度器
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/22.Chapter%2018%20Custom%20Publishers%20%26%20Handling%20Backpressure/" class="md-nav__link">
+        第18章：定制发布者和处理背压
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/23.Chapter%2019%20Testing%20Combine%20Code/" class="md-nav__link">
+        第19章：测试Combine代码
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/24.Section%20V%20Building%20a%20Complete%20App/" class="md-nav__link">
+        第五部分：构建一个完整的应用程序
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Combine-Asynchronous-Programming-with-Swift/cn/25.Chapter%2020%20In%20Practice%20Building%20a%20Complete%20App/" class="md-nav__link">
+        第20章：在实践中建立一个完整的应用程序
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_20" type="checkbox" id="__nav_20" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_20">
+          Accessibility教程
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Accessibility教程" data-md-level="1">
+        <label class="md-nav__title" for="__nav_20">
+          <span class="md-nav__icon md-icon"></span>
+          Accessibility教程
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Accessibility/1.iOS%20Accessibility%20Getting%20Started/" class="md-nav__link">
+        Accessibility：入门
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Accessibility/2.iOS%20Accessibility%20Tutorial%20Making%20Custom%20Controls%20Accessible/" class="md-nav__link">
+        iOS无障碍教程：实现自定义控件的无障碍使用
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_21" type="checkbox" id="__nav_21" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_21">
+          杂七杂八
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="杂七杂八" data-md-level="1">
+        <label class="md-nav__title" for="__nav_21">
+          <span class="md-nav__icon md-icon"></span>
+          杂七杂八
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Other/Yunzai/Yunzai-bot%E5%AE%89%E8%A3%85%E7%BB%8F%E5%8E%86%E5%88%86%E4%BA%AB/" class="md-nav__link">
+        Yunzai-bot搭建教程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Other/SwiftCharts/SwiftCharts%E6%95%99%E7%A8%8B/" class="md-nav__link">
+        SwiftCharts教程：入门
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Other/DocC/DocC%E6%95%99%E7%A8%8B/" class="md-nav__link">
+        DocC教程：入门
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Other/SwiftUI%E6%9C%AC%E5%9C%B0%E5%8C%96/iOS%E7%9A%84SwiftUI%E6%9C%AC%E5%9C%B0%E5%8C%96%E6%95%99%E7%A8%8B%E5%85%A5%E9%97%A8/" class="md-nav__link">
+        iOS的SwiftUI本地化教程入门
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Other/SwiftGen/iOS%E7%9A%84SwiftGen%E6%95%99%E7%A8%8B/" class="md-nav__link">
+        iOS的SwiftGen教程
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    设置应用程序
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    将应用程序转换为一个菜单栏应用程序
+  </a>
+  
+    <nav class="md-nav" aria-label="将应用程序转换为一个菜单栏应用程序">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    摆脱窗口和菜单
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    设置状态栏项目
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#infoplist" class="md-nav__link">
+    配置Info.plist
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appkit" class="md-nav__link">
+    为什么是AppKit？
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    添加模型
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    静态菜单项目
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    动态菜单项
+  </a>
+  
+    <nav class="md-nav" aria-label="动态菜单项">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    清除菜单
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    添加到菜单中
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    把它全部连接起来
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    为菜单项目设计风格
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    创建一个自定义视图
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    使用自定义视图
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    挑战
+  </a>
+  
+    <nav class="md-nav" aria-label="挑战">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    挑战赛: 改变颜色
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    关键点
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    从这里开始，该往哪里走？
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="7">7.为一个应用程序使用菜单栏<a class="headerlink" href="#7" title="Permanent link">&para;</a></h1>
+<p>在上一节中，你使用<code>SwiftUI</code>构建了一个标准的基于窗口的Mac应用程序。在这一节中，你将朝着一个完全不同的方向前进。</p>
+<p>首先，你将使用<code>AppKit</code>，而不是<code>SwiftUI</code>，作为你应用程序的主要框架。第二，这个应用不会像之前的应用那样有一个标准的窗口--它将从你的菜单栏中运行。</p>
+<p>你的应用程序将是一个<code>Pomodoro计时器</code>，你将把一天的工作分成一系列25分钟的任务。每项任务结束后，该应用程序将提示你休息5分钟，每隔4项任务后，再休息更长时间。</p>
+<p><img alt="img" src="../../images/99.png" /></p>
+<p>一路走来，你会了解到菜单栏应用程序、<code>AppKit</code>、计时器、警报、通知以及如何将<code>SwiftUI</code>视图集成到<code>AppKit</code>应用程序中。</p>
+<h2 id="_1">设置应用程序<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>在<code>Xcode</code>中，使用<code>macOS App</code>模板创建一个新项目。将名称设为<code>TIME-ATO</code>，语言设为<code>Swift</code>。但是这一次，将界面设置为<code>Storyboard</code>。</p>
+<p><img alt="img" src="../../images/100.png" /></p>
+<p>保存应用程序，看一下开始的文件：</p>
+<p><img alt="img" src="../../images/101.png" /></p>
+<p>这一次，你的起始<code>.swift</code>文件是<code>AppDelegate.swift</code>和<code>ViewController.swift</code>。<code>AppDelegate</code>处理应用程序的生命周期，对应用程序的启动、停止、激活、停用等做出反应。<code>ViewController</code>处理初始窗口的显示。</p>
+<p>这个项目和你在上一节创建的<code>SwiftUI</code>项目的另一个主要区别是<code>Main.storyboard</code>。在<code>AppKit</code>应用中，就像在<code>UIKit</code>应用中一样，这是你布置用户界面的地方。</p>
+<p>检查一下<code>storyboard</code>，有三个场景：</p>
+<p><img alt="img" src="../../images/102.png" /></p>
+<ul>
+<li><code>Application Scene</code>：主菜单和应用程序代表是最重要的组件。</li>
+<li><code>Window Controller Scene</code>：每个<code>macOS</code>视图控制器都需要一个父窗口控制器来显示它。</li>
+<li><code>View Controller Scene</code>：这里包含视图，是你在基于窗口的应用程序中进行设计工作的地方。</li>
+</ul>
+<h2 id="_2">将应用程序转换为一个菜单栏应用程序<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>现在，这个应用程序与你在上一节中创建的应用程序非常相似，只是它使用了<code>AppKit</code>。它有一个初始窗口和一个完整的菜单栏。但你想要的是一个启动时没有窗口，作为菜单栏的一部分运行的应用程序，就像苹果的许多控制工具一样。</p>
+<p>要将你的应用项目转换为菜单栏应用，你需要做三件事：</p>
+<ol>
+<li>摆脱窗口和大部分的菜单。</li>
+<li>设置一个与菜单相连的状态栏项目。</li>
+<li>在<code>Info.plist</code>中配置一个设置。</li>
+</ol>
+<h3 id="_3">摆脱窗口和菜单<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>首先，去掉窗口。在<code>Main.storyboard</code>中，选择文件大纲中的<code>View Controller Scene</code>并按<code>Delete</code>。对 "窗口控制器场景 "做同样的操作。</p>
+<p>展开<code>Application Scene ▸ Application ▸ Main Menu</code>。选择并删除所有的菜单，除了<code>TIME-ATO</code>：</p>
+<p><img alt="img" src="../../images/103.png" /></p>
+<p>接下来，展开<code>Time-ato ▸ Menu</code>，删除第一个<code>Separator</code>和最后一个<code>Separator</code>之间的所有菜单：</p>
+<p><img alt="img" src="../../images/104.png" /></p>
+<p>最后，从项目导航器中删除<code>ViewController.swift</code>，因为你已经从故事板中删除了它的场景。</p>
+<p>现在你已经删除了所有不需要的组件。</p>
+<h3 id="_4">设置状态栏项目<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>为了创建一个状态栏项目，打开<code>AppDelegate.swift</code>。给<code>AppDelegate</code>添加这两个属性：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nv">statusItem</span><span class="p">:</span> <span class="n">NSStatusItem</span><span class="p">?</span>
+<span class="kr">@IBOutlet</span> <span class="kr">weak</span> <span class="kd">var</span> <span class="nv">statusMenu</span><span class="p">:</span> <span class="n">NSMenu</span><span class="p">!</span>
+</code></pre></div>
+<p><code>NSStatusItem</code>是<code>macOS</code>在系统菜单中显示的一个项目，即屏幕右侧的菜单栏部分。它将容纳你的应用程序的菜单。这个命名就是为什么你经常看到这样的应用程序被称为<code>status bar apps</code>。</p>
+<p>你将把<code>NSMenu</code>链接到故事板中的菜单。<code>@IBOutlet</code>将其标记为界面生成器可以连接的视图。</p>
+<p>将<code>applicationDidFinishLaunching(_:)</code>的内容替换为：</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// 1</span>
+<span class="n">statusItem</span> <span class="p">=</span> <span class="n">NSStatusBar</span><span class="p">.</span><span class="n">system</span><span class="p">.</span><span class="n">statusItem</span><span class="p">(</span>
+  <span class="n">withLength</span><span class="p">:</span> <span class="n">NSStatusItem</span><span class="p">.</span><span class="n">variableLength</span><span class="p">)</span>
+
+<span class="c1">// 2</span>
+<span class="n">statusItem</span><span class="p">?.</span><span class="n">menu</span> <span class="p">=</span> <span class="n">statusMenu</span>
+
+<span class="c1">// 3</span>
+<span class="n">statusItem</span><span class="p">?.</span><span class="n">button</span><span class="p">?.</span><span class="n">title</span> <span class="p">=</span> <span class="s">&quot;Time-ato&quot;</span>
+<span class="n">statusItem</span><span class="p">?.</span><span class="n">button</span><span class="p">?.</span><span class="n">imagePosition</span> <span class="p">=</span> <span class="p">.</span><span class="n">imageLeading</span>
+<span class="n">statusItem</span><span class="p">?.</span><span class="n">button</span><span class="p">?.</span><span class="n">image</span> <span class="p">=</span> <span class="n">NSImage</span><span class="p">(</span>
+  <span class="n">systemSymbolName</span><span class="p">:</span> <span class="s">&quot;timer&quot;</span><span class="p">,</span>
+  <span class="n">accessibilityDescription</span><span class="p">:</span> <span class="s">&quot;Time-ato&quot;</span><span class="p">)</span>
+
+<span class="c1">// 4</span>
+<span class="n">statusItem</span><span class="p">?.</span><span class="n">button</span><span class="p">?.</span><span class="n">font</span> <span class="p">=</span> <span class="n">NSFont</span><span class="p">.</span><span class="n">monospacedDigitSystemFont</span><span class="p">(</span>
+  <span class="n">ofSize</span><span class="p">:</span> <span class="n">NSFont</span><span class="p">.</span><span class="n">systemFontSize</span><span class="p">,</span>
+  <span class="n">weight</span><span class="p">:</span> <span class="p">.</span><span class="n">regular</span><span class="p">)</span>
+</code></pre></div>
+<p>那么，这里发生了什么？</p>
+<ol>
+<li>在全系统的<code>NSStatusBar</code>中添加一个新的<code>statusItem</code>，并将其设置为可变长度，以便它可以调整以适应其内容。</li>
+<li>将你之前声明的<code>NSMenu</code>设置为该状态项的菜单。</li>
+<li>为状态项配置一个标题和一个引导图像。在菜单栏中实际显示的是一个按钮。而当你不使用<code>SwiftUI</code>时，使用<code>SF</code>符号就不那么容易了!</li>
+<li>为状态项的按钮设置字体。这最终会在计时器倒计时时显示数字，但在默认的系统字体中，数字是成比例的，所以<code>1</code>没有<code>9</code>那么宽，这使得数字变化时显示跳动。<code>NSFont</code>可以给你一个单行数字的系统字体版本，在这种情况下看起来会好很多。</li>
+</ol>
+<p>你已经声明了<code>statusMenu</code>，并在<code>statusItem</code>中使用了它，但现在你需要回到故事板并连接它。</p>
+<p>打开<code>Main.storyboard</code>，在项目导航器中<code>Option-click``AppDelegate.swift</code>，把它打开到旁边。如果<code>Application Scene</code>没有展开，<code>Option点击</code>它可以完全展开。<code>Control-drag</code>从<code>Time-ato</code>下的菜单到<code>AppDelegate.swift</code>的<code>statusMenu</code>。当你看到<code>statusMenu</code>周围有一个蓝色的盒子时，你就可以放手了，这将建立连接。</p>
+<p><img alt="img" src="../../images/105.png" /></p>
+<p>现在关闭二级编辑器，给自己更多空间。</p>
+<h3 id="infoplist">配置<code>Info.plist</code><a class="headerlink" href="#infoplist" title="Permanent link">&para;</a></h3>
+<p>最后，你需要更新<code>Info.plist</code>。在项目导航器的顶部选择项目，点击目标名称。点击顶部的<code>Info</code>标签，如果有必要，展开<code>Custom macOS Application Target Properties</code>部分。</p>
+<p>选择任何条目并点击其行中心的<code>Plus</code>按钮来添加新的行。滚动直到你可以从列表中选择<code>应用程序是代理（UIElement）</code>，并将其值改为<code>YES</code>（如果你看不到右边的<code>Value</code>列，请展开窗格）：</p>
+<p><img alt="img" src="../../images/106.png" /></p>
+<p>你终于准备好建立和运行你的菜单栏应用程序了。没有窗口出现，也没有图标在<code>Dock</code>中跳动。看看你的菜单栏的右边。那里有你的菜单栏应用，点击应用名称就会弹出你的菜单，有两个工作菜单项：</p>
+<p><img alt="img" src="../../images/107.png" /></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>如果你尝试<code>About Time-ato</code>菜单项，它可能看起来像什么都没发生。隐藏你打开的应用程序，你会看到关于框。它是可见的，但没有被带到前面来。你以后会解决这个问题。</p>
+</div>
+<h2 id="appkit">为什么是<code>AppKit</code>？<a class="headerlink" href="#appkit" title="Permanent link">&para;</a></h2>
+<p>现在你已经有了你的应用程序的基本结构，你可能想知道<code>AppKit</code>。什么是<code>AppKit</code>，为什么这个应用要使用它？</p>
+<p><code>Why</code>是一个容易回答的问题。<code>SwiftUI</code>还是很新的，但是<code>AppKit</code>已经存在了20多年了。这意味着大多数<code>macOS</code>应用都使用<code>AppKit</code>。如果你想找一份开发<code>Mac</code>应用的工作，或者你想在一些开源的<code>Mac</code>项目上工作，很可能会使用<code>AppKit</code>。因此，虽然<code>SwiftUI</code>是未来的趋势，但<code>AppKit</code>仍然占主导地位，学习一些关于它的工作原理是很重要的。</p>
+<p>现在来谈谈什么是<code>AppKit</code>？解释这个问题需要上一堂历史课。</p>
+<p>1985年，史蒂夫-乔布斯被迫离开了苹果。他创立了<code>NeXT</code>（是的，他们真的这么写），这是一家专门为商业和研究提供高端计算机的电脑公司。<code>NeXT</code>开发了<code>NeXTSTEP</code>平台，这是一个基于<code>Unix</code>的操作系统。当乔布斯在1997年回到苹果公司时，他带来了<code>NeXTSTEP</code>，它成为<code>OS X</code>和后来<code>macOS</code>的基础。</p>
+<p>为<code>Mac</code>编程的应用环境被命名为<code>Cocoa</code>，如果你看一下<code>AppDelegate.swift</code>，你会发现文件中导入的唯一库是<code>Cocoa</code>。</p>
+<p>键盘点击<code>Cocoa</code>一词，选择<code>Jump to Definition</code>。这显示了一个包含其他三个导入的文件：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">import</span> <span class="nc">AppKit</span>
+<span class="kd">import</span> <span class="nc">CoreData</span>
+<span class="kd">import</span> <span class="nc">Foundation</span>
+</code></pre></div>
+<p>Cocoa是一个超级组，包含<code>Foundation</code>，它是所有苹果设备编程下面的基本库，<code>CoreData</code>用于数据库，<code>AppKit</code>用于用户界面。</p>
+<p><code>Command-click AppKit</code>，再次选择<code>Jump to Definition</code>。这一次，你会看到一个巨大的列表，其中包括构成<code>AppKit</code>的所有<code>NS</code>对象。现在你知道这些都来自于<code>NeXTSTEP</code>，你可以看到为什么它们都有<code>NS</code>这个前缀。</p>
+<p>有趣的是，<code>Cocoa</code>这个名字最初是由苹果公司为一个多媒体项目申请的商标。当他们需要为他们的新应用开发系统取一个名字时，他们决定重新使用<code>Cocoa</code>以避免注册新商标的延误。</p>
+<p><code>CocoaTouch</code>后来才出现，用于<code>iOS</code>设备的编程，并且用<code>UIKit</code>代替了<code>AppKit</code>。由于苹果工程师从头开始创建了<code>UIKit</code>，他们能够选择更合理的前缀<code>UI</code>。这两个框架的许多界面元素都是一样的，只是把<code>NS</code>和<code>UI</code>换了一下。还有一些看起来是一样的，但有不同的属性和方法，如果你要转换任何项目，你需要检查一下。</p>
+<h2 id="_5">添加模型<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>现在你知道了一点关于<code>AppKit</code>的历史，是时候回到应用程序了。下载本章的支持材料，打开<code>assets</code>文件夹。</p>
+<p>从<code>assets</code>中拖动<code>Models</code>文件夹到你的项目导航器中，选择<code>Copy items if needed</code>，<code>Create groups</code>，并选中<code>TIME-ATO</code>目标：</p>
+<p><img alt="img" src="../../images/108.png" /></p>
+<p>在<code>Models</code>组中，<code>Task</code>是定义应用程序将要进行的任务的结构。它还有一个带有静态属性的扩展，提供了一些样本任务的集合。<code>TaskTimes</code>设置过程中每个阶段的长度，在调试模式下使用一组较短的时间，以使应用程序更快地进行测试。<code>TaskStatus</code>是一个枚举，定义了一个任务的可能状态。每个状态都有自己的文字、颜色和图标，你最终会在菜单中显示。</p>
+<h2 id="_6">静态菜单项目<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<p>菜单将包含两种类型的项目：用于控制应用程序的静态项目和用于显示任务的动态项目。</p>
+<p>从静态项目开始。打开<code>Main.storyboard</code>并完全展开<code>Application Scene</code>。</p>
+<p>点击窗口右上方的<code>+</code>或按<code>Shift-Command-L</code>来打开库。搜索菜单并拖动一个<code>Menu Item</code>到文档大纲中的两个分隔符之间：</p>
+<p><img alt="img" src="../../images/109.png" /></p>
+<p>按住<code>Option</code>，将新的项目向下拖动一行来复制它。重复这个步骤，这样你就会有三个标有<code>Item</code>的新条目。</p>
+<p>用同样的方法来复制第一个分隔符。现在，你的应用程序场景将看起来像这样：</p>
+<p><img alt="img" src="../../images/110.png" /></p>
+<p>选择第一个新项目，在右边显示检查器，选择属性检查器，将标题改为<code>Start Next Task</code>：</p>
+<p><img alt="img" src="../../images/111.png" /></p>
+<p>以同样的方式，将其他项目的标题改为：</p>
+<ul>
+<li>编辑任务...（使用<code>Option-;</code>键入省略号。）</li>
+<li>登录时启动</li>
+</ul>
+<p>最后，选择<code>Quit Time-ato</code>菜单项，并点击<code>X</code>来删除<code>Key Equivalent</code>：</p>
+<p><img alt="img" src="../../images/112.png" /></p>
+<p>由于菜单栏应用程序没有接受焦点的窗口，它们不能对键盘快捷键做出反应。</p>
+<p>现在你已经完成了故事板的制作，故事板中的菜单预览看起来是这样的：</p>
+<p><img alt="img" src="../../images/113.png" /></p>
+<p>你将以编程方式放置动态项目，在顶部两个分隔符之间。</p>
+<h2 id="_7">动态菜单项<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<p>为了添加、删除和更新代表任务的菜单项，你将添加一个<code>MenuManager</code>类。它将作为<code>NSMenuDelegate</code>，检测用户何时打开或关闭菜单，并根据需要更新显示。</p>
+<p>创建一个新的<code>Swift</code>文件，名为<code>MenuManager.swift</code>。将其内容替换为：</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// 1</span>
+<span class="kd">import</span> <span class="nc">AppKit</span>
+
+<span class="c1">// 2</span>
+<span class="kd">class</span> <span class="nc">MenuManager</span><span class="p">:</span> <span class="bp">NSObject</span><span class="p">,</span> <span class="n">NSMenuDelegate</span> <span class="p">{</span>
+  <span class="c1">// 3</span>
+  <span class="kd">let</span> <span class="nv">statusMenu</span><span class="p">:</span> <span class="n">NSMenu</span>
+  <span class="kd">var</span> <span class="nv">menuIsOpen</span> <span class="p">=</span> <span class="kc">false</span>
+
+  <span class="c1">// 4</span>
+  <span class="kd">var</span> <span class="nv">tasks</span> <span class="p">=</span> <span class="n">Task</span><span class="p">.</span><span class="n">sampleTasksWithStatus</span>
+
+  <span class="c1">// 5</span>
+  <span class="kd">let</span> <span class="nv">itemsBeforeTasks</span> <span class="p">=</span> <span class="mi">2</span>
+  <span class="kd">let</span> <span class="nv">itemsAfterTasks</span> <span class="p">=</span> <span class="mi">6</span>
+
+  <span class="c1">// 6</span>
+  <span class="kd">init</span><span class="p">(</span><span class="n">statusMenu</span><span class="p">:</span> <span class="n">NSMenu</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kc">self</span><span class="p">.</span><span class="n">statusMenu</span> <span class="p">=</span> <span class="n">statusMenu</span>
+    <span class="kc">super</span><span class="p">.</span><span class="kd">init</span><span class="p">()</span>
+  <span class="p">}</span>
+
+  <span class="c1">// 7</span>
+  <span class="kd">func</span> <span class="nf">menuWillOpen</span><span class="p">(</span><span class="kc">_</span> <span class="n">menu</span><span class="p">:</span> <span class="n">NSMenu</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">menuIsOpen</span> <span class="p">=</span> <span class="kc">true</span>
+  <span class="p">}</span>
+
+  <span class="kd">func</span> <span class="nf">menuDidClose</span><span class="p">(</span><span class="kc">_</span> <span class="n">menu</span><span class="p">:</span> <span class="n">NSMenu</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">menuIsOpen</span> <span class="p">=</span> <span class="kc">false</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>那么，这是在做什么？</p>
+<ol>
+<li>导入<code>AppKit</code>，你需要用<code>NSMenu</code>来工作。</li>
+<li>声明该类符合<code>NSMenuDelegate</code>。这要求该类也符合<code>NSObject</code>。</li>
+<li>设置持有菜单的属性和一个反映菜单是否打开的标志。</li>
+<li>导入一组样本任务，以便在开发过程中使用。</li>
+<li>告诉这个班级，在任务应该去的地方之前有多少个菜单项，之后有多少个。</li>
+<li>用它的菜单初始化该类。</li>
+<li>添加菜单委托方法，这些方法将检测菜单的打开和关闭，并设置<code>menuIsOpen</code>标志。</li>
+</ol>
+<h3 id="_8">清除菜单<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<p>当菜单关闭时，你必须删除任何现有的任务菜单项。如果你不这样做，那么每次用户打开菜单时，随着你添加和重新添加项目，它就会变得越来越长。</p>
+<p>将此方法添加到<code>MenuManager</code>中：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">clearTasksFromMenu</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// 1</span>
+  <span class="kd">let</span> <span class="nv">stopAtIndex</span> <span class="p">=</span> <span class="n">statusMenu</span><span class="p">.</span><span class="n">items</span><span class="p">.</span><span class="bp">count</span> <span class="o">-</span> <span class="n">itemsAfterTasks</span>
+
+  <span class="c1">// 2</span>
+  <span class="k">for</span> <span class="kc">_</span> <span class="k">in</span> <span class="n">itemsBeforeTasks</span> <span class="p">..</span><span class="o">&lt;</span> <span class="n">stopAtIndex</span> <span class="p">{</span>
+    <span class="n">statusMenu</span><span class="p">.</span><span class="n">removeItem</span><span class="p">(</span><span class="n">at</span><span class="p">:</span> <span class="n">itemsBeforeTasks</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>并通过这些步骤：</p>
+<ol>
+<li>你已经定义了两个属性，决定了任务在菜单中的开始和结束位置。使用定义结束的属性来计算要删除多少个项目。你使用<code>statusMenu.items</code>来获取菜单中现有项目的列表。</li>
+<li>循环浏览这些项目，每次都删除索引<code>2</code>的那个，直到你删除了正确的数量。</li>
+</ol>
+<p>现在，你可以在<code>menuDidClose(_ :)</code>里面添加对这个方法的调用：</p>
+<div class="highlight"><pre><span></span><code><span class="n">clearTasksFromMenu</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="_9">添加到菜单中<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<p>这已经完成了整理的部分，所以下一件事是创建新的菜单项来显示这些任务。</p>
+<p>首先，在<code>MenuManager</code>中添加这个新方法：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">showTasksInMenu</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// 1</span>
+  <span class="kd">var</span> <span class="nv">index</span> <span class="p">=</span> <span class="n">itemsBeforeTasks</span>
+  <span class="kd">var</span> <span class="nv">taskCounter</span> <span class="p">=</span> <span class="mi">0</span>
+
+  <span class="c1">// 2</span>
+  <span class="k">for</span> <span class="n">task</span> <span class="k">in</span> <span class="n">tasks</span> <span class="p">{</span>
+    <span class="c1">// 3</span>
+    <span class="kd">let</span> <span class="nv">item</span> <span class="p">=</span> <span class="n">NSMenuItem</span><span class="p">()</span>
+    <span class="n">item</span><span class="p">.</span><span class="n">title</span> <span class="p">=</span> <span class="n">task</span><span class="p">.</span><span class="n">title</span>
+
+    <span class="c1">// 4</span>
+    <span class="n">statusMenu</span><span class="p">.</span><span class="n">insertItem</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">at</span><span class="p">:</span> <span class="n">index</span><span class="p">)</span>
+    <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">taskCounter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="c1">// 5</span>
+    <span class="k">if</span> <span class="n">taskCounter</span><span class="p">.</span><span class="n">isMultiple</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">statusMenu</span><span class="p">.</span><span class="n">insertItem</span><span class="p">(</span><span class="n">NSMenuItem</span><span class="p">.</span><span class="n">separator</span><span class="p">(),</span> <span class="n">at</span><span class="p">:</span> <span class="n">index</span><span class="p">)</span>
+      <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>这里发生了相当多的事情：</p>
+<ol>
+<li>使用预定义属性作为第一个任务条目的起始位置，并添加一个计数器来记录你在菜单中添加的任务数量。</li>
+<li>循环浏览所有的任务。</li>
+<li>为每个任务创建一个<code>NSMenuItem</code>，将其标题设置为任务的标题。</li>
+<li>将这个菜单项插入到菜单中，并增加索引以定位下一个菜单项。也增加任务计数器。</li>
+<li>波莫多罗技术建议你在每四个任务后休息更长时间。使用<code>taskCounter</code>来检查这是否是第四个任务，如果是的话，在它后面添加一个分隔线。</li>
+</ol>
+<p>再说一遍，你需要调用这个方法，所以在<code>menuWillOpen(_ :)</code>中添加这一行：</p>
+<div class="highlight"><pre><span></span><code><span class="n">showTasksInMenu</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="_10">把它全部连接起来<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<p>你已经做了一些很好的工作，设置了<code>MenuManager</code>并提供了清理和填充菜单的方法。对于这样一个没有视图控制器的应用程序，应用程序的委托会变得有点拥挤。将菜单管理分离到一个单独的类中，有助于保持你的代码更整洁，更容易阅读和维护。</p>
+<p>下一步是将<code>MenuManager</code>连接到<code>AppDelegate</code>。</p>
+<p>在<code>AppDelegate.swift</code>中，添加这个定义。</p>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nv">menuManager</span><span class="p">:</span> <span class="n">MenuManager</span><span class="p">?</span>
+</code></pre></div>
+<p>接下来，在<code>applicationDidFinishLaunching(_:)</code>的末尾添加这两行：</p>
+<div class="highlight"><pre><span></span><code><span class="n">menuManager</span> <span class="p">=</span> <span class="n">MenuManager</span><span class="p">(</span><span class="n">statusMenu</span><span class="p">:</span> <span class="n">statusMenu</span><span class="p">)</span>
+<span class="n">statusMenu</span><span class="p">.</span><span class="n">delegate</span> <span class="p">=</span> <span class="n">menuManager</span>
+</code></pre></div>
+<p>现在，你已经有了一个<code>MenuManager</code>的实例，用<code>statusMenu</code>初始化，并被设置为该菜单的代理。</p>
+<p>现在，是时候构建和运行了：</p>
+<p><img alt="img" src="../../images/114.png" /></p>
+<p>这里有所有的样本任务，每隔一个就有一个分隔符，被包裹在你的静态菜单项中。而且，如果你关闭菜单并重新打开它，你仍然只能看到任务列表的一个副本。</p>
+<p>你可能想知道为什么菜单项都是灰色的。有一个菜单设置可以自动启用菜单项，由于你没有对这些菜单项进行操作，菜单为你禁用了它们。</p>
+<p>要解决这个问题，打开<code>Main.storyboard</code>，选择<code>TIME-AT</code>下的菜单。在属性检查器中取消选中<code>Auto Enables Items</code>：</p>
+<p><img alt="img" src="../../images/115.png" /></p>
+<h2 id="_11">为菜单项目设计风格<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
+<p>目前，你的任务出现在菜单中，但只是以文本形式出现，这遗漏了很多信息。哪些任务已经完成？如果一个任务正在进行中，它已经运行了多长时间？</p>
+<p>虽然大多数菜单项是文本，但你可以为菜单项指定任何<code>NSView</code>，或<code>NSView</code>的子类。因此，你将创建一个自定义视图，用它来显示菜单中的任务。</p>
+<p>当使用<code>AppKit</code>或<code>UIKit</code>创建自定义视图时，你可以使用故事板--或<code>.xib</code>文件--来可视化地创建它们，或者你可以通过编程来创建它们。关于哪种方式最好的争论可能会相当激烈，几乎可以和关于制表符与空格的大争论相媲美! :]</p>
+<p>故事板允许你看到你的设计。<code>Xcode</code>提供了有用的标记，以确保你遵循人机界面指南的间距和定位。很容易看到你可以应用于每个子视图的设置。</p>
+<p>用代码编写你的视图可能会变得非常冗长，但它给了你非常精确的控制，使版本控制更清晰，更容易遵循。</p>
+<p>在这种情况下，你可以用一个<code>.xib</code>文件创建一个新的视图控制器。这将使你能够直观地设计你的布局。然后，对于每个菜单项，你将创建一个视图控制器的实例，并在菜单项中使用其视图。如果没有视图控制器，你就不能轻易在故事板中创建一个<code>NSView</code>。</p>
+<p>这样做可以使设计视图更容易，但当你要对视图进行频繁的更新时，就会比较笨拙了。因此，虽然视觉设计通常更有成效，但在这种情况下，你要用代码来创建视图，以提高性能。</p>
+<h2 id="_12">创建一个自定义视图<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h2>
+<p>打开本章下载材料中的<code>assets</code>文件夹。将<code>TaskView.swift</code>拖入你的项目导航器，选择<code>Copy items if needed</code>，<code>Create groups</code>并选中<code>Time-ato</code>目标。这将导致一些错误，但不要担心--你即将添加代码来修复它们。</p>
+<p>看一下这个文件，注意它是一个继承自<code>NSView</code>的类。这意味着你可以在任何可以使用<code>NSView</code>的地方使用它--比如在一个菜单项中。</p>
+<p>该类有一个可选的<code>Task</code>属性和其他四个属性，都是<code>NSView</code>的子类。</p>
+<p>在这个自定义视图中，有四个组件，你将显示它们：</p>
+<ul>
+<li>该任务的标题。</li>
+<li>一个显示其状态的图标。</li>
+<li>如果它正在运行，有一个进度条。</li>
+<li>如果它没有运行，则是一些信息文本。</li>
+</ul>
+<p>你要按照这个图中所示的方式来布置这些组件：</p>
+<p><img alt="img" src="../../images/116.png" /></p>
+<p>有三件重要的事情需要注意：</p>
+<ol>
+<li>视图的整体尺寸为<code>270 x 40</code>。这将适合预期的内容。</li>
+<li>原点--<code>(0，0)</code>--在左下方。如果你使用过<code>UIKit</code>，你可能希望原点在左上角。</li>
+<li>如果进度条是可见的，信息文本将是空白的，所以它们都在同一个位置。</li>
+</ol>
+<p>首先要设置图像。在<code>TaskView.swift</code>中，在<code>// set up subviews</code>下，添加这个：</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// 1</span>
+<span class="kd">let</span> <span class="nv">imageFrame</span> <span class="p">=</span> <span class="n">NSRect</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="mi">20</span><span class="p">)</span>
+<span class="c1">// 2</span>
+<span class="n">imageView</span> <span class="p">=</span> <span class="n">NSImageView</span><span class="p">(</span><span class="n">frame</span><span class="p">:</span> <span class="n">imageFrame</span><span class="p">)</span>
+<span class="c1">// 3</span>
+<span class="n">imageView</span><span class="p">.</span><span class="n">imageScaling</span> <span class="p">=</span> <span class="p">.</span><span class="n">scaleProportionallyUpOrDown</span>
+</code></pre></div>
+<p>这些线在做什么？</p>
+<ol>
+<li>创建一个有原点和大小的<code>NSRect</code>。图中显示原点，宽度和高度是总高度的一半。如果你要做一个<code>UIView</code>，你会在这里使用一个<code>CGRect</code>。</li>
+<li>惯化<code>imageView</code>，使用<code>NSRect</code>作为其框架。</li>
+<li>改变其中一个默认设置，使图像可以向上或向下缩放以适应框架。</li>
+</ol>
+<p>接下来，对于两个文本视图，在你刚才添加的文本视图下插入这些行：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">titleFrame</span> <span class="p">=</span> <span class="n">NSRect</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="mi">40</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="mi">220</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="mi">16</span><span class="p">)</span>
+
+<span class="kd">let</span> <span class="nv">infoProgressFrame</span> <span class="p">=</span> 
+  <span class="n">NSRect</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="mi">40</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="mi">220</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="mi">14</span><span class="p">)</span>
+</code></pre></div>
+<p>这些非常相似，在初始化两个<code>NSTextField</code>视图时又设置了两个<code>NSRect</code>来使用。检查图表，看看这些框架是如何排列的。</p>
+<p>下面提供的代码块配置了这些<code>NSTextField</code>视图。它们是不可编辑的，没有边框，有适当的字体大小。<code>infoLabel</code>永远不会有足够的文本溢出，但是<code>titleLabel</code>可能会，所以你设置它在需要时截断文本的尾部。</p>
+<p>最后一个视图是进度条，所以现在添加这个：</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// 1</span>
+<span class="n">progressBar</span> <span class="p">=</span> <span class="n">NSProgressIndicator</span><span class="p">(</span><span class="n">frame</span><span class="p">:</span> <span class="n">infoProgressFrame</span><span class="p">)</span>
+<span class="c1">// 2</span>
+<span class="n">progressBar</span><span class="p">.</span><span class="n">minValue</span> <span class="p">=</span> <span class="mi">0</span>
+<span class="n">progressBar</span><span class="p">.</span><span class="n">maxValue</span> <span class="p">=</span> <span class="mi">100</span>
+<span class="c1">// 3</span>
+<span class="n">progressBar</span><span class="p">.</span><span class="n">isIndeterminate</span> <span class="p">=</span> <span class="kc">false</span>
+</code></pre></div>
+<p>这有点不同：</p>
+<ol>
+<li>使用你用于<code>infoLabel</code>的同一框架来初始化<code>NSProgressIndicator</code>。</li>
+<li>设置最小和最大的值，以百分比的形式显示进度。</li>
+<li>一个<code>indeterminate</code>的进度指示器是类似于一个旋转器的东西，它显示应用程序正在忙碌，但不提供任何关于进度状态的信息。这个进度条将<code>NOT</code>是不确定的，这样它就可以显示任务完成的百分比。</li>
+</ol>
+<p>你现在已经初始化并配置了四个子视图，但还有最后一步。为了显示它们，你必须把它们添加到自定义视图中。</p>
+<p>将<code>// add subviews</code>替换为：</p>
+<div class="highlight"><pre><span></span><code><span class="n">addSubview</span><span class="p">(</span><span class="n">imageView</span><span class="p">)</span>
+<span class="n">addSubview</span><span class="p">(</span><span class="n">titleLabel</span><span class="p">)</span>
+<span class="n">addSubview</span><span class="p">(</span><span class="n">infoLabel</span><span class="p">)</span>
+<span class="n">addSubview</span><span class="p">(</span><span class="n">progressBar</span><span class="p">)</span>
+</code></pre></div>
+<p>现在，当你初始化一个<code>TaskView</code>的时候，这将会对其四个子视图进行尺寸、配置和放置。</p>
+<p>错误都已经消失了，但你仍然有一个警告。每当视图需要更新时，它就会调用它的<code>draw(_:)</code>方法，所以在这里你可以真正显示任务数据。</p>
+<p>用这个替换<code>// view update code</code>，这将使警告消失：</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// 1</span>
+<span class="kd">let</span> <span class="nv">color</span> <span class="p">=</span> <span class="n">task</span><span class="p">.</span><span class="n">status</span><span class="p">.</span><span class="n">textColor</span>
+
+<span class="c1">// 2</span>
+<span class="n">imageView</span><span class="p">.</span><span class="n">image</span> <span class="p">=</span> <span class="n">NSImage</span><span class="p">(</span>
+  <span class="n">systemSymbolName</span><span class="p">:</span> <span class="n">task</span><span class="p">.</span><span class="n">status</span><span class="p">.</span><span class="n">iconName</span><span class="p">,</span>
+  <span class="n">accessibilityDescription</span><span class="p">:</span> <span class="n">task</span><span class="p">.</span><span class="n">status</span><span class="p">.</span><span class="n">statusText</span><span class="p">)</span>
+<span class="n">imageView</span><span class="p">.</span><span class="n">contentTintColor</span> <span class="p">=</span> <span class="n">color</span>
+
+<span class="c1">// 3</span>
+<span class="n">titleLabel</span><span class="p">.</span><span class="n">stringValue</span> <span class="p">=</span> <span class="n">task</span><span class="p">.</span><span class="n">title</span>
+<span class="n">titleLabel</span><span class="p">.</span><span class="n">textColor</span> <span class="p">=</span> <span class="n">color</span>
+
+<span class="c1">// 4</span>
+<span class="n">infoLabel</span><span class="p">.</span><span class="n">stringValue</span> <span class="p">=</span> <span class="n">task</span><span class="p">.</span><span class="n">status</span><span class="p">.</span><span class="n">statusText</span>
+<span class="n">infoLabel</span><span class="p">.</span><span class="n">textColor</span> <span class="p">=</span> <span class="n">color</span>
+
+<span class="c1">// 5</span>
+<span class="k">switch</span> <span class="n">task</span><span class="p">.</span><span class="n">status</span> <span class="p">{</span>
+<span class="k">case</span> <span class="p">.</span><span class="n">notStarted</span><span class="p">:</span>
+  <span class="n">progressBar</span><span class="p">.</span><span class="n">isHidden</span> <span class="p">=</span> <span class="kc">true</span>
+<span class="k">case</span> <span class="p">.</span><span class="n">inProgress</span><span class="p">:</span>
+  <span class="n">progressBar</span><span class="p">.</span><span class="n">doubleValue</span> <span class="p">=</span> <span class="n">task</span><span class="p">.</span><span class="n">progressPercent</span>
+  <span class="n">progressBar</span><span class="p">.</span><span class="n">isHidden</span> <span class="p">=</span> <span class="kc">false</span>
+<span class="k">case</span> <span class="p">.</span><span class="n">complete</span><span class="p">:</span>
+  <span class="n">progressBar</span><span class="p">.</span><span class="n">isHidden</span> <span class="p">=</span> <span class="kc">true</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>如果视图有一个<code>Task</code>，这段代码将在每次视图变化时运行，那么它在做什么？</p>
+<ol>
+<li>从任务的状态中获得一种颜色。</li>
+<li>用任务状态中的<code>SF</code>符号来设置图像，并将其染成该颜色。</li>
+<li>用选定的颜色显示任务的标题。</li>
+<li>获取任务的状态文本并以正确的颜色显示。如果任务正在进行中，这就是一个空字符串，所以没有必要隐藏视图。</li>
+<li>使用任务的状态来确定进度条是否应该可见，如果任务正在进行中，则设置其值。</li>
+</ol>
+<p>现在你已经定义了一个自定义的<code>NSView</code>，把它连接到一个<code>Task</code>上，并且已经准备好在你的菜单中使用。</p>
+<h2 id="_13">使用自定义视图<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h2>
+<p>为了在菜单中应用这个视图，回到<code>MenuManager.swift</code>，找到<code>showTasksInMenu()</code>。</p>
+<p>在你创建<code>taskCounter</code>属性的下方，添加这个属性来指定菜单项视图的固定大小：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">itemFrame</span> <span class="p">=</span> <span class="n">NSRect</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="mi">270</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="mi">40</span><span class="p">)</span>
+</code></pre></div>
+<p>接下来，将<code>item.title = task.title</code>替换为：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">view</span> <span class="p">=</span> <span class="n">TaskView</span><span class="p">(</span><span class="n">frame</span><span class="p">:</span> <span class="n">itemFrame</span><span class="p">)</span>
+<span class="n">view</span><span class="p">.</span><span class="n">task</span> <span class="p">=</span> <span class="n">task</span>
+<span class="n">item</span><span class="p">.</span><span class="n">view</span> <span class="p">=</span> <span class="n">view</span>
+</code></pre></div>
+<p>这将创建一个<code>TaskView</code>及其框架，给它分配一个任务，并将其设置为菜单项的视图。</p>
+<p>在这一节中你已经做了很多工作，但最后，是时候进行另一次构建和运行了：</p>
+<p><img alt="img" src="../../images/117.png" /></p>
+<p>现在，你可以看到你的自定义视图是什么样子。该视图将已完成的任务涂成灰色，并标记为<code>Complete</code>。正在进行的任务有一个进度条，并使用系统的重点颜色。剩下的任务有<code>Not started yet</code>作为其信息文本。三种类型的任务都有一个合适的图标。</p>
+<p>伟大的工作! 这一章有很多内容要讲，但现在你有了一个菜单栏应用程序，可以在一个自定义视图中显示你的模型。</p>
+<h2 id="_14">挑战<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h2>
+<h3 id="_15">挑战赛: 改变颜色<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h3>
+<p>打开<code>TaskStatus.swift</code>，查看<code>textColor</code>计算属性。这是根据任务的状态，为任务视图中的文本和图像设置三种可能的颜色。使用的颜色是由<code>NSColor</code>预定义的。</p>
+<p>打开<code>Xcode</code>的文档，搜索<code>UI Element Colors</code>。滚动浏览可能性列表。</p>
+<p>现在, <code>TaskView</code>使用<code>labelColor</code>, <code>controlAccentColor</code>和<code>placeholderTextColor</code>. 你可以在这些地方使用什么其他选项？试着用一些替代方案。不要忘了检查菜单在明暗模式和不同的系统强调色下的效果。</p>
+<h2 id="_16">关键点<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h2>
+<ul>
+<li>一个菜单栏或状态栏应用程序看起来非常不同，因为它在运行时没有主窗口或<code>Dock</code>图标，但在下面，它是非常相似的。</li>
+<li>虽然<code>SwiftUI</code>是未来的发展方向，但现在有很多<code>AppKit</code>应用和<code>AppKit</code>工作，所以学习一些<code>AppKit</code>的知识很重要。</li>
+<li>菜单和菜单项往往是纯文本，但它们也可以显示自定义视图。</li>
+<li>菜单可以有静态项目--使用故事板放置--和动态项目，由菜单委托插入和移除。</li>
+<li>在<code>AppKit</code>和<code>UIKit</code>中，你可以以编程方式或图形方式构建自定义视图。</li>
+</ul>
+<h2 id="_17">从这里开始，该往哪里走？<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h2>
+<p>到目前为止，你已经做了一个显示数据的菜单栏应用程序，但它并没有用它做任何事情。在下一章中，你将使一些菜单项活跃起来，并设置定时器来控制任务及其持续时间。</p>
+<p>你还将学习如何通过警报和通知与用户沟通。</p>
+<p>如果你想了解更多关于<a href="https://bit.ly/3mleYSD">Pomodoro技术</a>的信息，请查看这个链接。</p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="页脚" >
+      
+        
+        <a href="../8.Section%20II%20Building%20a%20Menu%20Bar%20App/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 8.第二节：构建一个菜单栏应用程序" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              8.第二节：构建一个菜单栏应用程序
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../10.Working%20with%20Timers%2C%20Alerts%20%26%20Notifications/" class="md-footer__link md-footer__link--next" aria-label="下一页: 10.使用计时器、警报和通知的工作" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              10.使用计时器、警报和通知的工作
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.ecf98df9.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\s\\-\uff0c\u3002]+", "search.placeholder": "\u641c\u7d22", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version.title": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.48f2be22.min.js"></script>
+      
+    
+  </body>
+</html>
