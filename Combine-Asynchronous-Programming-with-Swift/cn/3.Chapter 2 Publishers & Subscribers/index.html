@@ -11,7 +11,7 @@
       
       
       <link rel="icon" href="../../../assets/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.5.0">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.0">
     
     
   
@@ -7201,7 +7201,7 @@
       
         <li class="md-nav__item">
   <a href="#combineasyncawait" class="md-nav__link">
-    将Combine发布器与async/await连接起来
+    将Combine发布者与async/await连接起来
   </a>
   
 </li>
@@ -7867,7 +7867,7 @@
       
         <li class="md-nav__item">
   <a href="#combineasyncawait" class="md-nav__link">
-    将Combine发布器与async/await连接起来
+    将Combine发布者与async/await连接起来
   </a>
   
 </li>
@@ -7983,10 +7983,10 @@
 <p>一个发布者可以发出零个或更多的值，但只有一个完成事件，它可以是一个正常的完成事件，也可以是一个错误。一旦一个发布者发射了一个完成事件，它就完成了，不能再发射任何事件了。</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>在这个意义上，发布者有点类似于<code>Swift</code>迭代器。一个非常有价值的区别是，<code>Publisher</code>的完成可以是成功的，也可以是失败的，而且你需要主动从迭代器中提取值，而<code>Publisher</code>则是将值推送给消费者。</p>
+<p>在这个意义上，发布者有点类似于<code>Swift</code>迭代器。一个非常有数值的区别是，<code>Publisher</code>的完成可以是成功的，也可以是失败的，而且你需要主动从迭代器中提取值，而<code>Publisher</code>则是将值推送给订阅者。</p>
 </div>
 <p>接下来，你将通过使用<code>NotificationCenter</code>来观察和发布通知来结束当前的例子。当你不再对接收该通知感兴趣时，你也将取消该观察者的注册。</p>
-<p>将下面的代码添加到你在这个例子的闭合中已经有的内容：</p>
+<p>将下面的代码添加到你在这个例子的闭包中已经有的内容：</p>
 <div class="highlight"><pre><span></span><code><span class="c1">// 3</span>
 <span class="kd">let</span> <span class="nv">center</span> <span class="p">=</span> <span class="n">NotificationCenter</span><span class="p">.</span><span class="k">default</span>
 
@@ -8017,7 +8017,7 @@ Notification received<span class="p">!</span>
 </code></pre></div>
 <p>这个例子的标题有点误导性，因为输出实际上不是来自发布者。要做到这一点，你需要一个订阅者。</p>
 <h2 id="_3">你好，订阅者<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<p><code>订阅者</code>是一个协议，它定义了一个类型能够从一个发布者那里接收输入的要求。你很快就会深入研究符合<code>Publisher</code>和<code>Subscriber</code>协议的问题；现在，你将专注于基本流程。</p>
+<p><code>Subscriber</code>是一个协议，它定义了一个类型能够从一个发布者那里接收输入的要求。你很快就会深入研究符合<code>Publisher</code>和<code>Subscriber</code>协议的问题；现在，你将专注于基本流程。</p>
 <p>在<code>Playground</code>上添加一个新的例子，它的开头与前面的例子一样：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;Subscriber&quot;</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">let</span> <span class="nv">myNotification</span> <span class="p">=</span> <span class="n">Notification</span><span class="p">.</span><span class="n">Name</span><span class="p">(</span><span class="s">&quot;MyNotification&quot;</span><span class="p">)</span>
@@ -8071,7 +8071,7 @@ Notification received from <span class="k">a</span> publisher<span class="p">!</
 </code></pre></div>
 <p>在这里，你：</p>
 <ol>
-<li>使用<code>Just</code>创建一个发布器，它让你从一个单一的值中创建一个发布器。</li>
+<li>使用<code>Just</code>创建一个发布者，它让你从一个单一的值中创建一个发布者。</li>
 <li>为发布者创建一个订阅，为每个收到的事件打印一条消息。</li>
 </ol>
 <p>运行<code>Playground</code>。你会看到下面的情况：</p>
@@ -8157,22 +8157,22 @@ world!
 </code></pre></div>
 <p>有了这个代码，你就可以：</p>
 <ol>
-<li>定义并创建一个类的实例，该类有一个用<code>@Published</code>属性包装器注解的属性，除了可以作为普通属性访问外，还为<code>value</code>创建了一个发布器。</li>
+<li>定义并创建一个类的实例，该类有一个用<code>@Published</code>属性包装器注解的属性，除了可以作为普通属性访问外，还为<code>value</code>创建了一个发布者。</li>
 <li>在<code>@Published</code>属性上使用<code>$</code>前缀，以获得对其底层发布者的访问，订阅它，并打印出收到的每个值。</li>
-<li>创建一个数字的发布器，并将它发出的每个值分配给<code>object</code>的<code>value</code>发布器。注意使用<code>&amp;</code>来表示对属性的<code>inout</code>引用。</li>
+<li>创建一个数字的发布者，并将它发出的每个值分配给<code>object</code>的<code>value</code>发布者。注意使用<code>&amp;</code>来表示对属性的<code>inout</code>引用。</li>
 </ol>
-<p><code>assign(to:)</code>操作符不返回<code>AnyCancellable</code>标记，因为它在内部管理生命周期，并在<code>@Published</code>属性去初始化时取消了订阅。</p>
+<p><code>assign(to:)</code>操作符不返回<code>AnyCancellable</code>标记，因为它在内部管理生命周期，并在<code>@Published</code>属性释放时取消了订阅。</p>
 <p>你可能会问，与简单地使用<code>assign(to:on:)</code>相比，这有什么用？考虑一下下面的例子（你不需要把这个加入到<code>Playground</code>）。</p>
-<div class="highlight"><pre><span></span><code>class MyObject {
-  @Published var word: String = &quot;&quot;
-  var subscriptions = Set&lt;AnyCancellable&gt;()
+<div class="highlight"><pre><span></span><code><span class="kd">class</span> <span class="nc">MyObject</span> <span class="p">{</span>
+  <span class="p">@</span><span class="n">Published</span> <span class="kd">var</span> <span class="nv">word</span><span class="p">:</span> <span class="nb">String</span> <span class="p">=</span> <span class="s">&quot;&quot;</span>
+  <span class="kd">var</span> <span class="nv">subscriptions</span> <span class="p">=</span> <span class="n">Set</span><span class="p">&lt;</span><span class="n">AnyCancellable</span><span class="p">&gt;()</span>
 
-  init() {
-    [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;].publisher
-      .assign(to: \.word, on: self)
-      .store(in: &amp;subscriptions)
-  }
-}
+  <span class="kd">init</span><span class="p">()</span> <span class="p">{</span>
+    <span class="p">[</span><span class="s">&quot;A&quot;</span><span class="p">,</span> <span class="s">&quot;B&quot;</span><span class="p">,</span> <span class="s">&quot;C&quot;</span><span class="p">].</span><span class="n">publisher</span>
+      <span class="p">.</span><span class="n">assign</span><span class="p">(</span><span class="n">to</span><span class="p">:</span> <span class="err">\</span><span class="p">.</span><span class="n">word</span><span class="p">,</span> <span class="n">on</span><span class="p">:</span> <span class="kc">self</span><span class="p">)</span>
+      <span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="k">in</span><span class="p">:</span> <span class="p">&amp;</span><span class="n">subscriptions</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>在这个例子中，使用<code>assign(to:\.word, on:self)</code>并存储产生的<code>AnyCancellable</code>导致了一个强引用循环。用<code>assign(to:on:)</code>代替<code>assign(to: &amp;$word)</code>可以防止这个问题。</p>
 <p>现在你将专注于使用<code>sink</code>操作符，但你将在第8章"实践中"了解更多关于<code>@Published</code>属性的使用：项目"拼贴"，以及后面的章节。</p>
@@ -8187,13 +8187,13 @@ world!
 </div>
 <p>这些是很好的例子，但在幕后还有很多事情要做。现在是时候揭开帷幕，了解更多关于<code>Combine</code>中发布者、订阅者和订阅的角色。</p>
 <h2 id="_4">了解发生了什么事<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
-<p>他们说一张图片胜过千言万语，所以让我们用一张图片来解释出版商和订阅者之间的相互作用：</p>
+<p>他们说一张图片胜过千言万语，所以让我们用一张图片来解释发布者和订阅者之间的相互作用：</p>
 <p><img alt="img" src="../../graphics/img15.png" /></p>
 <p>走过这个<code>UML</code>图：</p>
 <ol>
 <li>订阅者向发布者订阅。</li>
 <li>发布者创建一个订阅，并把它交给订阅者。</li>
-<li>订阅者请求价值。</li>
+<li>订阅者请求数值。</li>
 <li>发布者发送数值。</li>
 <li>发布者发送一个完成。</li>
 </ol>
@@ -8202,65 +8202,65 @@ world!
 <p>上图提供了一个正在发生的事情的简化概述。稍后，你将在第18章"自定义发布者与处理背压"中对这个过程有更深入的了解。</p>
 </div>
 <p>看看<code>Publisher</code>协议和它最重要的扩展之一：</p>
-<div class="highlight"><pre><span></span><code>public protocol Publisher {
-  // 1
-  associatedtype Output
+<div class="highlight"><pre><span></span><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="nc">Publisher</span> <span class="p">{</span>
+  <span class="c1">// 1</span>
+  <span class="kd">associatedtype</span> <span class="n">Output</span>
 
-  // 2
-  associatedtype Failure : Error
+  <span class="c1">// 2</span>
+  <span class="kd">associatedtype</span> <span class="n">Failure</span> <span class="p">:</span> <span class="n">Error</span>
 
-  // 4
-  func receive&lt;S&gt;(subscriber: S)
-    where S: Subscriber,
-    Self.Failure == S.Failure,
-    Self.Output == S.Input
-}
+  <span class="c1">// 4</span>
+  <span class="kd">func</span> <span class="nf">receive</span><span class="p">&lt;</span><span class="n">S</span><span class="p">&gt;(</span><span class="n">subscriber</span><span class="p">:</span> <span class="n">S</span><span class="p">)</span>
+    <span class="k">where</span> <span class="n">S</span><span class="p">:</span> <span class="n">Subscriber</span><span class="p">,</span>
+    <span class="kc">Self</span><span class="p">.</span><span class="n">Failure</span> <span class="p">==</span> <span class="n">S</span><span class="p">.</span><span class="n">Failure</span><span class="p">,</span>
+    <span class="kc">Self</span><span class="p">.</span><span class="n">Output</span> <span class="p">==</span> <span class="n">S</span><span class="p">.</span><span class="n">Input</span>
+<span class="p">}</span>
 
-extension Publisher {
-  // 3
-  public func subscribe&lt;S&gt;(_ subscriber: S)
-    where S : Subscriber,
-    Self.Failure == S.Failure,
-    Self.Output == S.Input
-}
+<span class="kd">extension</span> <span class="nc">Publisher</span> <span class="p">{</span>
+  <span class="c1">// 3</span>
+  <span class="kd">public</span> <span class="kd">func</span> <span class="nf">subscribe</span><span class="p">&lt;</span><span class="n">S</span><span class="p">&gt;(</span><span class="kc">_</span> <span class="n">subscriber</span><span class="p">:</span> <span class="n">S</span><span class="p">)</span>
+    <span class="k">where</span> <span class="n">S</span> <span class="p">:</span> <span class="n">Subscriber</span><span class="p">,</span>
+    <span class="kc">Self</span><span class="p">.</span><span class="n">Failure</span> <span class="p">==</span> <span class="n">S</span><span class="p">.</span><span class="n">Failure</span><span class="p">,</span>
+    <span class="kc">Self</span><span class="p">.</span><span class="n">Output</span> <span class="p">==</span> <span class="n">S</span><span class="p">.</span><span class="n">Input</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>下面我们来仔细看看：</p>
 <ol>
-<li>出版商所能产生的价值类型。</li>
+<li>发布者所能产生的数值类型。</li>
 <li>发布者可能产生的错误类型，如果发布者保证不产生错误，则为<code>Never</code>。</li>
 <li>订阅者在一个发布者上调用<code>subscribe(_:)</code>来附加到它。</li>
 <li><code>subscribe(_:)</code>的实现将调用<code>receive(subscriber:)</code>来将订阅者附加到发布者上，即创建一个订阅。</li>
 </ol>
 <p>关联类型是发布者的接口，订阅者必须与之匹配才能创建一个订阅。现在，看看<code>Subscriber</code>协议：</p>
-<div class="highlight"><pre><span></span><code>public protocol Subscriber: CustomCombineIdentifierConvertible {
-  // 1
-  associatedtype Input
+<div class="highlight"><pre><span></span><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="nc">Subscriber</span><span class="p">:</span> <span class="n">CustomCombineIdentifierConvertible</span> <span class="p">{</span>
+  <span class="c1">// 1</span>
+  <span class="kd">associatedtype</span> <span class="n">Input</span>
 
-  // 2
-  associatedtype Failure: Error
+  <span class="c1">// 2</span>
+  <span class="kd">associatedtype</span> <span class="n">Failure</span><span class="p">:</span> <span class="n">Error</span>
 
-  // 3
-  func receive(subscription: Subscription)
+  <span class="c1">// 3</span>
+  <span class="kd">func</span> <span class="nf">receive</span><span class="p">(</span><span class="n">subscription</span><span class="p">:</span> <span class="n">Subscription</span><span class="p">)</span>
 
-  // 4
-  func receive(_ input: Self.Input) -&gt; Subscribers.Demand
+  <span class="c1">// 4</span>
+  <span class="kd">func</span> <span class="nf">receive</span><span class="p">(</span><span class="kc">_</span> <span class="n">input</span><span class="p">:</span> <span class="kc">Self</span><span class="p">.</span><span class="n">Input</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="n">Subscribers</span><span class="p">.</span><span class="n">Demand</span>
 
-  // 5
-  func receive(completion: Subscribers.Completion&lt;Self.Failure&gt;)
-}
+  <span class="c1">// 5</span>
+  <span class="kd">func</span> <span class="nf">receive</span><span class="p">(</span><span class="n">completion</span><span class="p">:</span> <span class="n">Subscribers</span><span class="p">.</span><span class="n">Completion</span><span class="p">&lt;</span><span class="kc">Self</span><span class="p">.</span><span class="n">Failure</span><span class="p">&gt;)</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>下面我们来仔细看看：</p>
 <ol>
-<li>订阅者可以收到的价值类型。</li>
+<li>订阅者可以收到的数值类型。</li>
 <li>用户可以收到的错误类型；如果用户不会收到错误，则为<code>Never</code>。</li>
 <li>发布者在订阅者身上调用<code>receive(subscription:)</code>来给它订阅。</li>
 <li>发布者对订阅者调用<code>receive(_:)</code>，向其发送它刚刚发布的新值。</li>
-<li>发布者在订阅者上调用<code>receive(completion:)</code>，告诉它它已经完成了数值的生产，可以是正常的，也可以是由于错误。</li>
+<li>发布者在订阅者上调用<code>receive(completion:)</code>，告诉它已经完成了数值的生产，可以是正常的，也可以是由于错误。</li>
 </ol>
 <p>发布者和订阅者之间的连接是订阅。这里是<code>Subscription</code>协议：</p>
-<div class="highlight"><pre><span></span><code>public protocol Subscription: Cancellable, CustomCombineIdentifierConvertible {
-  func request(_ demand: Subscribers.Demand)
-}
+<div class="highlight"><pre><span></span><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="nc">Subscription</span><span class="p">:</span> <span class="n">Cancellable</span><span class="p">,</span> <span class="n">CustomCombineIdentifierConvertible</span> <span class="p">{</span>
+  <span class="kd">func</span> <span class="nf">request</span><span class="p">(</span><span class="kc">_</span> <span class="n">demand</span><span class="p">:</span> <span class="n">Subscribers</span><span class="p">.</span><span class="n">Demand</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>用户调用<code>request(_:)</code>来表示它愿意接收更多的值，最多不超过一个最大数或无限数。</p>
 <div class="admonition note">
@@ -8312,9 +8312,9 @@ extension Publisher {
 <li>打印完成事件。</li>
 </ol>
 <p>为了让发布者发布任何东西，它需要一个订阅者。在例子的末尾添加以下内容：</p>
-<div class="highlight"><pre><span></span><code>let subscriber = IntSubscriber()
+<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">subscriber</span> <span class="p">=</span> <span class="n">IntSubscriber</span><span class="p">()</span>
 
-publisher.subscribe(subscriber)
+<span class="n">publisher</span><span class="p">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">subscriber</span><span class="p">)</span>
 </code></pre></div>
 <p>在这段代码中，你创建了一个与发布者的<code>Output</code>和<code>Failure</code>类型相匹配的订阅者。然后你告诉发布者要订阅或附加该订阅者。</p>
 <p>运行<code>Playground</code>。你会看到以下内容被打印到控制台：</p>
@@ -8325,10 +8325,10 @@ Received value 3
 </code></pre></div>
 <p>你没有收到一个完成事件。这是因为发布者的值是有限的，而你指定的需求是<code>.max(3)</code>。</p>
 <p>在你的自定义订阅者的<code>receive(_:)</code>中，试着将<code>.none</code>改为<code>.unlimited</code>，这样你的<code>receive(_:)</code>方法看起来像这样：</p>
-<div class="highlight"><pre><span></span><code>func receive(_ input: Int) -&gt; Subscribers.Demand {
-  print(&quot;Received value&quot;, input)
-  return .unlimited
-}
+<div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">receive</span><span class="p">(</span><span class="kc">_</span> <span class="n">input</span><span class="p">:</span> <span class="nb">Int</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="n">Subscribers</span><span class="p">.</span><span class="n">Demand</span> <span class="p">{</span>
+  <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Received value&quot;</span><span class="p">,</span> <span class="n">input</span><span class="p">)</span>
+  <span class="k">return</span> <span class="p">.</span><span class="n">unlimited</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>再次运行该<code>Playground</code>机。这一次你会看到输出包含所有的值，还有完成事件：</p>
 <div class="highlight"><pre><span></span><code>——— Example of: Custom Subscriber ———
@@ -8343,10 +8343,10 @@ Received completion finished
 <p>试着把<code>.unlimited</code>改为<code>.max(1)</code>，然后再次运行这个<code>Playground</code>。</p>
 <p>你会看到与返回<code>.unlimited</code>时相同的输出，因为每次收到事件时，你都指定要将<code>max</code>增加<code>1</code>。</p>
 <p>把<code>.max(1)</code>改回<code>.none</code>，并把<code>publisher</code>的定义改成字符串数组。替换：</p>
-<div class="highlight"><pre><span></span><code>let publisher = (1...6).publisher
+<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">publisher</span> <span class="p">=</span> <span class="p">(</span><span class="mf">1.</span><span class="p">..</span><span class="mi">6</span><span class="p">).</span><span class="n">publisher</span>
 </code></pre></div>
 <p>为:</p>
-<div class="highlight"><pre><span></span><code>let publisher = [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;, &quot;F&quot;].publisher
+<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">publisher</span> <span class="p">=</span> <span class="p">[</span><span class="s">&quot;A&quot;</span><span class="p">,</span> <span class="s">&quot;B&quot;</span><span class="p">,</span> <span class="s">&quot;C&quot;</span><span class="p">,</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;F&quot;</span><span class="p">].</span><span class="n">publisher</span>
 </code></pre></div>
 <p>运行<code>Playground</code>。你得到一个错误，<code>subscribe</code>方法要求类型<code>String</code>和<code>IntSubscriber.Input</code>（即<code>Int</code>）是相等的。你得到这个错误是因为发布者的<code>Output</code>和<code>Failure</code>相关类型必须与订阅者的<code>Input</code>和<code>Failure</code>类型相匹配，以便在两者之间创建一个订阅。</p>
 <p>把<code>publisher</code>定义改回原来的整数范围来解决这个错误。</p>
@@ -8363,30 +8363,30 @@ Received completion finished
 <p>在这里，你创建了一个工厂函数，返回一个类型为<code>Int</code>和<code>Never</code>的<code>future</code>；也就是说，它将发出一个整数，并且永远不会失败。</p>
 <p>你还添加了一个<code>subscriptions</code>集合，你将在其中存储对例子中的未来的订阅。对于长期运行的异步操作，不存储订阅将导致在当前代码范围结束后立即取消订阅。在<code>Playground</code>的例子中，这将是立即的。</p>
 <p>接下来，填充函数的主体以创建<code>future</code>：</p>
-<div class="highlight"><pre><span></span><code>Future&lt;Int, Never&gt; { promise in
-  DispatchQueue.global().asyncAfter(deadline: .now() + delay) {
-    promise(.success(integer + 1))
-  }
-}
+<div class="highlight"><pre><span></span><code><span class="n">Future</span><span class="p">&lt;</span><span class="nb">Int</span><span class="p">,</span> <span class="n">Never</span><span class="p">&gt;</span> <span class="p">{</span> <span class="n">promise</span> <span class="k">in</span>
+  <span class="n">DispatchQueue</span><span class="p">.</span><span class="n">global</span><span class="p">().</span><span class="n">asyncAfter</span><span class="p">(</span><span class="n">deadline</span><span class="p">:</span> <span class="p">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">delay</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">promise</span><span class="p">(.</span><span class="n">success</span><span class="p">(</span><span class="n">integer</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>这段代码定义了<code>future</code>，它创建了一个<code>promise</code>，然后你使用函数调用者指定的值来执行这个<code>promise</code>，在<code>delay</code>之后增加<code>integer</code>。</p>
 <p>一个<code>Future</code>是一个发布者，它最终会产生一个单一的值并结束，否则就会失败。它通过在有值或错误时调用一个闭包来实现，而这个闭包实际上就是承诺。命令点击<code>Future</code>，选择跳转到定义。你会看到下面的内容：</p>
-<div class="highlight"><pre><span></span><code>final public class Future&lt;Output, Failure&gt; : Publisher
-  where Failure: Error {
-  public typealias Promise = (Result&lt;Output, Failure&gt;) -&gt; Void
-  ...
-}
+<div class="highlight"><pre><span></span><code><span class="kr">final</span> <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Future</span><span class="p">&lt;</span><span class="n">Output</span><span class="p">,</span> <span class="n">Failure</span><span class="p">&gt;</span> <span class="p">:</span> <span class="n">Publisher</span>
+  <span class="k">where</span> <span class="n">Failure</span><span class="p">:</span> <span class="n">Error</span> <span class="p">{</span>
+  <span class="kd">public</span> <span class="kd">typealias</span> <span class="n">Promise</span> <span class="p">=</span> <span class="p">(</span><span class="n">Result</span><span class="p">&lt;</span><span class="n">Output</span><span class="p">,</span> <span class="n">Failure</span><span class="p">&gt;)</span> <span class="p">-&gt;</span> <span class="nb">Void</span>
+  <span class="p">...</span>
+<span class="p">}</span>
 </code></pre></div>
 <p><code>Promise</code>是一个闭包的类型别名，它接收一个<code>Result</code>，包含<code>Future</code>发布的单个值，或者一个错误。</p>
 <p>回到主<code>Playground</code>页面，在<code>futureIncrement</code>的定义后添加以下代码：</p>
-<div class="highlight"><pre><span></span><code>// 1
-let future = futureIncrement(integer: 1, afterDelay: 3)
+<div class="highlight"><pre><span></span><code><span class="c1">// 1</span>
+<span class="kd">let</span> <span class="nv">future</span> <span class="p">=</span> <span class="n">futureIncrement</span><span class="p">(</span><span class="n">integer</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="n">afterDelay</span><span class="p">:</span> <span class="mi">3</span><span class="p">)</span>
 
-// 2
-future
-  .sink(receiveCompletion: { print($0) },
-        receiveValue: { print($0) })
-  .store(in: &amp;subscriptions)
+<span class="c1">// 2</span>
+<span class="n">future</span>
+  <span class="p">.</span><span class="n">sink</span><span class="p">(</span><span class="n">receiveCompletion</span><span class="p">:</span> <span class="p">{</span> <span class="bp">print</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">},</span>
+        <span class="n">receiveValue</span><span class="p">:</span> <span class="p">{</span> <span class="bp">print</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">})</span>
+  <span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="k">in</span><span class="p">:</span> <span class="p">&amp;</span><span class="n">subscriptions</span><span class="p">)</span>
 </code></pre></div>
 <p>在这里，你：</p>
 <ol>
@@ -8399,13 +8399,13 @@ future
 finished
 </code></pre></div>
 <p>通过在<code>Playground</code>上输入以下代码，为未来添加第二个订阅：</p>
-<div class="highlight"><pre><span></span><code>future
-  .sink(receiveCompletion: { print(&quot;Second&quot;, $0) },
-        receiveValue: { print(&quot;Second&quot;, $0) })
-  .store(in: &amp;subscriptions)
+<div class="highlight"><pre><span></span><code><span class="n">future</span>
+  <span class="p">.</span><span class="n">sink</span><span class="p">(</span><span class="n">receiveCompletion</span><span class="p">:</span> <span class="p">{</span> <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Second&quot;</span><span class="p">,</span> <span class="nv">$0</span><span class="p">)</span> <span class="p">},</span>
+        <span class="n">receiveValue</span><span class="p">:</span> <span class="p">{</span> <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Second&quot;</span><span class="p">,</span> <span class="nv">$0</span><span class="p">)</span> <span class="p">})</span>
+  <span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="k">in</span><span class="p">:</span> <span class="p">&amp;</span><span class="n">subscriptions</span><span class="p">)</span>
 </code></pre></div>
 <p>在运行<code>Playground</code>之前，在<code>futureIncrement</code>函数中的<code>DispatchQueue</code>块之前立即插入以下打印语句：</p>
-<div class="highlight"><pre><span></span><code>print(&quot;Original&quot;)
+<div class="highlight"><pre><span></span><code><span class="bp">print</span><span class="p">(</span><span class="s">&quot;Original&quot;</span><span class="p">)</span>
 </code></pre></div>
 <p>运行<code>Playground</code>。在指定的延迟后，第二个订阅者收到相同的值。<code>future</code>不会重新执行它的承诺；相反，它分享或重复它的输出。</p>
 <div class="highlight"><pre><span></span><code>——— Example of: Future ———
@@ -8415,8 +8415,8 @@ finished
 Second 2
 Second finished
 </code></pre></div>
-<p>这段代码在订阅发生之前就立即打印了<code>Original</code>。发生这种情况是因为<code>future</code>是贪婪的，意味着一旦创建就会立即执行。它不像普通的发布者那样需要一个订阅者，它是懒惰的。</p>
-<p>在过去的几个例子中，你一直在使用有有限数量的值要发布的发布器，这些发布器是按顺序同步发布的。</p>
+<p>代码在订阅发生之前立即打印<code>Original</code>。 这是因为<code>future</code>是“贪婪的”，也就是说，一旦它被创造出来，就会立即执行。 它不需要像普通发布者那样的“懒惰”订阅者。</p>
+<p>在过去的几个例子中，你一直在使用有有限数量的值要发布的发布者，这些发布者是按顺序同步发布的。</p>
 <p>你开始的那个通知中心的例子是一个发布者的例子，它可以无限期地、异步地持续发布数值，前提是：</p>
 <ol>
 <li>底层的通知发送者会发出通知。</li>
@@ -8467,22 +8467,22 @@ Second finished
 <p>当输入是<code>"World"</code>时，在<code>receive(_:)</code>中返回<code>.max(1)</code>，结果是新的最大值被设置为<code>3</code>（原始最大值加<code>1</code>）。</p>
 <p>除了定义一个自定义的错误类型和以收到的值为轴心来调整需求之外，这里没有什么新东西。下面是更有趣的部分。</p>
 <p>把这段代码添加到例子中：</p>
-<div class="highlight"><pre><span></span><code>// 5
-let subject = PassthroughSubject&lt;String, MyError&gt;()
+<div class="highlight"><pre><span></span><code><span class="c1">// 5</span>
+<span class="kd">let</span> <span class="nv">subject</span> <span class="p">=</span> <span class="n">PassthroughSubject</span><span class="p">&lt;</span><span class="nb">String</span><span class="p">,</span> <span class="n">MyError</span><span class="p">&gt;()</span>
 
-// 6
-subject.subscribe(subscriber)
+<span class="c1">// 6</span>
+<span class="n">subject</span><span class="p">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">subscriber</span><span class="p">)</span>
 
-// 7
-let subscription = subject
-  .sink(
-    receiveCompletion: { completion in
-      print(&quot;Received completion (sink)&quot;, completion)
-    },
-    receiveValue: { value in
-      print(&quot;Received value (sink)&quot;, value)
-    }
-  )
+<span class="c1">// 7</span>
+<span class="kd">let</span> <span class="nv">subscription</span> <span class="p">=</span> <span class="n">subject</span>
+  <span class="p">.</span><span class="n">sink</span><span class="p">(</span>
+    <span class="n">receiveCompletion</span><span class="p">:</span> <span class="p">{</span> <span class="n">completion</span> <span class="k">in</span>
+      <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Received completion (sink)&quot;</span><span class="p">,</span> <span class="n">completion</span><span class="p">)</span>
+    <span class="p">},</span>
+    <span class="n">receiveValue</span><span class="p">:</span> <span class="p">{</span> <span class="n">value</span> <span class="k">in</span>
+      <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Received value (sink)&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">)</span>
 </code></pre></div>
 <p>这个代码：</p>
 <ol>
@@ -8492,8 +8492,8 @@ let subscription = subject
 </ol>
 <p>穿透式主题使你能够按需发布新值。他们会很高兴地传递这些值和一个完成事件。与任何发布者一样，你必须事先声明它可以发布的值和错误的类型；订阅者必须将这些类型与它的输入和失败类型相匹配，以便订阅该穿透主体。</p>
 <p>现在你已经创建了一个可以发送值的直通主题和接收值的订阅，是时候发送一些值了。在你的例子中添加以下代码：</p>
-<div class="highlight"><pre><span></span><code>subject.send(&quot;Hello&quot;)
-subject.send(&quot;World&quot;)
+<div class="highlight"><pre><span></span><code><span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;Hello&quot;</span><span class="p">)</span>
+<span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;World&quot;</span><span class="p">)</span>
 </code></pre></div>
 <p>这将使用主体的<code>send</code>方法发送两个值（一次一个）。</p>
 <p>运行这个<code>Playground</code>。你会看到：</p>
@@ -8505,11 +8505,11 @@ Received value (sink) World
 </code></pre></div>
 <p>每个订阅者都会收到他们发布的数值。</p>
 <p>添加以下代码：</p>
-<div class="highlight"><pre><span></span><code>// 8
-subscription.cancel()
+<div class="highlight"><pre><span></span><code><span class="c1">// 8</span>
+<span class="n">subscription</span><span class="p">.</span><span class="n">cancel</span><span class="p">()</span>
 
-// 9
-subject.send(&quot;Still there?&quot;)
+<span class="c1">// 9</span>
+<span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;Still there?&quot;</span><span class="p">)</span>
 </code></pre></div>
 <p>在这里，你：</p>
 <ol>
@@ -8525,8 +8525,8 @@ Received value (sink) World
 Received value Still there?
 </code></pre></div>
 <p>将这段代码添加到示例中：</p>
-<div class="highlight"><pre><span></span><code>subject.send(completion: .finished)
-subject.send(&quot;How about another one?&quot;)
+<div class="highlight"><pre><span></span><code><span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">completion</span><span class="p">:</span> <span class="p">.</span><span class="n">finished</span><span class="p">)</span>
+<span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;How about another one?&quot;</span><span class="p">)</span>
 </code></pre></div>
 <p>运行<code>Playground</code>。第二个订阅者没有收到"再来一个怎么样？"的值，因为它在主体发送值之前就收到了完成事件。第一个订阅者没有收到完成事件或值，因为它的订阅先前被取消了。</p>
 <div class="highlight"><pre><span></span><code>——— Example of: PassthroughSubject ———
@@ -8538,7 +8538,7 @@ Received value Still there?
 Received completion finished
 </code></pre></div>
 <p>在发送完成事件的那一行之前立即添加以下代码。</p>
-<div class="highlight"><pre><span></span><code>subject.send(completion: .failure(MyError.test))
+<div class="highlight"><pre><span></span><code><span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">completion</span><span class="p">:</span> <span class="p">.</span><span class="n">failure</span><span class="p">(</span><span class="n">MyError</span><span class="p">.</span><span class="n">test</span><span class="p">))</span>
 </code></pre></div>
 <p>再次运行该<code>Playground</code>。你会看到以下内容被打印到控制台：</p>
 <div class="highlight"><pre><span></span><code>——— Example of: PassthroughSubject ———
@@ -8576,38 +8576,38 @@ Received completion failure(...MyError.test)
 <li>创建一个主题的订阅，并打印从它收到的值。</li>
 <li>在<code>subscriptions</code>集合中存储该订阅（作为<code>inout</code>参数传递，而不是复制）。</li>
 </ol>
-<p>你必须用一个初始值来初始化当前的价值主体；新的订阅者立即获得该值或该主体发布的最新值。运行<code>Playground</code>，看看这个动作：</p>
+<p>你必须用一个初始值来初始化当前的数值主体；新的订阅者立即获得该值或该主体发布的最新值。运行<code>Playground</code>，看看这个动作：</p>
 <div class="highlight"><pre><span></span><code>——— Example of: CurrentValueSubject ———
 0
 </code></pre></div>
 <p>现在，添加这段代码来发送两个新的值：</p>
-<div class="highlight"><pre><span></span><code>subject.send(1)
-subject.send(2)
+<div class="highlight"><pre><span></span><code><span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </code></pre></div>
 <p>再次运行<code>Playground</code>。这些值也被接收并打印到控制台：</p>
 <div class="highlight"><pre><span></span><code>1
 2
 </code></pre></div>
-<p>与穿透式主体不同，你可以在任何时候向当前值主体询问其价值。添加下面的代码来打印出主体的当前值：</p>
-<div class="highlight"><pre><span></span><code>print(subject.value)
+<p>与穿透式主体不同，你可以在任何时候向当前值主体询问其数值。添加下面的代码来打印出主体的当前值：</p>
+<div class="highlight"><pre><span></span><code><span class="bp">print</span><span class="p">(</span><span class="n">subject</span><span class="p">.</span><span class="n">value</span><span class="p">)</span>
 </code></pre></div>
 <p>正如你可能从主题的类型名称推断的那样，你可以通过访问其<code>value</code>属性来获得其当前值。运行这个<code>Playground</code>，你会看到<code>2</code>第二次被打印出来。</p>
 <p>在一个当前值的主体上调用<code>send(_:)</code>是发送一个新值的一种方法。另一种方法是给它的<code>value</code>属性分配一个新值。哇，我们刚才是用了所有必要的方法还是什么？添加这段代码：</p>
-<div class="highlight"><pre><span></span><code>subject.value = 3
-print(subject.value)
+<div class="highlight"><pre><span></span><code><span class="n">subject</span><span class="p">.</span><span class="n">value</span> <span class="p">=</span> <span class="mi">3</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">subject</span><span class="p">.</span><span class="n">value</span><span class="p">)</span>
 </code></pre></div>
 <p>运行这个<code>Playground</code>。你会看到<code>2</code>和<code>3</code>各打印了两次--一次是由接收订阅者打印的，另一次是在将该值添加到主题后打印主题的<code>value</code>。</p>
-<p>接下来，在这个例子的最后，为当前的价值主题创建一个新的订阅：</p>
-<div class="highlight"><pre><span></span><code>subject
-  .sink(receiveValue: { print(&quot;Second subscription:&quot;, $0) })
-  .store(in: &amp;subscriptions)
+<p>接下来，在这个例子的最后，为当前的数值主题创建一个新的订阅：</p>
+<div class="highlight"><pre><span></span><code><span class="n">subject</span>
+  <span class="p">.</span><span class="n">sink</span><span class="p">(</span><span class="n">receiveValue</span><span class="p">:</span> <span class="p">{</span> <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Second subscription:&quot;</span><span class="p">,</span> <span class="nv">$0</span><span class="p">)</span> <span class="p">})</span>
+  <span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="k">in</span><span class="p">:</span> <span class="p">&amp;</span><span class="n">subscriptions</span><span class="p">)</span>
 </code></pre></div>
 <p>在这里，你创建一个订阅，并打印收到的值。你还将该订阅存储在<code>subscriptions</code>集合中。</p>
 <p>你刚才读到，<code>subscriptions</code>集将自动取消添加到它的订阅，但你如何验证这一点？你可以使用<code>print()</code>操作符，它将把所有发布事件记录到控制台。</p>
 <p>在两个订阅中插入<code>print()</code>操作符，在<code>subject</code>和<code>sink</code>之间。每个订阅的开头应该是这样的：</p>
-<div class="highlight"><pre><span></span><code>subject
-  .print()
-  .sink...
+<div class="highlight"><pre><span></span><code><span class="n">subject</span>
+  <span class="p">.</span><span class="bp">print</span><span class="p">()</span>
+  <span class="p">.</span><span class="n">sink</span><span class="p">...</span>
 </code></pre></div>
 <p>再次运行该<code>Playground</code>，你会看到整个例子的输出如下：</p>
 <div class="highlight"><pre><span></span><code>——— Example of: CurrentValueSubject ———
@@ -8632,10 +8632,10 @@ receive cancel
 </code></pre></div>
 <p>代码将每个事件与订阅处理程序中打印的值一起打印出来，当你打印主体的<code>value</code>时。<code>receive cancel</code>事件的出现是因为<code>subscriptions</code>集被定义在这个例子的范围内，所以它在去初始化时取消了它包含的订阅。</p>
 <p>所以，你可能想知道，你能不能也给<code>value</code>属性分配一个完成事件？通过添加这段代码试试吧：</p>
-<div class="highlight"><pre><span></span><code>subject.value = .finished
+<div class="highlight"><pre><span></span><code><span class="n">subject</span><span class="p">.</span><span class="n">value</span> <span class="p">=</span> <span class="p">.</span><span class="n">finished</span>
 </code></pre></div>
 <p>没有！这将产生一个错误。一个<code>CurrentValueSubject</code>的<code>value</code>属性只是用于：<code>values</code>。你仍然需要通过使用<code>send(_:)</code>来发送完成事件。将错误的那行代码改为以下内容：</p>
-<div class="highlight"><pre><span></span><code>subject.send(completion: .finished)
+<div class="highlight"><pre><span></span><code><span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">completion</span><span class="p">:</span> <span class="p">.</span><span class="n">finished</span><span class="p">)</span>
 </code></pre></div>
 <p>再次运行该<code>Playground</code>。这一次你会在底部看到以下输出：</p>
 <div class="highlight"><pre><span></span><code>receive finished
@@ -8685,7 +8685,7 @@ receive finished
   <span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>这段代码的大部分与你之前在本章中的例子相似，所以你将专注于<code>receive(_:)</code>方法。你不断地从你的自定义订阅器中调整需求：</p>
+<p>这段代码的大部分与你之前在本章中的例子相似，所以你将专注于<code>receive(_:)</code>方法。你不断地从你的自定义订阅者中调整需求：</p>
 <ol>
 <li>新的<code>max</code>是<code>4</code>（原<code>max</code>为<code>2</code>+新<code>max</code>为<code>2</code>）。</li>
 <li>新的<code>max</code>是<code>5</code>（以前的<code>4</code>+新的<code>1</code>）。</li>
@@ -8734,10 +8734,10 @@ Received value 5
 <p><code>AnyPublisher</code>没有<code>send(_:)</code>操作符，所以你不能直接向该发布者添加新值。</p>
 <p><code>eraseToAnyPublisher()</code>操作符将提供的发布者包裹在<code>AnyPublisher</code>的一个实例中，隐藏了发布者实际上是一个<code>PassthroughSubject</code>的事实。这也是必要的，因为你不能将<code>Publisher</code>协议特殊化，例如，你不能将类型定义为<code>Publisher&lt;UIImage, Never&gt;</code>。</p>
 <p>为了证明<code>publisher</code>是类型化的，你不能用它来发送新的值，请在例子中添加这段代码。</p>
-<div class="highlight"><pre><span></span><code>publisher.send(1)
+<div class="highlight"><pre><span></span><code><span class="n">publisher</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
 <p>你得到的错误是"<code>AnyPublisher&lt;Int, Never&gt;</code>类型的值没有成员<code>send</code>"。在继续前行之前注释掉这行代码。</p>
-<h2 id="combineasyncawait">将<code>Combine</code>发布器与<code>async/await</code>连接起来<a class="headerlink" href="#combineasyncawait" title="Permanent link">&para;</a></h2>
+<h2 id="combineasyncawait">将<code>Combine</code>发布者与<code>async/await</code>连接起来<a class="headerlink" href="#combineasyncawait" title="Permanent link">&para;</a></h2>
 <p><code>Swift 5.5</code>中的<code>Combine</code>框架有两个伟大的新增功能，可在<code>iOS 15</code>和<code>macOS 12</code>中使用，帮助你毫不费力地将<code>Combine</code>与<code>Swift</code>中新的<code>async/await</code>语法结合起来。</p>
 <p>换句话说--你在本书中学到的所有发布者、<code>future</code>和主题都可以从你的现代<code>Swift</code>代码中免费使用。</p>
 <p>在你的<code>Playground</code>上添加最后一个例子：</p>
@@ -8749,22 +8749,22 @@ Received value 5
 <p>在这个例子中，你将使用一个<code>CurrentValueSubject</code>，但如前所述，<code>API</code>在<code>Future</code>和任何符合<code>Publisher</code>的类型上都是可用的。</p>
 <p>你将使用<code>subject</code>来发射元素，并使用<code>for</code>循环来迭代这些元素的异步序列。</p>
 <p>你将在一个新的异步任务中订阅这些值。要做到这一点，请添加：</p>
-<div class="highlight"><pre><span></span><code>Task {
-  for await element in subject.values {
-    print(&quot;Element: \(element)&quot;)
-  }
-  print(&quot;Completed.&quot;)
-}
+<div class="highlight"><pre><span></span><code><span class="n">Task</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="k">await</span> <span class="n">element</span> <span class="k">in</span> <span class="n">subject</span><span class="p">.</span><span class="n">values</span> <span class="p">{</span>
+    <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Element: </span><span class="si">\(</span><span class="n">element</span><span class="si">)</span><span class="s">&quot;</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Completed.&quot;</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div>
 <p><code>Task</code>创建一个新的异步任务--在这个代码示例中，关闭代码将与你的其他代码异步运行。</p>
 <p>这个代码块中的关键<code>API</code>是你的主题上的<code>values</code>属性。<code>values</code>返回一个异步序列，其中有主体或发布者发出的元素。你可以像上面那样在一个简单的<code>for</code>循环中迭代这个异步序列。</p>
 <p>一旦发布者完成，无论是成功还是失败，循环就会结束，并在下一行继续执行。</p>
 <p>接下来，在当前的例子中也添加这段代码，以发出一些值：</p>
-<div class="highlight"><pre><span></span><code>subject.send(1)
-subject.send(2)
-subject.send(3)
+<div class="highlight"><pre><span></span><code><span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 
-subject.send(completion: .finished)
+<span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">completion</span><span class="p">:</span> <span class="p">.</span><span class="n">finished</span><span class="p">)</span>
 </code></pre></div>
 <p>这将发出<code>1</code>、<code>2</code>和<code>3</code>，然后完成主题。</p>
 <p>这就很好地解决了这个例子--发送<code>finished</code>事件也将结束你的异步任务的循环。再次运行<code>Playground</code>的代码，你会看到这样的输出：</p>
@@ -8793,9 +8793,9 @@ Completed.
 <p>对于收到的值，打印一个字符串，包含手牌的<code>cardString</code>和<code>points</code>属性的结果。</p>
 <p>对于一个错误，打印出来。一个提示：你可以在<code>receivedCompletion</code>块中收到<code>.finished</code>或<code>.failure</code>，所以你要区分这个完成是否是一个失败。</p>
 <p><code>HandError</code>符合<code>CustomStringConvertible</code>，所以打印它将产生一个用户友好的错误信息。你可以像这样使用它：</p>
-<div class="highlight"><pre><span></span><code>if case let .failure(error) = $0 {
-  print(error)
-}
+<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="k">case</span> <span class="kd">let</span> <span class="p">.</span><span class="n">failure</span><span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="p">=</span> <span class="nv">$0</span> <span class="p">{</span>
+  <span class="bp">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>呼叫<code>deal(_:)</code>目前通过<code>3</code>，所以你每次运行<code>Playground</code>时都发三张牌。</p>
 <p>在真正的<code>21</code>点<code>Playground</code>中，你最初发两张牌，然后你必须决定拿一张或多张额外的牌，称为命中，直到你击中<code>21</code>点或爆掉。对于这个简单的例子，你只是直接拿到三张牌。</p>
@@ -8805,22 +8805,22 @@ Completed.
 <p><img alt="img" src="../../graphics/img16.png" /></p>
 <h4 id="_9">解决方案<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h4>
 <p>你的表现如何？要完成这个挑战，你需要添加两件事。第一件事是更新<code>dealtHand</code>函数中的发布者，检查手牌的点数，如果超过<code>21</code>点则发送错误：</p>
-<div class="highlight"><pre><span></span><code>// Add code to update dealtHand here
-if hand.points &gt; 21 {
-  dealtHand.send(completion: .failure(.busted))
-} else {
-  dealtHand.send(hand)
-}
+<div class="highlight"><pre><span></span><code><span class="c1">// Add code to update dealtHand here</span>
+<span class="k">if</span> <span class="n">hand</span><span class="p">.</span><span class="n">points</span> <span class="o">&gt;</span> <span class="mi">21</span> <span class="p">{</span>
+  <span class="n">dealtHand</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">completion</span><span class="p">:</span> <span class="p">.</span><span class="n">failure</span><span class="p">(.</span><span class="n">busted</span><span class="p">))</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+  <span class="n">dealtHand</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">hand</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>接下来，你需要订阅<code>dealtHand</code>，并打印出收到的值或完成事件（如果是一个错误）：</p>
-<div class="highlight"><pre><span></span><code>_ = dealtHand
-  .sink(receiveCompletion: {
-    if case let .failure(error) = $0 {
-      print(error)
-    }
-  }, receiveValue: { hand in
-    print(hand.cardString, &quot;for&quot;, hand.points, &quot;points&quot;)
-  })
+<div class="highlight"><pre><span></span><code><span class="kc">_</span> <span class="p">=</span> <span class="n">dealtHand</span>
+  <span class="p">.</span><span class="n">sink</span><span class="p">(</span><span class="n">receiveCompletion</span><span class="p">:</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="k">case</span> <span class="kd">let</span> <span class="p">.</span><span class="n">failure</span><span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="p">=</span> <span class="nv">$0</span> <span class="p">{</span>
+      <span class="bp">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">},</span> <span class="n">receiveValue</span><span class="p">:</span> <span class="p">{</span> <span class="n">hand</span> <span class="k">in</span>
+    <span class="bp">print</span><span class="p">(</span><span class="n">hand</span><span class="p">.</span><span class="n">cardString</span><span class="p">,</span> <span class="s">&quot;for&quot;</span><span class="p">,</span> <span class="n">hand</span><span class="p">.</span><span class="n">points</span><span class="p">,</span> <span class="s">&quot;points&quot;</span><span class="p">)</span>
+  <span class="p">})</span>
 </code></pre></div>
 <p>每次你运行这个<code>Playground</code>，你会得到一个新的手和类似以下的输出：</p>
 <div class="highlight"><pre><span></span><code>——— Example of: Create a Blackjack card dealer ———
@@ -8841,7 +8841,7 @@ if hand.points &gt; 21 {
 <li>使用<code>print()</code>操作符来记录所有的发布事件到控制台，看看发生了什么。</li>
 </ul>
 <h2 id="_11">接下来去哪？<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
-<p>恭喜你! 通过完成本章的学习，你已经向前迈出了一大步。你学会了如何使用发布器来发送值和完成事件，以及如何使用订阅器来接收这些值和事件。接下来，你将学习如何操作来自发布者的值，以帮助过滤、转换或组合它们。</p>
+<p>恭喜你! 通过完成本章的学习，你已经向前迈出了一大步。你学会了如何使用发布者来发送值和完成事件，以及如何使用订阅者来接收这些值和事件。接下来，你将学习如何操作来自发布者的值，以帮助过滤、转换或组合它们。</p>
 
 
 

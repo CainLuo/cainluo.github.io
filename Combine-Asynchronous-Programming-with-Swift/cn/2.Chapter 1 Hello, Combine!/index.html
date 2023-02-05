@@ -11,7 +11,7 @@
       
       
       <link rel="icon" href="../../../assets/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.5.0">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.0">
     
     
   
@@ -7923,7 +7923,7 @@ end
 <p>声明式、反应式编程并不是一个新概念。它已经存在了相当长的一段时间，但在过去的十年里，它有了相当明显的回潮。</p>
 <p>第一个"现代 "的反应式解决方案出现在2009年，当时微软的一个团队推出了一个名为<code>Reactive Extensions for .NET（Rx.NET）</code>的库。</p>
 <p>微软在<code>2012</code>年将<code>Rx.NET</code>的实现开源，从那时起，许多不同的语言都开始使用它的概念。目前，有许多<code>Rx</code>标准的端口，如<code>RxJS</code>、<code>RxKotlin</code>、<code>RxScala</code>、<code>RxPHP</code>等等。</p>
-<p>对于苹果的平台，已经有几个第三方的反应式框架，如<code>RxSwift</code>，它实现了<code>Rx</code>标准；<code>ReactiveSwift</code>，直接受到<code>Rx</code>的启发；星际，它是一个自定义的实现，还有其他的。</p>
+<p>对于苹果的平台，已经有几个第三方的反应式框架，如<code>RxSwift</code>，它实现了<code>Rx</code>标准；<code>ReactiveSwift</code>，直接受到<code>Rx</code>的启发；<code>Interstellar</code>，它是一个自定义的实现，还有其他的。</p>
 <p><code>Combine</code>实现了一个与<code>Rx</code>不同但类似的标准，叫做<code>Reactive Streams</code>。<code>Reactive Streams</code>与<code>Rx</code>有一些关键的区别，但它们都同意大多数的核心概念。</p>
 <p>如果你以前没有使用过上述的一个或另一个框架--不要担心。到目前为止，对于苹果的平台来说，反应式编程一直是一个相当小众的概念，尤其是<code>Swift</code>。</p>
 <p>然而，在<code>iOS 13/MacOS Catalina</code>中，苹果通过内置系统框架<code>Combine</code>为其生态系统带来了反应式编程支持。</p>
@@ -7940,16 +7940,16 @@ end
 <li>一个带有发布者的<code>Failure</code>类型的错误的完成。</li>
 </ol>
 <p>一个发布者可以发出零个或更多的输出值，如果它曾经完成，无论是成功还是由于失败，它将不会发出任何其他事件。</p>
-<p>下面是一个发射<code>Int</code>值的发布器在时间轴上的可视化情况：</p>
+<p>下面是一个发射<code>Int</code>值的发布者在时间轴上的可视化情况：</p>
 <p><img alt="img" src="../../graphics/img6.png" /></p>
 <p>蓝色方框代表在时间轴上某一特定时间发出的值，数字代表发出的值。一条垂直线，就像你在图的右边看到的那条，代表一个成功的流完成。</p>
 <p>三个可能事件的简单契约是如此普遍，以至于它可以代表你程序中的任何种类的动态数据。这就是为什么你可以使用<code>Combine publishers</code>解决你的应用程序中的任何任务--不管它是关于计算数字、进行网络调用、对用户手势作出反应还是在屏幕上显示数据。</p>
-<p>你不必总是在你的工具箱中为手头的任务寻找合适的工具，无论是添加一个委托还是注入一个完成回调，你都可以用发布器来代替。</p>
+<p>你不必总是在你的工具箱中为手头的任务寻找合适的工具，无论是添加一个委托还是注入一个完成回调，你都可以用发布者来代替。</p>
 <p>发布者的一个最好的特点是它们内置了错误处理功能；错误处理并不是你在最后选择性地添加的，如果你想的话。</p>
 <p><code>Publisher</code>协议在两种类型上是通用的，你可能已经在前面的图中注意到了。</p>
 <ul>
-<li><code>Publisher.Output</code>是发布器的输出值的类型。如果它是一个<code>Int</code>发布器，它永远不能发布<code>String</code>或<code>Date</code>值。</li>
-<li><code>Publisher.Failure</code>是发布器在失败时可以抛出的错误类型。如果发布者永远不能失败，你可以通过使用<code>Never</code>失败类型来指定。</li>
+<li><code>Publisher.Output</code>是发布者的输出值的类型。如果它是一个<code>Int</code>发布者，它永远不能发布<code>String</code>或<code>Date</code>值。</li>
+<li><code>Publisher.Failure</code>是发布者在失败时可以抛出的错误类型。如果发布者永远不能失败，你可以通过使用<code>Never</code>失败类型来指定。</li>
 </ul>
 <p>当你订阅一个给定的发布者时，你知道从它那里期待什么值以及它可能失败的错误。</p>
 <h3 id="_3">操作符<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
@@ -7959,14 +7959,14 @@ end
 <p><img alt="img" src="../../graphics/img7.png" /></p>
 <p>以一种明确的确定性方式，你可以定义每一个异步抽象工作的顺序，以及正确的输入/输出类型和内置错误处理。这几乎好得不能再好了!</p>
 <p>作为额外的奖励，操作符总是有输入和输出，通常被称为上游和下游--这使他们能够避免共享状态（我们之前讨论的核心问题之一）。</p>
-<p>操作员专注于处理他们从上一个操作员那里收到的数据，并将他们的输出提供给链中的下一个操作员。这意味着没有其他异步运行的代码可以"跳入"并改变你正在处理的数据。</p>
+<p>操作符专注于处理他们从上一个操作符那里收到的数据，并将他们的输出提供给链中的下一个操作符。这意味着没有其他异步运行的代码可以"跳入"并改变你正在处理的数据。</p>
 <h3 id="_4">订阅者<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
 <p>最后，你到达了订阅链的末端。每个订阅都以一个订阅者结束。订阅者通常对发出的输出或完成事件做一些"事情"。</p>
 <p><img alt="img" src="../../graphics/img8.png" /></p>
-<p>目前，<code>Combine</code>提供了两个内置的订阅器，这使得与数据流的工作变得简单明了。</p>
+<p>目前，<code>Combine</code>提供了两个内置的订阅者，这使得与数据流的工作变得简单明了。</p>
 <ul>
-<li>水槽订阅者允许你用你的代码提供闭包，这些闭包将接收输出值和完成度。从那里，你可以对收到的事件做任何你想做的事。</li>
-<li>分配用户允许你在不需要自定义代码的情况下，将结果输出与你的数据模型或<code>UI</code>控件上的一些属性绑定，通过一个关键路径在屏幕上直接显示数据。</li>
+<li><code>sink</code>订阅者允许您为代码提供闭包，以接收输出值和完成。 从那里，你可以用接收到的事件做任何你内心渴望的事情。</li>
+<li><code>assign</code>订阅服务器允许您将生成的输出绑定到数据模型或<code>UI</code>控件上的某个属性，以便通过键路径直接在屏幕上显示数据，而无需自定义代码。</li>
 </ul>
 <p>如果你对你的数据有其他需求，创建自定义订阅者甚至比创建发布者更容易。<code>Combine</code>使用了一套非常简单的协议，使你能够在车间没有提供合适的工具来完成你的任务时，建立自己的自定义工具。</p>
 <h3 id="_5">订阅<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
