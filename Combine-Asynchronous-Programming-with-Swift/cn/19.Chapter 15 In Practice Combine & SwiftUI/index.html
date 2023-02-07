@@ -126,7 +126,7 @@
         
           
           
-          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="black"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
           
             <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
@@ -8075,7 +8075,7 @@ s
   <span class="p">.</span><span class="n">stories</span><span class="p">()</span>
   <span class="p">.</span><span class="n">receive</span><span class="p">(</span><span class="n">on</span><span class="p">:</span> <span class="n">DispatchQueue</span><span class="p">.</span><span class="n">main</span><span class="p">)</span>
 </code></pre></div>
-<p>您使用reget<code>receive(on:)</code>运算符接收主队列上的任何输出。可以说，您可以将线程管理留给<code>API</code>的消费者。然而，由于<code>InReaderViewModel</code>的情况当然是<code>ReaderView</code>，因此您可以在这里进行优化，然后切换到主队列，为提交对<code>UI</code>的更改做准备。</p>
+<p>您使用reget<code>receive(on:)</code>运算符接收主队列上的任何输出。可以说，您可以将线程管理留给<code>API</code>的订阅者。然而，由于<code>InReaderViewModel</code>的情况当然是<code>ReaderView</code>，因此您可以在这里进行优化，然后切换到主队列，为提交对<code>UI</code>的更改做准备。</p>
 <p>接下来，您将使用<code>sink(...)</code>订阅者来存储模型中的故事和任何发出的错误。附录：</p>
 <div class="highlight"><pre><span></span><code><span class="p">.</span><span class="n">sink</span><span class="p">(</span><span class="n">receiveCompletion</span><span class="p">:</span> <span class="p">{</span> <span class="n">completion</span> <span class="k">in</span>
   <span class="k">if</span> <span class="k">case</span> <span class="p">.</span><span class="n">failure</span><span class="p">(</span><span class="kd">let</span> <span class="nv">error</span><span class="p">)</span> <span class="p">=</span> <span class="n">completion</span> <span class="p">{</span>

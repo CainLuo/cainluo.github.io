@@ -126,7 +126,7 @@
         
           
           
-          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="black"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
           
             <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
@@ -8103,7 +8103,7 @@ finished
 <p>以下是代码的过程：</p>
 <ol>
 <li>创建一个数字格式化器来拼出每个数字。</li>
-<li>创建一个整数的发布器。</li>
+<li>创建一个整数的发布者。</li>
 <li>使用<code>map</code>，传递一个闭包，获得上游值并返回使用格式化器的结果，以返回数字拼出的字符串。</li>
 </ol>
 <p>运行<code>Playground</code>，你会看到这样的输出：</p>
@@ -8155,7 +8155,7 @@ fifty-six
 <li>开始订阅该发布者。</li>
 <li>使用关键路径映射到<code>Coordinate</code>的<code>x</code>和<code>y</code>属性。</li>
 <li>打印一个说明提供<code>x</code>和<code>y</code>值的象限的语句。</li>
-<li>通过发布器发送一些坐标。</li>
+<li>通过发布者发送一些坐标。</li>
 </ol>
 <p>运行<code>Playground</code>，这个订阅的输出将是以下内容：</p>
 <div class="highlight"><pre><span></span><code>——— Example of: map key paths ———
@@ -8193,8 +8193,8 @@ failure(...&quot;The folder “Directory name that does not exist” doesn&#39;t
 <h2 id="_6">扁平化的发布者<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
 <p>虽然一开始有些神秘，但扁平化的概念并不复杂，难以理解。通过几个精选的例子，你会了解到它的一切。</p>
 <h3 id="flatmapmaxpublishers_"><code>flatMap(maxPublishers:_:)</code><a class="headerlink" href="#flatmapmaxpublishers_" title="Permanent link">&para;</a></h3>
-<p><code>flatMap</code>操作符将多个上游发布器平移为一个下游发布器--或者更具体地说，平移来自这些发布器的排放。</p>
-<p><code>flatMap</code>返回的发布器与它接收的上游发布器的类型不一样，而且通常也不会一样。</p>
+<p><code>flatMap</code>操作符将多个上游发布者平移为一个下游发布者--或者更具体地说，平移来自这些发布者的排放。</p>
+<p><code>flatMap</code>返回的发布者与它接收的上游发布者的类型不一样，而且通常也不会一样。</p>
 <p><code>Combine</code>中<code>flatMap</code>的一个常见用例是当你想把一个发布者发出的元素传递给一个本身返回一个发布者的方法，并最终订阅该第二个发布者发出的元素。</p>
 <p>是时候实现一个例子来看看这个动作了。添加这个新的例子：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;flatMap&quot;</span><span class="p">)</span> <span class="p">{</span>
@@ -8217,8 +8217,8 @@ failure(...&quot;The folder “Directory name that does not exist” doesn&#39;t
 </code></pre></div>
 <p>从上面看，你：</p>
 <ol>
-<li>定义一个函数，该函数接收一个整数数组，每个数组代表一个<code>ASCII</code>码，并返回一个类型清除的字符串发布器，该发布器从不发出错误。</li>
-<li>创建一个<code>Just</code>发布器，如果字符代码在<code>0.255</code>的范围内，就将其转换为字符串，这包括标准和扩展的可打印<code>ASCII</code>字符。</li>
+<li>定义一个函数，该函数接收一个整数数组，每个数组代表一个<code>ASCII</code>码，并返回一个类型清除的字符串发布者，该发布者从不发出错误。</li>
+<li>创建一个<code>Just</code>发布者，如果字符代码在<code>0.255</code>的范围内，就将其转换为字符串，这包括标准和扩展的可打印<code>ASCII</code>字符。</li>
 <li>将字符串连接在一起。</li>
 <li>输入擦除发布者，以匹配该函数的返回类型。</li>
 </ol>
@@ -8239,7 +8239,7 @@ failure(...&quot;The folder “Directory name that does not exist” doesn&#39;t
 </code></pre></div>
 <p>有了这个代码，你就可以：</p>
 <ol>
-<li>将秘密信息创建为<code>ASCII</code>字符代码数组，将其转换为一个发布器，并将其发射的元素收集到一个单一的数组中。</li>
+<li>将秘密信息创建为<code>ASCII</code>字符代码数组，将其转换为一个发布者，并将其发射的元素收集到一个单一的数组中。</li>
 <li>使用<code>flatMap</code>将数组元素传递给你的解码器函数。</li>
 <li>订阅由<code>decode(_:)</code>返回的<code>pubisher</code>发出的元素，并打印出这些值。</li>
 </ol>
@@ -8247,7 +8247,7 @@ failure(...&quot;The folder “Directory name that does not exist” doesn&#39;t
 <div class="highlight"><pre><span></span><code>——— Example of: flatMap ———
 Hello, World!
 </code></pre></div>
-<p>回顾一下前面的定义：<code>flatMap</code>将所有收到的发布器的输出平铺到一个单一的发布器中。这可能会造成内存问题，因为它将缓冲你发送给它的许多发布器，以更新它向下游发送的单一发布器。</p>
+<p>回顾一下前面的定义：<code>flatMap</code>将所有收到的发布者的输出平铺到一个单一的发布者中。这可能会造成内存问题，因为它将缓冲你发送给它的许多发布者，以更新它向下游发送的单一发布者。</p>
 <p>为了了解如何管理这个问题，请看这个<code>flatMap</code>的大理石图：</p>
 <p><img alt="img" src="../../graphics/img19.png" /></p>
 <p>在图中，<code>flatMap</code>接收三个发布者。<code>P1</code>, <code>P2</code>, 和<code>P3</code>. 每个发布者都有一个<code>value</code>属性，它也是一个发布者。<code>flatMap</code>从<code>P1</code>和<code>P2</code>发射<code>value</code>发布者的值，但是忽略<code>P3</code>，因为<code>maxPublishers</code>被设置为<code>2</code>。你将在第19章"测试"中获得更多关于<code>flatMap</code>和其<code>maxPublishers</code>参数的练习。</p>
@@ -8270,7 +8270,7 @@ Hello, World!
 <p>你刚才做了什么：</p>
 <ol>
 <li>从一个可选字符串的数组中创建一个发布者。</li>
-<li>使用<code>replaceNil(with:)</code>将从上游发布器收到的<code>nil</code>值替换为新的非<code>nil</code>值。</li>
+<li>使用<code>replaceNil(with:)</code>将从上游发布者收到的<code>nil</code>值替换为新的非<code>nil</code>值。</li>
 <li>打印出该值。</li>
 </ol>
 <div class="admonition note">
@@ -8288,7 +8288,7 @@ C
 </code></pre></div>
 <p>在继续前行之前，请恢复这一变化。这个例子还展示了你如何以一种组合方式将多个操作符连锁起来。这允许你以多种方式操纵从原点发布者到订阅者的值。</p>
 <h3 id="replaceemptywith"><code>replaceEmpty(with:)</code><a class="headerlink" href="#replaceemptywith" title="Permanent link">&para;</a></h3>
-<p>你可以使用<code>replaceEmpty(with:)</code>操作符来替换--或者说，插入--一个值，如果一个发布器完成后没有发出一个值。</p>
+<p>你可以使用<code>replaceEmpty(with:)</code>操作符来替换--或者说，插入--一个值，如果一个发布者完成后没有发出一个值。</p>
 <p>在下面的大理石图中，发布者完成后没有发出任何东西，这时<code>replaceEmpty(with:)</code>操作符插入了一个值，并将其发布到下游：</p>
 <p><img alt="img" src="../../graphics/img21.png" /></p>
 <p>添加这个新的例子，看看它的运作情况：</p>
@@ -8305,10 +8305,10 @@ C
 </code></pre></div>
 <p>你在这里做什么：</p>
 <ol>
-<li>创建一个空的发布器，立即发出一个完成事件。</li>
+<li>创建一个空的发布者，立即发出一个完成事件。</li>
 <li>订阅它，并打印收到的事件。</li>
 </ol>
-<p>使用<code>Empty</code>发布器类型来创建一个立即发出<code>.finished</code>完成事件的发布器。你也可以通过给它的<code>completeImmediately</code>参数传递<code>false</code>来配置它，使其永远不发射任何东西，默认是<code>true</code>。这个发布者对于演示或测试目的很有用，或者当你想做的只是向订阅者发出一些任务完成的信号。运行<code>Playground</code>，你会看到它成功地完成了：</p>
+<p>使用<code>Empty</code>发布者类型来创建一个立即发出<code>.finished</code>完成事件的发布者。你也可以通过给它的<code>completeImmediately</code>参数传递<code>false</code>来配置它，使其永远不发射任何东西，默认是<code>true</code>。这个发布者对于演示或测试目的很有用，或者当你想做的只是向订阅者发出一些任务完成的信号。运行<code>Playground</code>，你会看到它成功地完成了：</p>
 <div class="highlight"><pre><span></span><code>——— Example of: replaceEmpty ———
 finished
 </code></pre></div>
@@ -8351,7 +8351,7 @@ finished
 <p>在这个例子中，你：</p>
 <ol>
 <li>创建一个计算的属性，生成一个<code>-10</code>和<code>10</code>之间的随机整数。</li>
-<li>使用该生成器从一个随机整数数组中创建一个发布器，该数组代表一个月内虚构的每日股票价格变化。</li>
+<li>使用该生成器从一个随机整数数组中创建一个发布者，该数组代表一个月内虚构的每日股票价格变化。</li>
 <li>使用<code>scan</code>，起始值为<code>50</code>，然后将每天的变化添加到运行的股票价格中。使用<code>max</code>可以保持价格不为负值--幸好股票价格不能低于零!</li>
 </ol>
 <p>这一次，你没有在订阅中打印任何东西。运行<code>Playground</code>，然后点击右边结果侧边栏的方形显示结果按钮：</p>
@@ -8361,12 +8361,12 @@ finished
 <h2 id="_9">挑战<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
 <p>熟能生巧。完成这项挑战，以确保你在继续前进之前能够很好地使用转换操作符。</p>
 <h3 id="_10">挑战：使用转换运算符创建一个电话号码查询工具<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
-<p>本挑战的目标是创建一个能做两件事的发布器。</p>
+<p>本挑战的目标是创建一个能做两件事的发布者。</p>
 <ol>
 <li>接收一个由十个数字或字母组成的字符串。</li>
 <li>在联系人数据结构中查找该号码。</li>
 </ol>
-<p>挑战文件夹中的启动程序包括一个<code>contacts</code>字典和三个函数。你需要使用转换运算符和这些函数来创建一个订阅<code>input</code>发布器。在<code>Add your code here</code>占位符下面，在测试你的实现的<code>forEach</code>块之前，插入你的代码。</p>
+<p>挑战文件夹中的启动程序包括一个<code>contacts</code>字典和三个函数。你需要使用转换运算符和这些函数来创建一个订阅<code>input</code>发布者。在<code>Add your code here</code>占位符下面，在测试你的实现的<code>forEach</code>块之前，插入你的代码。</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>如果函数签名匹配，你可以直接将一个函数或闭包作为参数传递给运算符。例如，`map(convert)'。</p>

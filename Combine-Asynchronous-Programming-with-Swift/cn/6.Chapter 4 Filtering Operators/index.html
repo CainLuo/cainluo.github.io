@@ -126,7 +126,7 @@
         
           
           
-          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="black"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
           
             <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
@@ -7787,7 +7787,7 @@
 <h1 id="4">第4章：过滤操作符<a class="headerlink" href="#4" title="Permanent link">&para;</a></h1>
 <p>正如你现在可能已经意识到的，操作符基本上是你用来操作<code>Combine</code>发布者的词汇。你知道的"词汇"越多，你对数据的控制就越好。</p>
 <p>在上一章中，你学会了如何消耗数值并将其转化为其他数值--这绝对是对你日常工作最有用的操作符类别之一。</p>
-<p>但是，当你想限制发布者发出的值或事件，只消费其中的一部分时，会发生什么？本章就是关于如何用一组特殊的操作符来实现这一目的。筛选操作符!</p>
+<p>但是，当你想限制发布者发出的值或事件，只订阅其中的一部分时，会发生什么？本章就是关于如何用一组特殊的操作符来实现这一目的。筛选操作符!</p>
 <p>幸运的是，这些操作符中有许多与<code>Swift</code>标准库中的名称相似，所以如果你能过滤本章的一些内容，不要感到惊讶。］</p>
 <p>现在是时候直接进入了。</p>
 <h2 id="_1">开始<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
@@ -7797,7 +7797,7 @@
 <p>本章中的大多数操作符都有类似的<code>try</code>前缀，例如，<code>filter</code>与<code>tryFilter</code>。它们之间唯一的区别是，后者提供了一个抛出闭包。你从闭包中抛出的任何错误都会使发布者与被抛出的错误一起终止。为了简洁起见，本章将只介绍不抛出的变化，因为它们几乎是相同的。</p>
 </div>
 <h2 id="_2">过滤的基础知识<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>第一节将讨论过滤的基础知识--消费一个值的发布者，并有条件地决定将其中哪些值传递给消费者。</p>
+<p>第一节将讨论过滤的基础知识--订阅一个值的发布者，并有条件地决定将其中哪些值传递给订阅者。</p>
 <p>最简单的方法是使用命名恰当的操作符--<code>filter</code>，它接收一个期望返回<code>Bool</code>的闭包。它将只传递符合所提供的谓词的值：</p>
 <p><img alt="img" src="../../graphics/img24.png" /></p>
 <p>把这个新的例子添加到你的<code>Playground</code>：</p>
@@ -7899,7 +7899,7 @@ mister
 </code></pre></div>
 <p>好吧，你为什么不从所有这些数值中抽身出来呢......谁会关心这些，对吗？有时候，你只想知道发布者已经完成了数值的发射，而不考虑实际数值。当这种情况发生时，你可以使用<code>ignoreOutput</code>操作符：</p>
 <p><img alt="img" src="../../graphics/img27.png" /></p>
-<p>如上图所示，发射哪些值或有多少值并不重要，因为它们都被忽略了；你只把完成事件推送给消费者。</p>
+<p>如上图所示，发射哪些值或有多少值并不重要，因为它们都被忽略了；你只把完成事件推送给订阅者。</p>
 <p>通过在你的<code>Playground</code>上添加以下代码来实验这个例子：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;ignoreOutput&quot;</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// 1</span>
@@ -7916,7 +7916,7 @@ mister
 <p>在上述例子中，你：</p>
 <ol>
 <li>创建一个发布者，从<code>1</code>到<code>10,000</code>发射<code>10,000</code>个值。</li>
-<li>添加<code>ignoreOutput</code>操作符，省略所有的值，只向消费者发送完成事件。</li>
+<li>添加<code>ignoreOutput</code>操作符，省略所有的值，只向订阅者发送完成事件。</li>
 </ol>
 <p>你能猜到这段代码的输出会是什么吗？</p>
 <p>如果你猜到不会有任何值被打印出来，你是对的! 运行你的<code>Playground</code>，看看调试控制台：</p>
@@ -8284,7 +8284,7 @@ Completed with: finished
 <h2 id="_9">关键点<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
 <p>在本章中，你学到了以下内容。</p>
 <ul>
-<li>过滤操作符让你控制上游发布者发出的哪些值被发送到下游，发送到另一个操作符或消费者那里。</li>
+<li>过滤操作符让你控制上游发布者发出的哪些值被发送到下游，发送到另一个操作符或订阅者那里。</li>
 <li>当你不关心值本身，而只想要一个完成事件时，<code>ignoreOutput</code>是你的朋友。</li>
 <li>寻找值是另一种过滤方式，你可以使用<code>first(where:)</code>和<code>last(where:)</code>分别找到第一个或最后一个与提供的谓词相匹配的值。</li>
 <li><code>First-style</code>操作符是懒惰的；它们只取需要的值，然后完成。最后式操作符是贪婪的，在决定哪个值是最后一个满足条件的值之前，必须知道值的全部范围。</li>

@@ -126,7 +126,7 @@
         
           
           
-          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="black"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
           
             <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
@@ -8087,7 +8087,7 @@
 </ul>
 <p>你可以看到调度器的概念是如何深深植根于前景/背景执行的概念的。此外，根据您选择的实现，工作可以序列化或并行化。</p>
 <p>因此，要充分了解调度器，您需要查看哪些类符合<code>Scheduler</code>协议。</p>
-<p>但首先，您需要了解与调度器相关的两个重要运营商！</p>
+<p>但首先，您需要了解与调度器相关的两个重要操作符！</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>在下一节中，您将主要使用符合<code>Combine</code>的<code>Scheduler</code>协议的<code>DispatchQueue</code>。</p>
@@ -8351,7 +8351,7 @@ Received computation result on thread 1 &#39;Computation complete&#39;
 <p>要避免的一个特殊陷阱是在<code>DispatchQueue</code>上执行的代码中使用<code>RunLoop.current</code>。 这是因为 <code>DispatchQueue</code> 线程可能是短暂的，这使得它们几乎不可能被 <code>RunLoop</code> 依赖。</p>
 <p>您现在准备好了解最通用和最有用的调度程序：<code>DispatchQueue</code>！</p>
 <h3 id="_8">调度队列调度程序<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
-<p>在本章和前几章中，您一直在各种情况下使用<code>DispatchQueue</code>。<code>DispatchQueue</code>符合<code>Scheduler</code>协议，并且完全可用于所有以<code>Scheduler</code>为参数的运营商。</p>
+<p>在本章和前几章中，您一直在各种情况下使用<code>DispatchQueue</code>。<code>DispatchQueue</code>符合<code>Scheduler</code>协议，并且完全可用于所有以<code>Scheduler</code>为参数的操作符。</p>
 <p>但首先，快速复习调度队列。调度框架是<code>Foundation</code>的一个强大组件，允许您通过将工作提交到系统管理的调度队列，在多核硬件上同时执行代码。</p>
 <p><code>DispatchQueue</code>可以是串行的（默认的）或并发的。串行队列按顺序执行您提供给它的所有工作项。并发队列将并行启动多个工作项，以最大限度地提高<code>CPU</code>使用率。两种队列类型都有不同的用法：</p>
 <ul>

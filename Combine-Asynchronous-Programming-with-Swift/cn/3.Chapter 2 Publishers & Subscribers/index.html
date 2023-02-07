@@ -126,7 +126,7 @@
         
           
           
-          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="black"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
           
             <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
@@ -8027,7 +8027,7 @@ Notification received<span class="p">!</span>
 
 <span class="p">}</span>
 </code></pre></div>
-<p>如果你现在发布一个通知，发布者就不会发射它，因为还没有订阅者来消费这个通知。</p>
+<p>如果你现在发布一个通知，发布者就不会发射它，因为还没有订阅者来订阅者这个通知。</p>
 <h3 id="sink__">用<code>sink(_:_:)</code>订阅<a class="headerlink" href="#sink__" title="Permanent link">&para;</a></h3>
 <p>继续前面的例子，添加以下代码：</p>
 <div class="highlight"><pre><span></span><code><span class="c1">// 1</span>
@@ -8362,7 +8362,7 @@ Received completion finished
 </code></pre></div>
 <p>在这里，你创建了一个工厂函数，返回一个类型为<code>Int</code>和<code>Never</code>的<code>future</code>；也就是说，它将发出一个整数，并且永远不会失败。</p>
 <p>你还添加了一个<code>subscriptions</code>集合，你将在其中存储对例子中的未来的订阅。对于长期运行的异步操作，不存储订阅将导致在当前代码范围结束后立即取消订阅。在<code>Playground</code>的例子中，这将是立即的。</p>
-<p>接下来，填充函数的主体以创建<code>future</code>：</p>
+<p>接下来，填充函数的<code>Subject</code>以创建<code>future</code>：</p>
 <div class="highlight"><pre><span></span><code><span class="n">Future</span><span class="p">&lt;</span><span class="nb">Int</span><span class="p">,</span> <span class="n">Never</span><span class="p">&gt;</span> <span class="p">{</span> <span class="n">promise</span> <span class="k">in</span>
   <span class="n">DispatchQueue</span><span class="p">.</span><span class="n">global</span><span class="p">().</span><span class="n">asyncAfter</span><span class="p">(</span><span class="n">deadline</span><span class="p">:</span> <span class="p">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">delay</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">promise</span><span class="p">(.</span><span class="n">success</span><span class="p">(</span><span class="n">integer</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
@@ -8422,10 +8422,10 @@ Second finished
 <li>底层的通知发送者会发出通知。</li>
 <li>有指定通知的订阅者。</li>
 </ol>
-<p>如果有一种方法可以让你在自己的代码中做同样的事情呢？嗯，事实证明，有的 在继续之前，请注释掉整个<code>Future</code>的例子，这样，每次运行<code>Playground</code>时，<code>Future</code>就不会被调用--否则，它的延迟输出会在最后一个例子之后被打印出来。</p>
+<p>如果有一种方法可以让你在自己的代码中做同样的事情呢？嗯，事实证明，有的，在继续之前，请注释掉整个<code>Future</code>的例子，这样，每次运行<code>Playground</code>时，<code>Future</code>就不会被调用--否则，它的延迟输出会在最后一个例子之后被打印出来。</p>
 <h2 id="subject">你好，<code>Subject</code><a class="headerlink" href="#subject" title="Permanent link">&para;</a></h2>
-<p>你已经学会了如何使用发布者和订阅者，甚至如何创建你自己的自定义订阅者。在本书的后面，你将学习如何创建自定义发布者。不过现在，在你和当之无愧的<code>&lt;insert your favorite beverage&gt;</code>休息之间还有几件事。首先是一个主题。</p>
-<p>主题作为一个中间人，使非<code>Combine</code>指令性代码能够向<code>Combine</code>订阅者发送值。<code>&lt;favorite beverage&gt;</code>是不会自己喝的，所以现在是时候开始工作了！</p>
+<p>你已经学会了如何使用发布者和订阅者，甚至如何创建你自己的自定义订阅者。在本书的后面，你将学习如何创建自定义发布者。不过现在，在你和当之无愧的<code>&lt;insert your favorite beverage&gt;</code>休息之间还有几件事。首先是一个<code>Subject</code>。</p>
+<p><code>Subject</code>作为一个中间人，使非<code>Combine</code>指令性代码能够向<code>Combine</code>订阅者发送值。<code>&lt;favorite beverage&gt;</code>是不会自己喝的，所以现在是时候开始工作了！</p>
 <p>把这个新的例子添加到你的<code>Playground</code>：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;PassthroughSubject&quot;</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// 1</span>
@@ -8465,7 +8465,7 @@ Second finished
 <li>创建一个自定义订阅者的实例。</li>
 </ol>
 <p>当输入是<code>"World"</code>时，在<code>receive(_:)</code>中返回<code>.max(1)</code>，结果是新的最大值被设置为<code>3</code>（原始最大值加<code>1</code>）。</p>
-<p>除了定义一个自定义的错误类型和以收到的值为轴心来调整需求之外，这里没有什么新东西。下面是更有趣的部分。</p>
+<p>除了定义一个自定义错误类型和根据接收到的值调整需求之外，这里没有什么新的东西。接下来是更有趣的部分。</p>
 <p>把这段代码添加到例子中：</p>
 <div class="highlight"><pre><span></span><code><span class="c1">// 5</span>
 <span class="kd">let</span> <span class="nv">subject</span> <span class="p">=</span> <span class="n">PassthroughSubject</span><span class="p">&lt;</span><span class="nb">String</span><span class="p">,</span> <span class="n">MyError</span><span class="p">&gt;()</span>
@@ -8487,15 +8487,15 @@ Second finished
 <p>这个代码：</p>
 <ol>
 <li>创建一个<code>PassthroughSubject</code>的实例，类型为<code>String</code>和你定义的自定义错误类型。</li>
-<li>将订阅者订阅为主题。</li>
+<li>将订阅者订阅为<code>Subject</code>。</li>
 <li>使用<code>sink</code>创建另一个订阅。</li>
 </ol>
-<p>穿透式主题使你能够按需发布新值。他们会很高兴地传递这些值和一个完成事件。与任何发布者一样，你必须事先声明它可以发布的值和错误的类型；订阅者必须将这些类型与它的输入和失败类型相匹配，以便订阅该穿透主体。</p>
-<p>现在你已经创建了一个可以发送值的直通主题和接收值的订阅，是时候发送一些值了。在你的例子中添加以下代码：</p>
+<p><code>Passthrough Subject</code>使你能够按需发布新值。他们会很高兴地传递这些值和一个完成事件。与任何发布者一样，你必须事先声明它可以发布的值和错误的类型；订阅者必须将这些类型与它的输入和失败类型相匹配，以便订阅该<code>Passthrough Subject</code>。</p>
+<p>现在你已经创建了一个可以发送值的<code>Passthrough Subject</code>和接收值的订阅，是时候发送一些值了。在你的例子中添加以下代码：</p>
 <div class="highlight"><pre><span></span><code><span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;Hello&quot;</span><span class="p">)</span>
 <span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;World&quot;</span><span class="p">)</span>
 </code></pre></div>
-<p>这将使用主体的<code>send</code>方法发送两个值（一次一个）。</p>
+<p>这将使用<code>Subject</code>的<code>send</code>方法发送两个值（一次一个）。</p>
 <p>运行这个<code>Playground</code>。你会看到：</p>
 <div class="highlight"><pre><span></span><code>——— Example of: PassthroughSubject ———
 Received value Hello
@@ -8528,7 +8528,7 @@ Received value Still there?
 <div class="highlight"><pre><span></span><code><span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">completion</span><span class="p">:</span> <span class="p">.</span><span class="n">finished</span><span class="p">)</span>
 <span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;How about another one?&quot;</span><span class="p">)</span>
 </code></pre></div>
-<p>运行<code>Playground</code>。第二个订阅者没有收到"再来一个怎么样？"的值，因为它在主体发送值之前就收到了完成事件。第一个订阅者没有收到完成事件或值，因为它的订阅先前被取消了。</p>
+<p>运行<code>Playground</code>。第二个订阅者没有收到<code>"How about another one?"</code>的值，因为它在<code>Subject</code>发送值之前就收到了完成事件。第一个订阅者没有收到完成事件或值，因为它的订阅先前被取消了。</p>
 <div class="highlight"><pre><span></span><code>——— Example of: PassthroughSubject ———
 Received value Hello
 Received value (sink) Hello
@@ -8553,7 +8553,7 @@ Received completion failure(...MyError.test)
 <p class="admonition-title">Note</p>
 <p>为了便于阅读，错误类型被缩写了。</p>
 </div>
-<p>第一个订阅者收到了错误，但没有收到错误之后发送的完成事件。这表明，一旦发布者发送了一个完成事件--无论是正常的完成还是错误--它就完成了，就像<code>fini</code>，<code>kaput</code>! 用<code>PassthroughSubject</code>传递值是连接命令式代码和<code>Combine</code>声明式世界的一种方法。然而，有时候，你可能也想在你的命令式代码中查看一个发布者的当前值--为此，你有一个恰当的主题：<code>CurrentValueSubject</code>。</p>
+<p>第一个订户接收错误，但不接收错误之后发送的完成事件。这表明一旦发布者发送了一个完成事件--无论是正常完成还是错误--它就完成了，就像在<code>fini</code>中一样，失败了！使用<code>PassthroughSubject</code>传递值是将命令式代码连接到<code>Combine</code>声明式世界的一种方法。然而，有时候，您可能还想查看命令式代码中发布者的当前值-为此，您有一个恰当命名的<code>Subject</code>：<code>CurrentValueSubject</code>。</p>
 <p>你可以在<code>AnyCancellable</code>的集合中存储多个订阅，而不是将每个订阅作为一个值来存储。然后，该集合将在集合去初始化前不久自动取消添加到它的每个订阅。</p>
 <p>把这个新的例子添加到你的<code>Playground</code>：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;CurrentValueSubject&quot;</span><span class="p">)</span> <span class="p">{</span>
@@ -8573,10 +8573,10 @@ Received completion failure(...MyError.test)
 <ol>
 <li>创建一个<code>subscriptions</code>集。</li>
 <li>创建一个<code>CurrentValueSubject</code>，类型为<code>Int</code>和<code>Never</code>。这将发布整数，并且从不发布错误，初始值为<code>0</code>。</li>
-<li>创建一个主题的订阅，并打印从它收到的值。</li>
+<li>创建一个<code>Subject</code>的订阅，并打印从它收到的值。</li>
 <li>在<code>subscriptions</code>集合中存储该订阅（作为<code>inout</code>参数传递，而不是复制）。</li>
 </ol>
-<p>你必须用一个初始值来初始化当前的数值主体；新的订阅者立即获得该值或该主体发布的最新值。运行<code>Playground</code>，看看这个动作：</p>
+<p>你必须用一个初始值来初始化当前的数值<code>Subject</code>；新的订阅者立即获得该值或该<code>Subject</code>发布的最新值。运行<code>Playground</code>，看看这个动作：</p>
 <div class="highlight"><pre><span></span><code>——— Example of: CurrentValueSubject ———
 0
 </code></pre></div>
@@ -8588,16 +8588,16 @@ Received completion failure(...MyError.test)
 <div class="highlight"><pre><span></span><code>1
 2
 </code></pre></div>
-<p>与穿透式主体不同，你可以在任何时候向当前值主体询问其数值。添加下面的代码来打印出主体的当前值：</p>
+<p>与<code>Passthrough Subject</code>不同，你可以在任何时候向当前值<code>Subject</code>询问其数值。添加下面的代码来打印出<code>Subject</code>的当前值：</p>
 <div class="highlight"><pre><span></span><code><span class="bp">print</span><span class="p">(</span><span class="n">subject</span><span class="p">.</span><span class="n">value</span><span class="p">)</span>
 </code></pre></div>
-<p>正如你可能从主题的类型名称推断的那样，你可以通过访问其<code>value</code>属性来获得其当前值。运行这个<code>Playground</code>，你会看到<code>2</code>第二次被打印出来。</p>
-<p>在一个当前值的主体上调用<code>send(_:)</code>是发送一个新值的一种方法。另一种方法是给它的<code>value</code>属性分配一个新值。哇，我们刚才是用了所有必要的方法还是什么？添加这段代码：</p>
+<p>正如你可能从<code>Subject</code>的类型名称推断的那样，你可以通过访问其<code>value</code>属性来获得其当前值。运行这个<code>Playground</code>，你会看到<code>2</code>第二次被打印出来。</p>
+<p>在一个当前值的<code>Subject</code>上调用<code>send(_:)</code>是发送一个新值的一种方法。另一种方法是给它的<code>value</code>属性分配一个新值。哇，我们刚才是用了所有必要的方法还是什么？添加这段代码：</p>
 <div class="highlight"><pre><span></span><code><span class="n">subject</span><span class="p">.</span><span class="n">value</span> <span class="p">=</span> <span class="mi">3</span>
 <span class="bp">print</span><span class="p">(</span><span class="n">subject</span><span class="p">.</span><span class="n">value</span><span class="p">)</span>
 </code></pre></div>
-<p>运行这个<code>Playground</code>。你会看到<code>2</code>和<code>3</code>各打印了两次--一次是由接收订阅者打印的，另一次是在将该值添加到主题后打印主题的<code>value</code>。</p>
-<p>接下来，在这个例子的最后，为当前的数值主题创建一个新的订阅：</p>
+<p>运行这个<code>Playground</code>。你会看到<code>2</code>和<code>3</code>各打印了两次--一次是由接收订阅者打印的，另一次是在将该值添加到<code>Subject</code>后打印<code>Subject</code>的<code>value</code>。</p>
+<p>接下来，在这个例子的最后，为当前的数值<code>Subject</code>创建一个新的订阅：</p>
 <div class="highlight"><pre><span></span><code><span class="n">subject</span>
   <span class="p">.</span><span class="n">sink</span><span class="p">(</span><span class="n">receiveValue</span><span class="p">:</span> <span class="p">{</span> <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Second subscription:&quot;</span><span class="p">,</span> <span class="nv">$0</span><span class="p">)</span> <span class="p">})</span>
   <span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="k">in</span><span class="p">:</span> <span class="p">&amp;</span><span class="n">subscriptions</span><span class="p">)</span>
@@ -8630,7 +8630,7 @@ Second subscription: 3
 receive cancel
 receive cancel
 </code></pre></div>
-<p>代码将每个事件与订阅处理程序中打印的值一起打印出来，当你打印主体的<code>value</code>时。<code>receive cancel</code>事件的出现是因为<code>subscriptions</code>集被定义在这个例子的范围内，所以它在去初始化时取消了它包含的订阅。</p>
+<p>代码将每个事件与订阅处理程序中打印的值一起打印出来，当你打印<code>Subject</code>的<code>value</code>时。<code>receive cancel</code>事件的出现是因为<code>subscriptions</code>集被定义在这个例子的范围内，所以它在去初始化时取消了它包含的订阅。</p>
 <p>所以，你可能想知道，你能不能也给<code>value</code>属性分配一个完成事件？通过添加这段代码试试吧：</p>
 <div class="highlight"><pre><span></span><code><span class="n">subject</span><span class="p">.</span><span class="n">value</span> <span class="p">=</span> <span class="p">.</span><span class="n">finished</span>
 </code></pre></div>
@@ -8722,10 +8722,10 @@ Received value 5
 </code></pre></div>
 <p>有了这个代码，你就可以：</p>
 <ol>
-<li>创建一个穿透式主题。</li>
-<li>从该主题创建一个类型消除的发布者。</li>
+<li>创建一个<code>Passthrough Subject</code>。</li>
+<li>从该<code>Subject</code>创建一个类型消除的发布者。</li>
 <li>订阅类型消除的发布者。</li>
-<li>通过通证主题发送一个新的值。</li>
+<li>通过<code>Passthrough Subject</code>发送一个新的值。</li>
 </ol>
 <p>选择点击<code>publisher</code>，你会看到它的类型是<code>AnyPublisher&lt;Int, Never&gt;</code>。</p>
 <p><code>AnyPublisher</code>是一个类型擦除的结构，符合<code>Publisher</code>协议。类型清除允许你隐藏关于发布者的细节，你可能不想暴露给订阅者--或下游发布者，你将在下一节中了解到这一点。</p>
@@ -8733,13 +8733,13 @@ Received value 5
 <p>当你想对发布者使用类型清除时，一个例子是你想使用一对公共和私有属性，允许这些属性的所有者在私有发布者上发送值，而让外部调用者只访问公共发布者进行订阅，但不能发送值。</p>
 <p><code>AnyPublisher</code>没有<code>send(_:)</code>操作符，所以你不能直接向该发布者添加新值。</p>
 <p><code>eraseToAnyPublisher()</code>操作符将提供的发布者包裹在<code>AnyPublisher</code>的一个实例中，隐藏了发布者实际上是一个<code>PassthroughSubject</code>的事实。这也是必要的，因为你不能将<code>Publisher</code>协议特殊化，例如，你不能将类型定义为<code>Publisher&lt;UIImage, Never&gt;</code>。</p>
-<p>为了证明<code>publisher</code>是类型化的，你不能用它来发送新的值，请在例子中添加这段代码。</p>
+<p>为了证明<code>publisher</code>是类型擦除的，并且不能使用它发送新值，请在示例中添加以下代码。</p>
 <div class="highlight"><pre><span></span><code><span class="n">publisher</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
 <p>你得到的错误是"<code>AnyPublisher&lt;Int, Never&gt;</code>类型的值没有成员<code>send</code>"。在继续前行之前注释掉这行代码。</p>
 <h2 id="combineasyncawait">将<code>Combine</code>发布者与<code>async/await</code>连接起来<a class="headerlink" href="#combineasyncawait" title="Permanent link">&para;</a></h2>
 <p><code>Swift 5.5</code>中的<code>Combine</code>框架有两个伟大的新增功能，可在<code>iOS 15</code>和<code>macOS 12</code>中使用，帮助你毫不费力地将<code>Combine</code>与<code>Swift</code>中新的<code>async/await</code>语法结合起来。</p>
-<p>换句话说--你在本书中学到的所有发布者、<code>future</code>和主题都可以从你的现代<code>Swift</code>代码中免费使用。</p>
+<p>换句话说--你在本书中学到的所有发布者、<code>future</code>和<code>Subject</code>都可以从你的现代<code>Swift</code>代码中免费使用。</p>
 <p>在你的<code>Playground</code>上添加最后一个例子：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;async/await&quot;</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">let</span> <span class="nv">subject</span> <span class="p">=</span> <span class="n">CurrentValueSubject</span><span class="p">&lt;</span><span class="nb">Int</span><span class="p">,</span> <span class="n">Never</span><span class="p">&gt;(</span><span class="mi">0</span><span class="p">)</span>
@@ -8757,7 +8757,7 @@ Received value 5
 <span class="p">}</span>
 </code></pre></div>
 <p><code>Task</code>创建一个新的异步任务--在这个代码示例中，关闭代码将与你的其他代码异步运行。</p>
-<p>这个代码块中的关键<code>API</code>是你的主题上的<code>values</code>属性。<code>values</code>返回一个异步序列，其中有主体或发布者发出的元素。你可以像上面那样在一个简单的<code>for</code>循环中迭代这个异步序列。</p>
+<p>这个代码块中的关键<code>API</code>是你的<code>Subject</code>上的<code>values</code>属性。<code>values</code>返回一个异步序列，其中有<code>Subject</code>或发布者发出的元素。你可以像上面那样在一个简单的<code>for</code>循环中迭代这个异步序列。</p>
 <p>一旦发布者完成，无论是成功还是失败，循环就会结束，并在下一行继续执行。</p>
 <p>接下来，在当前的例子中也添加这段代码，以发出一些值：</p>
 <div class="highlight"><pre><span></span><code><span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -8766,7 +8766,7 @@ Received value 5
 
 <span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">completion</span><span class="p">:</span> <span class="p">.</span><span class="n">finished</span><span class="p">)</span>
 </code></pre></div>
-<p>这将发出<code>1</code>、<code>2</code>和<code>3</code>，然后完成主题。</p>
+<p>这将发出<code>1</code>、<code>2</code>和<code>3</code>，然后完成<code>Subject</code>。</p>
 <p>这就很好地解决了这个例子--发送<code>finished</code>事件也将结束你的异步任务的循环。再次运行<code>Playground</code>的代码，你会看到这样的输出：</p>
 <div class="highlight"><pre><span></span><code>——— Example of: async/await ———
 Element: 0
@@ -8788,7 +8788,7 @@ Completed.
 <li><code>Hand</code>的两个辅助属性：<code>cardString</code>和<code>points</code>。</li>
 <li>一个<code>HandError</code>错误枚举。</li>
 </ul>
-<p>在<code>Playground</code>主页面中，在注释<code>// Add code to update dealtHand here</code>，评估从手牌的<code>points</code>属性返回的结果。如果结果大于<code>21</code>，通过<code>dealtHand</code>主题发送<code>HandError.busted</code>。否则，发送<code>hand</code>的值。</p>
+<p>在<code>Playground</code>主页面中，在注释<code>// Add code to update dealtHand here</code>，评估从手牌的<code>points</code>属性返回的结果。如果结果大于<code>21</code>，通过<code>dealtHand``Subject</code>发送<code>HandError.busted</code>。否则，发送<code>hand</code>的值。</p>
 <p>同样在主<code>Playground</code>页面，在注释<code>// Add subscription to dealtHand here</code>后立即添加代码，以订阅<code>dealtHand</code>并处理接收值和错误。</p>
 <p>对于收到的值，打印一个字符串，包含手牌的<code>cardString</code>和<code>points</code>属性的结果。</p>
 <p>对于一个错误，打印出来。一个提示：你可以在<code>receivedCompletion</code>块中收到<code>.finished</code>或<code>.failure</code>，所以你要区分这个完成是否是一个失败。</p>
@@ -8836,7 +8836,7 @@ Completed.
 <li>为了释放资源并防止不需要的副作用，当你完成后，取消每个订阅。</li>
 <li>你也可以在<code>AnyCancellable</code>的实例或集合中存储一个订阅，以便在去初始化时接收自动取消。</li>
 <li>你可以使用<code>future</code>来在以后的时间里异步地接收一个单一的值。</li>
-<li>主题是发布者，使外部调用者能够向订阅者异步地发送多个值，无论是否有起始值。</li>
+<li><code>Subject</code>是发布者，使外部调用者能够向订阅者异步地发送多个值，无论是否有起始值。</li>
 <li>类型擦除防止调用者能够访问底层类型的额外细节。</li>
 <li>使用<code>print()</code>操作符来记录所有的发布事件到控制台，看看发生了什么。</li>
 </ul>

@@ -126,7 +126,7 @@
         
           
           
-          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="black"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
           
             <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
@@ -8143,10 +8143,10 @@
 
 
 <h1 id="18">第18章：定制发布者和处理背压<a class="headerlink" href="#18" title="Permanent link">&para;</a></h1>
-<p>在您学习<code>Combine</code>的旅程的这个时候，您可能会觉得框架中缺少许多运算符。如果您有其他被动框架的经验，情况可能尤其如此，这些框架通常提供丰富的内置和第三方运营商生态系统。<code>Combine</code>允许您创建自己的发布者。这个过程一开始可能令人难以置信，但请放心，它完全触手可及！本章将向您展示如何操作。</p>
+<p>在您学习<code>Combine</code>的旅程的这个时候，您可能会觉得框架中缺少许多运算符。如果您有其他被动框架的经验，情况可能尤其如此，这些框架通常提供丰富的内置和第三方操作符生态系统。<code>Combine</code>允许您创建自己的发布者。这个过程一开始可能令人难以置信，但请放心，它完全触手可及！本章将向您展示如何操作。</p>
 <p>您将在本章中学习的第二个相关主题是背压管理。这需要一些解释：这是什么背压的东西？这是靠在椅子上太多，仔细检查组合代码引起的某种背痛吗？您将了解什么是背压，以及如何创建处理它的发布者。</p>
 <h2 id="_1">创建自己的发布者<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<p>实施您自己的发布者的复杂性从“简单”到“相当复杂”不等。对于您实现的每个运营商，您将找到最简单的实现形式来实现您的目标。在这一章中，您将了解制作自己的发布者的三种不同方式：</p>
+<p>实施您自己的发布者的复杂性从“简单”到“相当复杂”不等。对于您实现的每个操作符，您将找到最简单的实现形式来实现您的目标。在这一章中，您将了解制作自己的发布者的三种不同方式：</p>
 <ul>
 <li>在<code>Publisher</code>命名空间中使用简单的扩展方法。</li>
 <li>使用生成值的<code>Subscription``Publishers</code>命名空间中实现类型。</li>
@@ -8160,7 +8160,7 @@
 <p>您的首要任务是仅通过重用现有运算符来实现一个简单的运算符。这是你能得到的尽可能简单。</p>
 <p>为此，您将添加一个新的<code>unwrap()</code>运算符，该运算符解开可选值并忽略其<code>nil</code>值。这将是一个非常简单的练习，因为您可以重用现有的<code>compactMap(_:)</code>运算符，尽管它需要您提供闭包。</p>
 <p>使用新的<code>unwrap()</code>运算符将使您的代码更容易阅读，并且会使您正在做的事情非常清晰。读者甚至不需要查看关闭的内容。</p>
-<p>您将像对所有其他运营商一样，在<code>Publisher</code>命名空间中添加运营商。</p>
+<p>您将像对所有其他操作符一样，在<code>Publisher</code>命名空间中添加操作符。</p>
 <p>打开本章的入门<code>Playground</code>，该<code>Playground</code>可以在<code>projects/Starter.playground</code>中找到，然后从<code>Project Navigator</code>中打开其<code>Unwrap</code>运算符页面。</p>
 <p>然后，添加以下代码：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">extension</span> <span class="nc">Publisher</span> <span class="p">{</span>
@@ -8187,7 +8187,7 @@
 <p>最后，您将操作符限制为<code>Optional</code>类型。您方便地编写它，将包装的类型<code>T</code>与方法的通用类型相匹配......等等！</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>当开发更复杂的运算符作为方法时，例如使用一系列运算符时，签名可能会很快变得非常复杂。一个好的技术是让您的运营商返回<code>AnyPublisher&lt;OutputType, FailureType&gt;</code>。在方法中，您将返回以<code>eraseToAnyPublisher()</code>结尾的发布者来键入擦除签名。</p>
+<p>当开发更复杂的运算符作为方法时，例如使用一系列运算符时，签名可能会很快变得非常复杂。一个好的技术是让您的操作符返回<code>AnyPublisher&lt;OutputType, FailureType&gt;</code>。在方法中，您将返回以<code>eraseToAnyPublisher()</code>结尾的发布者来键入擦除签名。</p>
 </div>
 <h3 id="_3">测试您的自定义操作符<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
 <p>现在你可以测试你的新操作符了。在扩展名下方添加此代码：</p>
@@ -8485,7 +8485,7 @@ Received value: 4
 <p>虽然它在Combine API中几乎看不到，但正如您刚刚发现的那样，<code>Subscription</code>可以完成大部分工作。</p>
 <p>享受你的成功。接下来你又要深入潜水了！</p>
 <h2 id="_13">发布者改变价值观<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h2>
-<p>你在培养组合技能方面取得了重大进展！您现在可以开发自己的运营商，即使是相当复杂的运营商。接下来要学习的是如何创建订阅，从上游发布者转换值。这是完全控制发布者订阅二人组的关键。</p>
+<p>你在培养组合技能方面取得了重大进展！您现在可以开发自己的操作符，即使是相当复杂的操作符。接下来要学习的是如何创建订阅，从上游发布者转换值。这是完全控制发布者订阅二人组的关键。</p>
 <p>在第9章“网络”中，您了解了共享订阅有多有用。当底层发布者正在执行重要工作时，例如从网络请求数据，您希望与多个订阅者共享结果。但是，您希望避免多次发出相同的请求来检索相同的数据。</p>
 <p>如果您不需要再次执行这项工作，则向未来的订阅者重播结果也是有益的。</p>
 <p>为什么不尝试实现<code>shareReplay()</code>，它完全可以满足您的需求？这将是一项有趣的任务！要编写此运算符，您将创建一个执行以下操作的发布者：</p>
@@ -8686,7 +8686,7 @@ Received value: 4
 <li>在初始化期间，您可以指定重播缓冲区的最大录制容量。</li>
 <li>当然，您还需要存储您记录的值。</li>
 <li>您为多个订阅者提供食物，因此您需要将他们留在身边，以通知他们事件。每个订阅者都从专用的<code>ShareReplaySubscription</code>中获得其值——您将在短时间内对其进行编码。</li>
-<li>即使在完成后，运营商也可以重播值，因此您需要记住上游发布者是否完成。</li>
+<li>即使在完成后，操作符也可以重播值，因此您需要记住上游发布者是否完成。</li>
 </ol>
 <p>唷！从外观上看，还有一些代码需要编写！最后，你会发现没有那么多，但有家政工作要做，比如使用适当的锁定，这样你的操作符就可以在所有条件下都能顺利运行。</p>
 <h3 id="_20">初始化值并将其转发给您的发布者<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h3>
@@ -8811,7 +8811,7 @@ Received value: 4
 </code></pre></div>
 <p>再说一遍，现在应该清除了<code>Playground</code>中的所有错误。请记住，您可以通过在<code>projects/final</code>中将其与<code>Playground</code>的成品版本进行比较来仔细检查您的工作。</p>
 <h3 id="_24">添加方便操作符<a class="headerlink" href="#_24" title="Permanent link">&para;</a></h3>
-<p>您的发布者已完成！当然，您还需要一件事：一个方便的运营商来帮助将这家新发布者与其他发布者连锁。</p>
+<p>您的发布者已完成！当然，您还需要一件事：一个方便的操作符来帮助将这家新发布者与其他发布者连锁。</p>
 <p>将其作为扩展添加到<code>Playground</code>末尾的<code>Publishers</code>命名空间中：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">extension</span> <span class="nc">Publisher</span> <span class="p">{</span>
   <span class="kd">func</span> <span class="nf">shareReplay</span><span class="p">(</span><span class="n">capacity</span><span class="p">:</span> <span class="nb">Int</span> <span class="p">=</span> <span class="p">.</span><span class="bp">max</span><span class="p">)</span>

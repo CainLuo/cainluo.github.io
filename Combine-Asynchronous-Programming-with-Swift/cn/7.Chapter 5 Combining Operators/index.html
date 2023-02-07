@@ -126,7 +126,7 @@
         
           
           
-          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="black"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
           
             <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
@@ -8223,7 +8223,7 @@
 <p>下一节将深入探讨一些与组合不同发布者有关的更复杂的操作符。尽管它们相对复杂，但它们也是一些对发布者组合最有用的操作符。值得花点时间来熟悉它们的工作方式。</p>
 <h3 id="switchtolatest"><code>switchToLatest</code><a class="headerlink" href="#switchtolatest" title="Permanent link">&para;</a></h3>
 <p>既然本节包括了<code>Combine</code>中一些比较复杂的组合操作符，为什么不从最复杂的一个开始呢？</p>
-<p>开个玩笑，<code>switchToLatest</code>很复杂，但非常有用。它可以让你在飞行中切换整个出版商的订阅，同时取消待定的出版商订阅，从而切换到最新的出版商。</p>
+<p>开个玩笑，<code>switchToLatest</code>很复杂，但非常有用。它可以让你在飞行中切换整个发布者的订阅，同时取消待定的发布者订阅，从而切换到最新的发布者。</p>
 <p>你只能在那些本身就发射了发布者的发布者上使用它。</p>
 <p><img alt="img" src="graphics/img42.png" /></p>
 <p>在你的<code>Playground</code>上添加以下代码，对你在上图中看到的例子进行实验：</p>
@@ -8272,7 +8272,7 @@
 <ol>
 <li>创建三个<code>PassthroughSubject</code>，接受整数，没有错误。</li>
 <li>创建第二个<code>PassthroughSubject</code>，接受其他<code>PassthroughSubject</code>。例如，你可以通过它发送<code>publisher1</code>，<code>publisher2</code>或<code>publisher3</code>。</li>
-<li>在你的<code>publishers</code>上使用<code>switchToLatest</code>。现在，每次你通过<code>publishers</code>主题发送不同的出版商时，都会切换到新的出版商，并取消之前的订阅。</li>
+<li>在你的<code>publishers</code>上使用<code>switchToLatest</code>。现在，每次你通过<code>publishers</code>主题发送不同的发布者时，都会切换到新的发布者，并取消之前的订阅。</li>
 <li>发送<code>publisher1</code>到<code>publishers</code>，然后发送<code>1</code>和<code>2</code>到<code>publisher1</code>。</li>
 <li>发送<code>publisher2</code>，取消对<code>publisher1</code>的订阅。然后你向<code>publisher1</code>发送<code>3</code>，但它被忽略，向<code>publisher2</code>发送<code>4</code>和<code>5</code>，它们被推送，因为有一个对<code>publisher2</code>的活动订阅。</li>
 <li>发送<code>publisher3</code>，取消对<code>publisher2</code>的订阅。像以前一样，你发送<code>6</code>到<code>publisher2</code>，它被忽略，然后发送<code>7</code>、<code>8</code>和<code>9</code>，它们被推送到<code>publisher3</code>的订阅中。</li>
@@ -8447,8 +8447,8 @@ Completed
 <p>这段代码再现了上述图表。你：</p>
 <ol>
 <li>创建两个<code>PassthroughSubjects</code>。第一个接受无错误的整数，而第二个接受无错误的字符串。</li>
-<li>将<code>publisher2</code>的最新排放与<code>publisher1</code>结合起来。你可以使用<code>combineLatest</code>的不同重载来合并多达四个不同的出版商。</li>
-<li>将<code>1</code>和<code>2</code>发送给<code>出版商1</code>，然后将<code>"a"</code>和<code>"b"</code>发送给<code>publisher2</code>，然后将<code>3</code>发送给<code>publisher1</code>，最后将<code>"c"</code>发送给<code>publisher2</code>。</li>
+<li>将<code>publisher2</code>的最新排放与<code>publisher1</code>结合起来。你可以使用<code>combineLatest</code>的不同重载来合并多达四个不同的发布者。</li>
+<li>将<code>1</code>和<code>2</code>发送给<code>发布者1</code>，然后将<code>"a"</code>和<code>"b"</code>发送给<code>publisher2</code>，然后将<code>3</code>发送给<code>publisher1</code>，最后将<code>"c"</code>发送给<code>publisher2</code>。</li>
 <li>向<code>publisher1</code>和<code>publisher2</code>发送一个完成事件。</li>
 </ol>
 <p>运行<code>Playground</code>，看看控制台的输出：</p>
@@ -8459,7 +8459,7 @@ P1: 3, P2: b
 P1: 3, P2: c
 Completed
 </code></pre></div>
-<p>你可能注意到，从<code>publisher1</code>发出的<code>1</code>从未通过<code>combineLatest</code>推送。这是因为<code>combineLatest</code>只有在每个出版商至少发出一个值时才开始发射组合。在这里，只有在<code>"a"</code>发射之后，这个条件才是真的，这时<code>publisher1</code>最新发射的值是<code>2</code>。这就是为什么第一次发射是<code>(2, "a")</code>。</p>
+<p>你可能注意到，从<code>publisher1</code>发出的<code>1</code>从未通过<code>combineLatest</code>推送。这是因为<code>combineLatest</code>只有在每个发布者至少发出一个值时才开始发射组合。在这里，只有在<code>"a"</code>发射之后，这个条件才是真的，这时<code>publisher1</code>最新发射的值是<code>2</code>。这就是为什么第一次发射是<code>(2, "a")</code>。</p>
 <h3 id="zip"><code>zip</code><a class="headerlink" href="#zip" title="Permanent link">&para;</a></h3>
 <p>你将以本章的最后一个操作符结束：<code>zip</code>。你可能会从<code>Swift</code>标准库中的<code>Sequence</code>类型的同名方法中认出这个操作。</p>
 <p>这个操作符的工作原理类似，在相同的索引中发出成对的值的图元。它等待每个发布者发出一个项目，然后在所有发布者在当前索引处发出一个值之后，发出一个单一的项目元组。</p>
@@ -8510,7 +8510,7 @@ Completed
 </code></pre></div>
 <p>注意每个发射的值是如何"等待"另一个压缩的发布者发射一个值的。<code>1</code>等待第二个发布者的第一次发射，所以你得到<code>(1, "a")</code>。同样地，<code>2</code>等待第二个发布者的下一个发射，所以你得到<code>(2, "b")</code>。从第二个发布者发出的最后一个值，<code>"d"</code>，被忽略，因为没有从第一个发布者发出的相应的值可以配对。</p>
 <h2 id="_5">关键点<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
-<p>在这一章中，你学会了如何将不同的出版商，从它们中创造出有意义的组合。更具体地说，你学到了以下内容。</p>
+<p>在这一章中，你学会了如何将不同的发布者，从它们中创造出有意义的组合。更具体地说，你学到了以下内容。</p>
 <ul>
 <li>你可以使用<code>prepend</code>和<code>append</code>系列的操作符，在不同的发布者之前或之后增加来自一个发布者的排放。</li>
 <li>虽然<code>switchToLatest</code>是相对复杂的，但它非常有用。它接收一个发布者的排放，切换到最新的发布者，并取消对之前发布者的订阅。</li>

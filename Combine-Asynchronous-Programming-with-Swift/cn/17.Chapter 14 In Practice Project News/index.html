@@ -126,7 +126,7 @@
         
           
           
-          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="black"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
           
             <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
@@ -7776,7 +7776,7 @@
 <p>此外，<code>Playground</code>的“来源”文件夹包含一个名为<code>Story</code>的简单结构，您将将其解码为故事数据。</p>
 <p>黑客新闻<code>API</code>可以免费使用，不需要注册开发人员帐户。这很棒，因为您可以立即开始处理代码，而无需像其他公共<code>API</code>一样，首先完成一些长时间的注册。黑客新闻团队赢得了大量的因果报应积分！</p>
 <h2 id="_1">得到一个故事<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<p>您的首要任务是向<code>API</code>添加一种方法，该方法将使用<code>EndPoint</code>类型与服务器联系以获取正确的端点URL，并将获取有关单个故事的数据。新方法将返回<code>API</code>消费者将订阅的发布者，并获得有效和解析<code>Story</code>或失败。</p>
+<p>您的首要任务是向<code>API</code>添加一种方法，该方法将使用<code>EndPoint</code>类型与服务器联系以获取正确的端点URL，并将获取有关单个故事的数据。新方法将返回<code>API</code>订阅者将订阅的发布者，并获得有效和解析<code>Story</code>或失败。</p>
 <p>向下滚动<code>Playground</code>源代码，找到注释，上面写着<code>// Add your API code here</code>。在该行下方，插入一个新的方法声明：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">story</span><span class="p">(</span><span class="n">id</span><span class="p">:</span> <span class="nb">Int</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="n">AnyPublisher</span><span class="p">&lt;</span><span class="n">Story</span><span class="p">,</span> <span class="n">Error</span><span class="p">&gt;</span> <span class="p">{</span>
   <span class="k">return</span> <span class="n">Empty</span><span class="p">().</span><span class="n">eraseToAnyPublisher</span><span class="p">()</span>
@@ -8006,7 +8006,7 @@ finished
 </code></pre></div>
 <p>将所有发布者合并到一个下游将产生连续<code>Story</code>价值流。一旦从网络中获取这些，发布者就会在下游发布这些：</p>
 <p><img alt="img" src="../../graphics/img89.png" /></p>
-<p>您可以保持当前订阅的原样，但您希望将API设计为易于绑定到列表UI控件。这将允许消费者简单地订阅<code>stories()</code>并将结果分配给其视图控制器或SwiftUI视图中的<code>[Story]</code>属性。</p>
+<p>您可以保持当前订阅的原样，但您希望将API设计为易于绑定到列表UI控件。这将允许订阅者简单地订阅<code>stories()</code>并将结果分配给其视图控制器或SwiftUI视图中的<code>[Story]</code>属性。</p>
 <p>要实现这一目标，您需要汇总发射的故事并映射订阅以返回不断增长的数组，而不是单个<code>Story</code>值。</p>
 <p>是时候进行一些严肃的魔法了！还记得第3章“改造操作符”中的<code>scan</code>操作符吗？我知道那是很久以前的事了，但是，这是帮助您完成当前任务的操作符。因此，如果需要，请跳回到该章，并在刷新<code>scan</code>时回到这里。</p>
 <p>附加到您当前的订阅：</p>

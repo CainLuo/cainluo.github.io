@@ -126,7 +126,7 @@
         
           
           
-          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="black"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
           
             <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
@@ -7772,7 +7772,7 @@
 <p>唯一的优势是，在设置发布者时，您只实例化一次<code>JSONDecoder</code>，而不是每次在<code>tryMap(_:)</code>闭包中创建它。</p>
 <h2 id="_2">将网络数据发布给多个订阅者<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <p>每次您订阅发布者时，它都会开始工作。在网络请求的情况下，这意味着如果多个订阅者需要结果，则多次发送相同的请求。</p>
-<p>令人惊讶的是，像其他框架一样，组合缺乏运营商来简化这一点。您可以使用<code>share()</code>操作符，但这很棘手，因为您需要在结果回来之前订阅所有订阅者。</p>
+<p>令人惊讶的是，像其他框架一样，组合缺乏操作符来简化这一点。您可以使用<code>share()</code>操作符，但这很棘手，因为您需要在结果回来之前订阅所有订阅者。</p>
 <p>除了使用缓存机制外，一个解决方案是使用<code>multicast()</code>操作符，该操作符创建一个<code>ConnectablePublisher</code>，通过<code>Subject</code>发布值。它允许您多次订阅主题，然后在您准备好后调用发布者的<code>connect()</code>方法：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">url</span> <span class="p">=</span> <span class="n">URL</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="s">&quot;https://www.raywenderlich.com&quot;</span><span class="p">)</span><span class="o">!</span>
 <span class="kd">let</span> <span class="nv">publisher</span> <span class="p">=</span> <span class="n">URLSession</span><span class="p">.</span><span class="n">shared</span>
@@ -7821,7 +7821,7 @@
 <ul>
 <li><code>Combine</code>为其<code>dataTask(with:completionHandler:)</code>方法提供了一个基于发布者的抽象，称为<code>dataTaskPublisher(for:)</code></li>
 <li>您可以使用发射<code>Data</code>值的发布者上的内置<code>decode</code>操作符解码符合<code>Codable</code>的模型。</li>
-<li>虽然没有运营商可以与多个订阅者共享订阅的重播，但您可以使用<code>ConnectablePublisher</code>和<code>multicast</code>运营商重新创建此行为。</li>
+<li>虽然没有操作符可以与多个订阅者共享订阅的重播，但您可以使用<code>ConnectablePublisher</code>和<code>multicast</code>操作符重新创建此行为。</li>
 </ul>
 <h2 id="_4">接下来去哪？<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
 <p>完成这一章做得很好！</p>

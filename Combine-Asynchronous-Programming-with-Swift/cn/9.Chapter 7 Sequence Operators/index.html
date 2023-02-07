@@ -126,7 +126,7 @@
         
           
           
-          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="black"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
           
             <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
@@ -8049,7 +8049,7 @@ First match is H
 <p>在上面的示例中，操作符检查<code>Hello World</code>是否包含发出的字母，直到找到第一个匹配项：<code>H</code>。发现这么多后，它取消了订阅，并发出字母供水<code>sink</code>打印出来。</p>
 <h3 id="last"><code>last</code><a class="headerlink" href="#last" title="Permanent link">&para;</a></h3>
 <p>就像<code>min</code>有一个相反的，<code>max</code>，<code>first</code>也有一个相反：<code>last</code>！</p>
-<p><code>last</code>工作原理与<code>first</code>完全相同，除了它发出发布者发出的最后一个值。这意味着它也贪婪，必须等待上游出版商完成：</p>
+<p><code>last</code>工作原理与<code>first</code>完全相同，除了它发出发布者发出的最后一个值。这意味着它也贪婪，必须等待上游发布者完成：</p>
 <p><img alt="img" src="../../graphics/img64.png" /></p>
 <p>将以下示例添加到您的<code>Playground</code>：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;last&quot;</span><span class="p">)</span> <span class="p">{</span>
@@ -8346,7 +8346,7 @@ Something is odd...
 <p>在这种情况下，一旦发出<code>1</code>，谓词就不再通过，因此<code>allSatisfy</code>发出<code>false</code>并取消订阅。</p>
 <h3 id="reduce"><code>reduce</code><a class="headerlink" href="#reduce" title="Permanent link">&para;</a></h3>
 <p>好吧，我们到了！这个相当拥挤的一章的最终操作符：<code>reduce</code>。</p>
-<p><code>reduce</code>操作符与本章涵盖的其他操作符略有不同。它不会查找特定值或查询整个发布者。相反，它允许您根据上游出版商的排放量迭代积累新值。</p>
+<p><code>reduce</code>操作符与本章涵盖的其他操作符略有不同。它不会查找特定值或查询整个发布者。相反，它允许您根据上游发布者的排放量迭代积累新值。</p>
 <p>起初，这听起来可能令人困惑，但你很快就会明白的。最简单的开始方法是使用图表：</p>
 <p><img alt="img" src="../../graphics/img70.png" /></p>
 <p><code>Combine</code>的<code>reduce</code>操作符的工作原理与<code>Swift</code>标准库中的对应操作符一样：<code>reduce(_:_)</code>和<code>reduce(into:_:)</code></p>
@@ -8409,7 +8409,7 @@ Reduced into: Hello World!
 </div>
 <h2 id="_4">关键点<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
 <ul>
-<li>出版商实际上是序列，因为它们产生的值与集合和序列非常相似。</li>
+<li>发布者实际上是序列，因为它们产生的值与集合和序列非常相似。</li>
 <li>您可以使用<code>min</code>和<code>max</code>分别发射发布者发出的最小值或最大值。</li>
 <li><code>first</code>当您想找到在特定索引处发射的值时，<code>last</code>和<code>output(at:)</code>非常有用。使用<code>output(in:)</code>查找在指数范围内发出的值。</li>
 <li><code>first(where:)``last(where:)</code>每个人都取一个谓词来确定它应该通过哪个值。</li>
