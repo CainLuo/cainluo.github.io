@@ -8065,10 +8065,10 @@ finished
 </div>
 <p><code>collect</code>操作符有一些变化。例如，你可以指定你只想接收一定数量的值，有效地将上游切成"批次"。</p>
 <p>替换下面一行：</p>
-<div class="highlight"><pre><span></span><code>.collect()
+<div class="highlight"><pre><span></span><code><span class="p">.</span><span class="n">collect</span><span class="p">()</span>
 </code></pre></div>
 <p>为:</p>
-<div class="highlight"><pre><span></span><code>.collect(2)
+<div class="highlight"><pre><span></span><code><span class="p">.</span><span class="n">collect</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </code></pre></div>
 <p>运行<code>Playground</code>，你会看到以下输出：</p>
 <div class="highlight"><pre><span></span><code>——— Example of: collect ———
