@@ -8361,7 +8361,7 @@ Received completion finished
 <span class="p">}</span>
 </code></pre></div>
 <p>在这里，你创建了一个工厂函数，返回一个类型为<code>Int</code>和<code>Never</code>的<code>future</code>；也就是说，它将发出一个整数，并且永远不会失败。</p>
-<p>你还添加了一个<code>subscriptions</code>集合，你将在其中存储对例子中的未来的订阅。对于长期运行的异步操作，不存储订阅将导致在当前代码范围结束后立即取消订阅。在<code>Playground</code>的例子中，这将是立即的。</p>
+<p>你还添加了一个<code>subscriptions</code>集合，你将在其中存储对例子中的<code>Future</code>的订阅。对于长期运行的异步操作，不存储订阅将导致在当前代码范围结束后立即取消订阅。在<code>Playground</code>的例子中，这将是立即的。</p>
 <p>接下来，填充函数的<code>Subject</code>以创建<code>future</code>：</p>
 <div class="highlight"><pre><span></span><code><span class="n">Future</span><span class="p">&lt;</span><span class="nb">Int</span><span class="p">,</span> <span class="n">Never</span><span class="p">&gt;</span> <span class="p">{</span> <span class="n">promise</span> <span class="k">in</span>
   <span class="n">DispatchQueue</span><span class="p">.</span><span class="n">global</span><span class="p">().</span><span class="n">asyncAfter</span><span class="p">(</span><span class="n">deadline</span><span class="p">:</span> <span class="p">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">delay</span><span class="p">)</span> <span class="p">{</span>
@@ -8390,7 +8390,7 @@ Received completion finished
 </code></pre></div>
 <p>在这里，你：</p>
 <ol>
-<li>使用你先前创建的工厂函数创建一个未来，指定在三秒钟的延迟后递增你传递的整数。</li>
+<li>使用你先前创建的工厂函数创建一个<code>Future</code>，指定在三秒钟的延迟后递增你传递的整数。</li>
 <li>订阅并打印收到的值和完成事件，并将产生的订阅存储在<code>subscriptions</code>集合中。你会在本章后面学到更多关于在集合中存储订阅的知识，所以如果你不完全理解这个例子的这一部分，也不用担心。</li>
 </ol>
 <p>运行这个<code>Playground</code>。你会看到打印的例子标题，然后是延迟三秒后的<code>future</code>的输出：</p>
@@ -8398,7 +8398,7 @@ Received completion finished
 2
 finished
 </code></pre></div>
-<p>通过在<code>Playground</code>上输入以下代码，为未来添加第二个订阅：</p>
+<p>通过在<code>Playground</code>上输入以下代码，为<code>Future</code>添加第二个订阅：</p>
 <div class="highlight"><pre><span></span><code><span class="n">future</span>
   <span class="p">.</span><span class="n">sink</span><span class="p">(</span><span class="n">receiveCompletion</span><span class="p">:</span> <span class="p">{</span> <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Second&quot;</span><span class="p">,</span> <span class="nv">$0</span><span class="p">)</span> <span class="p">},</span>
         <span class="n">receiveValue</span><span class="p">:</span> <span class="p">{</span> <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Second&quot;</span><span class="p">,</span> <span class="nv">$0</span><span class="p">)</span> <span class="p">})</span>
@@ -8756,7 +8756,7 @@ Received value 5
   <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Completed.&quot;</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div>
-<p><code>Task</code>创建一个新的异步任务--在这个代码示例中，关闭代码将与你的其他代码异步运行。</p>
+<p><code>Task</code>创建一个新的异步任务--在这个代码示例中，闭包代码将与你的其他代码异步运行。</p>
 <p>这个代码块中的关键<code>API</code>是你的<code>Subject</code>上的<code>values</code>属性。<code>values</code>返回一个异步序列，其中有<code>Subject</code>或发布者发出的元素。你可以像上面那样在一个简单的<code>for</code>循环中迭代这个异步序列。</p>
 <p>一旦发布者完成，无论是成功还是失败，循环就会结束，并在下一行继续执行。</p>
 <p>接下来，在当前的例子中也添加这段代码，以发出一些值：</p>
@@ -8775,7 +8775,7 @@ Element: 2
 Element: 3
 Completed.
 </code></pre></div>
-<p>在<code>Future</code>的情况下，它发出一个单一的元素（如果有的话），<code>values</code>属性不会有太大的意义。这就是为什么<code>Future</code>有一个<code>value</code>属性，你可以用<code>await</code>来异步获得未来的结果。</p>
+<p>在<code>Future</code>的情况下，它发出一个单一的元素（如果有的话），<code>values</code>属性不会有太大的意义。这就是为什么<code>Future</code>有一个<code>value</code>属性，你可以用<code>await</code>来异步获得<code>Future</code>的结果。</p>
 <p>做得很好! 你在这一章学到了很多东西，你将在本书的其余部分及以后的工作中运用这些新技能。但不要这么快! 现在是实践你刚刚学到的东西的时候了。所以，在你完成本章的挑战时，给自己拿点<code>&lt;insert your favorite beverage&gt;</code>来享用吧。</p>
 <h2 id="_8">挑战<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
 <p>完成挑战有助于将你在本章中所学到的知识带回家。在练习文件下载中，有启动版和最终版的挑战。</p>
