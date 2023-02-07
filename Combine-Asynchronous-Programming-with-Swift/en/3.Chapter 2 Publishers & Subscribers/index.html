@@ -7081,6 +7081,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../../cn/2.1%E7%AC%AC%E4%B8%80%E7%AB%A0%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="md-nav__link">
+        第2.1章：第一章学习笔记
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../cn/4.Section%20II%20Operators/" class="md-nav__link">
         第二部分：操作符
       </a>
@@ -7820,7 +7834,7 @@
 </ol>
 <p>Run the playground. You’ll see this output printed to the console:</p>
 <div class="highlight"><pre><span></span><code>——— Example of: Publisher ———
-Notification received<span class="p">!</span>
+Notification received!
 </code></pre></div>
 <p>The example's title is a little misleading because the output is not actually coming from a publisher. For that to happen, you need a subscriber.</p>
 <h2 id="hello-subscriber">Hello Subscriber<a class="headerlink" href="#hello-subscriber" title="Permanent link">&para;</a></h2>
@@ -7857,7 +7871,7 @@ Notification received<span class="p">!</span>
 <p>Don’t let the obscurity of the <code>sink</code> method name give you a <em>sinking</em> feeling. <em>Option-click</em> on <code>sink</code> and you’ll see that it provides an easy way to attach a subscriber with closures to handle output from a publisher. In this example, you just print a message to indicate that a notification was received. You’ll learn more about canceling a subscription shortly.</p>
 <p>Run the playground and you’ll see the following:</p>
 <div class="highlight"><pre><span></span><code>——— Example of: Publisher ———
-Notification received from <span class="k">a</span> publisher<span class="p">!</span>
+Notification received from a publisher!
 </code></pre></div>
 <p>The <code>sink</code> operator will continue to receive as many values as the publisher emits - this is known as <em>unlimited demand</em>. And although you ignored them in the previous example, the <code>sink</code> operator actually provides two closures: one to handle receiving a completion event (a success or a failure), and one to handle receiving values.</p>
 <p>To try those out, add this new example to your playground:</p>
@@ -7883,7 +7897,7 @@ Notification received from <span class="k">a</span> publisher<span class="p">!</
 </ol>
 <p>Run the playground. You’ll see the following:</p>
 <div class="highlight"><pre><span></span><code>——— Example of: Just ———
-Received value Hello world<span class="p">!</span>
+Received value Hello world!
 Received completion finished
 </code></pre></div>
 <p><em>Option-click</em> on <code>Just</code> and the Quick Help explains that it’s a publisher that emits its output to each subscriber once and then finishes.</p>
@@ -7904,26 +7918,26 @@ Received completion (another) finished
 <h3 id="subscribing-with-assigntoon">Subscribing with <code>assign(to:on:)</code><a class="headerlink" href="#subscribing-with-assigntoon" title="Permanent link">&para;</a></h3>
 <p>In addition to <code>sink</code>, the built-in <code>assign(to:on:)</code> operator enables you to assign the received value to a KVO-compliant property of an object.</p>
 <p>Add this example to see how this works:</p>
-<div class="highlight"><pre><span></span><code>example(of: &quot;assign(to:on:)&quot;) {
-  // 1
-  class SomeObject {
-    var value: String = &quot;&quot; {
-      didSet {
-        print(value)
-      }
-    }
-  }
+<div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;assign(to:on:)&quot;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// 1</span>
+  <span class="kd">class</span> <span class="nc">SomeObject</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nv">value</span><span class="p">:</span> <span class="nb">String</span> <span class="p">=</span> <span class="s">&quot;&quot;</span> <span class="p">{</span>
+      <span class="kr">didSet</span> <span class="p">{</span>
+        <span class="bp">print</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
 
-  // 2
-  let object = SomeObject()
+  <span class="c1">// 2</span>
+  <span class="kd">let</span> <span class="nv">object</span> <span class="p">=</span> <span class="n">SomeObject</span><span class="p">()</span>
 
-  // 3
-  let publisher = [&quot;Hello&quot;, &quot;world!&quot;].publisher
+  <span class="c1">// 3</span>
+  <span class="kd">let</span> <span class="nv">publisher</span> <span class="p">=</span> <span class="p">[</span><span class="s">&quot;Hello&quot;</span><span class="p">,</span> <span class="s">&quot;world!&quot;</span><span class="p">].</span><span class="n">publisher</span>
 
-  // 4
-  _ = publisher
-    .assign(to: \.value, on: object)
-}
+  <span class="c1">// 4</span>
+  <span class="kc">_</span> <span class="p">=</span> <span class="n">publisher</span>
+    <span class="p">.</span><span class="n">assign</span><span class="p">(</span><span class="n">to</span><span class="p">:</span> <span class="err">\</span><span class="p">.</span><span class="n">value</span><span class="p">,</span> <span class="n">on</span><span class="p">:</span> <span class="n">object</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>From the top:</p>
 <ol>
@@ -7940,24 +7954,24 @@ world!
 <p><em>Note</em>: In later chapters you'll see that <code>assign(to:on:)</code> is <em>especially</em> useful when working on UIKit or AppKit apps because you can assign values directly to labels, text views, checkboxes and other UI components.</p>
 <h3 id="republishing-with-assignto">Republishing with <code>assign(to:)</code><a class="headerlink" href="#republishing-with-assignto" title="Permanent link">&para;</a></h3>
 <p>There is a variation of the <code>assign</code> operator that you can use to <em>republish</em> values emitted by a publisher through another property marked with the <code>@Published</code> property wrapper. To try this add this new example to your playground:</p>
-<div class="highlight"><pre><span></span><code>example(of: &quot;assign(to:)&quot;) {
-  // 1
-  class SomeObject {
-    @Published var value = 0
-  }
+<div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;assign(to:)&quot;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// 1</span>
+  <span class="kd">class</span> <span class="nc">SomeObject</span> <span class="p">{</span>
+    <span class="p">@</span><span class="n">Published</span> <span class="kd">var</span> <span class="nv">value</span> <span class="p">=</span> <span class="mi">0</span>
+  <span class="p">}</span>
 
-  let object = SomeObject()
+  <span class="kd">let</span> <span class="nv">object</span> <span class="p">=</span> <span class="n">SomeObject</span><span class="p">()</span>
 
-  // 2
-  object.$value
-    .sink {
-      print($0)
-    }
+  <span class="c1">// 2</span>
+  <span class="n">object</span><span class="p">.</span><span class="err">$</span><span class="n">value</span>
+    <span class="p">.</span><span class="n">sink</span> <span class="p">{</span>
+      <span class="bp">print</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span>
+    <span class="p">}</span>
 
-  // 3
-  (0..&lt;10).publisher
-    .assign(to: &amp;object.$value)
-}
+  <span class="c1">// 3</span>
+  <span class="p">(</span><span class="mf">0.</span><span class="p">.&lt;</span><span class="mi">10</span><span class="p">).</span><span class="n">publisher</span>
+    <span class="p">.</span><span class="n">assign</span><span class="p">(</span><span class="n">to</span><span class="p">:</span> <span class="p">&amp;</span><span class="n">object</span><span class="p">.</span><span class="err">$</span><span class="n">value</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>With this code, you:</p>
 <ol>
@@ -7967,16 +7981,16 @@ world!
 </ol>
 <p>The <code>assign(to:)</code> operator doesn't return an <code>AnyCancellable</code> token, because it manages the lifecycle internally and cancels the subscription when the <code>@Published</code> property deinitializes.</p>
 <p>You might wonder how is this useful compared to simply using <code>assign(to:on:)</code>? Consider the following example (you don't need to add this to the playground):</p>
-<div class="highlight"><pre><span></span><code>class MyObject {
-  @Published var word: String = &quot;&quot;
-  var subscriptions = Set&lt;AnyCancellable&gt;()
+<div class="highlight"><pre><span></span><code><span class="kd">class</span> <span class="nc">MyObject</span> <span class="p">{</span>
+  <span class="p">@</span><span class="n">Published</span> <span class="kd">var</span> <span class="nv">word</span><span class="p">:</span> <span class="nb">String</span> <span class="p">=</span> <span class="s">&quot;&quot;</span>
+  <span class="kd">var</span> <span class="nv">subscriptions</span> <span class="p">=</span> <span class="n">Set</span><span class="p">&lt;</span><span class="n">AnyCancellable</span><span class="p">&gt;()</span>
 
-  init() {
-    [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;].publisher
-      .assign(to: \.word, on: self)
-      .store(in: &amp;subscriptions)
-  }
-}
+  <span class="kd">init</span><span class="p">()</span> <span class="p">{</span>
+    <span class="p">[</span><span class="s">&quot;A&quot;</span><span class="p">,</span> <span class="s">&quot;B&quot;</span><span class="p">,</span> <span class="s">&quot;C&quot;</span><span class="p">].</span><span class="n">publisher</span>
+      <span class="p">.</span><span class="n">assign</span><span class="p">(</span><span class="n">to</span><span class="p">:</span> <span class="err">\</span><span class="p">.</span><span class="n">word</span><span class="p">,</span> <span class="n">on</span><span class="p">:</span> <span class="kc">self</span><span class="p">)</span>
+      <span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="k">in</span><span class="p">:</span> <span class="p">&amp;</span><span class="n">subscriptions</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>In this example, using <code>assign(to: \.word, on: self)</code> and storing the resulting <code>AnyCancellable</code> results in a strong reference cycle. Replacing <code>assign(to:on:)</code> with <code>assign(to: &amp;$word)</code> prevents this problem.</p>
 <p>You’ll focus on using the <code>sink</code> operator for now, but you’ll learn more about the use of <code>@Published</code> properties in Chapter 8, "In Practice: Project "Collage"," and in later chapters.</p>
@@ -8000,27 +8014,27 @@ world!
 </ol>
 <p><em>Note</em>: The above diagram provides a streamlined overview of what’s going on. Later, you’ll gain a deeper understanding of this process in Chapter 18, “Custom Publishers &amp; Handling Backpressure.”</p>
 <p>Take a look at the <code>Publisher</code> protocol and one of its most important extensions:</p>
-<div class="highlight"><pre><span></span><code>public protocol Publisher {
-  // 1
-  associatedtype Output
+<div class="highlight"><pre><span></span><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="nc">Publisher</span> <span class="p">{</span>
+  <span class="c1">// 1</span>
+  <span class="kd">associatedtype</span> <span class="n">Output</span>
 
-  // 2
-  associatedtype Failure : Error
+  <span class="c1">// 2</span>
+  <span class="kd">associatedtype</span> <span class="n">Failure</span> <span class="p">:</span> <span class="n">Error</span>
 
-  // 4
-  func receive&lt;S&gt;(subscriber: S)
-    where S: Subscriber,
-    Self.Failure == S.Failure,
-    Self.Output == S.Input
-}
+  <span class="c1">// 4</span>
+  <span class="kd">func</span> <span class="nf">receive</span><span class="p">&lt;</span><span class="n">S</span><span class="p">&gt;(</span><span class="n">subscriber</span><span class="p">:</span> <span class="n">S</span><span class="p">)</span>
+    <span class="k">where</span> <span class="n">S</span><span class="p">:</span> <span class="n">Subscriber</span><span class="p">,</span>
+    <span class="kc">Self</span><span class="p">.</span><span class="n">Failure</span> <span class="p">==</span> <span class="n">S</span><span class="p">.</span><span class="n">Failure</span><span class="p">,</span>
+    <span class="kc">Self</span><span class="p">.</span><span class="n">Output</span> <span class="p">==</span> <span class="n">S</span><span class="p">.</span><span class="n">Input</span>
+<span class="p">}</span>
 
-extension Publisher {
-  // 3
-  public func subscribe&lt;S&gt;(_ subscriber: S)
-    where S : Subscriber,
-    Self.Failure == S.Failure,
-    Self.Output == S.Input
-}
+<span class="kd">extension</span> <span class="nc">Publisher</span> <span class="p">{</span>
+  <span class="c1">// 3</span>
+  <span class="kd">public</span> <span class="kd">func</span> <span class="nf">subscribe</span><span class="p">&lt;</span><span class="n">S</span><span class="p">&gt;(</span><span class="kc">_</span> <span class="n">subscriber</span><span class="p">:</span> <span class="n">S</span><span class="p">)</span>
+    <span class="k">where</span> <span class="n">S</span> <span class="p">:</span> <span class="n">Subscriber</span><span class="p">,</span>
+    <span class="kc">Self</span><span class="p">.</span><span class="n">Failure</span> <span class="p">==</span> <span class="n">S</span><span class="p">.</span><span class="n">Failure</span><span class="p">,</span>
+    <span class="kc">Self</span><span class="p">.</span><span class="n">Output</span> <span class="p">==</span> <span class="n">S</span><span class="p">.</span><span class="n">Input</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>Here’s a closer look:</p>
 <ol>
@@ -8030,22 +8044,22 @@ extension Publisher {
 <li>The implementation of <code>subscribe(_:)</code> will call <code>receive(subscriber:)</code> to attach the subscriber to the publisher, i.e., create a subscription.</li>
 </ol>
 <p>The associated types are the publisher’s interface that a subscriber must match in order to create a subscription. Now, look at the <code>Subscriber</code> protocol:</p>
-<div class="highlight"><pre><span></span><code>public protocol Subscriber: CustomCombineIdentifierConvertible {
-  // 1
-  associatedtype Input
+<div class="highlight"><pre><span></span><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="nc">Subscriber</span><span class="p">:</span> <span class="n">CustomCombineIdentifierConvertible</span> <span class="p">{</span>
+  <span class="c1">// 1</span>
+  <span class="kd">associatedtype</span> <span class="n">Input</span>
 
-  // 2
-  associatedtype Failure: Error
+  <span class="c1">// 2</span>
+  <span class="kd">associatedtype</span> <span class="n">Failure</span><span class="p">:</span> <span class="n">Error</span>
 
-  // 3
-  func receive(subscription: Subscription)
+  <span class="c1">// 3</span>
+  <span class="kd">func</span> <span class="nf">receive</span><span class="p">(</span><span class="n">subscription</span><span class="p">:</span> <span class="n">Subscription</span><span class="p">)</span>
 
-  // 4
-  func receive(_ input: Self.Input) -&gt; Subscribers.Demand
+  <span class="c1">// 4</span>
+  <span class="kd">func</span> <span class="nf">receive</span><span class="p">(</span><span class="kc">_</span> <span class="n">input</span><span class="p">:</span> <span class="kc">Self</span><span class="p">.</span><span class="n">Input</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="n">Subscribers</span><span class="p">.</span><span class="n">Demand</span>
 
-  // 5
-  func receive(completion: Subscribers.Completion&lt;Self.Failure&gt;)
-}
+  <span class="c1">// 5</span>
+  <span class="kd">func</span> <span class="nf">receive</span><span class="p">(</span><span class="n">completion</span><span class="p">:</span> <span class="n">Subscribers</span><span class="p">.</span><span class="n">Completion</span><span class="p">&lt;</span><span class="kc">Self</span><span class="p">.</span><span class="n">Failure</span><span class="p">&gt;)</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>Here’s a closer look:</p>
 <ol>
@@ -8056,9 +8070,9 @@ extension Publisher {
 <li>The publisher calls <code>receive(completion:)</code> on the subscriber to tell it that it has finished producing values, either normally or due to an error.</li>
 </ol>
 <p>The connection between the publisher and the subscriber is the subscription. Here’s the <code>Subscription</code> protocol:</p>
-<div class="highlight"><pre><span></span><code>public protocol Subscription: Cancellable, CustomCombineIdentifierConvertible {
-  func request(_ demand: Subscribers.Demand)
-}
+<div class="highlight"><pre><span></span><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="nc">Subscription</span><span class="p">:</span> <span class="n">Cancellable</span><span class="p">,</span> <span class="n">CustomCombineIdentifierConvertible</span> <span class="p">{</span>
+  <span class="kd">func</span> <span class="nf">request</span><span class="p">(</span><span class="kc">_</span> <span class="n">demand</span><span class="p">:</span> <span class="n">Subscribers</span><span class="p">.</span><span class="n">Demand</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>The subscriber calls <code>request(_:)</code> to indicate it is willing to receive more values, up to a max number or unlimited.</p>
 <p><em>Note</em>: We call the concept of a subscriber stating how many values it’s willing to receive <em>backpressure management</em>. Without it, or some other strategy, a subscriber could get flooded with more values from the publisher than it can handle.</p>
@@ -8066,33 +8080,33 @@ extension Publisher {
 <p><em>Note</em>: Adjusting <code>max</code> in <code>Subscriber.receive(_:)</code> is additive, i.e., the new <code>max</code> value is <em>added</em> to the current <code>max</code>. The <code>max</code> value must be positive, and passing a negative value will result in a <code>fatalError</code>. This means that you can increase the original <code>max</code> each time a new value is received, but you cannot decrease it.</p>
 <h2 id="creating-a-custom-subscriber">Creating a custom subscriber<a class="headerlink" href="#creating-a-custom-subscriber" title="Permanent link">&para;</a></h2>
 <p>Time to put what you just learned to practice. Add this new example to your playground:</p>
-<div class="highlight"><pre><span></span><code>example(of: &quot;Custom Subscriber&quot;) {
-  // 1
-  let publisher = (1...6).publisher
+<div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;Custom Subscriber&quot;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// 1</span>
+  <span class="kd">let</span> <span class="nv">publisher</span> <span class="p">=</span> <span class="p">(</span><span class="mf">1.</span><span class="p">..</span><span class="mi">6</span><span class="p">).</span><span class="n">publisher</span>
 
-  // 2
-  final class IntSubscriber: Subscriber {
-    // 3
-    typealias Input = Int
-    typealias Failure = Never
+  <span class="c1">// 2</span>
+  <span class="kr">final</span> <span class="kd">class</span> <span class="nc">IntSubscriber</span><span class="p">:</span> <span class="n">Subscriber</span> <span class="p">{</span>
+    <span class="c1">// 3</span>
+    <span class="kd">typealias</span> <span class="n">Input</span> <span class="p">=</span> <span class="nb">Int</span>
+    <span class="kd">typealias</span> <span class="n">Failure</span> <span class="p">=</span> <span class="n">Never</span>
 
-    // 4
-    func receive(subscription: Subscription) {
-      subscription.request(.max(3))
-    }
+    <span class="c1">// 4</span>
+    <span class="kd">func</span> <span class="nf">receive</span><span class="p">(</span><span class="n">subscription</span><span class="p">:</span> <span class="n">Subscription</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">subscription</span><span class="p">.</span><span class="n">request</span><span class="p">(.</span><span class="bp">max</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+    <span class="p">}</span>
 
-    // 5
-    func receive(_ input: Int) -&gt; Subscribers.Demand {
-      print(&quot;Received value&quot;, input)
-      return .none
-    }
+    <span class="c1">// 5</span>
+    <span class="kd">func</span> <span class="nf">receive</span><span class="p">(</span><span class="kc">_</span> <span class="n">input</span><span class="p">:</span> <span class="nb">Int</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="n">Subscribers</span><span class="p">.</span><span class="n">Demand</span> <span class="p">{</span>
+      <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Received value&quot;</span><span class="p">,</span> <span class="n">input</span><span class="p">)</span>
+      <span class="k">return</span> <span class="p">.</span><span class="kr">none</span>
+    <span class="p">}</span>
 
-    // 6
-    func receive(completion: Subscribers.Completion&lt;Never&gt;) {
-      print(&quot;Received completion&quot;, completion)
-    }
-  }
-}
+    <span class="c1">// 6</span>
+    <span class="kd">func</span> <span class="nf">receive</span><span class="p">(</span><span class="n">completion</span><span class="p">:</span> <span class="n">Subscribers</span><span class="p">.</span><span class="n">Completion</span><span class="p">&lt;</span><span class="n">Never</span><span class="p">&gt;)</span> <span class="p">{</span>
+      <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Received completion&quot;</span><span class="p">,</span> <span class="n">completion</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>What you do here is:</p>
 <ol>
@@ -8104,9 +8118,9 @@ extension Publisher {
 <li>Print the completion event.</li>
 </ol>
 <p>For the publisher to publish anything, it needs a subscriber. Add the following at the end of the example:</p>
-<div class="highlight"><pre><span></span><code>let subscriber = IntSubscriber()
+<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">subscriber</span> <span class="p">=</span> <span class="n">IntSubscriber</span><span class="p">()</span>
 
-publisher.subscribe(subscriber)
+<span class="n">publisher</span><span class="p">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">subscriber</span><span class="p">)</span>
 </code></pre></div>
 <p>In this code, you create a subscriber that matches the <code>Output</code> and <code>Failure</code> types of the publisher. You then tell the publisher to subscribe, or attach, the subscriber.</p>
 <p>Run the playground. You’ll see the following printed to the console:</p>
@@ -8117,10 +8131,10 @@ Received value 3
 </code></pre></div>
 <p>You did not receive a completion event. This is because the publisher has a finite number of values, and you specified a demand of <code>.max(3)</code>.</p>
 <p>In your custom subscriber’s <code>receive(_:)</code>, try changing <code>.none</code> to <code>.unlimited</code>, so your <code>receive(_:)</code> method looks like this:</p>
-<div class="highlight"><pre><span></span><code>func receive(_ input: Int) -&gt; Subscribers.Demand {
-  print(&quot;Received value&quot;, input)
-  return .unlimited
-}
+<div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">receive</span><span class="p">(</span><span class="kc">_</span> <span class="n">input</span><span class="p">:</span> <span class="nb">Int</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="n">Subscribers</span><span class="p">.</span><span class="n">Demand</span> <span class="p">{</span>
+  <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Received value&quot;</span><span class="p">,</span> <span class="n">input</span><span class="p">)</span>
+  <span class="k">return</span> <span class="p">.</span><span class="n">unlimited</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>Run the playground again. This time you’ll see that the output contains all values, along with the completion event:</p>
 <div class="highlight"><pre><span></span><code>——— Example of: Custom Subscriber ———
@@ -8135,31 +8149,31 @@ Received completion finished
 <p>Try changing <code>.unlimited</code> to <code>.max(1)</code> and run the playground again.</p>
 <p>You’ll see the same output as when you returned <code>.unlimited</code>, because each time you receive an event, you specify that you want to increase the <code>max</code> by <code>1</code>.</p>
 <p>Change <code>.max(1)</code> back to <code>.none</code>, and change the definition of <code>publisher</code> to an array of strings instead. Replace:</p>
-<div class="highlight"><pre><span></span><code>let publisher = (1...6).publisher
+<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">publisher</span> <span class="p">=</span> <span class="p">(</span><span class="mf">1.</span><span class="p">..</span><span class="mi">6</span><span class="p">).</span><span class="n">publisher</span>
 </code></pre></div>
 <p>With:</p>
-<div class="highlight"><pre><span></span><code>let publisher = [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;, &quot;F&quot;].publisher
+<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">publisher</span> <span class="p">=</span> <span class="p">[</span><span class="s">&quot;A&quot;</span><span class="p">,</span> <span class="s">&quot;B&quot;</span><span class="p">,</span> <span class="s">&quot;C&quot;</span><span class="p">,</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;F&quot;</span><span class="p">].</span><span class="n">publisher</span>
 </code></pre></div>
 <p>Run the playground. You get an error that the <code>subscribe</code> method requires types <code>String</code> and <code>IntSubscriber.Input</code> (i.e., <code>Int</code>) to be equivalent. You get this error because the <code>Output</code> and <code>Failure</code> associated types of a publisher must match the <code>Input</code> and <code>Failure</code> types of a subscriber in order to create a subscription between the two.</p>
 <p>Change the <code>publisher</code> definition back to its original range of integers to resolve the error.</p>
 <h2 id="hello-future">Hello Future<a class="headerlink" href="#hello-future" title="Permanent link">&para;</a></h2>
 <p>Much like you can use <code>Just</code> to create a publisher that emits a single value to a subscriber and then complete, a <code>Future</code> can be used to <em>asynchronously</em> produce a single result and then complete. Add this new example to your playground:</p>
-<div class="highlight"><pre><span></span><code>example(of: &quot;Future&quot;) {
-  func futureIncrement(
-    integer: Int,
-    afterDelay delay: TimeInterval) -&gt; Future&lt;Int, Never&gt; {
+<div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;Future&quot;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">func</span> <span class="nf">futureIncrement</span><span class="p">(</span>
+    <span class="n">integer</span><span class="p">:</span> <span class="nb">Int</span><span class="p">,</span>
+    <span class="n">afterDelay</span> <span class="n">delay</span><span class="p">:</span> <span class="n">TimeInterval</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="n">Future</span><span class="p">&lt;</span><span class="nb">Int</span><span class="p">,</span> <span class="n">Never</span><span class="p">&gt;</span> <span class="p">{</span>
 
-  }
-}
+  <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>Here, you create a factory function that returns a future of type <code>Int</code> and <code>Never</code>; meaning, it will emit an integer and never fail.</p>
 <p>You also add a <code>subscriptions</code> set in which you’ll store the subscriptions to the future in the example. For long-running asynchronous operations, not storing the subscription will result in the cancelation of the subscription as soon as the current code scope ends. In the case of a Playground, that would be immediately.</p>
 <p>Next, fill the function’s body to create the future:</p>
-<div class="highlight"><pre><span></span><code>Future&lt;Int, Never&gt; { promise in
-  DispatchQueue.global().asyncAfter(deadline: .now() + delay) {
-    promise(.success(integer + 1))
-  }
-}
+<div class="highlight"><pre><span></span><code><span class="n">Future</span><span class="p">&lt;</span><span class="nb">Int</span><span class="p">,</span> <span class="n">Never</span><span class="p">&gt;</span> <span class="p">{</span> <span class="n">promise</span> <span class="k">in</span>
+  <span class="n">DispatchQueue</span><span class="p">.</span><span class="n">global</span><span class="p">().</span><span class="n">asyncAfter</span><span class="p">(</span><span class="n">deadline</span><span class="p">:</span> <span class="p">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">delay</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">promise</span><span class="p">(.</span><span class="n">success</span><span class="p">(</span><span class="n">integer</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>This code defines the future, which creates a promise that you then execute using the values specified by the caller of the function to increment the <code>integer</code> after the <code>delay</code>.</p>
 <p>A <code>Future</code> is a publisher that will eventually produce a single value and finish, or it will fail. It does this by invoking a closure when a value or error is available, and that closure is, in fact, the promise. <em>Command-click</em> on <code>Future</code> and choose <em>Jump to Definition</em>. You’ll see the following:</p>
@@ -8171,14 +8185,14 @@ Received completion finished
 </code></pre></div>
 <p><code>Promise</code> is a type alias to a closure that receives a <code>Result</code> containing either a single value published by the <code>Future</code>, or an error.</p>
 <p>Head back to the main playground page, and add the following code after the definition of <code>futureIncrement</code>:</p>
-<div class="highlight"><pre><span></span><code>// 1
-let future = futureIncrement(integer: 1, afterDelay: 3)
+<div class="highlight"><pre><span></span><code><span class="c1">// 1</span>
+<span class="kd">let</span> <span class="nv">future</span> <span class="p">=</span> <span class="n">futureIncrement</span><span class="p">(</span><span class="n">integer</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="n">afterDelay</span><span class="p">:</span> <span class="mi">3</span><span class="p">)</span>
 
-// 2
-future
-  .sink(receiveCompletion: { print($0) },
-        receiveValue: { print($0) })
-  .store(in: &amp;subscriptions)
+<span class="c1">// 2</span>
+<span class="n">future</span>
+  <span class="p">.</span><span class="n">sink</span><span class="p">(</span><span class="n">receiveCompletion</span><span class="p">:</span> <span class="p">{</span> <span class="bp">print</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">},</span>
+        <span class="n">receiveValue</span><span class="p">:</span> <span class="p">{</span> <span class="bp">print</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">})</span>
+  <span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="k">in</span><span class="p">:</span> <span class="p">&amp;</span><span class="n">subscriptions</span><span class="p">)</span>
 </code></pre></div>
 <p>Here, you:</p>
 <ol>
@@ -8191,13 +8205,13 @@ future
 finished
 </code></pre></div>
 <p>Add a second subscription to the future by entering the following code in the playground:</p>
-<div class="highlight"><pre><span></span><code>future
-  .sink(receiveCompletion: { print(&quot;Second&quot;, $0) },
-        receiveValue: { print(&quot;Second&quot;, $0) })
-  .store(in: &amp;subscriptions)
+<div class="highlight"><pre><span></span><code><span class="n">future</span>
+  <span class="p">.</span><span class="n">sink</span><span class="p">(</span><span class="n">receiveCompletion</span><span class="p">:</span> <span class="p">{</span> <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Second&quot;</span><span class="p">,</span> <span class="nv">$0</span><span class="p">)</span> <span class="p">},</span>
+        <span class="n">receiveValue</span><span class="p">:</span> <span class="p">{</span> <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Second&quot;</span><span class="p">,</span> <span class="nv">$0</span><span class="p">)</span> <span class="p">})</span>
+  <span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="k">in</span><span class="p">:</span> <span class="p">&amp;</span><span class="n">subscriptions</span><span class="p">)</span>
 </code></pre></div>
 <p>Before running the playground, insert the following print statement immediately before the <code>DispatchQueue</code> block in the <code>futureIncrement</code> function:</p>
-<div class="highlight"><pre><span></span><code>print(&quot;Original&quot;)
+<div class="highlight"><pre><span></span><code><span class="bp">print</span><span class="p">(</span><span class="s">&quot;Original&quot;</span><span class="p">)</span>
 </code></pre></div>
 <p>Run the playground. After the specified delay, the second subscription receives the same value. The future does not re-execute its promise; instead, it shares or replays its output.</p>
 <div class="highlight"><pre><span></span><code>——— Example of: Future ———
@@ -8219,35 +8233,35 @@ Second finished
 <p>You’ve already learned how to work with publishers and subscribers, and even how to create your own custom subscribers. Later in the book, you’ll learn how to create custom publishers. For now, though, there’s just a couple more things standing between you and a well-deserved <code>&lt;insert your favorite beverage&gt;</code> break. First is a <em>subject</em>.</p>
 <p>A subject acts as a go-between to enable non-Combine imperative code to send values to Combine subscribers. That <code>&lt;favorite beverage&gt;</code> isn’t going to drink itself, so it’s time to get to work!</p>
 <p>Add this new example to your playground:</p>
-<div class="highlight"><pre><span></span><code>example(of: &quot;PassthroughSubject&quot;) {
-  // 1
-  enum MyError: Error {
-    case test
-  }
+<div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;PassthroughSubject&quot;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// 1</span>
+  <span class="kd">enum</span> <span class="nc">MyError</span><span class="p">:</span> <span class="n">Error</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="n">test</span>
+  <span class="p">}</span>
 
-  // 2
-  final class StringSubscriber: Subscriber {
-    typealias Input = String
-    typealias Failure = MyError
+  <span class="c1">// 2</span>
+  <span class="kr">final</span> <span class="kd">class</span> <span class="nc">StringSubscriber</span><span class="p">:</span> <span class="n">Subscriber</span> <span class="p">{</span>
+    <span class="kd">typealias</span> <span class="n">Input</span> <span class="p">=</span> <span class="nb">String</span>
+    <span class="kd">typealias</span> <span class="n">Failure</span> <span class="p">=</span> <span class="n">MyError</span>
 
-    func receive(subscription: Subscription) {
-      subscription.request(.max(2))
-    }
+    <span class="kd">func</span> <span class="nf">receive</span><span class="p">(</span><span class="n">subscription</span><span class="p">:</span> <span class="n">Subscription</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">subscription</span><span class="p">.</span><span class="n">request</span><span class="p">(.</span><span class="bp">max</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+    <span class="p">}</span>
 
-    func receive(_ input: String) -&gt; Subscribers.Demand {
-      print(&quot;Received value&quot;, input)
-      // 3
-      return input == &quot;World&quot; ? .max(1) : .none
-    }
+    <span class="kd">func</span> <span class="nf">receive</span><span class="p">(</span><span class="kc">_</span> <span class="n">input</span><span class="p">:</span> <span class="nb">String</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="n">Subscribers</span><span class="p">.</span><span class="n">Demand</span> <span class="p">{</span>
+      <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Received value&quot;</span><span class="p">,</span> <span class="n">input</span><span class="p">)</span>
+      <span class="c1">// 3</span>
+      <span class="k">return</span> <span class="n">input</span> <span class="p">==</span> <span class="s">&quot;World&quot;</span> <span class="p">?</span> <span class="p">.</span><span class="bp">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">:</span> <span class="p">.</span><span class="kr">none</span>
+    <span class="p">}</span>
 
-    func receive(completion: Subscribers.Completion&lt;MyError&gt;) {
-      print(&quot;Received completion&quot;, completion)
-    }
-  }
+    <span class="kd">func</span> <span class="nf">receive</span><span class="p">(</span><span class="n">completion</span><span class="p">:</span> <span class="n">Subscribers</span><span class="p">.</span><span class="n">Completion</span><span class="p">&lt;</span><span class="n">MyError</span><span class="p">&gt;)</span> <span class="p">{</span>
+      <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Received completion&quot;</span><span class="p">,</span> <span class="n">completion</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
 
-  // 4
-  let subscriber = StringSubscriber()
-}
+  <span class="c1">// 4</span>
+  <span class="kd">let</span> <span class="nv">subscriber</span> <span class="p">=</span> <span class="n">StringSubscriber</span><span class="p">()</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>With this code, you:</p>
 <ol>
@@ -8259,22 +8273,22 @@ Second finished
 <p>Returning <code>.max(1)</code> in <code>receive(_:)</code> when the input is <code>"World"</code> results in the new max being set to <code>3</code> (the original max plus <code>1</code>).</p>
 <p>Other than defining a custom error type and pivoting on the received value to adjust demand, there’s nothing new here. Here comes the more interesting part.</p>
 <p>Add this code to the example:</p>
-<div class="highlight"><pre><span></span><code>// 5
-let subject = PassthroughSubject&lt;String, MyError&gt;()
+<div class="highlight"><pre><span></span><code><span class="c1">// 5</span>
+<span class="kd">let</span> <span class="nv">subject</span> <span class="p">=</span> <span class="n">PassthroughSubject</span><span class="p">&lt;</span><span class="nb">String</span><span class="p">,</span> <span class="n">MyError</span><span class="p">&gt;()</span>
 
-// 6
-subject.subscribe(subscriber)
+<span class="c1">// 6</span>
+<span class="n">subject</span><span class="p">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">subscriber</span><span class="p">)</span>
 
-// 7
-let subscription = subject
-  .sink(
-    receiveCompletion: { completion in
-      print(&quot;Received completion (sink)&quot;, completion)
-    },
-    receiveValue: { value in
-      print(&quot;Received value (sink)&quot;, value)
-    }
-  )
+<span class="c1">// 7</span>
+<span class="kd">let</span> <span class="nv">subscription</span> <span class="p">=</span> <span class="n">subject</span>
+  <span class="p">.</span><span class="n">sink</span><span class="p">(</span>
+    <span class="n">receiveCompletion</span><span class="p">:</span> <span class="p">{</span> <span class="n">completion</span> <span class="k">in</span>
+      <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Received completion (sink)&quot;</span><span class="p">,</span> <span class="n">completion</span><span class="p">)</span>
+    <span class="p">},</span>
+    <span class="n">receiveValue</span><span class="p">:</span> <span class="p">{</span> <span class="n">value</span> <span class="k">in</span>
+      <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Received value (sink)&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">)</span>
 </code></pre></div>
 <p>This code:</p>
 <ol>
@@ -8284,8 +8298,8 @@ let subscription = subject
 </ol>
 <p>Passthrough subjects enable you to publish new values on demand. They will happily pass along those values and a completion event. As with any publisher, you must declare the type of values and errors it can emit in advance; subscribers must match those types to its input and failure types in order to subscribe to that passthrough subject.</p>
 <p>Now that you’ve created a passthrough subject that can send values and subscriptions to receive them, it’s time to send some values. Add the following code to your example:</p>
-<div class="highlight"><pre><span></span><code>subject.send(&quot;Hello&quot;)
-subject.send(&quot;World&quot;)
+<div class="highlight"><pre><span></span><code><span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;Hello&quot;</span><span class="p">)</span>
+<span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;World&quot;</span><span class="p">)</span>
 </code></pre></div>
 <p>This sends two values (one at a time) using the subject’s <code>send</code> method.</p>
 <p>Run the playground. You’ll see:</p>
@@ -8297,11 +8311,11 @@ Received value (sink) World
 </code></pre></div>
 <p>Each subscriber receives the values as they’re published.</p>
 <p>Add the following code:</p>
-<div class="highlight"><pre><span></span><code>// 8
-subscription.cancel()
+<div class="highlight"><pre><span></span><code><span class="c1">// 8</span>
+<span class="n">subscription</span><span class="p">.</span><span class="n">cancel</span><span class="p">()</span>
 
-// 9
-subject.send(&quot;Still there?&quot;)
+<span class="c1">// 9</span>
+<span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;Still there?&quot;</span><span class="p">)</span>
 </code></pre></div>
 <p>Here, you:</p>
 <ol>
@@ -8317,8 +8331,8 @@ Received value (sink) World
 Received value Still there?
 </code></pre></div>
 <p>Add this code to the example:</p>
-<div class="highlight"><pre><span></span><code>subject.send(completion: .finished)
-subject.send(&quot;How about another one?&quot;)
+<div class="highlight"><pre><span></span><code><span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">completion</span><span class="p">:</span> <span class="p">.</span><span class="n">finished</span><span class="p">)</span>
+<span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;How about another one?&quot;</span><span class="p">)</span>
 </code></pre></div>
 <p>Run the playground. The second subscriber does not receive the <code>"How about another one?"</code> value, because it received the completion event right before the subjects sends the value. The first subscriber does not receive the completion event or the value, because its subscription was previously canceled.</p>
 <div class="highlight"><pre><span></span><code>——— Example of: PassthroughSubject ———
@@ -8330,7 +8344,7 @@ Received value Still there?
 Received completion finished
 </code></pre></div>
 <p>Add the following code immediately before the line that sends the completion event.</p>
-<div class="highlight"><pre><span></span><code>subject.send(completion: .failure(MyError.test))
+<div class="highlight"><pre><span></span><code><span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">completion</span><span class="p">:</span> <span class="p">.</span><span class="n">failure</span><span class="p">(</span><span class="n">MyError</span><span class="p">.</span><span class="n">test</span><span class="p">))</span>
 </code></pre></div>
 <p>Run the playground, again. You’ll see the following printed to the console:</p>
 <div class="highlight"><pre><span></span><code>——— Example of: PassthroughSubject ———
@@ -8345,18 +8359,18 @@ Received completion failure(...MyError.test)
 <p>The first subscriber receives the error, but not the completion event sent <em>after</em> the error. This demonstrates that once a publisher sends a <em>single</em> completion event — whether it’s a normal completion or an error — it’s done, as in fini, kaput! Passing through values with a <code>PassthroughSubject</code> is one way to bridge imperative code to the declarative world of Combine. Sometimes, however, you may also want to look at the current value of a publisher in your imperative code — for that, you have an aptly named subject: <code>CurrentValueSubject</code>.</p>
 <p>Instead of storing each subscription as a value, you can store multiple subscriptions in a collection of <code>AnyCancellable</code>. The collection will then automatically cancel each subscription added to it shortly before the collection deinitializes.</p>
 <p>Add this new example to your playground:</p>
-<div class="highlight"><pre><span></span><code>example(of: &quot;CurrentValueSubject&quot;) {
-  // 1
-  var subscriptions = Set&lt;AnyCancellable&gt;()
+<div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;CurrentValueSubject&quot;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// 1</span>
+  <span class="kd">var</span> <span class="nv">subscriptions</span> <span class="p">=</span> <span class="n">Set</span><span class="p">&lt;</span><span class="n">AnyCancellable</span><span class="p">&gt;()</span>
 
-  // 2
-  let subject = CurrentValueSubject&lt;Int, Never&gt;(0)
+  <span class="c1">// 2</span>
+  <span class="kd">let</span> <span class="nv">subject</span> <span class="p">=</span> <span class="n">CurrentValueSubject</span><span class="p">&lt;</span><span class="nb">Int</span><span class="p">,</span> <span class="n">Never</span><span class="p">&gt;(</span><span class="mi">0</span><span class="p">)</span>
 
-  // 3
-  subject
-    .sink(receiveValue: { print($0) })
-    .store(in: &amp;subscriptions) // 4
-}
+  <span class="c1">// 3</span>
+  <span class="n">subject</span>
+    <span class="p">.</span><span class="n">sink</span><span class="p">(</span><span class="n">receiveValue</span><span class="p">:</span> <span class="p">{</span> <span class="bp">print</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">})</span>
+    <span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="k">in</span><span class="p">:</span> <span class="p">&amp;</span><span class="n">subscriptions</span><span class="p">)</span> <span class="c1">// 4</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>Here’s what’s happening:</p>
 <ol>
@@ -8370,33 +8384,33 @@ Received completion failure(...MyError.test)
 0
 </code></pre></div>
 <p>Now, add this code to send two new values:</p>
-<div class="highlight"><pre><span></span><code>subject.send(1)
-subject.send(2)
+<div class="highlight"><pre><span></span><code><span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </code></pre></div>
 <p>Run the playground again. Those values are also received and printed to the console:</p>
 <div class="highlight"><pre><span></span><code>1
 2
 </code></pre></div>
 <p>Unlike a passthrough subject, you can ask a current value subject for its value at any time. Add the following code to print out the subject’s current value:</p>
-<div class="highlight"><pre><span></span><code>print(subject.value)
+<div class="highlight"><pre><span></span><code><span class="bp">print</span><span class="p">(</span><span class="n">subject</span><span class="p">.</span><span class="n">value</span><span class="p">)</span>
 </code></pre></div>
 <p>As you might have inferred by the subject’s type name, you can get its current value by accessing its <code>value</code> property. Run the playground, and you’ll see <code>2</code> printed a second time.</p>
 <p>Calling <code>send(_:)</code> on a current value subject is one way to send a new value. Another way is to assign a new value to its <code>value</code> property. Whoah, did we just go all imperative here or what? Add this code:</p>
-<div class="highlight"><pre><span></span><code>subject.value = 3
-print(subject.value)
+<div class="highlight"><pre><span></span><code><span class="n">subject</span><span class="p">.</span><span class="n">value</span> <span class="p">=</span> <span class="mi">3</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">subject</span><span class="p">.</span><span class="n">value</span><span class="p">)</span>
 </code></pre></div>
 <p>Run the playground. You’ll see <code>2</code> and <code>3</code> each printed twice — once by the receiving subscriber and once from printing the subject’s <code>value</code> after adding that value to the subject.</p>
 <p>Next, at the end of this example, create a new subscription to the current value subject:</p>
-<div class="highlight"><pre><span></span><code>subject
-  .sink(receiveValue: { print(&quot;Second subscription:&quot;, $0) })
-  .store(in: &amp;subscriptions)
+<div class="highlight"><pre><span></span><code><span class="n">subject</span>
+  <span class="p">.</span><span class="n">sink</span><span class="p">(</span><span class="n">receiveValue</span><span class="p">:</span> <span class="p">{</span> <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Second subscription:&quot;</span><span class="p">,</span> <span class="nv">$0</span><span class="p">)</span> <span class="p">})</span>
+  <span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="k">in</span><span class="p">:</span> <span class="p">&amp;</span><span class="n">subscriptions</span><span class="p">)</span>
 </code></pre></div>
 <p>Here, you create a subscription and print the received values. You also store that subscription in the <code>subscriptions</code> set.</p>
 <p>You read a moment ago that the <code>subscriptions</code> set will automatically cancel the subscriptions added to it, but how can you verify this? You can use the <code>print()</code> operator, which will log all publishing events to the console.</p>
 <p>Insert the <code>print()</code> operator in both subscriptions, between <code>subject</code> and <code>sink</code>. The beginning of each subscription should look like this:</p>
-<div class="highlight"><pre><span></span><code>subject
-  .print()
-  .sink...
+<div class="highlight"><pre><span></span><code><span class="n">subject</span>
+  <span class="p">.</span><span class="bp">print</span><span class="p">()</span>
+  <span class="p">.</span><span class="n">sink</span><span class="p">...</span>
 </code></pre></div>
 <p>Run the playground again and you’ll see the following output for the entire example:</p>
 <div class="highlight"><pre><span></span><code>——— Example of: CurrentValueSubject ———
@@ -8421,10 +8435,10 @@ receive cancel
 </code></pre></div>
 <p>The code prints each event along with the values printed in the subscription handlers, and when you printed the subject’s <code>value</code>s. The <code>receive cancel</code> events appear because the <code>subscriptions</code> set is defined within the scope of this example, so it cancels the subscriptions it contains when deinitialized.</p>
 <p>So, you may be wondering, can you also assign a completion event to the <code>value</code> property? Try it out by adding this code:</p>
-<div class="highlight"><pre><span></span><code>subject.value = .finished
+<div class="highlight"><pre><span></span><code><span class="n">subject</span><span class="p">.</span><span class="n">value</span> <span class="p">=</span> <span class="p">.</span><span class="n">finished</span>
 </code></pre></div>
 <p>Nope! That produces an error. A <code>CurrentValueSubject</code>’s <code>value</code> property is for just that: values. You still need to send completion events by using <code>send(_:)</code>. Change the erroneous line of code to the following:</p>
-<div class="highlight"><pre><span></span><code>subject.send(completion: .finished)
+<div class="highlight"><pre><span></span><code><span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">completion</span><span class="p">:</span> <span class="p">.</span><span class="n">finished</span><span class="p">)</span>
 </code></pre></div>
 <p>Run the playground again. This time you’ll see the following output at the bottom:</p>
 <div class="highlight"><pre><span></span><code>receive finished
@@ -8433,46 +8447,46 @@ receive finished
 <p>Both subscriptions receive the completion event instead of the cancel event. Since they've finished, you no longer need to cancel those.</p>
 <h2 id="dynamically-adjusting-demand">Dynamically adjusting demand<a class="headerlink" href="#dynamically-adjusting-demand" title="Permanent link">&para;</a></h2>
 <p>You learned earlier that adjusting demand in <code>Subscriber.receive(_:)</code> is additive. You’re now ready to take a closer look at how that works in a more elaborate example. Add this new example to the playground:</p>
-<div class="highlight"><pre><span></span><code>example(of: &quot;Dynamically adjusting Demand&quot;) {
-  final class IntSubscriber: Subscriber {
-    typealias Input = Int
-    typealias Failure = Never
+<div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;Dynamically adjusting Demand&quot;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kr">final</span> <span class="kd">class</span> <span class="nc">IntSubscriber</span><span class="p">:</span> <span class="n">Subscriber</span> <span class="p">{</span>
+    <span class="kd">typealias</span> <span class="n">Input</span> <span class="p">=</span> <span class="nb">Int</span>
+    <span class="kd">typealias</span> <span class="n">Failure</span> <span class="p">=</span> <span class="n">Never</span>
 
-    func receive(subscription: Subscription) {
-      subscription.request(.max(2))
-    }
+    <span class="kd">func</span> <span class="nf">receive</span><span class="p">(</span><span class="n">subscription</span><span class="p">:</span> <span class="n">Subscription</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">subscription</span><span class="p">.</span><span class="n">request</span><span class="p">(.</span><span class="bp">max</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+    <span class="p">}</span>
 
-    func receive(_ input: Int) -&gt; Subscribers.Demand {
-      print(&quot;Received value&quot;, input)
+    <span class="kd">func</span> <span class="nf">receive</span><span class="p">(</span><span class="kc">_</span> <span class="n">input</span><span class="p">:</span> <span class="nb">Int</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="n">Subscribers</span><span class="p">.</span><span class="n">Demand</span> <span class="p">{</span>
+      <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Received value&quot;</span><span class="p">,</span> <span class="n">input</span><span class="p">)</span>
 
-      switch input {
-      case 1:
-        return .max(2) // 1
-      case 3:
-        return .max(1) // 2
-      default:
-        return .none // 3
-      }
-    }
+      <span class="k">switch</span> <span class="n">input</span> <span class="p">{</span>
+      <span class="k">case</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">.</span><span class="bp">max</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1">// 1</span>
+      <span class="k">case</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">.</span><span class="bp">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1">// 2</span>
+      <span class="k">default</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">.</span><span class="kr">none</span> <span class="c1">// 3</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
 
-    func receive(completion: Subscribers.Completion&lt;Never&gt;) {
-      print(&quot;Received completion&quot;, completion)
-    }
-  }
+    <span class="kd">func</span> <span class="nf">receive</span><span class="p">(</span><span class="n">completion</span><span class="p">:</span> <span class="n">Subscribers</span><span class="p">.</span><span class="n">Completion</span><span class="p">&lt;</span><span class="n">Never</span><span class="p">&gt;)</span> <span class="p">{</span>
+      <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Received completion&quot;</span><span class="p">,</span> <span class="n">completion</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
 
-  let subscriber = IntSubscriber()
+  <span class="kd">let</span> <span class="nv">subscriber</span> <span class="p">=</span> <span class="n">IntSubscriber</span><span class="p">()</span>
 
-  let subject = PassthroughSubject&lt;Int, Never&gt;()
+  <span class="kd">let</span> <span class="nv">subject</span> <span class="p">=</span> <span class="n">PassthroughSubject</span><span class="p">&lt;</span><span class="nb">Int</span><span class="p">,</span> <span class="n">Never</span><span class="p">&gt;()</span>
 
-  subject.subscribe(subscriber)
+  <span class="n">subject</span><span class="p">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">subscriber</span><span class="p">)</span>
 
-  subject.send(1)
-  subject.send(2)
-  subject.send(3)
-  subject.send(4)
-  subject.send(5)
-  subject.send(6)
-}
+  <span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+  <span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+  <span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+  <span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+  <span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+  <span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>Most of this code is similar to example you’ve previously worked on in this chapter, so instead you’ll focus on the <code>receive(_:)</code> method. You continually adjust the demand from within your custom subscriber:</p>
 <ol>
@@ -8493,21 +8507,21 @@ Received value 5
 <h2 id="type-erasure">Type erasure<a class="headerlink" href="#type-erasure" title="Permanent link">&para;</a></h2>
 <p>There will be times when you want to let subscribers subscribe to receive events from a publisher without being able to access additional details about that publisher.</p>
 <p>This would be best demonstrated with an example, so add this new one to your playground:</p>
-<div class="highlight"><pre><span></span><code>example(of: &quot;Type erasure&quot;) {
-  // 1
-  let subject = PassthroughSubject&lt;Int, Never&gt;()
+<div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;Type erasure&quot;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// 1</span>
+  <span class="kd">let</span> <span class="nv">subject</span> <span class="p">=</span> <span class="n">PassthroughSubject</span><span class="p">&lt;</span><span class="nb">Int</span><span class="p">,</span> <span class="n">Never</span><span class="p">&gt;()</span>
 
-  // 2
-  let publisher = subject.eraseToAnyPublisher()
+  <span class="c1">// 2</span>
+  <span class="kd">let</span> <span class="nv">publisher</span> <span class="p">=</span> <span class="n">subject</span><span class="p">.</span><span class="n">eraseToAnyPublisher</span><span class="p">()</span>
 
-  // 3
-  publisher
-    .sink(receiveValue: { print($0) })
-    .store(in: &amp;subscriptions)
+  <span class="c1">// 3</span>
+  <span class="n">publisher</span>
+    <span class="p">.</span><span class="n">sink</span><span class="p">(</span><span class="n">receiveValue</span><span class="p">:</span> <span class="p">{</span> <span class="bp">print</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">})</span>
+    <span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="k">in</span><span class="p">:</span> <span class="p">&amp;</span><span class="n">subscriptions</span><span class="p">)</span>
 
-  // 4
-  subject.send(0)
-}
+  <span class="c1">// 4</span>
+  <span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>With this code you:</p>
 <ol>
@@ -8523,37 +8537,37 @@ Received value 5
 <p><code>AnyPublisher</code> does not have a <code>send(_:)</code> operator, so you cannot add new values to that publisher directly.</p>
 <p>The <code>eraseToAnyPublisher()</code> operator wraps the provided publisher in an instance of <code>AnyPublisher</code>, hiding the fact that the publisher is actually a <code>PassthroughSubject</code>. This is also necessary because you cannot specialize the <code>Publisher</code> protocol, e.g., you cannot define the type as <code>Publisher&lt;UIImage, Never&gt;</code>.</p>
 <p>To prove that <code>publisher</code> is type-erased and you cannot use it to send new values, add this code to the example.</p>
-<div class="highlight"><pre><span></span><code>publisher.send(1)
+<div class="highlight"><pre><span></span><code><span class="n">publisher</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
 <p>You get the error <code>Value of type 'AnyPublisher&lt;Int, Never&gt;' has no member 'send'</code>. Comment out that line of code before moving on.</p>
 <h2 id="bridging-combine-publishers-to-asyncawait">Bridging Combine publishers to async/await<a class="headerlink" href="#bridging-combine-publishers-to-asyncawait" title="Permanent link">&para;</a></h2>
 <p>Two great additions to the Combine framework in Swift 5.5, available in iOS 15 and macOS 12, help you effortlessly use Combine with the new <code>async/await</code> syntax in Swift.</p>
 <p>In other words — <em>all</em> publishers, futures and subjects you learn about in this book can used from your modern Swift code at no cost.</p>
 <p>Add one last example to your playground:</p>
-<div class="highlight"><pre><span></span><code>example(of: &quot;async/await&quot;) {
-  let subject = CurrentValueSubject&lt;Int, Never&gt;(0)
+<div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;async/await&quot;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nv">subject</span> <span class="p">=</span> <span class="n">CurrentValueSubject</span><span class="p">&lt;</span><span class="nb">Int</span><span class="p">,</span> <span class="n">Never</span><span class="p">&gt;(</span><span class="mi">0</span><span class="p">)</span>
 
-}
+<span class="p">}</span>
 </code></pre></div>
 <p>In this example you will use a <code>CurrentValueSubject</code> but as said the APIs are available on <code>Future</code> and any type that conforms to <code>Publisher</code>.</p>
 <p>You will use <code>subject</code> to emit elements and a <code>for</code> loop to iterate over the asynchronous sequence of those elements.</p>
 <p>You will subscribe for the values in a new asynchronous task. To do this, add:</p>
-<div class="highlight"><pre><span></span><code>Task {
-  for await element in subject.values {
-    print(&quot;Element: \(element)&quot;)
-  }
-  print(&quot;Completed.&quot;)
-}
+<div class="highlight"><pre><span></span><code><span class="n">Task</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="k">await</span> <span class="n">element</span> <span class="k">in</span> <span class="n">subject</span><span class="p">.</span><span class="n">values</span> <span class="p">{</span>
+    <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Element: </span><span class="si">\(</span><span class="n">element</span><span class="si">)</span><span class="s">&quot;</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Completed.&quot;</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div>
 <p><code>Task</code> creates a new asynchronous task — the closure code will run asynchronously to the rest of your code in this code example.</p>
 <p>The key API in this code block is the <code>values</code> property on your subject. <code>values</code> returns an asynchronous sequence with the elements emitted by the subject or publisher. You can iterate that asynchronous sequence in a simple <code>for</code> loop like you do above.</p>
 <p>Once the publisher completes, either successfully or with a failure, the loop ends and the execution continues on the next line.</p>
 <p>Next, add also this code to the current example to emit some values:</p>
-<div class="highlight"><pre><span></span><code>subject.send(1)
-subject.send(2)
-subject.send(3)
+<div class="highlight"><pre><span></span><code><span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 
-subject.send(completion: .finished)
+<span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">completion</span><span class="p">:</span> <span class="p">.</span><span class="n">finished</span><span class="p">)</span>
 </code></pre></div>
 <p>This will emit 1, 2 and 3 and then complete the subject.</p>
 <p>That wraps nicely this example — sending the <code>finished</code> event will also end the loop in your asynchronous task. Run again the playground code and you will see this output:</p>
@@ -8582,9 +8596,9 @@ Completed.
 <p>For received values, print a string containing the results of the hand’s <code>cardString</code> and <code>points</code> properties.</p>
 <p>For an error, print it out. A tip though: You can receive either a <code>.finished</code> or a <code>.failure</code> in the <code>receivedCompletion</code> block, so you’ll want to distinguish whether that completion is a failure or not.</p>
 <p><code>HandError</code> conforms to <code>CustomStringConvertible</code> so printing it will result in a user-friendly error message. You can use it like this:</p>
-<div class="highlight"><pre><span></span><code>if case let .failure(error) = $0 {
-  print(error)
-}
+<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="k">case</span> <span class="kd">let</span> <span class="p">.</span><span class="n">failure</span><span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="p">=</span> <span class="nv">$0</span> <span class="p">{</span>
+  <span class="bp">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>The call to <code>deal(_:)</code> currently passes <code>3</code>, so you deal three cards each time you run the playground.</p>
 <p>In a <em>real</em> game of Blackjack, you’re initially dealt two cards, and then you have to decide to take one or more additional cards, called <em>hits</em>, until you either hit 21 or bust. For this simple example, you're just getting three cards straight away.</p>
@@ -8594,22 +8608,22 @@ Completed.
 <p><img alt="img" src="../../graphics/img16.png" /></p>
 <h4 id="solution">Solution<a class="headerlink" href="#solution" title="Permanent link">&para;</a></h4>
 <p>How’d you do? There were two things you needed to add to complete this challenge. The first was to update the <code>dealtHand</code> publisher in the <code>deal</code> function, checking the hand’s points and sending an error if it’s over 21:</p>
-<div class="highlight"><pre><span></span><code>// Add code to update dealtHand here
-if hand.points &gt; 21 {
-  dealtHand.send(completion: .failure(.busted))
-} else {
-  dealtHand.send(hand)
-}
+<div class="highlight"><pre><span></span><code><span class="c1">// Add code to update dealtHand here</span>
+<span class="k">if</span> <span class="n">hand</span><span class="p">.</span><span class="n">points</span> <span class="o">&gt;</span> <span class="mi">21</span> <span class="p">{</span>
+  <span class="n">dealtHand</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">completion</span><span class="p">:</span> <span class="p">.</span><span class="n">failure</span><span class="p">(.</span><span class="n">busted</span><span class="p">))</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+  <span class="n">dealtHand</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">hand</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>Next, you needed to subscribe to <code>dealtHand</code> and print out the value received or the completion event if it was an error:</p>
-<div class="highlight"><pre><span></span><code>_ = dealtHand
-  .sink(receiveCompletion: {
-    if case let .failure(error) = $0 {
-      print(error)
-    }
-  }, receiveValue: { hand in
-    print(hand.cardString, &quot;for&quot;, hand.points, &quot;points&quot;)
-  })
+<div class="highlight"><pre><span></span><code><span class="kc">_</span> <span class="p">=</span> <span class="n">dealtHand</span>
+  <span class="p">.</span><span class="n">sink</span><span class="p">(</span><span class="n">receiveCompletion</span><span class="p">:</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="k">case</span> <span class="kd">let</span> <span class="p">.</span><span class="n">failure</span><span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="p">=</span> <span class="nv">$0</span> <span class="p">{</span>
+      <span class="bp">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">},</span> <span class="n">receiveValue</span><span class="p">:</span> <span class="p">{</span> <span class="n">hand</span> <span class="k">in</span>
+    <span class="bp">print</span><span class="p">(</span><span class="n">hand</span><span class="p">.</span><span class="n">cardString</span><span class="p">,</span> <span class="s">&quot;for&quot;</span><span class="p">,</span> <span class="n">hand</span><span class="p">.</span><span class="n">points</span><span class="p">,</span> <span class="s">&quot;points&quot;</span><span class="p">)</span>
+  <span class="p">})</span>
 </code></pre></div>
 <p>Each time you run the playground, you’ll get a new hand and output similar to the following:</p>
 <div class="highlight"><pre><span></span><code>——— Example of: Create a Blackjack card dealer ———

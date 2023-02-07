@@ -7081,6 +7081,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../../cn/2.1%E7%AC%AC%E4%B8%80%E7%AB%A0%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="md-nav__link">
+        第2.1章：第一章学习笔记
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../cn/4.Section%20II%20Operators/" class="md-nav__link">
         第二部分：操作符
       </a>
@@ -7804,12 +7818,12 @@
 <p><img alt="img" src="../../graphics/img17.png" /></p>
 <p>This marble diagram depicts how <code>collect</code> buffers a stream of individual values until the upstream publisher completes. It then emits that array downstream.</p>
 <p>Add this new example to your playground:</p>
-<div class="highlight"><pre><span></span><code>example(of: &quot;collect&quot;) {
-  [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;].publisher
-    .sink(receiveCompletion: { print($0) },
-          receiveValue: { print($0) })
-    .store(in: &amp;subscriptions)
-}
+<div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;collect&quot;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">[</span><span class="s">&quot;A&quot;</span><span class="p">,</span> <span class="s">&quot;B&quot;</span><span class="p">,</span> <span class="s">&quot;C&quot;</span><span class="p">,</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">].</span><span class="n">publisher</span>
+    <span class="p">.</span><span class="n">sink</span><span class="p">(</span><span class="n">receiveCompletion</span><span class="p">:</span> <span class="p">{</span> <span class="bp">print</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">},</span>
+          <span class="n">receiveValue</span><span class="p">:</span> <span class="p">{</span> <span class="bp">print</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">})</span>
+    <span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="k">in</span><span class="p">:</span> <span class="p">&amp;</span><span class="n">subscriptions</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>This code is not using the <code>collect</code> operator just yet. Run the playground, and you’ll see each value appears on a separate line followed by a completion event:</p>
 <div class="highlight"><pre><span></span><code>——— Example of: collect ———
@@ -7835,10 +7849,10 @@ finished
 <p><em>Note</em>: Be careful when working with <code>collect()</code> and other buffering operators that do not require specifying a count or limit. They will use an unbounded amount of memory to store received values as they won't emit before the upstream finishes.</p>
 <p>There are a few variations of the <code>collect</code> operator. For example, you can specify that you only want to receive up to a certain number of values, effectively chopping the upstream into "batches".</p>
 <p>Replace the following line:</p>
-<div class="highlight"><pre><span></span><code>.collect()
+<div class="highlight"><pre><span></span><code><span class="p">.</span><span class="n">collect</span><span class="p">()</span>
 </code></pre></div>
 <p>With:</p>
-<div class="highlight"><pre><span></span><code>.collect(2)
+<div class="highlight"><pre><span></span><code><span class="p">.</span><span class="n">collect</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </code></pre></div>
 <p>Run the playground, and you’ll see the following output:</p>
 <div class="highlight"><pre><span></span><code>——— Example of: collect ———
