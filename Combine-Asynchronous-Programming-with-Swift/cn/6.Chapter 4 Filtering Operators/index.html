@@ -8098,7 +8098,7 @@ Completed with: finished
 <p>第一个区别是，如果你在闭包中返回<code>true</code>，那么<code>filter</code>允许数值通过，而<code>drop(while:)</code>只要你在闭包中返回<code>true</code>，就会跳过数值。</p>
 <p>第二个，也是更重要的区别是，<code>filter</code>对上游发布者发布的所有值都不会停止评估其条件。即使在<code>filter</code>的条件评估为<code>true</code>之后，更多的值仍然被"质疑"，你的闭包必须回答这个问题。"你想让这个值通过吗？"。</p>
 <p>相反，<code>drop(while:)</code>的谓词闭包在条件满足后将不会再被执行。为了确认这一点，请替换下面这一行：</p>
-<div class="highlight"><pre><span></span><code>.drop(while: { $0 % 5 != 0 })
+<div class="highlight"><pre><span></span><code><span class="p">.</span><span class="n">drop</span><span class="p">(</span><span class="k">while</span><span class="p">:</span> <span class="p">{</span> <span class="nv">$0</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">})</span>
 </code></pre></div>
 <p>有了这段代码：</p>
 <div class="highlight"><pre><span></span><code><span class="p">.</span><span class="n">drop</span><span class="p">(</span><span class="k">while</span><span class="p">:</span> <span class="p">{</span>
