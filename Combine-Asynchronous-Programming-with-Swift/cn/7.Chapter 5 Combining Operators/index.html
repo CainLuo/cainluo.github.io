@@ -7918,7 +7918,7 @@
 <p>在本节中，你将学习<code>prepend(Output...)</code>、<code>prepend(Sequence)</code>和<code>prepend(Publisher)</code>。</p>
 <h3 id="prependoutput"><code>prepend(Output...)</code><a class="headerlink" href="#prependoutput" title="Permanent link">&para;</a></h3>
 <p>这个<code>prepend</code>的变体使用<code>...</code>语法接收一个可变的值列表。这意味着它可以接受任何数量的值，只要它们与原始发布者的<code>Output</code>类型相同。</p>
-<p><img alt="img" src="graphics/img36.png" /></p>
+<p><img alt="img" src="../../graphics/img36.png" /></p>
 <p>在你的<code>Playground</code>上添加以下代码，对上述例子进行实验：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;prepend(Output...)&quot;</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// 1</span>
@@ -7966,7 +7966,7 @@
 </div>
 <h3 id="prependsequence"><code>prepend(Sequence)</code><a class="headerlink" href="#prependsequence" title="Permanent link">&para;</a></h3>
 <p>这个变化的<code>prepend</code>与前面的相似，不同的是它接受任何符合<code>Sequence</code>的对象作为输入。例如, 它可以接受一个<code>Array</code>或一个<code>Set</code>.</p>
-<p><img alt="img" src="graphics/img37.png" /></p>
+<p><img alt="img" src="../../graphics/img37.png" /></p>
 <p>在你的<code>Playground</code>上添加以下代码来实验这个操作符：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;prepend(Sequence)&quot;</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// 1</span>
@@ -7999,7 +7999,7 @@
 <p class="admonition-title">Note</p>
 <p>相对于<code>Array</code>，<code>Set</code>需要记住的一个重要事实是，它们是无序的，所以不保证项目发出的顺序。这意味着上述例子中的前两个值可能是<code>1</code>和<code>2</code>，或者是<code>2</code>和<code>1</code>。</p>
 </div>
-<p>但是，等等，还有更多! 许多类型符合Swift中的<code>Sequence</code>，这让你做一些有趣的事情。</p>
+<p>但是，等等，还有更多! 许多类型符合<code>Swift</code>中的<code>Sequence</code>，这让你做一些有趣的事情。</p>
 <p>在第二个前缀之后：</p>
 <div class="highlight"><pre><span></span><code><span class="p">.</span><span class="n">prepend</span><span class="p">(</span><span class="n">Set</span><span class="p">(</span><span class="mf">1.</span><span class="p">..</span><span class="mi">2</span><span class="p">))</span>
 </code></pre></div>
@@ -8023,7 +8023,7 @@
 <p>正如你所看到的，现在有三个新的值被预置在之前的输出之前--<code>6</code>、<code>8</code>和<code>10</code>，这是在<code>6</code>和<code>11</code>之间以<code>2</code>为单位跨度的结果。</p>
 <h3 id="prependpublisher"><code>prepend(Publisher)</code><a class="headerlink" href="#prependpublisher" title="Permanent link">&para;</a></h3>
 <p>前面的两个操作符将数值列表预置到一个现有的发布者上。但是如果你有两个不同的发布者，并且你想把它们的值粘在一起，怎么办？你可以使用<code>prepend(Publisher)</code>将第二个发布者发出的值添加到原发布者的值之前。</p>
-<p><img alt="img" src="graphics/img38.png" /></p>
+<p><img alt="img" src="../../graphics/img38.png" /></p>
 <p>通过在你的<code>Playground</code>上添加以下内容来尝试上面的例子：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;prepend(Publisher)&quot;</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// 1</span>
@@ -8101,7 +8101,7 @@
 <p>下一组操作符处理的是将发布者发出的事件与其他值连接起来。但在这种情况下，你要处理的是追加而不是预追加，使用<code>append(Output...)</code>、<code>append(Sequence)</code>和<code>append(Publisher)</code>。这些操作符的工作原理与它们的<code>prepend</code>类似。</p>
 <h3 id="appendoutput"><code>append(Output...)</code><a class="headerlink" href="#appendoutput" title="Permanent link">&para;</a></h3>
 <p><code>append(Output...)</code>的工作原理与<code>prepend</code>类似。它也接受一个<code>Output</code>类型的变量列表，但在原始发布者完成<code>.finished</code>事件后，再追加其项目。</p>
-<p><img alt="img" src="graphics/img39.png" /></p>
+<p><img alt="img" src="../../graphics/img39.png" /></p>
 <p>在你的<code>Playground</code>上添加以下代码来实验这个操作符：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;append(Output...)&quot;</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// 1</span>
@@ -8170,7 +8170,7 @@
 <p>这个行为对于整个<code>append</code>操作符系列是相同的；除非前一个发布者发送一个<code>.finished</code>完成事件，否则不会发生追加操作。</p>
 <h3 id="appendsequence"><code>append(Sequence)</code><a class="headerlink" href="#appendsequence" title="Permanent link">&para;</a></h3>
 <p>这个<code>append</code>的变种是接收任何符合<code>Sequence</code>的对象，并在原始发布者的所有值发出后追加其值。</p>
-<p><img alt="img" src="graphics/img40.png" /></p>
+<p><img alt="img" src="../../graphics/img40.png" /></p>
 <p>在你的<code>Playground</code>上添加以下内容来实验这个操作符：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;append(Sequence)&quot;</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// 1</span>
@@ -8206,7 +8206,7 @@
 <p>正如你所看到的，<code>append</code>的执行是有顺序的，因为前一个发布者必须在下一个<code>append</code>执行之前完成。注意，<code>6</code>和<code>7</code>的集合对你来说可能是不同的顺序，因为集合是无序的。</p>
 <h3 id="appendpublisher"><code>append(Publisher)</code><a class="headerlink" href="#appendpublisher" title="Permanent link">&para;</a></h3>
 <p><code>append</code>操作符组的最后一个成员是一个变体，它接收一个<code>Publisher</code>，并将其发出的任何值附加到原始发布者的末尾。</p>
-<p><img alt="img" src="graphics/img41.png" /></p>
+<p><img alt="img" src="../../graphics/img41.png" /></p>
 <p>要尝试这个例子，在你的<code>Playground</code>上添加以下内容：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;append(Publisher)&quot;</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// 1</span>
@@ -8239,7 +8239,7 @@
 <p>既然本节包括了<code>Combine</code>中一些比较复杂的组合操作符，为什么不从最复杂的一个开始呢？</p>
 <p>开个玩笑，<code>switchToLatest</code>很复杂，但非常有用。它可以让你在飞行中切换整个发布者的订阅，同时取消待定的发布者订阅，从而切换到最新的发布者。</p>
 <p>你只能在那些本身就发射了发布者的发布者上使用它。</p>
-<p><img alt="img" src="graphics/img42.png" /></p>
+<p><img alt="img" src="../../graphics/img42.png" /></p>
 <p>在你的<code>Playground</code>上添加以下代码，对你在上图中看到的例子进行实验：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;switchToLatest&quot;</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// 1</span>
@@ -8366,17 +8366,17 @@ image: receive finished
 </code></pre></div>
 <p>你可能会注意到，实际上只有两张图片被取走了；这是因为在第二次和第三次点击之间只有十分之一秒的时间。第三次点击在第二次取图返回之前切换到一个新的请求，取消了第二次订阅--因此这一行写着<code>image: receive cancel</code>。</p>
 <p>如果你想看到一个更好的可视化效果，请点击以下按钮：</p>
-<p><img alt="img" src="graphics/img43.png" /></p>
+<p><img alt="img" src="../../graphics/img43.png" /></p>
 <p>然后再次运行<code>Playground</code>并等待几秒钟。你应该看到最后一张图片被加载。</p>
 <p>右键单击该图像，选择"历史值"：</p>
-<p><img alt="img" src="graphics/img44.png" /></p>
+<p><img alt="img" src="../../graphics/img44.png" /></p>
 <p>你应该看到两个加载的图像--你可能需要滚动才能看到这两个图像：</p>
-<p><img alt="img" src="graphics/img45.png" /></p>
+<p><img alt="img" src="../../graphics/img45.png" /></p>
 <p>你应该看到两个加载的图像--你可能需要滚动才能看到这两个图像。</p>
 <h3 id="mergewith"><code>merge(with:)</code><a class="headerlink" href="#mergewith" title="Permanent link">&para;</a></h3>
 <p>在本章结束前，你将用三个操作符来总结，它们的重点是结合不同发布者的排放。你将从<code>merge(with:)</code>开始。</p>
 <p>这个操作符将来自同一类型的不同发布者的排放物交织在一起，就像这样：</p>
-<p><img alt="img" src="graphics/img46.png" /></p>
+<p><img alt="img" src="../../graphics/img46.png" /></p>
 <p>要尝试这个例子，请在你的<code>Playground</code>上添加以下代码：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;merge(with:)&quot;</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// 1</span>
@@ -8426,7 +8426,7 @@ Completed
 <h3 id="combinelatest"><code>combineLatest</code><a class="headerlink" href="#combinelatest" title="Permanent link">&para;</a></h3>
 <p><code>combineLatest</code>是另一个操作符，让你结合不同的发布者。它还可以让你结合不同价值类型的发布者，这可能是非常有用的。然而，它不是将所有发布者的排放交织在一起，而是在任何一个发布者排放出一个值的时候，发射一个包含所有发布者的最新值的元组。</p>
 <p>但有一个问题。在<code>combineLatest</code>本身发射任何值之前，原发布者和传递给<code>combineLatest</code>的每一个发布者必须至少发射一个值。</p>
-<p><img alt="img" src="graphics/img47.png" /></p>
+<p><img alt="img" src="../../graphics/img47.png" /></p>
 <p>在你的<code>Playground</code>上添加以下代码来尝试这个操作符：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;combineLatest&quot;</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// 1</span>
@@ -8478,7 +8478,7 @@ Completed
 <p>你将以本章的最后一个操作符结束：<code>zip</code>。你可能会从<code>Swift</code>标准库中的<code>Sequence</code>类型的同名方法中认出这个操作。</p>
 <p>这个操作符的工作原理类似，在相同的索引中发出成对的值的图元。它等待每个发布者发出一个项目，然后在所有发布者在当前索引处发出一个值之后，发出一个单一的项目元组。</p>
 <p>这意味着，如果你正在压缩两个发布者，每次两个发布者都发出一个新的值时，你会得到一个单一的元组。</p>
-<p><img alt="img" src="graphics/img48.png" /></p>
+<p><img alt="img" src="../../graphics/img48.png" /></p>
 <p>在你的<code>Playground</code>上添加以下代码来尝试这个例子：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;zip&quot;</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// 1</span>

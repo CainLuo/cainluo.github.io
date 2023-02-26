@@ -8079,7 +8079,7 @@ Completed with: finished
 10
 </code></pre></div>
 <p>很简单，对吗？通常，最有用的操作符是!</p>
-<p>接下来是丢弃值家族中的下一个操作符--<code>drop(while:)</code>。这是另一个极其有用的变体，它接受一个谓词闭包，忽略发布者发出的任何值，直到第一次满足该谓词。一旦满足了谓词，值就开始流经操作符：</p>
+<p>接下来是丢弃值家族中的下一个操作符--<code>drop(while:)</code>。这是另一个极其有用的变体，它接受一个谓词闭包，忽略发布者发出的任何值，直到第一次满足该谓词。一旦不满足谓词，值就开始流经操作符：</p>
 <p><img alt="img" src="../../graphics/img31.png" /></p>
 <p>将下面的例子添加到你的<code>Playground</code>上，看看这个动作：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;drop(while:)&quot;</span><span class="p">)</span> <span class="p">{</span>
@@ -8096,7 +8096,7 @@ Completed with: finished
 <p>在下面的代码中，你：</p>
 <ol>
 <li>创建一个发射<code>1</code>和<code>10</code>之间数字的发布者。</li>
-<li>使用<code>drop(while:)</code>来等待第一个能被5整除的值。一旦条件得到满足，数值将开始流经运算器，不再被丢弃。</li>
+<li>使用<code>drop(while:)</code>来等待第一个能被<code>5</code>整除的值。一旦条件不满足，数值将开始流经运算器，不再被丢弃。</li>
 </ol>
 <p>运行你的<code>Playground</code>，看看调试控制台：</p>
 <div class="highlight"><pre><span></span><code>——— Example of: drop(while:) ———
@@ -8111,7 +8111,7 @@ Completed with: finished
 <p>你可能会问自己--这个操作符和<code>filter</code>有什么不同？它们都接受一个闭包，根据该闭包的结果来控制哪些值被发射出来。</p>
 <p>第一个区别是，如果你在闭包中返回<code>true</code>，那么<code>filter</code>允许数值通过，而<code>drop(while:)</code>只要你在闭包中返回<code>true</code>，就会跳过数值。</p>
 <p>第二个，也是更重要的区别是，<code>filter</code>对上游发布者发布的所有值都不会停止评估其条件。即使在<code>filter</code>的条件评估为<code>true</code>之后，更多的值仍然被"质疑"，你的闭包必须回答这个问题。"你想让这个值通过吗？"。</p>
-<p>相反，<code>drop(while:)</code>的谓词闭包在条件满足后将不会再被执行。为了确认这一点，请替换下面这一行：</p>
+<p>相反，<code>drop(while:)</code>的谓词闭包在条件不满足后将不会再被执行。为了确认这一点，请替换下面这一行：</p>
 <div class="highlight"><pre><span></span><code><span class="p">.</span><span class="n">drop</span><span class="p">(</span><span class="k">while</span><span class="p">:</span> <span class="p">{</span> <span class="nv">$0</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">})</span>
 </code></pre></div>
 <p>有了这段代码：</p>
@@ -8134,7 +8134,7 @@ x
 9
 10
 </code></pre></div>
-<p>你可能已经注意到了，<code>x</code>正好打印了五次。一旦条件得到满足（当<code>5</code>被打印出来时），闭包就不会再被评估。</p>
+<p>你可能已经注意到了，<code>x</code>正好打印了五次。一旦条件不满足（当<code>5</code>被打印出来时），闭包就不会再被评估。</p>
 <p>那好吧。两个操作符结束了，还有一个要做。</p>
 <p>过滤类别中最后一个也是最复杂的操作符是<code>drop(untilOutputFrom:)</code>。</p>
 <p>想象一下这样的场景：用户点击了一个按钮，但你想忽略所有的点击，直到你的<code>isReady</code>发布者发出一些结果。这个操作符是这种情况的完美选择。</p>
@@ -8177,7 +8177,7 @@ x
 <p>这个输出与上图相同：</p>
 <ul>
 <li>用户有五次轻拍的机会。前三次被忽略。</li>
-<li>在第三次点击后，`isReady'发出一个值。</li>
+<li>在第三次点击后，<code>isReady</code>发出一个值。</li>
 <li>以后用户的所有敲击都被通过。</li>
 </ul>
 <p>你已经获得了摆脱不需要的值的相当高的技巧! 现在，是最后一组过滤操作符的时候了。限制值。</p>
