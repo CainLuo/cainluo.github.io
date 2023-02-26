@@ -7637,6 +7637,34 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#switchtolatest" class="md-nav__link">
+    switchToLatest
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mergewith" class="md-nav__link">
+    merge(with:)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#combinelatest" class="md-nav__link">
+    combineLatest
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zip" class="md-nav__link">
+    Zip
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -7670,6 +7698,29 @@
 <p><code>append</code>同样也是接受遵循了<code>Sequence</code>协议的对象，比如<code>Array</code>，<code>Set</code>，<code>stride</code>等。</p>
 <h2 id="appendpublisher"><code>append(Publisher)</code><a class="headerlink" href="#appendpublisher" title="Permanent link">&para;</a></h2>
 <p><code>append</code>也可以接收<code>publisher</code>，也是在上游发布者发送完值之后后再发送剩下的值。</p>
+<h2 id="switchtolatest"><code>switchToLatest</code><a class="headerlink" href="#switchtolatest" title="Permanent link">&para;</a></h2>
+<p>该操作符可以允许我们在运行中切换整个发布者的订阅，比如原始发布者A使用了<code>switchToLatest</code>操作符并且被订阅后，就会有以下的情况：</p>
+<ul>
+<li>A发送了B，B发送了值，订阅里则是B的值</li>
+<li>A发送了C，C发送了值，订阅则会切换成C的值</li>
+<li>A发送了D，D发送了值，订阅则会切换成D的值</li>
+</ul>
+<p>以此类推，直到A发送了<code>.finished</code>事件。</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>实际使用场景，比如点击一个按钮就发送网络请求获取图片，如果时间间隔短，则会取消上一个请求，从而进行下一个新的请求。</p>
+</div>
+<h2 id="mergewith"><code>merge(with:)</code><a class="headerlink" href="#mergewith" title="Permanent link">&para;</a></h2>
+<p>顾名思义，是可以将上游发布者和下游发布者所发送的值合并在一个<code>Sequence</code>中。</p>
+<h2 id="combinelatest"><code>combineLatest</code><a class="headerlink" href="#combinelatest" title="Permanent link">&para;</a></h2>
+<p>该操作符则可以结合两个不同类型的发布者，比如<code>Int</code>和<code>String</code>的两种发布者，最终出来的结果则是一个元组。</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>有一个问题，在<code>combineLatest</code>发送值之前，原发布者和传递给<code>combineLatest</code>的每一个发布者必须至少发送一个值。
+比如：A发了1，B发了a，那么结果就是(1,a), 但如果B又发了b，那么结果则是(1,b)，但这时候A又发了2，那么接下来的结果就是(2,b)</p>
+</div>
+<h2 id="zip"><code>Zip</code><a class="headerlink" href="#zip" title="Permanent link">&para;</a></h2>
+<p>与<code>Swift</code>标准库的<code>Zip</code>工作原理类似，它会等待原发布者和所绑定的发布者发出值，并且会整合成一个单一的元组发出。如果只有一个发布者发送了值，另一个没有发出，那么<code>zip</code>操作符则会一直等待，直到两个操作符都发出<code>.finished</code>事件之后才会停止等待。</p>
 
 
 
