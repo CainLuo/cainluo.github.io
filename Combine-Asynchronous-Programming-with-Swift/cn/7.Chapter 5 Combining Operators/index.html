@@ -7180,11 +7180,11 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    预置
+  <a href="#prepend" class="md-nav__link">
+    prepend
   </a>
   
-    <nav class="md-nav" aria-label="预置">
+    <nav class="md-nav" aria-label="prepend">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -7214,11 +7214,11 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    附加
+  <a href="#append" class="md-nav__link">
+    append
   </a>
   
-    <nav class="md-nav" aria-label="附加">
+    <nav class="md-nav" aria-label="append">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -7248,7 +7248,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     高级组合
   </a>
   
@@ -7289,14 +7289,14 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     关键点
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     接下来去哪？
   </a>
   
@@ -7769,11 +7769,11 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    预置
+  <a href="#prepend" class="md-nav__link">
+    prepend
   </a>
   
-    <nav class="md-nav" aria-label="预置">
+    <nav class="md-nav" aria-label="prepend">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -7803,11 +7803,11 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    附加
+  <a href="#append" class="md-nav__link">
+    append
   </a>
   
-    <nav class="md-nav" aria-label="附加">
+    <nav class="md-nav" aria-label="append">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -7837,7 +7837,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     高级组合
   </a>
   
@@ -7878,14 +7878,14 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     关键点
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     接下来去哪？
   </a>
   
@@ -7913,8 +7913,8 @@
 <p>随着你更多地了解每个操作符的功能以及如何选择适合你需要的操作符，你的代码将变得更有能力，你的技能将使你能够解锁新的发布者组成水平。</p>
 <h2 id="_1">开始吧<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <p>你可以在<code>projects/Starter.playground</code>文件夹中找到本章的启动<code>Playground</code>。在本章中，你将向你的<code>Playground</code>添加代码并运行它，以了解各种操作符如何创建不同的发布者及其事件的组合。</p>
-<h2 id="_2">预置<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>在这里，你将从一组操作符慢慢开始，这些操作符都是关于在发布者的开头预置值的。换句话说，你将使用它们来添加值，这些值会在你的原始发布者的任何值之前发出。</p>
+<h2 id="prepend"><code>prepend</code><a class="headerlink" href="#prepend" title="Permanent link">&para;</a></h2>
+<p>在这里，你将从一组操作符慢慢开始，这些操作符都是关于在发布者的开头<code>prepend</code>值的。换句话说，你将使用它们来添加值，这些值会在你的原始发布者的任何值之前发出。</p>
 <p>在本节中，你将学习<code>prepend(Output...)</code>、<code>prepend(Sequence)</code>和<code>prepend(Publisher)</code>。</p>
 <h3 id="prependoutput"><code>prepend(Output...)</code><a class="headerlink" href="#prependoutput" title="Permanent link">&para;</a></h3>
 <p>这个<code>prepend</code>的变体使用<code>...</code>语法接收一个可变的值列表。这意味着它可以接受任何数量的值，只要它们与原始发布者的<code>Output</code>类型相同。</p>
@@ -7933,7 +7933,7 @@
 </code></pre></div>
 <p>在上述代码中，你：</p>
 <ol>
-<li>创建一个发射数字<code>3 4</code>的发布者。</li>
+<li>创建一个发送数字<code>3 4</code>的发布者。</li>
 <li>使用<code>prepend</code>在发布者自己的值之前添加数字<code>1</code>和<code>2</code>。</li>
 </ol>
 <p>运行你的<code>Playground</code>。你应该在调试控制台看到以下内容：</p>
@@ -7962,7 +7962,7 @@
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>这里的操作顺序很关键。最后的预置首先影响到上游，也就是说<code>-1</code>和<code>0</code>被预置，然后是<code>1</code>和<code>2</code>，最后是原始发布者的值。</p>
+<p>这里的操作顺序很关键。最后的<code>prepend</code>首先影响到上游，也就是说<code>-1</code>和<code>0</code>被<code>prepend</code>，然后是<code>1</code>和<code>2</code>，最后是原始发布者的值。</p>
 </div>
 <h3 id="prependsequence"><code>prepend(Sequence)</code><a class="headerlink" href="#prependsequence" title="Permanent link">&para;</a></h3>
 <p>这个变化的<code>prepend</code>与前面的相似，不同的是它接受任何符合<code>Sequence</code>的对象作为输入。例如, 它可以接受一个<code>Array</code>或一个<code>Set</code>.</p>
@@ -7982,8 +7982,8 @@
 </code></pre></div>
 <p>在这个代码中，你：</p>
 <ol>
-<li>创建一个发射数字<code>5</code>、<code>6</code>和<code>7</code>的发布者。</li>
-<li>将<code>prepend(Sequence)</code>链接到原始发布者两次。一次从<code>Array</code>中预置数值，第二次从<code>Set</code>中预置数值。</li>
+<li>创建一个发送数字<code>5</code>、<code>6</code>和<code>7</code>的发布者。</li>
+<li>将<code>prepend(Sequence)</code>链接到原始发布者两次。一次从<code>Array</code>中<code>prepend</code>数值，第二次从<code>Set</code>中<code>prepend</code>数值。</li>
 </ol>
 <p>运行<code>Playground</code>。你的输出应该与下面类似：</p>
 <div class="highlight"><pre><span></span><code>——— Example of: prepend(Sequence) ———
@@ -8020,9 +8020,9 @@
 6
 7
 </code></pre></div>
-<p>正如你所看到的，现在有三个新的值被预置在之前的输出之前--<code>6</code>、<code>8</code>和<code>10</code>，这是在<code>6</code>和<code>11</code>之间以<code>2</code>为单位跨度的结果。</p>
+<p>正如你所看到的，现在有三个新的值被<code>prepend</code>在之前的输出之前--<code>6</code>、<code>8</code>和<code>10</code>，这是在<code>6</code>和<code>11</code>之间以<code>2</code>为单位跨度的结果。</p>
 <h3 id="prependpublisher"><code>prepend(Publisher)</code><a class="headerlink" href="#prependpublisher" title="Permanent link">&para;</a></h3>
-<p>前面的两个操作符将数值列表预置到一个现有的发布者上。但是如果你有两个不同的发布者，并且你想把它们的值粘在一起，怎么办？你可以使用<code>prepend(Publisher)</code>将第二个发布者发出的值添加到原发布者的值之前。</p>
+<p>前面的两个操作符将数值列表<code>prepend</code>到一个现有的发布者上。但是如果你有两个不同的发布者，并且你想把它们的值粘在一起，怎么办？你可以使用<code>prepend(Publisher)</code>将第二个发布者发出的值添加到原发布者的值之前。</p>
 <p><img alt="img" src="../../graphics/img38.png" /></p>
 <p>通过在你的<code>Playground</code>上添加以下内容来尝试上面的例子：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;prepend(Publisher)&quot;</span><span class="p">)</span> <span class="p">{</span>
@@ -8081,15 +8081,15 @@
 1
 2
 </code></pre></div>
-<p>等等，什么？为什么这里只有两个数字从<code>publisher2</code>发射出来？你一定在想...嘿，<code>Shai</code>，你刚才不是说数值应该预置到现有的发布者上吗？</p>
-<p>那么，想想看--<code>Combine</code>怎么能知道被预置的发布者<code>publisher2</code>已经完成了数值的发送呢？它不知道，因为它已经发射了数值，但没有完成事件。出于这个原因，一个预置的发布者必须完成，这样<code>Combine</code>就知道是时候切换到主发布者了。</p>
+<p>等等，什么？为什么这里只有两个数字从<code>publisher2</code>发送出来？你一定在想...嘿，<code>Shai</code>，你刚才不是说数值应该<code>prepend</code>到现有的发布者上吗？</p>
+<p>那么，想想看--<code>Combine</code>怎么能知道被<code>prepend</code>的发布者<code>publisher2</code>已经完成了数值的发送呢？它不知道，因为它已经发送了数值，但没有完成事件。出于这个原因，一个<code>prepend</code>的发布者必须完成，这样<code>Combine</code>就知道是时候切换到主发布者了。</p>
 <p>在下面这行之后：</p>
 <div class="highlight"><pre><span></span><code><span class="n">publisher2</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </code></pre></div>
 <p>加上这个：</p>
 <div class="highlight"><pre><span></span><code><span class="n">publisher2</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">completion</span><span class="p">:</span> <span class="p">.</span><span class="n">finished</span><span class="p">)</span>
 </code></pre></div>
-<p>Combine现在知道它可以处理来自<code>publisher1</code>的排放，因为<code>publisher2</code>已经完成它的工作。</p>
+<p>Combine现在知道它可以处理来自<code>publisher1</code>的发送，因为<code>publisher2</code>已经完成它的工作。</p>
 <p>再次运行你的<code>Playground</code>；这次你应该看到预期的输出：</p>
 <div class="highlight"><pre><span></span><code>——— Example of: prepend(Publisher) #2 ———
 1
@@ -8097,10 +8097,10 @@
 3
 4
 </code></pre></div>
-<h2 id="_3">附加<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<p>下一组操作符处理的是将发布者发出的事件与其他值连接起来。但在这种情况下，你要处理的是追加而不是预追加，使用<code>append(Output...)</code>、<code>append(Sequence)</code>和<code>append(Publisher)</code>。这些操作符的工作原理与它们的<code>prepend</code>类似。</p>
+<h2 id="append"><code>append</code><a class="headerlink" href="#append" title="Permanent link">&para;</a></h2>
+<p>下一组操作符处理的是将发布者发出的事件与其他值连接起来。但在这种情况下，你要处理的是<code>append</code>而不是<code>prepend</code>，使用<code>append(Output...)</code>、<code>append(Sequence)</code>和<code>append(Publisher)</code>。这些操作符的工作原理与它们的<code>prepend</code>类似。</p>
 <h3 id="appendoutput"><code>append(Output...)</code><a class="headerlink" href="#appendoutput" title="Permanent link">&para;</a></h3>
-<p><code>append(Output...)</code>的工作原理与<code>prepend</code>类似。它也接受一个<code>Output</code>类型的变量列表，但在原始发布者完成<code>.finished</code>事件后，再追加其项目。</p>
+<p><code>append(Output...)</code>的工作原理与<code>prepend</code>类似。它也接受一个<code>Output</code>类型的变量列表，但在原始发布者完成<code>.finished</code>事件后，再<code>append</code>其项目。</p>
 <p><img alt="img" src="../../graphics/img39.png" /></p>
 <p>在你的<code>Playground</code>上添加以下代码来实验这个操作符：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;append(Output...)&quot;</span><span class="p">)</span> <span class="p">{</span>
@@ -8117,7 +8117,7 @@
 </code></pre></div>
 <p>在上面的代码中，你：</p>
 <ol>
-<li>创建一个只发射一个值的发布者：<code>1</code>。</li>
+<li>创建一个只发送一个值的发布者：<code>1</code>。</li>
 <li>使用<code>append</code>两次，首先附加<code>2</code>和<code>3</code>，然后附加<code>4</code>。</li>
 </ol>
 <p>想一想这段代码--你认为输出会是什么？</p>
@@ -8129,7 +8129,7 @@
 4
 </code></pre></div>
 <p>附加的工作方式与你所期望的完全一样，每个<code>append</code>都要等待上游完成，然后再把自己的工作加入其中。</p>
-<p>这意味着上游必须完成，否则追加就不会发生，因为<code>Combine</code>不可能知道前一个发布者已经完成了所有的值。</p>
+<p>这意味着上游必须完成，否则<code>append</code>就不会发生，因为<code>Combine</code>不可能知道前一个发布者已经完成了所有的值。</p>
 <p>为了验证这一行为，请添加下面的例子：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;append(Output...) #2&quot;</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// 1</span>
@@ -8151,7 +8151,7 @@
 <li><code>publisher</code>现在是一个<code>PassthroughSubject</code>，这让你可以手动发送值给它。</li>
 <li>你向<code>PassthroughSubject</code>发送<code>1</code>和<code>2</code>。</li>
 </ol>
-<p>再次运行你的<code>Playground</code>，你会看到只有发送到<code>publisher</code>的值被发射出来：</p>
+<p>再次运行你的<code>Playground</code>，你会看到只有发送到<code>publisher</code>的值被发送出来：</p>
 <div class="highlight"><pre><span></span><code>——— Example of: append(Output...) #2 ———
 1
 2
@@ -8167,9 +8167,9 @@
 4
 5
 </code></pre></div>
-<p>这个行为对于整个<code>append</code>操作符系列是相同的；除非前一个发布者发送一个<code>.finished</code>完成事件，否则不会发生追加操作。</p>
+<p>这个行为对于整个<code>append</code>操作符系列是相同的；除非前一个发布者发送一个<code>.finished</code>完成事件，否则不会发生<code>append</code>操作。</p>
 <h3 id="appendsequence"><code>append(Sequence)</code><a class="headerlink" href="#appendsequence" title="Permanent link">&para;</a></h3>
-<p>这个<code>append</code>的变种是接收任何符合<code>Sequence</code>的对象，并在原始发布者的所有值发出后追加其值。</p>
+<p>这个<code>append</code>的变种是接收任何符合<code>Sequence</code>的对象，并在原始发布者的所有值发出后<code>append</code>其值。</p>
 <p><img alt="img" src="../../graphics/img40.png" /></p>
 <p>在你的<code>Playground</code>上添加以下内容来实验这个操作符：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;append(Sequence)&quot;</span><span class="p">)</span> <span class="p">{</span>
@@ -8186,7 +8186,7 @@
 </code></pre></div>
 <p>这段代码类似于上一节中的<code>prepend(Sequence)</code>例子。你：</p>
 <ol>
-<li>创建一个发射<code>1</code>、<code>2</code>和<code>3</code>的发布者。</li>
+<li>创建一个发送<code>1</code>、<code>2</code>和<code>3</code>的发布者。</li>
 <li>添加一个<code>Array</code>，其值为<code>4</code>和<code>5</code>（有序）。</li>
 <li>添加一个<code>Set</code>，其值为<code>6</code>和<code>7</code>（无序）。</li>
 <li>添加一个<code>Strideable</code>，在<code>8</code>和<code>11</code>之间以<code>2</code>为步长进行跳跃。</li>
@@ -8232,13 +8232,13 @@
 3
 4
 </code></pre></div>
-<h2 id="_4">高级组合<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
-<p>在这一点上，你对附加和预置值、序列、甚至整个发布者都有所了解。</p>
+<h2 id="_2">高级组合<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>在这一点上，你对附加和<code>prepend</code>值、序列、甚至整个发布者都有所了解。</p>
 <p>下一节将深入探讨一些与组合不同发布者有关的更复杂的操作符。尽管它们相对复杂，但它们也是一些对发布者组合最有用的操作符。值得花点时间来熟悉它们的工作方式。</p>
 <h3 id="switchtolatest"><code>switchToLatest</code><a class="headerlink" href="#switchtolatest" title="Permanent link">&para;</a></h3>
 <p>既然本节包括了<code>Combine</code>中一些比较复杂的组合操作符，为什么不从最复杂的一个开始呢？</p>
-<p>开个玩笑，<code>switchToLatest</code>很复杂，但非常有用。它可以让你在飞行中切换整个发布者的订阅，同时取消待定的发布者订阅，从而切换到最新的发布者。</p>
-<p>你只能在那些本身就发射了发布者的发布者上使用它。</p>
+<p>开个玩笑，<code>switchToLatest</code>很复杂，但非常有用。它可以让你在运行中切换整个发布者的订阅，同时取消待定的发布者订阅，从而切换到最新的发布者。</p>
+<p>你只能在那些本身就发送了发布者的发布者上使用它。</p>
 <p><img alt="img" src="../../graphics/img42.png" /></p>
 <p>在你的<code>Playground</code>上添加以下代码，对你在上图中看到的例子进行实验：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;switchToLatest&quot;</span><span class="p">)</span> <span class="p">{</span>
@@ -8374,8 +8374,8 @@ image: receive finished
 <p><img alt="img" src="../../graphics/img45.png" /></p>
 <p>你应该看到两个加载的图像--你可能需要滚动才能看到这两个图像。</p>
 <h3 id="mergewith"><code>merge(with:)</code><a class="headerlink" href="#mergewith" title="Permanent link">&para;</a></h3>
-<p>在本章结束前，你将用三个操作符来总结，它们的重点是结合不同发布者的排放。你将从<code>merge(with:)</code>开始。</p>
-<p>这个操作符将来自同一类型的不同发布者的排放物交织在一起，就像这样：</p>
+<p>在本章结束前，你将用三个操作符来总结，它们的重点是结合不同发布者的发送。你将从<code>merge(with:)</code>开始。</p>
+<p>这个操作符将来自同一类型的不同发布者的发送值交织在一起，就像这样：</p>
 <p><img alt="img" src="../../graphics/img46.png" /></p>
 <p>要尝试这个例子，请在你的<code>Playground</code>上添加以下代码：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;merge(with:)&quot;</span><span class="p">)</span> <span class="p">{</span>
@@ -8424,8 +8424,8 @@ image: receive finished
 Completed
 </code></pre></div>
 <h3 id="combinelatest"><code>combineLatest</code><a class="headerlink" href="#combinelatest" title="Permanent link">&para;</a></h3>
-<p><code>combineLatest</code>是另一个操作符，让你结合不同的发布者。它还可以让你结合不同价值类型的发布者，这可能是非常有用的。然而，它不是将所有发布者的排放交织在一起，而是在任何一个发布者排放出一个值的时候，发射一个包含所有发布者的最新值的元组。</p>
-<p>但有一个问题。在<code>combineLatest</code>本身发射任何值之前，原发布者和传递给<code>combineLatest</code>的每一个发布者必须至少发射一个值。</p>
+<p><code>combineLatest</code>是另一个操作符，让你结合不同的发布者。它还可以让你结合不同价值类型的发布者，这可能是非常有用的。然而，它不是将所有发布者的发送交织在一起，而是在任何一个发布者发送出一个值的时候，发送一个包含所有发布者的最新值的元组。</p>
+<p>但有一个问题。在<code>combineLatest</code>本身发送任何值之前，原发布者和传递给<code>combineLatest</code>的每一个发布者必须至少发送一个值。</p>
 <p><img alt="img" src="../../graphics/img47.png" /></p>
 <p>在你的<code>Playground</code>上添加以下代码来尝试这个操作符：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;combineLatest&quot;</span><span class="p">)</span> <span class="p">{</span>
@@ -8461,7 +8461,7 @@ Completed
 <p>这段代码再现了上述图表。你：</p>
 <ol>
 <li>创建两个<code>PassthroughSubjects</code>。第一个接受无错误的整数，而第二个接受无错误的字符串。</li>
-<li>将<code>publisher2</code>的最新排放与<code>publisher1</code>结合起来。你可以使用<code>combineLatest</code>的不同重载来合并多达四个不同的发布者。</li>
+<li>将<code>publisher2</code>的最新发出值与<code>publisher1</code>结合起来。你可以使用<code>combineLatest</code>的不同重载来合并多达四个不同的发布者。</li>
 <li>将<code>1</code>和<code>2</code>发送给<code>发布者1</code>，然后将<code>"a"</code>和<code>"b"</code>发送给<code>publisher2</code>，然后将<code>3</code>发送给<code>publisher1</code>，最后将<code>"c"</code>发送给<code>publisher2</code>。</li>
 <li>向<code>publisher1</code>和<code>publisher2</code>发送一个完成事件。</li>
 </ol>
@@ -8473,11 +8473,11 @@ P1: 3, P2: b
 P1: 3, P2: c
 Completed
 </code></pre></div>
-<p>你可能注意到，从<code>publisher1</code>发出的<code>1</code>从未通过<code>combineLatest</code>推送。这是因为<code>combineLatest</code>只有在每个发布者至少发出一个值时才开始发射组合。在这里，只有在<code>"a"</code>发射之后，这个条件才是真的，这时<code>publisher1</code>最新发射的值是<code>2</code>。这就是为什么第一次发射是<code>(2, "a")</code>。</p>
+<p>你可能注意到，从<code>publisher1</code>发出的<code>1</code>从未通过<code>combineLatest</code>推送。这是因为<code>combineLatest</code>只有在每个发布者至少发出一个值时才开始发送组合。在这里，只有在<code>"a"</code>发送之后，这个条件才是真的，这时<code>publisher1</code>最新发送的值是<code>2</code>。这就是为什么第一次发送是<code>(2, "a")</code>。</p>
 <h3 id="zip"><code>zip</code><a class="headerlink" href="#zip" title="Permanent link">&para;</a></h3>
 <p>你将以本章的最后一个操作符结束：<code>zip</code>。你可能会从<code>Swift</code>标准库中的<code>Sequence</code>类型的同名方法中认出这个操作。</p>
-<p>这个操作符的工作原理类似，在相同的索引中发出成对的值的图元。它等待每个发布者发出一个项目，然后在所有发布者在当前索引处发出一个值之后，发出一个单一的项目元组。</p>
-<p>这意味着，如果你正在压缩两个发布者，每次两个发布者都发出一个新的值时，你会得到一个单一的元组。</p>
+<p>这个操作符的工作原理类似，在相同的索引中发出成对的值的元组。它等待每个发布者发出一个项目，然后在所有发布者在当前索引处发出一个值之后，发出一个单一的项目元组。</p>
+<p>这意味着，如果你正在<code>zip</code>两个发布者，每次两个发布者都发出一个新的值时，你会得到一个单一的元组。</p>
 <p><img alt="img" src="../../graphics/img48.png" /></p>
 <p>在你的<code>Playground</code>上添加以下代码来尝试这个例子：</p>
 <div class="highlight"><pre><span></span><code><span class="n">example</span><span class="p">(</span><span class="n">of</span><span class="p">:</span> <span class="s">&quot;zip&quot;</span><span class="p">)</span> <span class="p">{</span>
@@ -8511,7 +8511,7 @@ Completed
 <p>在这个最后的例子中，你：</p>
 <ol>
 <li>创建两个<code>PassthroughSubject</code>，第一个接受整数，第二个接受字符串。两者都不能发出错误。</li>
-<li>将<code>publisher1</code>和<code>publisher2</code>拉上拉链，一旦它们各自发出一个新的值，就将它们的排放配对。</li>
+<li>将<code>publisher1</code>和<code>publisher2</code>使用<code>zip</code>操作符绑定，一旦它们各自发出一个新的值，就将它们的发送配对。</li>
 <li>把<code>1</code>和<code>2</code>送到<code>publisher1</code>，然后把<code>"a"</code>和<code>"b"</code>送到<code>publisher2</code>，然后把<code>3</code>再送到<code>publisher1</code>，最后把<code>"c "</code>和<code>"d"</code>送到<code>publisher2</code>。</li>
 <li>完成<code>publisher1</code>和<code>publisher2</code>。</li>
 </ol>
@@ -8522,18 +8522,18 @@ P1: 2, P2: b
 P1: 3, P2: c
 Completed
 </code></pre></div>
-<p>注意每个发射的值是如何"等待"另一个压缩的发布者发射一个值的。<code>1</code>等待第二个发布者的第一次发射，所以你得到<code>(1, "a")</code>。同样地，<code>2</code>等待第二个发布者的下一个发射，所以你得到<code>(2, "b")</code>。从第二个发布者发出的最后一个值，<code>"d"</code>，被忽略，因为没有从第一个发布者发出的相应的值可以配对。</p>
-<h2 id="_5">关键点<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>注意每个发送的值是如何等待另一个<code>zip</code>的发布者发送一个值的。<code>1</code>等待第二个发布者的第一次发送，所以你得到<code>(1, "a")</code>。同样地，<code>2</code>等待第二个发布者的下一个发送，所以你得到<code>(2, "b")</code>。从第二个发布者发出的最后一个值，<code>"d"</code>，被忽略，因为没有从第一个发布者发出的相应的值可以配对。</p>
+<h2 id="_3">关键点<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <p>在这一章中，你学会了如何将不同的发布者，从它们中创造出有意义的组合。更具体地说，你学到了以下内容。</p>
 <ul>
-<li>你可以使用<code>prepend</code>和<code>append</code>系列的操作符，在不同的发布者之前或之后增加来自一个发布者的排放。</li>
-<li>虽然<code>switchToLatest</code>是相对复杂的，但它非常有用。它接收一个发布者的排放，切换到最新的发布者，并取消对之前发布者的订阅。</li>
+<li>你可以使用<code>prepend</code>和<code>append</code>系列的操作符，在不同的发布者之前或之后增加来自一个发布者的发送。</li>
+<li>虽然<code>switchToLatest</code>是相对复杂的，但它非常有用。它接收一个发布者的发送，切换到最新的发布者，并取消对之前发布者的订阅。</li>
 <li><code>merge(with:)</code>让你从多个发布者中交错取值。</li>
 <li><code>combineLatest</code>只要任何一个发布者发布了一个值，一旦所有合并的发布者至少发布了一个值，就会发布所有合并发布者的最新值。</li>
-<li><code>zip</code>对来自不同发布者的排放进行配对，在所有发布者都排放了一个值之后排放一个配对的元组。</li>
-<li>你可以混合组合操作符，在发布者和他们的排放之间建立有趣和复杂的关系。</li>
+<li><code>zip</code>对来自不同发布者的发送进行配对，在所有发布者都发送了一个值之后发送一个配对的元组。</li>
+<li>你可以混合组合操作符，在发布者和他们的发送之间建立有趣和复杂的关系。</li>
 </ul>
-<h2 id="_6">接下来去哪？<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<h2 id="_4">接下来去哪？<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
 <p>这已经是相当长的一章了，但它包括了<code>Combine</code>所提供的一些最有用的和涉及的操作符。为你能走到这一步而点赞!</p>
 <p>这一次没有挑战。试着用你到目前为止学到的所有操作符进行实验，有很多用例可以玩。</p>
 <p>在接下来的两章里，你还有两组操作符要学习。"时间操纵操作符"和"序列操作符"，所以请继续阅读下一章！</p>
