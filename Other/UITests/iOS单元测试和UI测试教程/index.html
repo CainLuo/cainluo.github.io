@@ -8040,15 +8040,15 @@
 <li>及时性*。理想情况下，你应该在编写测试的生产代码之前编写你的测试。这就是所谓的测试驱动的开发。</li>
 </ul>
 <p>遵循FIRST原则将保持你的测试清晰和有帮助，而不是变成你的应用程序的路障。</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/devices_iphone-throwing-tests-300x300.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="img" src="https://koenig-media.raywenderlich.com/uploads/2021/03/devices_iphone-throwing-tests-300x300.png" /></a></p>
+<p><img alt="img" src="../images/1.png" /></p>
 <h2 id="xcode">Xcode中的单元测试<a class="headerlink" href="#xcode" title="Permanent link">&para;</a></h2>
 <p>测试导航器*提供了最简单的方法来处理测试。您将使用它来创建测试目标并针对您的应用程序运行测试。</p>
 <h3 id="_4">创建一个单元测试目标<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
 <p>打开<em>BullsEye</em>项目，按<em>Command-6</em>打开Test navigator。</p>
 <p>点击左下角的<em>+</em>，然后从菜单中选择<em>New Unit Test Target...</em>。</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_1_Introduction_NewUnitTestTarget_annotated-1.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Test navigator" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_1_Introduction_NewUnitTestTarget_annotated-1-356x500.png" /></a></p>
+<p><img alt="img" src="../images/2.png" /></p>
 <p>接受默认名称，<em>BullsEyeTests</em>，并输入<em>com.raywenderlich</em>作为<em>组织标识符</em>。当<em>测试包</em>出现在测试导航器中时，通过点击披露三角展开它，并点击<em>BullsEyeTests</em>在编辑器中打开它。</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_2_Introduction_TestFile_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Template" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_2_Introduction_TestFile_annotated-650x260.png" /></a></p>
+<p><img alt="img" src="../images/3.png" /></p>
 <p>默认模板导入了测试框架<em>XCTest</em>，并定义了<code>XCTestCase</code>的<code>BullsEyeTests</code>子类，有<code>setUpWithError()</code>、<code>tearDownWithError()</code>和示例测试方法。</p>
 <p>你可以通过三种方式运行测试。</p>
 <ol>
@@ -8056,11 +8056,11 @@
 <li>点击测试导航器中的箭头按钮。</li>
 <li>点击沟槽中的钻石按钮。</li>
 </ol>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_3_Introduction_RunningTest_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Running Tests" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_3_Introduction_RunningTest_annotated-650x169.png" /></a></p>
+<p><img alt="img" src="../images/4.png" /></p>
 <p>你也可以通过点击测试导航器中的钻石或水沟中的钻石来运行一个单独的测试方法。</p>
 <p>试着用不同的方法来运行测试，以了解它需要多长时间，以及它看起来是什么样子。样本测试还没有做任何事情，所以它们运行得非常快</p>
 <p>当所有的测试都成功后，钻石会变成绿色，并显示复选标记。点击<code>testPerformanceExample()</code>末尾的灰色钻石，打开性能结果：</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_4_Intorduction_PerformanceTest.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Performance Results" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_4_Intorduction_PerformanceTest-650x247.png" /></a></p>
+<p><img alt="img" src="../images/5.png" /></p>
 <p>在本教程中，你不需要<code>testPerformanceExample()</code>或<code>testExample()</code>，所以删除它们。</p>
 <h3 id="xctassert">使用XCTAssert来测试模型<a class="headerlink" href="#xctassert" title="Permanent link">&para;</a></h3>
 <p>首先，你将使用<code>XCTAssert</code>函数来测试BullsEye模型的一个核心功能。<code>BullsEyeGame</code>是否正确计算了一个回合的分数？</p>
@@ -8104,7 +8104,7 @@
 <li><em>"然后"。这一部分你将断言你所期望的结果，并在测试</em>失败时打印出一个信息。在本例中，<code>sut.scoreRound</code>应该等于95，因为它是100-5。</li>
 </ol>
 <p>通过点击水沟中的钻石图标或在测试导航器中运行测试。这将建立并运行应用程序，钻石图标将变成一个绿色的复选标记 你还会看到Xcode上出现一个瞬间的弹出窗口，它也表示成功，看起来像这样。</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_5_FirstTest_Success.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Test Succeeded" src="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_5_FirstTest_Success-319x320.png" /></a></p>
+<p><img alt="img" src="../images/6.png" /></p>
 <p><em>注意</em>。要查看<em>XCTestAssertions</em>的完整列表，请到<a href="https://developer.apple.com/documentation/xctest#2870839">Apple's Assertions Listed by Category</a>。</p>
 <h3 id="_6">调试一个测试<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
 <p>在 "BullsEyeGame "中故意设置了一个错误，现在你将练习如何找到它。为了看到这个错误，你将创建一个测试，从<em>given</em>部分的`targetValue'中减去*5，其他部分保持不变。</p>
@@ -8122,13 +8122,13 @@
 </code></pre></div>
 <p><code>guess</code>和<code>targetValue</code>之间的差异仍然是5，所以分数仍然应该是95。</p>
 <p>在断点导航器中，添加一个<em>测试失败断点</em>。当一个测试方法发布一个失败的断言时，这将停止测试运行。</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_6_Debugging_Breakpoint_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Adding a Test Failure Breakpoint" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_6_Debugging_Breakpoint_annotated-356x500.png" /></a></p>
+<p><img alt="img" src="../images/7.png" /></p>
 <p>运行你的测试，它应该在<code>XCTAssertEqual</code>行停止，测试失败。</p>
 <p>在调试控制台检查<code>sut</code>和<code>guess</code>：</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_7_Debugging_Console_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Inspecting a Test Failure" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_7_Debugging_Console_annotated-650x391.png" /></a></p>
+<p><img alt="img" src="../images/8.png" /></p>
 <p><code>guess</code>是<code>targetValue - 5</code>，但<code>scoreRound</code>是105，不是95!</p>
 <p>为了进一步调查，使用正常的调试过程。在<em>when</em>语句处设置一个断点，同时在<em>BullsEyeGame.swift</em>的<code>check(guess:)</code>内设置一个断点，在那里创建<code>difference</code>。然后，再次运行测试，跨过<code>let difference</code>语句，检查应用程序中<code>difference</code>的值：</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_8_Debugging_Console2_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Debug Console" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_8_Debugging_Console2_annotated-589x500.png" /></a></p>
+<p><img alt="img" src="../images/9.png" /></p>
 <p>问题是<code>difference</code>是负的，所以分数是100-（-5）。为了解决这个问题，你应该使用<code>difference</code>的绝对值。在<code>check(guess:)</code>中，取消对正确行的注释，删除不正确的一行。</p>
 <p>删除两个断点，并再次运行测试以确认它现在成功了。</p>
 <h3 id="xctestexpectation">使用<code>XCTestExpectation</code>来测试异步操作<a class="headerlink" href="#xctestexpectation" title="Permanent link">&para;</a></h3>
@@ -8235,7 +8235,7 @@
   <span class="s">&quot;Network connectivity needed for this test.&quot;</span><span class="p">)</span>
 </code></pre></div>
 <p><code>XCTSkipUnless(_:_:)</code>在没有网络的情况下跳过测试。通过禁用你的网络连接并运行测试来检查这一点。你会看到测试旁边的水沟里有一个新的图标，表示测试既没有通过也没有失败。</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_9_Skipping.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Test Skipped" src="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_9_Skipping-650x84.png" /></a></p>
+<p><img alt="img" src="../images/10.png" /></p>
 <p>再次启用你的网络连接，重新运行测试，以确保在正常情况下仍然成功。在<code>testApiCallCompletes()</code>的开头添加同样的代码。</p>
 <h2 id="_9">伪造对象和交互<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
 <p>异步测试可以让你相信你的代码会给异步API产生正确的输入。你可能还想测试一下，当你的代码从<code>URLSession</code>接收输入时，它是否能正确工作，或者是否能正确更新<code>UserDefaults</code>数据库或iCloud容器。</p>
@@ -8244,7 +8244,7 @@
 <h3 id="_10">伪造来自存根的输入<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
 <p>现在，检查应用程序的<code>getRandomNumber(completion:)</code>是否正确地解析了由会话下载的数据。你将用存根数据伪造<code>BullsEyeGame</code>的会话。</p>
 <p>进入测试导航器，点击<em>+</em>，选择<em>新建单元测试类...</em>。给它取名为<em>BullsEyeFakeTests</em>，把它保存在<em>BullsEyeTests</em>目录下，并把目标设为<em>BullsEyeTests</em>。</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_10_Stub_NewTestClass_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: New Unit Test Class" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_10_Stub_NewTestClass_annotated-424x500.png" /></a></p>
+<p><img alt="img" src="../images/11.png" /></p>
 <p>在 "import "语句下方导入BullsEye应用模块：</p>
 <div class="highlight"><pre><span></span><code><span class="p">@</span><span class="n">testable</span> <span class="kd">import</span> <span class="nc">BullsEye</span>
 </code></pre></div>
@@ -8369,7 +8369,7 @@
 <h2 id="xcodeui">Xcode中的UI测试<a class="headerlink" href="#xcodeui" title="Permanent link">&para;</a></h2>
 <p>UI测试让您测试与用户界面的交互。UI测试的工作原理是通过查询找到一个应用程序的UI对象，合成事件，然后将事件发送到这些对象。该API使您能够检查一个UI对象的属性和状态，以比较它们与预期的状态。</p>
 <p>在测试导航器中，添加一个新的<em>UI测试目标</em>。检查要测试的<em>目标</em>是<em>BullsEye</em>，然后接受默认名称<em>BullsEyeUITests</em>。</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_11_UITests_NewUITestTarget_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: New UI Test Target" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_11_UITests_NewUITestTarget_annotated-345x500.png" /></a></p>
+<p><img alt="img" src="../images/12.png" /></p>
 <p>打开<em>BullsEyeUITests.swift</em>，在<code>BullsEyeUITests</code>类的顶部添加这个属性：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nv">app</span><span class="p">:</span> <span class="n">XCUIApplication</span><span class="p">!</span>
 </code></pre></div>
@@ -8384,7 +8384,7 @@
 <span class="p">}</span>
 </code></pre></div>
 <p>在<code>testGameStyleSwitch()</code>中打开一个新行，并点击编辑器窗口底部的红色<em>记录</em>按钮：</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_12_UITests_Record_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Recording a UI Test" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_12_UITests_Record_annotated-650x235.png" /></a></p>
+<p><img alt="img" src="../images/13.png" /></p>
 <p>这将在模拟器中打开应用程序的模式，将你的互动记录为测试命令。一旦应用程序加载，点击游戏风格开关的<em>滑动</em>段和<em>顶部标签</em>。再次点击Xcode <em>Record</em>按钮来停止记录。</p>
 <p>你现在在<code>testGameStyleSwitch()</code>中拥有以下三行：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">app</span> <span class="p">=</span> <span class="n">XCUIApplication</span><span class="p">()</span>
@@ -8393,7 +8393,7 @@
 </code></pre></div>
 <p>记录器已经创建了代码来测试你在应用程序中测试的相同动作。向游戏风格的分段控制和顶部的标签发送一个点击。你将使用这些作为基础来创建你自己的UI测试。如果你看到任何其他的语句，只需删除它们。</p>
 <p>第一行重复了你在<code>setUpWithError()</code>中创建的属性，所以删除这一行。你还不需要点击任何东西，所以也删除第2行和第3行末尾的<code>.tap()</code>。现在，打开<code>["幻灯片"]</code>旁边的小菜单，选择<code>segmentedControls.butts["Slide"]</code>。</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_13_UITests_ChangeRecording.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Changing Recording" src="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_13_UITests_ChangeRecording-650x145.png" /></a></p>
+<p><img alt="img" src="../images/14.png" /></p>
 <p>你应该剩下的是：</p>
 <div class="highlight"><pre><span></span><code><span class="n">app</span><span class="p">.</span><span class="n">segmentedControls</span><span class="p">.</span><span class="n">buttons</span><span class="p">[</span><span class="s">&quot;Slide&quot;</span><span class="p">]</span>
 <span class="n">app</span><span class="p">.</span><span class="n">staticTexts</span><span class="p">[</span><span class="s">&quot;Get as close as you can to: &quot;</span><span class="p">]</span>
@@ -8450,21 +8450,21 @@
 <li><code>XCTMemoryMetric</code>跟踪使用的物理内存的数量。</li>
 </ul>
 <p>运行测试，然后点击出现在<code>measure()</code>尾部闭合开始旁边的图标，查看统计数据。你可以改变<em>Metric</em>旁边的选定指标。</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_14_2_PerformanceTests_Result_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Viewing Performance Result" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_14_2_PerformanceTests_Result_annotated-650x246.png" /></a></p>
+<p><img alt="img" src="../images/15.png" /></p>
 <p>点击<em>设置基线</em>来设置一个参考时间。再次运行性能测试并查看结果--它可能比基线更好或更差。通过<em>编辑</em>按钮，你可以将基线重置为这个新的结果。</p>
 <p>基线是按设备配置存储的，所以你可以让同一个测试在几个不同的设备上执行。每个设备可以根据具体配置的处理器速度、内存等保持不同的基线。</p>
 <p>当你对一个应用程序进行修改，可能会影响到被测试方法的性能时，请再次运行性能测试，看看它与基线的比较情况。</p>
 <h2 id="_13">启用代码覆盖<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h2>
 <p>代码覆盖工具会告诉你，你的测试实际上在运行哪些应用程序的代码，所以你知道应用程序的哪些部分没有被测试--至少，还没有。</p>
 <p>要启用代码覆盖，请编辑该方案的<em>测试</em>动作，并在<em>选项</em>标签下勾选<em>收集覆盖</em>的复选框：</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_15_Coverage_GatherCoverage_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Enabling Coverage" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_15_Coverage_GatherCoverage_annotated-650x351.png" /></a></p>
+<p><img alt="img" src="../images/16.png" /></p>
 <p>用<em>Command-U</em>运行<em>所有</em>测试，然后用<em>Command-9</em>打开报告导航器。在该列表的最上面的项目下选择<em>覆盖率</em>：</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_16_Coverage_Log_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Code Coverage Report" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_16_Coverage_Log_annotated-650x159.png" /></a></p>
+<p><img alt="img" src="../images/17.png" /></p>
 <p>点击披露三角形可以看到<em>BullsEyeGame.swift</em>中的函数和闭包列表：</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_17_Coverage_Details.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Code Coverage Report Details" src="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_17_Coverage_Details-650x220.png" /></a></p>
+<p><img alt="img" src="../images/18.png" /></p>
 <p>滚动到<code>getRandomNumber(completion:)</code>，可以看到覆盖率为95.0%。</p>
 <p>点击该函数的箭头按钮，打开该函数的源文件。当你把鼠标移到右侧边栏的覆盖率注释上时，代码的部分会突出显示为绿色或红色：</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_18_Coverage_Code.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Coverage Highlights in Code Editor" src="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_18_Coverage_Code-650x384.png" /></a></p>
+<p><img alt="img" src="../images/19.png" /></p>
 <p>覆盖率注释显示了测试对每个代码部分的调用次数。没有被调用的部分用红色标注。</p>
 <h3 id="100">实现100%的覆盖率？<a class="headerlink" href="#100" title="Permanent link">&para;</a></h3>
 <p>你应该如何努力争取100%的代码覆盖率？只要谷歌一下"100%单元测试覆盖率"，你就会发现一系列支持和反对的论点，以及对"100%覆盖率"的定义的争论。反对的观点认为，最后10%-15%的覆盖率不值得努力。支持的观点认为最后的10%-15%是最重要的，<em>因为</em>它很难测试。在谷歌上搜索"难以单元测试的坏设计"，可以找到有说服力的论据，即<a href="https://www.toptal.com/qa/how-to-write-testable-code-and-why-it-matters">无法测试的代码是更深层次设计问题的标志</a>。</p>
