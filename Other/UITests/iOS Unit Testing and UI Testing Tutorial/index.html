@@ -8041,15 +8041,15 @@
 <li><em>Timely</em>: Ideally, you should write your tests before writing the production code they test. This is known as test-driven development.</li>
 </ul>
 <p>Following the FIRST principles will keep your tests clear and helpful, instead of turning into roadblocks for your app.</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/devices_iphone-throwing-tests-300x300.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="img" src="https://koenig-media.raywenderlich.com/uploads/2021/03/devices_iphone-throwing-tests-300x300.png" /></a></p>
+<p><img alt="img" src="../images/1.png" /></p>
 <h2 id="unit-testing-in-xcode">Unit Testing in Xcode<a class="headerlink" href="#unit-testing-in-xcode" title="Permanent link">&para;</a></h2>
 <p>The <em>Test navigator</em> provides the easiest way to work with tests. You’ll use it to create test targets and run tests against your app.</p>
 <h3 id="creating-a-unit-test-target">Creating a Unit Test Target<a class="headerlink" href="#creating-a-unit-test-target" title="Permanent link">&para;</a></h3>
 <p>Open the <em>BullsEye</em> project and press <em>Command-6</em> to open the Test navigator.</p>
 <p>Click <em>+</em> in the lower-left corner, then select <em>New Unit Test Target…</em> from the menu:</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_1_Introduction_NewUnitTestTarget_annotated-1.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Test navigator" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_1_Introduction_NewUnitTestTarget_annotated-1-356x500.png" /></a></p>
+<p><img alt="img" src="../images/2.png" /></p>
 <p>Accept the default name, <em>BullsEyeTests</em>, and enter <em>com.raywenderlich</em> as the <em>Organization Identifier</em>. When the <em>test bundle</em> appears in the Test navigator, expand it by clicking the disclosure triangle and click <em>BullsEyeTests</em> to open it in the editor.</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_2_Introduction_TestFile_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Template" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_2_Introduction_TestFile_annotated-650x260.png" /></a></p>
+<p><img alt="img" src="../images/3.png" /></p>
 <p>The default template imports the testing framework, <em>XCTest</em>, and defines a <code>BullsEyeTests</code>subclass of <code>XCTestCase</code>, with <code>setUpWithError()</code>, <code>tearDownWithError()</code> and example test methods.</p>
 <p>You can run the tests in three ways:</p>
 <ol>
@@ -8057,11 +8057,11 @@
 <li>Click the arrow button in the Test navigator.</li>
 <li>Click the diamond button in the gutter.</li>
 </ol>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_3_Introduction_RunningTest_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Running Tests" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_3_Introduction_RunningTest_annotated-650x169.png" /></a></p>
+<p><img alt="img" src="../images/4.png" /></p>
 <p>You can also run an individual test method by clicking its diamond in the Test navigator or in the gutter.</p>
 <p>Try the different ways to run tests to get a feeling for how long it takes and what it looks like. The sample tests don’t do anything yet, so they run really fast!</p>
 <p>When all tests have succeeded, the diamonds will turn green and show check marks. Click the gray diamond at the end of <code>testPerformanceExample()</code> to open the Performance Result:</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_4_Intorduction_PerformanceTest.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Performance Results" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_4_Intorduction_PerformanceTest-650x247.png" /></a></p>
+<p><img alt="img" src="../images/5.png" /></p>
 <p>You don’t need <code>testPerformanceExample()</code> or <code>testExample()</code> for this tutorial, so delete them.</p>
 <h3 id="using-xctassert-to-test-models">Using XCTAssert to Test Models<a class="headerlink" href="#using-xctassert-to-test-models" title="Permanent link">&para;</a></h3>
 <p>First, you’ll use <code>XCTAssert</code> functions to test a core function of BullsEye’s model: Does <code>BullsEyeGame</code> correctly calculate the score for a round?</p>
@@ -8105,7 +8105,7 @@
 <li><em>Then</em>: This is the section where you’ll assert the result you expect with a message that prints if the test <em>fails</em>. In this case, <code>sut.scoreRound</code> should equal 95, since it’s 100 − 5.</li>
 </ol>
 <p>Run the test by clicking the diamond icon in the gutter or in the Test navigator. This builds and runs the app, and the diamond icon will change to a green check mark! You’ll also see a momentary pop-up appear over Xcode that also indicates success that looks like this:</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_5_FirstTest_Success.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Test Succeeded" src="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_5_FirstTest_Success-319x320.png" /></a></p>
+<p><img alt="img" src="../images/6.png" /></p>
 <p><em>Note</em>: To see a full list of <em>XCTestAssertions</em>, go to <a href="https://developer.apple.com/documentation/xctest#2870839">Apple’s Assertions Listed by Category</a>.</p>
 <h3 id="debugging-a-test">Debugging a Test<a class="headerlink" href="#debugging-a-test" title="Permanent link">&para;</a></h3>
 <p>There’s a bug built into <code>BullsEyeGame</code> on purpose, and you’ll practice finding it now. To see the bug in action, you’ll create a test that <em>subtracts</em> 5 from <code>targetValue</code> in the <em>given</em> section and leaves everything else the same.</p>
@@ -8123,13 +8123,13 @@
 </code></pre></div>
 <p>The difference between <code>guess</code> and <code>targetValue</code> is still 5, so the score should still be 95.</p>
 <p>In the Breakpoint navigator, add a <em>Test Failure Breakpoint</em>. This stops the test run when a test method posts a failure assertion.</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_6_Debugging_Breakpoint_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Adding a Test Failure Breakpoint" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_6_Debugging_Breakpoint_annotated-356x500.png" /></a></p>
+<p><img alt="img" src="../images/7.png" /></p>
 <p>Run your test, and it should stop at the <code>XCTAssertEqual</code> line with a test failure.</p>
 <p>Inspect <code>sut</code> and <code>guess</code> in the debug console:</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_7_Debugging_Console_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Inspecting a Test Failure" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_7_Debugging_Console_annotated-650x391.png" /></a></p>
+<p><img alt="img" src="../images/8.png" /></p>
 <p><code>guess</code> is <code>targetValue − 5</code> but <code>scoreRound</code> is 105, not 95!</p>
 <p>To investigate further, use the normal debugging process: Set a breakpoint at the <em>when</em>statement and also one in <em>BullsEyeGame.swift</em>, inside <code>check(guess:)</code>, where it creates <code>difference</code>. Then, run the test again, and step over the <code>let difference</code> statement to inspect the value of <code>difference</code> in the app:</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_8_Debugging_Console2_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Debug Console" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_8_Debugging_Console2_annotated-589x500.png" /></a></p>
+<p><img alt="img" src="../images/9.png" /></p>
 <p>The problem is that <code>difference</code> is negative, so the score is 100 − (−5). To fix this, you should use the <em>absolute value</em> of <code>difference</code>. In <code>check(guess:)</code>, uncomment the correct line and delete the incorrect one.</p>
 <p>Remove the two breakpoints and run the test again to confirm that it now succeeds.</p>
 <h3 id="using-xctestexpectation-to-test-asynchronous-operations">Using XCTestExpectation to Test Asynchronous Operations<a class="headerlink" href="#using-xctestexpectation-to-test-asynchronous-operations" title="Permanent link">&para;</a></h3>
@@ -8236,7 +8236,7 @@
   <span class="s">&quot;Network connectivity needed for this test.&quot;</span><span class="p">)</span>
 </code></pre></div>
 <p><code>XCTSkipUnless(_:_:)</code> skips the test when no network is reachable. Check this by disabling your network connection and running the test. You’ll see a new icon in the gutter next to the test, indicating that the test neither passed nor failed. </p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_9_Skipping.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Test Skipped" src="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_9_Skipping-650x84.png" /></a></p>
+<p><img alt="img" src="../images/10.png" /></p>
 <p>Enable your network connection again and rerun the test to make sure that it still succeeds under normal conditions. Add the same code to the beginning of <code>testApiCallCompletes()</code>.</p>
 <h2 id="faking-objects-and-interactions">Faking Objects and Interactions<a class="headerlink" href="#faking-objects-and-interactions" title="Permanent link">&para;</a></h2>
 <p>Asynchronous tests give you confidence that your code generates correct input to an asynchronous API. You might also want to test that your code works correctly when it receives input from <code>URLSession</code>, or that it correctly updates the <code>UserDefaults</code> database or an iCloud container.</p>
@@ -8245,7 +8245,7 @@
 <h3 id="faking-input-from-stub">Faking Input From Stub<a class="headerlink" href="#faking-input-from-stub" title="Permanent link">&para;</a></h3>
 <p>Now, check that the app’s <code>getRandomNumber(completion:)</code> correctly parses data downloaded by the session. You’ll fake the session of <code>BullsEyeGame</code> with stubbed data.</p>
 <p>Go to the Test navigator, click <em>+</em> and choose <em>New Unit Test Class…</em>. Give it the name <em>BullsEyeFakeTests</em>, save it in the <em>BullsEyeTests</em> directory and set the target to <em>BullsEyeTests</em>.</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_10_Stub_NewTestClass_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: New Unit Test Class" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_10_Stub_NewTestClass_annotated-424x500.png" /></a></p>
+<p><img alt="img" src="../images/11.png" /></p>
 <p>Import the BullsEye app module just below the <code>import</code> statement:</p>
 <div class="highlight"><pre><span></span><code><span class="p">@</span><span class="n">testable</span> <span class="kd">import</span> <span class="nc">BullsEye</span>
 </code></pre></div>
@@ -8370,7 +8370,7 @@
 <h2 id="ui-testing-in-xcode">UI Testing in Xcode<a class="headerlink" href="#ui-testing-in-xcode" title="Permanent link">&para;</a></h2>
 <p>UI testing lets you test interactions with the user interface. UI testing works by finding an app’s UI objects with queries, synthesizing events and then sending the events to those objects. The API enables you to examine a UI object’s properties and state to compare them against the expected state.</p>
 <p>In the Test navigator, add a new <em>UI Test Target</em>. Check that the <em>Target to be Tested</em> is <em>BullsEye</em>, and then accept the default name <em>BullsEyeUITests</em>.</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_11_UITests_NewUITestTarget_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: New UI Test Target" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_11_UITests_NewUITestTarget_annotated-345x500.png" /></a></p>
+<p><img alt="img" src="../images/12.png" /></p>
 <p>Open <em>BullsEyeUITests.swift</em> and add this property at the top of the <code>BullsEyeUITests</code>class:</p>
 <div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nv">app</span><span class="p">:</span> <span class="n">XCUIApplication</span><span class="p">!</span>
 </code></pre></div>
@@ -8385,7 +8385,7 @@
 <span class="p">}</span>
 </code></pre></div>
 <p>Open a new line in <code>testGameStyleSwitch()</code> and click the red <em>Record</em> button at the bottom of the editor window:</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_12_UITests_Record_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Recording a UI Test" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_12_UITests_Record_annotated-650x235.png" /></a></p>
+<p><img alt="img" src="../images/13.png" /></p>
 <p>This opens the app in the simulator in a mode that records your interactions as test commands. Once the app loads, tap the <em>Slide</em> segment of the game style switch and the <em>top label</em>. Click the Xcode <em>Record</em> button again to stop the recording.</p>
 <p>You now have the following three lines in <code>testGameStyleSwitch()</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">app</span> <span class="p">=</span> <span class="n">XCUIApplication</span><span class="p">()</span>
@@ -8394,7 +8394,7 @@
 </code></pre></div>
 <p>The Recorder has created code to test the same actions you tested in the app. Send a tap to the game style segmented control and the top label. You’ll use those as a base to create your own UI test. If you see any other statements, just delete them.</p>
 <p>The first line duplicates the property you created in <code>setUpWithError()</code>, so delete that line. You don’t need to tap anything yet, so also delete <code>.tap()</code> at the end of lines 2 and 3. Now, open the little menu next to <code>["Slide"]</code> and select <code>segmentedControls.buttons["Slide"]</code>.</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_13_UITests_ChangeRecording.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Changing Recording" src="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_13_UITests_ChangeRecording-650x145.png" /></a></p>
+<p><img alt="img" src="../images/14.png" /></p>
 <p>You should be left with:</p>
 <div class="highlight"><pre><span></span><code><span class="n">app</span><span class="p">.</span><span class="n">segmentedControls</span><span class="p">.</span><span class="n">buttons</span><span class="p">[</span><span class="s">&quot;Slide&quot;</span><span class="p">]</span>
 <span class="n">app</span><span class="p">.</span><span class="n">staticTexts</span><span class="p">[</span><span class="s">&quot;Get as close as you can to: &quot;</span><span class="p">]</span>
@@ -8451,21 +8451,21 @@
 <li><code>XCTMemoryMetric</code> tracks the amount of used physical memory.</li>
 </ul>
 <p>Run the test, then click the icon that appears next to the beginning of the <code>measure()</code> trailing closure to see the statistics. You can change the selected metric next to <em>Metric</em>.</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_14_2_PerformanceTests_Result_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Viewing Performance Result" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_14_2_PerformanceTests_Result_annotated-650x246.png" /></a></p>
+<p><img alt="img" src="../images/15.png" /></p>
 <p>Click <em>Set Baseline</em> to set a reference time. Run the performance test again and view the result — it might be better or worse than the baseline. The <em>Edit</em> button lets you reset the baseline to this new result.</p>
 <p>Baselines are stored per device configuration, so you can have the same test executing on several different devices. Each can maintain a different baseline dependent upon the specific configuration’s processor speed, memory, etc.</p>
 <p>Any time you make changes to an app that might impact the performance of the method being tested, run the performance test again to see how it compares to the baseline.</p>
 <h2 id="enabling-code-coverage">Enabling Code Coverage<a class="headerlink" href="#enabling-code-coverage" title="Permanent link">&para;</a></h2>
 <p>The code coverage tool tells you what app code your tests are actually running, so you know what parts of the app aren’t tested — at least, not yet.</p>
 <p>To enable code coverage, edit the scheme’s <em>Test</em> action and check the <em>Gather coverage for</em>checkbox under the <em>Options</em> tab:</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_15_Coverage_GatherCoverage_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Enabling Coverage" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_15_Coverage_GatherCoverage_annotated-650x351.png" /></a></p>
+<p><img alt="img" src="../images/16.png" /></p>
 <p>Run <em>all</em> tests with <em>Command-U</em>, then open the Report navigator with <em>Command-9</em>. Select <em>Coverage</em> under the top item in that list:</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_16_Coverage_Log_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Code Coverage Report" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_16_Coverage_Log_annotated-650x159.png" /></a></p>
+<p><img alt="img" src="../images/17.png" /></p>
 <p>Click the disclosure triangle to see the list of functions and closures in <em>BullsEyeGame.swift</em>:</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_17_Coverage_Details.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Code Coverage Report Details" src="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_17_Coverage_Details-650x220.png" /></a></p>
+<p><img alt="img" src="../images/18.png" /></p>
 <p>Scroll to <code>getRandomNumber(completion:)</code> to see that coverage is 95.0%.</p>
 <p>Click the arrow button for this function to open the source file to the function. As you mouse over the coverage annotations in the right sidebar, sections of code highlight green or red:</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_18_Coverage_Code.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Coverage Highlights in Code Editor" src="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_18_Coverage_Code-650x384.png" /></a></p>
+<p><img alt="img" src="../images/19.png" /></p>
 <p>The coverage annotations show how many times a test hits each code section. Sections that weren’t called are highlighted in red.</p>
 <h3 id="achieving-100-coverage">Achieving 100% Coverage?<a class="headerlink" href="#achieving-100-coverage" title="Permanent link">&para;</a></h3>
 <p>How hard should you strive for 100% code coverage? Just Google “100% unit test coverage”, and you’ll find a range of arguments for and against this, along with debate over the very definition of “100% coverage”. Arguments against it say the last 10%–15% isn’t worth the effort. Arguments for it say the last 10%–15% is the most important, <em>because</em> it’s so hard to test. Google “hard to unit test bad design” to find persuasive arguments that <a href="https://www.toptal.com/qa/how-to-write-testable-code-and-why-it-matters">untestable code is a sign of deeper design problems</a>.</p>
