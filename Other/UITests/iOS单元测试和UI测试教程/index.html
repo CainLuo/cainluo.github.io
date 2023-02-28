@@ -15,7 +15,7 @@
     
     
   
-    <title>Vapor:  SwiftUI Localization Tutorial for iOS: Getting Started</title>
+    <title>Vapor:  杂七杂八 &rarr;  iOS单元测试和UI测试教程</title>
   
 
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#swiftui-localization-tutorial-for-ios-getting-started" class="md-skip">
+        <a href="#iosui" class="md-skip">
           跳转至
         </a>
       
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              SwiftUI Localization Tutorial for iOS: Getting Started
+              iOS单元测试和UI测试教程
             
           </span>
         </div>
@@ -7471,12 +7471,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_21" type="checkbox" id="__nav_21" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_21" type="checkbox" id="__nav_21" checked>
       
       
       
@@ -7541,7 +7543,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../iOS%E7%9A%84SwiftUI%E6%9C%AC%E5%9C%B0%E5%8C%96%E6%95%99%E7%A8%8B%E5%85%A5%E9%97%A8/" class="md-nav__link">
+      <a href="../../SwiftUI%E6%9C%AC%E5%9C%B0%E5%8C%96/iOS%E7%9A%84SwiftUI%E6%9C%AC%E5%9C%B0%E5%8C%96%E6%95%99%E7%A8%8B%E5%85%A5%E9%97%A8/" class="md-nav__link">
         iOS的SwiftUI本地化教程入门
       </a>
     </li>
@@ -7567,11 +7569,208 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../UITests/iOS%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%92%8CUI%E6%B5%8B%E8%AF%95%E6%95%99%E7%A8%8B/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          iOS单元测试和UI测试教程
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         iOS单元测试和UI测试教程
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    开始
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    搞清楚要测试什么
+  </a>
+  
+    <nav class="md-nav" aria-label="搞清楚要测试什么">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    了解测试的最佳实践
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xcode" class="md-nav__link">
+    Xcode中的单元测试
+  </a>
+  
+    <nav class="md-nav" aria-label="Xcode中的单元测试">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    创建一个单元测试目标
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xctassert" class="md-nav__link">
+    使用XCTAssert来测试模型
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    编写你的第一个测试
+  </a>
+  
+    <nav class="md-nav" aria-label="编写你的第一个测试">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    调试一个测试
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xctestexpectation" class="md-nav__link">
+    使用XCTestExpectation来测试异步操作
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    快速失败
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    有条件地失败
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    伪造对象和交互
+  </a>
+  
+    <nav class="md-nav" aria-label="伪造对象和交互">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    伪造来自存根的输入
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    伪造对模拟对象的更新
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xcodeui" class="md-nav__link">
+    Xcode中的UI测试
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    测试性能
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    启用代码覆盖
+  </a>
+  
+    <nav class="md-nav" aria-label="启用代码覆盖">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#100" class="md-nav__link">
+    实现100%的覆盖率？
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    从这里开始去哪里？
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -7583,7 +7782,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../UITests/iOS%20Unit%20Testing%20and%20UI%20Testing%20Tutorial/" class="md-nav__link">
+      <a href="../iOS%20Unit%20Testing%20and%20UI%20Testing%20Tutorial/" class="md-nav__link">
         iOS Unit Testing and UI Testing Tutorial
       </a>
     </li>
@@ -7624,37 +7823,23 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#learn-time-saving-techniques-to-transform-your-teams-localization-workflow" class="md-nav__link">
-    Learn time-saving techniques to transform your team’s localization workflow!
+  <a href="#_1" class="md-nav__link">
+    开始
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#getting-started" class="md-nav__link">
-    Getting Started
+  <a href="#_2" class="md-nav__link">
+    搞清楚要测试什么
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#exporting-and-importing-localizations" class="md-nav__link">
-    Exporting and Importing Localizations
-  </a>
-  
-    <nav class="md-nav" aria-label="Exporting and Importing Localizations">
+    <nav class="md-nav" aria-label="搞清楚要测试什么">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#using-the-xloc-file" class="md-nav__link">
-    Using the xloc File
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adding-another-language" class="md-nav__link">
-    Adding Another Language
+  <a href="#_3" class="md-nav__link">
+    了解测试的最佳实践
   </a>
   
 </li>
@@ -7665,16 +7850,23 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#viewing-localization-during-development" class="md-nav__link">
-    Viewing Localization During Development
+  <a href="#xcode" class="md-nav__link">
+    Xcode中的单元测试
   </a>
   
-    <nav class="md-nav" aria-label="Viewing Localization During Development">
+    <nav class="md-nav" aria-label="Xcode中的单元测试">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#translated-previews" class="md-nav__link">
-    Translated Previews
+  <a href="#_4" class="md-nav__link">
+    创建一个单元测试目标
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xctassert" class="md-nav__link">
+    使用XCTAssert来测试模型
   </a>
   
 </li>
@@ -7685,30 +7877,37 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#utilizing-new-localization-techniques" class="md-nav__link">
-    Utilizing New Localization Techniques
+  <a href="#_5" class="md-nav__link">
+    编写你的第一个测试
   </a>
   
-    <nav class="md-nav" aria-label="Utilizing New Localization Techniques">
+    <nav class="md-nav" aria-label="编写你的第一个测试">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#initializing-strings" class="md-nav__link">
-    Initializing Strings
+  <a href="#_6" class="md-nav__link">
+    调试一个测试
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#including-localized-markdown" class="md-nav__link">
-    Including Localized Markdown
+  <a href="#xctestexpectation" class="md-nav__link">
+    使用XCTestExpectation来测试异步操作
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#localizing-asset-catalogs" class="md-nav__link">
-    Localizing Asset Catalogs
+  <a href="#_7" class="md-nav__link">
+    快速失败
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    有条件地失败
   </a>
   
 </li>
@@ -7719,16 +7918,23 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#using-automatic-grammar-agreement" class="md-nav__link">
-    Using Automatic Grammar Agreement
+  <a href="#_9" class="md-nav__link">
+    伪造对象和交互
   </a>
   
-    <nav class="md-nav" aria-label="Using Automatic Grammar Agreement">
+    <nav class="md-nav" aria-label="伪造对象和交互">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#terms-of-address" class="md-nav__link">
-    Terms of Address
+  <a href="#_10" class="md-nav__link">
+    伪造来自存根的输入
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    伪造对模拟对象的更新
   </a>
   
 </li>
@@ -7739,15 +7945,42 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#finalizing-translations" class="md-nav__link">
-    Finalizing Translations
+  <a href="#xcodeui" class="md-nav__link">
+    Xcode中的UI测试
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#where-to-go-from-here" class="md-nav__link">
-    Where to Go From Here?
+  <a href="#_12" class="md-nav__link">
+    测试性能
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    启用代码覆盖
+  </a>
+  
+    <nav class="md-nav" aria-label="启用代码覆盖">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#100" class="md-nav__link">
+    实现100%的覆盖率？
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    从这里开始去哪里？
   </a>
   
 </li>
@@ -7767,269 +8000,497 @@
                   
 
 
-<h1 id="swiftui-localization-tutorial-for-ios-getting-started">SwiftUI Localization Tutorial for iOS: Getting Started<a class="headerlink" href="#swiftui-localization-tutorial-for-ios-getting-started" title="Permanent link">&para;</a></h1>
-<p>Dec 6 2021, Swift 5.5, iOS 15, Xcode 13</p>
-<p>Learn time-saving techniques to transform your team’s localization workflow! By <a href="https://www.kodeco.com/u/macandyp">Andy Pereira</a>.</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/10/CountryQuizTime_Materials.zip">Download materials</a></p>
-<h2 id="learn-time-saving-techniques-to-transform-your-teams-localization-workflow">Learn time-saving techniques to transform your team’s localization workflow!<a class="headerlink" href="#learn-time-saving-techniques-to-transform-your-teams-localization-workflow" title="Permanent link">&para;</a></h2>
-<p>There’s a long list of things to keep track of when you’re building apps. Thinking about making your app work in other languages may not be on your radar — especially if you don’t speak other languages. Luckily, Apple has made changes and improvements in SwiftUI that take a lot of the guesswork out of your localization workflow.</p>
-<p>In this SwiftUI localization tutorial, you’ll take advantage of internationalization and localization techniques in SwiftUI and iOS 15 by learning how to:</p>
+<h1 id="iosui">iOS单元测试和UI测试教程<a class="headerlink" href="#iosui" title="Permanent link">&para;</a></h1>
+<p><strong>2021年4月14日</strong>, Swift 5, iOS 14, Xcode 12**</p>
+<p>了解如何在iOS应用中添加单元测试和UI测试，以及如何检查代码覆盖率。作者：<a href="https://www.kodeco.com/u/dpiper">David Piper</a>。</p>
+<p><a href="https://www.kodeco.com/21020457-ios-unit-testing-and-ui-testing-tutorial">Download materials</a></p>
+<p><a href="https://www.kodeco.com/21020457-ios-unit-testing-and-ui-testing-tutorial">Save for later</a></p>
+<blockquote>
+<p><em>更新说明</em>。David Piper针对Xcode 12.4、Swift 5.3和iOS 14更新了本教程。Audrey Tam撰写了原文。</p>
+</blockquote>
+<p>iOS单元测试并不迷人，但由于测试使你闪亮的应用程序不会变成一个充满错误的垃圾，所以它是必要的。如果你正在阅读本教程，你已经知道你<em>应该</em>为你的代码和用户界面写测试，但你可能不知道如何写。</p>
+<p>你可能有一个正在运行的<em>应用程序，但你想测试你为扩展该应用程序所做的改变。也许你已经写好了测试，但不确定它们是否是</em>正确的测试。或者，你已经开始在一个新的应用程序上工作，想要边做边测试。</p>
+<p>本教程将告诉您如何。</p>
 <ul>
-<li>Export and import strings from and to your project.</li>
-<li>Preview localizations while developing.</li>
-<li>Use new techniques to work with localized strings.</li>
-<li>Localize asset catalog items.</li>
-<li>Use Markdown to format localized strings.</li>
-<li>Use automatic grammar agreement.</li>
+<li>使用 Xcode 的测试导航器来测试应用程序的模型和异步方法</li>
+<li>通过使用存根和模拟来伪造与库或系统对象的交互</li>
+<li>测试UI和性能</li>
+<li>使用代码覆盖工具</li>
 </ul>
-<h2 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
-<p>Download the starter project by clicking the <em>Download Materials</em> button at the top or bottom of the tutorial.</p>
-<p>The app you’ll be working with, <em>Country Quiz Time</em>, is a short game that quizzes users on their world knowledge. It also keeps track of each question answered correctly. Open the starter project and look around. You’ll notice the app already has its strings, currently all in English, in two files:</p>
+<p>在此过程中，您将掌握一些测试忍者所使用的词汇。</p>
+<h2 id="_1">开始<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>首先使用本教程顶部或底部的<em>Download Materials</em>按钮下载项目资料。它包括项目<em>BullsEye</em>，该项目是基于<a href="https://store.raywenderlich.com/products/ios-apprentice?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334">UIKit Apprentice</a>中的一个示例应用程序。这是一个简单的机会和运气的游戏。游戏逻辑在<code>BullsEyeGame</code>类中，你将在本教程中测试它。</p>
+<h2 id="_2">搞清楚要测试什么<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>在编写任何测试之前，重要的是了解基本情况。你需要测试什么？</p>
+<p>如果你的目标是扩展一个现有的应用程序，你应该首先为你计划改变的任何组件编写测试。</p>
+<p>一般来说，测试应该涵盖。</p>
+<ul>
+<li>核心功能：模型类和方法以及它们与控制器的交互</li>
+<li>最常见的UI工作流程</li>
+<li>边界条件</li>
+<li>错误修复</li>
+</ul>
+<h3 id="_3">了解测试的最佳实践<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>缩写<em>FIRST</em>描述了一套简洁的有效单元测试的标准。这些标准是。</p>
+<ul>
+<li>快速*。测试应该快速运行。</li>
+<li>独立/隔离*。测试不应该彼此共享状态。</li>
+<li><em>可重复</em>。你应该在每次运行测试时获得相同的结果。外部数据提供者或并发问题可能导致间歇性的失败。</li>
+<li><em>自我验证</em>。测试应该是完全自动化的。输出应该是 "通过 "或 "失败"，而不是依赖程序员对日志文件的解释。</li>
+<li>及时性*。理想情况下，你应该在编写测试的生产代码之前编写你的测试。这就是所谓的测试驱动的开发。</li>
+</ul>
+<p>遵循FIRST原则将保持你的测试清晰和有帮助，而不是变成你的应用程序的路障。</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/devices_iphone-throwing-tests-300x300.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="img" src="https://koenig-media.raywenderlich.com/uploads/2021/03/devices_iphone-throwing-tests-300x300.png" /></a></p>
+<h2 id="xcode">Xcode中的单元测试<a class="headerlink" href="#xcode" title="Permanent link">&para;</a></h2>
+<p>测试导航器*提供了最简单的方法来处理测试。您将使用它来创建测试目标并针对您的应用程序运行测试。</p>
+<h3 id="_4">创建一个单元测试目标<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>打开<em>BullsEye</em>项目，按<em>Command-6</em>打开Test navigator。</p>
+<p>点击左下角的<em>+</em>，然后从菜单中选择<em>New Unit Test Target...</em>。</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_1_Introduction_NewUnitTestTarget_annotated-1.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Test navigator" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_1_Introduction_NewUnitTestTarget_annotated-1-356x500.png" /></a></p>
+<p>接受默认名称，<em>BullsEyeTests</em>，并输入<em>com.raywenderlich</em>作为<em>组织标识符</em>。当<em>测试包</em>出现在测试导航器中时，通过点击披露三角展开它，并点击<em>BullsEyeTests</em>在编辑器中打开它。</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_2_Introduction_TestFile_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Template" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_2_Introduction_TestFile_annotated-650x260.png" /></a></p>
+<p>默认模板导入了测试框架<em>XCTest</em>，并定义了<code>XCTestCase</code>的<code>BullsEyeTests</code>子类，有<code>setUpWithError()</code>、<code>tearDownWithError()</code>和示例测试方法。</p>
+<p>你可以通过三种方式运行测试。</p>
 <ol>
-<li><em>Localizable.strings</em>. This is where your app will store most of its strings.</li>
-<li><em>Localizable.stringsdict</em>. This file handles pluralizations. You’ll learn more about this later, but for now, it’s how you’ll handle nouns needing to be singular or plural.</li>
+<li><em>Product ▸ Test</em>或<em>Command-U</em>。这两种方式都可以运行<em>所有</em>测试类。</li>
+<li>点击测试导航器中的箭头按钮。</li>
+<li>点击沟槽中的钻石按钮。</li>
 </ol>
-<p>Build and run, and give the quiz your best shot. :] </p>
-<p><img alt="Country Quiz Time starter" src="https://koenig-media.raywenderlich.com/uploads/2021/09/swiftui_localization_starter-231x500.png" /></p>
-<h2 id="exporting-and-importing-localizations">Exporting and Importing Localizations<a class="headerlink" href="#exporting-and-importing-localizations" title="Permanent link">&para;</a></h2>
-<p>With every new version, Apple makes it easier to manage strings files for localization. Xcode 13 now automatically extracts any strings it finds in a variety of scenarios in your code. When you create a new project in Xcode 13, this setting is on by default. However, as you likely will want to use this with an existing project, you’ll need to turn this on. </p>
-<p>In your project settings, go to <em>Build Settings</em> and search for <em>Use compiler to Extract Swift Strings</em>. Make sure to search <em>All</em> settings, not just the <em>Basic</em> ones. Change the value of this setting to <em>Yes</em>.</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/12/countryquiztime_buildsettings.png"><img alt="Screenshot showing 'Use Compiler to Extract Swift Strings' set to 'Yes' in the Build Settings of the CountryQuizTime Target of the CountryQuizTime project" src="https://koenig-media.raywenderlich.com/uploads/2021/12/countryquiztime_buildsettings-650x190.png" /></a></p>
-<p>In Xcode, go to <em>Product ▸ Export Localizations…</em>. Follow the prompts to save the folder to your desktop. </p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/10/export_localizations_RECROPPED.png"><img alt="A save dialog showing CountryQuizTime Localizations being saved on the desktop, with English - Development Language selected" src="https://koenig-media.raywenderlich.com/uploads/2021/10/export_localizations_RECROPPED.png" /></a></p>
-<p>After making any changes to the exported <em>xcloc</em> file, import the changes back into your project using <em>Product ▸ Import Localizations…</em>. This way, translators can make changes to the displayed text without needing the whole project.</p>
-<h3 id="using-the-xloc-file">Using the xloc File<a class="headerlink" href="#using-the-xloc-file" title="Permanent link">&para;</a></h3>
-<p>In Finder, navigate to the directory you created in the previous step and open the <em>en.xcloc</em> file. On the left-hand side, expand the folder and select <em>Localizable</em>.</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/10/countryquiztime_strings.png"><img alt="en.xcloc file showing exported localized strings" src="https://koenig-media.raywenderlich.com/uploads/2021/10/countryquiztime_strings-650x286.png" /></a></p>
-<p>Here, you’re looking at everything Xcode was able to identify as a string key used in one of your project files. There are four columns of information you’ll need to understand:</p>
-<ol>
-<li><em>Key</em>: These are values used inside string literals in your code.</li>
-<li><em>English</em>: This second column represents your reference or base localization language. This project’s base language is English, so you’ll see the English value here regardless of which language file you are viewing.</li>
-<li><em>English</em>: The third column will have all the localizations for the language file you are viewing — in this case, also English. You can edit the values in this column.</li>
-<li><em>Comment</em>: The comment column will show any notes left by the developer to help the translator understand the intent of each string. </li>
-</ol>
-<p>This file is a place where you can make changes to all your localized files – not just your strings file. In the filter, search for <em>points-count</em> and expand all the values for the items it finds. You’ll see the following:</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/10/countryquiztime_pointscount.png"><img alt="points-count value shown in Localizable.stringsdict" src="https://koenig-media.raywenderlich.com/uploads/2021/10/countryquiztime_pointscount-650x286.png" /></a></p>
-<p>Here, you’re seeing the values found in the project’s <em>stringsdict</em> file. Because both the <em>strings</em>and <em>stringsdict</em> files have the same name, the values get combined in this view. If you create different filenames for different localizations, the editor window will break them out accordingly. </p>
-<p>You can also translate your app’s name with this file. In the editor, select <em>InfoPlist</em>. You’ll see the following:</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/10/countryquiztime_infoplist.png"><img alt="Viewing en.xcloc InfoPlist, showing the bundle name and bundle display name" src="https://koenig-media.raywenderlich.com/uploads/2021/10/countryquiztime_infoplist-650x262.png" /></a></p>
-<p>Adjust the language’s bundle name or display name as needed. It’ll be up to you and your team to understand what makes the most sense to translate. Perhaps your app’s name makes sense across a few languages and translations are only needed for a few others.</p>
-<h3 id="adding-another-language">Adding Another Language<a class="headerlink" href="#adding-another-language" title="Permanent link">&para;</a></h3>
-<p>To finish the tutorial, you’ll add another language to your project. Go to your project’s <em>Project</em>settings, then select <em>Info</em>. From there, select <em>+</em> under <em>Localizations</em>. </p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/10/adding_another_language_RECROPPED.png"><img alt="Screenshot of the Info tab for the project, showing the plus button under Localizations" src="https://koenig-media.raywenderlich.com/uploads/2021/10/adding_another_language_RECROPPED.png" /></a></p>
-<p>In the menu that appears, select <em>Spanish (es)</em>.</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/10/countryquiztime_selectspanish.png"><img alt="Screenshot of the Info tab for the project, showing Spanish (es) being selected from the plus menu under Localizations" src="https://koenig-media.raywenderlich.com/uploads/2021/10/countryquiztime_selectspanish-650x492.png" /></a></p>
-<p>A confirmation dialog will appear. Leave the settings as they are and select <em>Finish</em>. </p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/10/confirmation_finish_RECROPPED.png"><img alt="Add Spanish Confirmation Dialog" src="https://koenig-media.raywenderlich.com/uploads/2021/10/confirmation_finish_RECROPPED.png" /></a></p>
-<p>This adds Spanish files under <em>Localizable.strings</em> and <em>Localizable.stringsdict</em>.</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/10/spanish-localizable-strings.png"><img alt="Screenshot showing 'Localizable (Spanish)' files under the two Localizable files in the Project navigator" src="https://koenig-media.raywenderlich.com/uploads/2021/10/spanish-localizable-strings.png" /></a></p>
-<p>Now you’re ready to localize your app into Spanish!</p>
-<h2 id="viewing-localization-during-development">Viewing Localization During Development<a class="headerlink" href="#viewing-localization-during-development" title="Permanent link">&para;</a></h2>
-<p>For the most part, if an app uses traditional localization techniques, you can only see the other languages if your phone is set to that language. However, that can be quite difficult to manage in a development environment — especially if you’re unfamiliar with the language.</p>
-<p>Open <em>Localizable.strings (Spanish)</em> and add the following line:</p>
-<div class="highlight"><pre><span></span><code><span class="s2">&quot;Welcome to Country Quiz Time&quot;</span> <span class="o">=</span> <span class="s2">&quot;Bienvenido a Country Quiz Time&quot;</span><span class="p">;</span>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_3_Introduction_RunningTest_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Running Tests" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_3_Introduction_RunningTest_annotated-650x169.png" /></a></p>
+<p>你也可以通过点击测试导航器中的钻石或水沟中的钻石来运行一个单独的测试方法。</p>
+<p>试着用不同的方法来运行测试，以了解它需要多长时间，以及它看起来是什么样子。样本测试还没有做任何事情，所以它们运行得非常快</p>
+<p>当所有的测试都成功后，钻石会变成绿色，并显示复选标记。点击<code>testPerformanceExample()</code>末尾的灰色钻石，打开性能结果：</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_4_Intorduction_PerformanceTest.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Performance Results" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_4_Intorduction_PerformanceTest-650x247.png" /></a></p>
+<p>在本教程中，你不需要<code>testPerformanceExample()</code>或<code>testExample()</code>，所以删除它们。</p>
+<h3 id="xctassert">使用XCTAssert来测试模型<a class="headerlink" href="#xctassert" title="Permanent link">&para;</a></h3>
+<p>首先，你将使用<code>XCTAssert</code>函数来测试BullsEye模型的一个核心功能。<code>BullsEyeGame</code>是否正确计算了一个回合的分数？</p>
+<p>在<em>BullsEyeTests.swift</em>中，在<code>import XCTest</code>下面添加这一行：</p>
+<div class="highlight"><pre><span></span><code><span class="p">@</span><span class="n">testable</span> <span class="kd">import</span> <span class="nc">BullsEye</span>
 </code></pre></div>
-<p>This will help you see how you can view localizations during development. Later on, you’ll fine-tune this translation and add more translations to this file.</p>
-<p>You can see translations within the simulator by adjusting your target’s scheme. Open <em>Product ▸ Scheme ▸ Edit Scheme… ▸ Run ▸ Options</em>. For the setting <em>App Language</em>, select <em>Spanish</em> from the drop-down.</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/10/countryquiztime_schemechange.png"><img alt="Changing the App Language to Spanish in the Run settings in the Edit Scheme dialog" src="https://koenig-media.raywenderlich.com/uploads/2021/10/countryquiztime_schemechange-650x364.png" /></a></p>
-<p>Select <em>Close</em>, then build and run. </p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/09/swiftui_localization_spanish_simulator.png"><img alt="Scheme Running in Spanish" src="https://koenig-media.raywenderlich.com/uploads/2021/09/swiftui_localization_spanish_simulator-231x500.png" /></a></p>
-<p>You’ll see your app’s title translated to Spanish.</p>
-<h3 id="translated-previews">Translated Previews<a class="headerlink" href="#translated-previews" title="Permanent link">&para;</a></h3>
-<p>While it’s great to be able to change your simulator’s language during development, one of the benefits of SwiftUI is being able to see your code changes directly in the preview, in real time. Open <em>ContentView.swift</em>, and replace <code>ContentView_Previews</code> with the following:</p>
-<div class="highlight"><pre><span></span><code><span class="kd">struct</span> <span class="nc">ContentView_Previews</span><span class="p">:</span> <span class="n">PreviewProvider</span> <span class="p">{</span>
-  <span class="kd">static</span> <span class="kd">var</span> <span class="nv">previews</span><span class="p">:</span> <span class="n">some</span> <span class="n">View</span> <span class="p">{</span>
-    <span class="n">Group</span> <span class="p">{</span>
-      <span class="c1">// 1</span>
-      <span class="n">ContentView</span><span class="p">(</span><span class="n">quiz</span><span class="p">:</span> <span class="n">Quiz</span><span class="p">())</span>
-        <span class="p">.</span><span class="n">environment</span><span class="p">(</span><span class="err">\</span><span class="p">.</span><span class="n">locale</span><span class="p">,</span> <span class="p">.</span><span class="kd">init</span><span class="p">(</span><span class="n">identifier</span><span class="p">:</span> <span class="s">&quot;en&quot;</span><span class="p">))</span>
-      <span class="c1">// 2</span>
-      <span class="n">ContentView</span><span class="p">(</span><span class="n">quiz</span><span class="p">:</span> <span class="n">Quiz</span><span class="p">())</span>
-        <span class="p">.</span><span class="n">environment</span><span class="p">(</span><span class="err">\</span><span class="p">.</span><span class="n">locale</span><span class="p">,</span> <span class="p">.</span><span class="kd">init</span><span class="p">(</span><span class="n">identifier</span><span class="p">:</span> <span class="s">&quot;es&quot;</span><span class="p">))</span>
+<p>这使得单元测试可以访问BullsEye中的<em>内部</em>类型和函数。</p>
+<p>在<code>BullsEyeTests</code>的顶部，添加这个属性：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nv">sut</span><span class="p">:</span> <span class="n">BullsEyeGame</span><span class="p">!</span>
+</code></pre></div>
+<p>这为<code>BullsEyeGame</code>创建了一个占位符，它是<em>被测系统</em>（SUT），或者说是这个测试用例类所关注的测试对象。</p>
+<p>接下来，把<code>setUpWithError()</code>的内容替换成这样：</p>
+<div class="highlight"><pre><span></span><code><span class="k">try</span> <span class="kc">super</span><span class="p">.</span><span class="n">setUpWithError</span><span class="p">()</span>
+<span class="n">sut</span> <span class="p">=</span> <span class="n">BullsEyeGame</span><span class="p">()</span>
+</code></pre></div>
+<p>这在类的层面上创建了<code>BullsEyeGame</code>，所以这个测试类中的所有测试都可以访问SUT对象的属性和方法。</p>
+<p>在你忘记之前，在<code>tearDownWithError()</code>中*释放你的SUT对象。将其内容替换为：</p>
+<div class="highlight"><pre><span></span><code><span class="n">sut</span> <span class="p">=</span> <span class="kc">nil</span>
+<span class="k">try</span> <span class="kc">super</span><span class="p">.</span><span class="n">tearDownWithError</span><span class="p">()</span>
+</code></pre></div>
+<p><em>注意</em>。在<code>setUpWithError()</code>中创建SUT并在<code>tearDownWithError()</code>中释放它是一个很好的做法，以确保每个测试都从一个干净的地方开始。关于更多的讨论，请查看<a href="http://qualitycoding.org/teardown/">Jon Reid的帖子</a>关于这个问题。</p>
+<h2 id="_5">编写你的第一个测试<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>现在你已经准备好写你的第一个测试了!</p>
+<p>在<code>BullsEyeTests</code>的末尾添加以下代码，以测试你是否计算出了猜测的预期分数：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">testScoreIsComputedWhenGuessIsHigherThanTarget</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// given</span>
+  <span class="kd">let</span> <span class="nv">guess</span> <span class="p">=</span> <span class="n">sut</span><span class="p">.</span><span class="n">targetValue</span> <span class="o">+</span> <span class="mi">5</span>
+
+  <span class="c1">// when</span>
+  <span class="n">sut</span><span class="p">.</span><span class="n">check</span><span class="p">(</span><span class="n">guess</span><span class="p">:</span> <span class="n">guess</span><span class="p">)</span>
+
+  <span class="c1">// then</span>
+  <span class="n">XCTAssertEqual</span><span class="p">(</span><span class="n">sut</span><span class="p">.</span><span class="n">scoreRound</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span> <span class="s">&quot;Score computed from guess is wrong&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>一个测试方法的名称总是以<em>test</em>开头，后面是对其测试内容的描述。</p>
+<p>良好的做法是将测试格式化为<em>given</em>、<em>when</em>和<em>then</em>部分。</p>
+<ol>
+<li><em>给定</em>。在这里，你设置任何需要的值。在这个例子中，你创建了一个 "猜测 "值，这样你就可以指定它与 "目标值 "的差异程度。</li>
+<li><em>When</em>: 在这一部分，你将执行被测试的代码。调用<code>check(guess:)</code>。</li>
+<li><em>"然后"。这一部分你将断言你所期望的结果，并在测试</em>失败时打印出一个信息。在本例中，<code>sut.scoreRound</code>应该等于95，因为它是100-5。</li>
+</ol>
+<p>通过点击水沟中的钻石图标或在测试导航器中运行测试。这将建立并运行应用程序，钻石图标将变成一个绿色的复选标记 你还会看到Xcode上出现一个瞬间的弹出窗口，它也表示成功，看起来像这样。</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_5_FirstTest_Success.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Test Succeeded" src="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_5_FirstTest_Success-319x320.png" /></a></p>
+<p><em>注意</em>。要查看<em>XCTestAssertions</em>的完整列表，请到<a href="https://developer.apple.com/documentation/xctest#2870839">Apple's Assertions Listed by Category</a>。</p>
+<h3 id="_6">调试一个测试<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p>在 "BullsEyeGame "中故意设置了一个错误，现在你将练习如何找到它。为了看到这个错误，你将创建一个测试，从<em>given</em>部分的`targetValue'中减去*5，其他部分保持不变。</p>
+<p>添加以下测试：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">testScoreIsComputedWhenGuessIsLowerThanTarget</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// given</span>
+  <span class="kd">let</span> <span class="nv">guess</span> <span class="p">=</span> <span class="n">sut</span><span class="p">.</span><span class="n">targetValue</span> <span class="o">-</span> <span class="mi">5</span>
+
+  <span class="c1">// when</span>
+  <span class="n">sut</span><span class="p">.</span><span class="n">check</span><span class="p">(</span><span class="n">guess</span><span class="p">:</span> <span class="n">guess</span><span class="p">)</span>
+
+  <span class="c1">// then</span>
+  <span class="n">XCTAssertEqual</span><span class="p">(</span><span class="n">sut</span><span class="p">.</span><span class="n">scoreRound</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span> <span class="s">&quot;Score computed from guess is wrong&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><code>guess</code>和<code>targetValue</code>之间的差异仍然是5，所以分数仍然应该是95。</p>
+<p>在断点导航器中，添加一个<em>测试失败断点</em>。当一个测试方法发布一个失败的断言时，这将停止测试运行。</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_6_Debugging_Breakpoint_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Adding a Test Failure Breakpoint" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_6_Debugging_Breakpoint_annotated-356x500.png" /></a></p>
+<p>运行你的测试，它应该在<code>XCTAssertEqual</code>行停止，测试失败。</p>
+<p>在调试控制台检查<code>sut</code>和<code>guess</code>：</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_7_Debugging_Console_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Inspecting a Test Failure" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_7_Debugging_Console_annotated-650x391.png" /></a></p>
+<p><code>guess</code>是<code>targetValue - 5</code>，但<code>scoreRound</code>是105，不是95!</p>
+<p>为了进一步调查，使用正常的调试过程。在<em>when</em>语句处设置一个断点，同时在<em>BullsEyeGame.swift</em>的<code>check(guess:)</code>内设置一个断点，在那里创建<code>difference</code>。然后，再次运行测试，跨过<code>let difference</code>语句，检查应用程序中<code>difference</code>的值：</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_8_Debugging_Console2_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Debug Console" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_8_Debugging_Console2_annotated-589x500.png" /></a></p>
+<p>问题是<code>difference</code>是负的，所以分数是100-（-5）。为了解决这个问题，你应该使用<code>difference</code>的绝对值。在<code>check(guess:)</code>中，取消对正确行的注释，删除不正确的一行。</p>
+<p>删除两个断点，并再次运行测试以确认它现在成功了。</p>
+<h3 id="xctestexpectation">使用<code>XCTestExpectation</code>来测试异步操作<a class="headerlink" href="#xctestexpectation" title="Permanent link">&para;</a></h3>
+<p>现在你已经学会了如何测试模型和调试测试失败，现在是时候继续测试异步代码了。</p>
+<p><code>BullsEyeGame</code>使用<code>URLSession</code>获得一个随机数作为下一场游戏的目标。<code>URLSession</code>方法是<em>异步的</em>。它们会立即返回，但要到后来才完成运行。为了测试异步方法，使用<code>XCTestExpectation</code>使你的测试等待异步操作的完成。</p>
+<p>异步测试通常很慢，所以你应该把它们与你的快速单元测试分开。</p>
+<p>创建一个名为<em>BullsEyeSlowTests</em>的新单元测试目标。打开全新的测试类<code>BullsEyeSlowTests</code>，并在现有的<code>import</code>语句下面导入<em>BullsEye</em>应用程序模块。</p>
+<div class="highlight"><pre><span></span><code><span class="p">@</span><span class="n">testable</span> <span class="kd">import</span> <span class="nc">BullsEye</span>
+</code></pre></div>
+<p>这个类中的所有测试都使用默认的<code>URLSession</code>来发送请求，所以声明<code>sut</code>，在<code>setUpWithError()</code>中创建它，在<code>tearDownWithError()</code>中释放它。要做到这一点，将<code>BullsEyeSlowTests</code>的内容替换为：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nv">sut</span><span class="p">:</span> <span class="n">URLSession</span><span class="p">!</span>
+
+<span class="kr">override</span> <span class="kd">func</span> <span class="nf">setUpWithError</span><span class="p">()</span> <span class="kr">throws</span> <span class="p">{</span>
+  <span class="k">try</span> <span class="kc">super</span><span class="p">.</span><span class="n">setUpWithError</span><span class="p">()</span>
+  <span class="n">sut</span> <span class="p">=</span> <span class="n">URLSession</span><span class="p">(</span><span class="n">configuration</span><span class="p">:</span> <span class="p">.</span><span class="k">default</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kr">override</span> <span class="kd">func</span> <span class="nf">tearDownWithError</span><span class="p">()</span> <span class="kr">throws</span> <span class="p">{</span>
+  <span class="n">sut</span> <span class="p">=</span> <span class="kc">nil</span>
+  <span class="k">try</span> <span class="kc">super</span><span class="p">.</span><span class="n">tearDownWithError</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>接下来，添加这个异步测试：</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Asynchronous test: success fast, failure slow</span>
+<span class="kd">func</span> <span class="nf">testValidApiCallGetsHTTPStatusCode200</span><span class="p">()</span> <span class="kr">throws</span> <span class="p">{</span>
+  <span class="c1">// given</span>
+  <span class="kd">let</span> <span class="nv">urlString</span> <span class="p">=</span> 
+    <span class="s">&quot;http://www.randomnumberapi.com/api/v1.0/random?min=0&amp;max=100&amp;count=1&quot;</span>
+  <span class="kd">let</span> <span class="nv">url</span> <span class="p">=</span> <span class="n">URL</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="n">urlString</span><span class="p">)</span><span class="o">!</span>
+  <span class="c1">// 1</span>
+  <span class="kd">let</span> <span class="nv">promise</span> <span class="p">=</span> <span class="n">expectation</span><span class="p">(</span><span class="n">description</span><span class="p">:</span> <span class="s">&quot;Status code: 200&quot;</span><span class="p">)</span>
+
+  <span class="c1">// when</span>
+  <span class="kd">let</span> <span class="nv">dataTask</span> <span class="p">=</span> <span class="n">sut</span><span class="p">.</span><span class="n">dataTask</span><span class="p">(</span><span class="n">with</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span> <span class="p">{</span> <span class="kc">_</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">error</span> <span class="k">in</span>
+    <span class="c1">// then</span>
+    <span class="k">if</span> <span class="kd">let</span> <span class="nv">error</span> <span class="p">=</span> <span class="n">error</span> <span class="p">{</span>
+      <span class="n">XCTFail</span><span class="p">(</span><span class="s">&quot;Error: </span><span class="si">\(</span><span class="n">error</span><span class="p">.</span><span class="n">localizedDescription</span><span class="si">)</span><span class="s">&quot;</span><span class="p">)</span>
+      <span class="k">return</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="kd">let</span> <span class="nv">statusCode</span> <span class="p">=</span> <span class="p">(</span><span class="n">response</span> <span class="k">as</span><span class="p">?</span> <span class="n">HTTPURLResponse</span><span class="p">)?.</span><span class="n">statusCode</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="n">statusCode</span> <span class="p">==</span> <span class="mi">200</span> <span class="p">{</span>
+        <span class="c1">// 2</span>
+        <span class="n">promise</span><span class="p">.</span><span class="n">fulfill</span><span class="p">()</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">XCTFail</span><span class="p">(</span><span class="s">&quot;Status code: </span><span class="si">\(</span><span class="n">statusCode</span><span class="si">)</span><span class="s">&quot;</span><span class="p">)</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="n">dataTask</span><span class="p">.</span><span class="n">resume</span><span class="p">()</span>
+  <span class="c1">// 3</span>
+  <span class="n">wait</span><span class="p">(</span><span class="k">for</span><span class="p">:</span> <span class="p">[</span><span class="n">promise</span><span class="p">],</span> <span class="n">timeout</span><span class="p">:</span> <span class="mi">5</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>这个测试检查发送一个有效的请求是否返回200状态代码。大部分的代码与你在应用程序中写的一样，只是多了这些行。</p>
+<ol>
+<li><em>expectation(description:)</em>: 返回<code>XCTestExpectation</code>，存储在<code>promise</code>中。<code>description</code>描述了你期望发生的事情。</li>
+<li><em>promise.fulfill()</em>: 在异步方法的完成处理程序的成功条件闭合中调用这个，以标记期望已经被满足。</li>
+<li><em>wait(for:timeout:)</em>。保持测试运行，直到所有的期望得到满足或`超时'间隔结束，以先发生者为准。</li>
+</ol>
+<p>运行测试。如果你连接到互联网，在模拟器中加载应用程序后，测试应该需要大约一秒钟的时间才能成功。</p>
+<h3 id="_7">快速失败<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<p>失败是很痛苦的，但它不一定要花很长时间。</p>
+<p>要体验失败，只需将<code>testValidApiCallGetsHTTPStatusCode200()</code>中的URL改为无效的：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">url</span> <span class="p">=</span> <span class="n">URL</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="s">&quot;http://www.randomnumberapi.com/test&quot;</span><span class="p">)</span><span class="o">!</span>
+</code></pre></div>
+<p>运行该测试。它失败了，但它需要完整的超时间隔！这是因为你假设请求总是成功的，而你在这里调用了<code>promise.fulfill()</code>。这是因为你假设请求总是成功的，这就是你调用<code>promise.fulfill()</code>的地方。因为请求失败了，所以只有在超时时间过后才完成。</p>
+<p>你可以通过改变假设来改善这一点，使测试更快地失败。与其等待请求成功，不如只等待异步方法的完成处理程序被调用。一旦应用程序从服务器上收到一个响应--无论是OK还是错误--就会发生，这就满足了期望。然后，你的测试可以检查请求是否成功。</p>
+<p>要看这是如何工作的，创建一个新的测试。</p>
+<p>但首先，通过撤销你对<code>url</code>所做的修改来修复之前的测试。</p>
+<p>然后，在你的类中添加以下测试：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">testApiCallCompletes</span><span class="p">()</span> <span class="kr">throws</span> <span class="p">{</span>
+  <span class="c1">// given</span>
+  <span class="kd">let</span> <span class="nv">urlString</span> <span class="p">=</span> <span class="s">&quot;http://www.randomnumberapi.com/test&quot;</span>
+  <span class="kd">let</span> <span class="nv">url</span> <span class="p">=</span> <span class="n">URL</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="n">urlString</span><span class="p">)</span><span class="o">!</span>
+  <span class="kd">let</span> <span class="nv">promise</span> <span class="p">=</span> <span class="n">expectation</span><span class="p">(</span><span class="n">description</span><span class="p">:</span> <span class="s">&quot;Completion handler invoked&quot;</span><span class="p">)</span>
+  <span class="kd">var</span> <span class="nv">statusCode</span><span class="p">:</span> <span class="nb">Int</span><span class="p">?</span>
+  <span class="kd">var</span> <span class="nv">responseError</span><span class="p">:</span> <span class="n">Error</span><span class="p">?</span>
+
+  <span class="c1">// when</span>
+  <span class="kd">let</span> <span class="nv">dataTask</span> <span class="p">=</span> <span class="n">sut</span><span class="p">.</span><span class="n">dataTask</span><span class="p">(</span><span class="n">with</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span> <span class="p">{</span> <span class="kc">_</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">error</span> <span class="k">in</span>
+    <span class="n">statusCode</span> <span class="p">=</span> <span class="p">(</span><span class="n">response</span> <span class="k">as</span><span class="p">?</span> <span class="n">HTTPURLResponse</span><span class="p">)?.</span><span class="n">statusCode</span>
+    <span class="n">responseError</span> <span class="p">=</span> <span class="n">error</span>
+    <span class="n">promise</span><span class="p">.</span><span class="n">fulfill</span><span class="p">()</span>
+  <span class="p">}</span>
+  <span class="n">dataTask</span><span class="p">.</span><span class="n">resume</span><span class="p">()</span>
+  <span class="n">wait</span><span class="p">(</span><span class="k">for</span><span class="p">:</span> <span class="p">[</span><span class="n">promise</span><span class="p">],</span> <span class="n">timeout</span><span class="p">:</span> <span class="mi">5</span><span class="p">)</span>
+
+  <span class="c1">// then</span>
+  <span class="n">XCTAssertNil</span><span class="p">(</span><span class="n">responseError</span><span class="p">)</span>
+  <span class="n">XCTAssertEqual</span><span class="p">(</span><span class="n">statusCode</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>关键的区别是，只要进入完成处理程序就能实现预期，而这只需要一秒钟的时间。如果请求失败，<code>then</code>断言就会失败。</p>
+<p>运行该测试。现在它应该需要一秒钟的时间来失败。它失败是因为请求失败，而不是因为测试运行超过了`timeout'。</p>
+<p>修复<code>url</code>，然后再次运行测试，确认它现在成功了。</p>
+<h3 id="_8">有条件地失败<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<p>在某些情况下，执行一个测试并没有什么意义。例如，当<code>testValidApiCallGetsHTTPStatusCode200()</code>在没有网络连接的情况下运行时会发生什么？当然，它不应该通过，因为它不会收到200状态代码。但它也不应该失败，因为它没有测试任何东西。</p>
+<p>幸运的是，苹果公司引入了<code>XCTSkip</code>，在前提条件失败时跳过测试。在<code>sut</code>的声明下面添加以下一行：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">networkMonitor</span> <span class="p">=</span> <span class="n">NetworkMonitor</span><span class="p">.</span><span class="n">shared</span>
+</code></pre></div>
+<p><code>NetworkMonitor</code>包装了<code>NWPathMonitor</code>，提供了一个检查网络连接的方便方法。</p>
+<p>在<code>testValidApiCallGetsHTTPStatusCode200()</code>中，在测试的开始添加<code>XCTSkipUnless</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="k">try</span> <span class="n">XCTSkipUnless</span><span class="p">(</span>
+  <span class="n">networkMonitor</span><span class="p">.</span><span class="n">isReachable</span><span class="p">,</span> 
+  <span class="s">&quot;Network connectivity needed for this test.&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><code>XCTSkipUnless(_:_:)</code>在没有网络的情况下跳过测试。通过禁用你的网络连接并运行测试来检查这一点。你会看到测试旁边的水沟里有一个新的图标，表示测试既没有通过也没有失败。</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_9_Skipping.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Test Skipped" src="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_9_Skipping-650x84.png" /></a></p>
+<p>再次启用你的网络连接，重新运行测试，以确保在正常情况下仍然成功。在<code>testApiCallCompletes()</code>的开头添加同样的代码。</p>
+<h2 id="_9">伪造对象和交互<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<p>异步测试可以让你相信你的代码会给异步API产生正确的输入。你可能还想测试一下，当你的代码从<code>URLSession</code>接收输入时，它是否能正确工作，或者是否能正确更新<code>UserDefaults</code>数据库或iCloud容器。</p>
+<p>大多数应用程序与系统或库对象进行交互--你无法控制的对象。与这些对象交互的测试可能很慢，而且不可重复，违反了<em>FIRST</em>原则中的两项。相反，你可以通过从<em>stubs</em>获得输入或更新<em>mock</em>对象来*假的交互。</p>
+<p>当你的代码对系统或库对象有依赖性的时候，就可以采用伪造的方式。通过创建一个假的对象来扮演这个角色，并将这个假的对象注入你的代码中。Jon Reid的<a href="https://www.objc.io/issues/15-testing/dependency-injection/">Dependency Injection</a>描述了几种方法来做到这一点。</p>
+<h3 id="_10">伪造来自存根的输入<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<p>现在，检查应用程序的<code>getRandomNumber(completion:)</code>是否正确地解析了由会话下载的数据。你将用存根数据伪造<code>BullsEyeGame</code>的会话。</p>
+<p>进入测试导航器，点击<em>+</em>，选择<em>新建单元测试类...</em>。给它取名为<em>BullsEyeFakeTests</em>，把它保存在<em>BullsEyeTests</em>目录下，并把目标设为<em>BullsEyeTests</em>。</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_10_Stub_NewTestClass_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: New Unit Test Class" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_10_Stub_NewTestClass_annotated-424x500.png" /></a></p>
+<p>在 "import "语句下方导入BullsEye应用模块：</p>
+<div class="highlight"><pre><span></span><code><span class="p">@</span><span class="n">testable</span> <span class="kd">import</span> <span class="nc">BullsEye</span>
+</code></pre></div>
+<p>现在，将<code>BullsEyeFakeTests</code>的内容替换成这样：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nv">sut</span><span class="p">:</span> <span class="n">BullsEyeGame</span><span class="p">!</span>
+
+<span class="kr">override</span> <span class="kd">func</span> <span class="nf">setUpWithError</span><span class="p">()</span> <span class="kr">throws</span> <span class="p">{</span>
+  <span class="k">try</span> <span class="kc">super</span><span class="p">.</span><span class="n">setUpWithError</span><span class="p">()</span>
+  <span class="n">sut</span> <span class="p">=</span> <span class="n">BullsEyeGame</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="kr">override</span> <span class="kd">func</span> <span class="nf">tearDownWithError</span><span class="p">()</span> <span class="kr">throws</span> <span class="p">{</span>
+  <span class="n">sut</span> <span class="p">=</span> <span class="kc">nil</span>
+  <span class="k">try</span> <span class="kc">super</span><span class="p">.</span><span class="n">tearDownWithError</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>这声明了SUT，即 "BullsEyeGame"，在 "setUpWithError() "中创建它，在 "tearDownWithError() "中释放它。</p>
+<p>BullsEye项目包含支持文件<em>URLSessionStub.swift</em>。它定义了一个简单的协议，名为 "URLSessionProtocol"，有一个方法来创建一个带有 "URL "的数据任务。它还定义了<code>URLSessionStub</code>，它符合这个协议。它的初始化器让你定义数据任务应该返回的数据、响应和错误。</p>
+<p>要设置假货，请到<em>BullsEyeFakeTests.swift</em>并添加一个新的测试：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">testStartNewRoundUsesRandomValueFromApiRequest</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// given</span>
+  <span class="c1">// 1</span>
+  <span class="kd">let</span> <span class="nv">stubbedData</span> <span class="p">=</span> <span class="s">&quot;[1]&quot;</span><span class="p">.</span><span class="n">data</span><span class="p">(</span><span class="n">using</span><span class="p">:</span> <span class="p">.</span><span class="n">utf8</span><span class="p">)</span>
+  <span class="kd">let</span> <span class="nv">urlString</span> <span class="p">=</span> 
+    <span class="s">&quot;http://www.randomnumberapi.com/api/v1.0/random?min=0&amp;max=100&amp;count=1&quot;</span>
+  <span class="kd">let</span> <span class="nv">url</span> <span class="p">=</span> <span class="n">URL</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="n">urlString</span><span class="p">)</span><span class="o">!</span>
+  <span class="kd">let</span> <span class="nv">stubbedResponse</span> <span class="p">=</span> <span class="n">HTTPURLResponse</span><span class="p">(</span>
+    <span class="n">url</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span> 
+    <span class="n">statusCode</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span> 
+    <span class="n">httpVersion</span><span class="p">:</span> <span class="kc">nil</span><span class="p">,</span> 
+    <span class="n">headerFields</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+  <span class="kd">let</span> <span class="nv">urlSessionStub</span> <span class="p">=</span> <span class="n">URLSessionStub</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">stubbedData</span><span class="p">,</span>
+    <span class="n">response</span><span class="p">:</span> <span class="n">stubbedResponse</span><span class="p">,</span> 
+    <span class="n">error</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+  <span class="n">sut</span><span class="p">.</span><span class="n">urlSession</span> <span class="p">=</span> <span class="n">urlSessionStub</span>
+  <span class="kd">let</span> <span class="nv">promise</span> <span class="p">=</span> <span class="n">expectation</span><span class="p">(</span><span class="n">description</span><span class="p">:</span> <span class="s">&quot;Value Received&quot;</span><span class="p">)</span>
+
+  <span class="c1">// when</span>
+  <span class="n">sut</span><span class="p">.</span><span class="n">startNewRound</span> <span class="p">{</span>
+    <span class="c1">// then</span>
+    <span class="c1">// 2</span>
+    <span class="n">XCTAssertEqual</span><span class="p">(</span><span class="kc">self</span><span class="p">.</span><span class="n">sut</span><span class="p">.</span><span class="n">targetValue</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">promise</span><span class="p">.</span><span class="n">fulfill</span><span class="p">()</span>
+  <span class="p">}</span>
+  <span class="n">wait</span><span class="p">(</span><span class="k">for</span><span class="p">:</span> <span class="p">[</span><span class="n">promise</span><span class="p">],</span> <span class="n">timeout</span><span class="p">:</span> <span class="mi">5</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>这个测试做了两件事。</p>
+<ol>
+<li>你设置了假数据和响应，并创建了假会话对象。最后，将假会话作为<code>sut</code>的一个属性注入到应用程序中。</li>
+<li>你仍然要把这个写成一个异步测试，因为存根是假装成一个异步方法。通过比较<code>targetValue</code>和存根的假数字，检查调用<code>startNewRound(completion:)</code>是否解析了假数据。</li>
+</ol>
+<p>运行该测试。它应该很快就能成功，因为没有任何真实的网络连接</p>
+<h3 id="_11">伪造对模拟对象的更新<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<p>前面的测试使用了一个<em>stub</em>来提供来自一个假对象的输入。接下来，你将使用一个<em>模拟对象</em>来测试你的代码是否正确更新了`UserDefaults'。</p>
+<p>这个应用程序有两种游戏风格。用户可以选择。</p>
+<ol>
+<li>移动滑块以匹配目标值。</li>
+<li>从滑块的位置猜测目标值。</li>
+</ol>
+<p>在右下角的一个分段控制可以切换游戏风格，并将其保存在<code>UserDefaults</code>中。</p>
+<p>你的下一个测试检查应用程序是否正确保存了<code>gameStyle</code>属性。</p>
+<p>在目标<em>BullsEyeTests</em>中添加一个新的测试类，命名为<em>BullsEyeMockTests</em>。在 "import "语句下面添加以下内容。</p>
+<div class="highlight"><pre><span></span><code><span class="p">@</span><span class="n">testable</span> <span class="kd">import</span> <span class="nc">BullsEye</span>
+
+<span class="kd">class</span> <span class="nc">MockUserDefaults</span><span class="p">:</span> <span class="n">UserDefaults</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nv">gameStyleChanged</span> <span class="p">=</span> <span class="mi">0</span>
+  <span class="kr">override</span> <span class="kd">func</span> <span class="nf">set</span><span class="p">(</span><span class="kc">_</span> <span class="n">value</span><span class="p">:</span> <span class="nb">Int</span><span class="p">,</span> <span class="n">forKey</span> <span class="n">defaultName</span><span class="p">:</span> <span class="nb">String</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="n">defaultName</span> <span class="p">==</span> <span class="s">&quot;gameStyle&quot;</span> <span class="p">{</span>
+      <span class="n">gameStyleChanged</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="p">}</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>Here’s what you added:</p>
-<ol>
-<li>For the first preview of this view that shows, you’ve set the environment’s locale to always be English. Because the scheme’s language affects the preview’s display language, it would otherwise show in Spanish based on what you did in the previous step.</li>
-<li>Next, you set the second preview’s locale to Spanish.</li>
-</ol>
-<p>Refresh the preview, and you’ll see the translated title of your app:</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/09/countryquiztime_localizedpreview.png"><img alt="SwiftUI Preview Localization" src="https://koenig-media.raywenderlich.com/uploads/2021/09/countryquiztime_localizedpreview-650x419.png" /></a></p>
-<p>Now, do the same thing for <code>QuestionView</code> by opening <em>QuestionView.swift</em> and replacing <code>QuestionView_Previews</code> with the following:</p>
-<div class="highlight"><pre><span></span><code><span class="kd">struct</span> <span class="nc">QuestionView_Previews</span><span class="p">:</span> <span class="n">PreviewProvider</span> <span class="p">{</span>
-  <span class="kd">static</span> <span class="kd">var</span> <span class="nv">previews</span><span class="p">:</span> <span class="n">some</span> <span class="n">View</span> <span class="p">{</span>
-    <span class="n">QuestionView</span><span class="p">(</span><span class="n">question</span><span class="p">:</span> <span class="n">Question</span><span class="p">.</span><span class="n">mockQuestion</span><span class="p">)</span>
-      <span class="p">.</span><span class="n">environmentObject</span><span class="p">(</span><span class="n">Quiz</span><span class="p">())</span>
-      <span class="p">.</span><span class="n">environment</span><span class="p">(</span><span class="err">\</span><span class="p">.</span><span class="n">locale</span><span class="p">,</span> <span class="p">.</span><span class="kd">init</span><span class="p">(</span><span class="n">identifier</span><span class="p">:</span> <span class="s">&quot;en&quot;</span><span class="p">))</span>
-    <span class="n">QuestionView</span><span class="p">(</span><span class="n">question</span><span class="p">:</span> <span class="n">Question</span><span class="p">.</span><span class="n">mockQuestion</span><span class="p">)</span>
-      <span class="p">.</span><span class="n">environmentObject</span><span class="p">(</span><span class="n">Quiz</span><span class="p">())</span>
-      <span class="p">.</span><span class="n">environment</span><span class="p">(</span><span class="err">\</span><span class="p">.</span><span class="n">locale</span><span class="p">,</span> <span class="p">.</span><span class="kd">init</span><span class="p">(</span><span class="n">identifier</span><span class="p">:</span> <span class="s">&quot;es&quot;</span><span class="p">))</span>
+<p><code>MockUserDefaults</code>重写了<code>set(_:forKey:)</code>来增加<code>gameStyleChanged</code>。类似的测试通常设置一个<code>Bool</code>变量，但增加`Int'变量给你更多的灵活性。例如，你的测试可以检查应用程序只调用该方法一次。</p>
+<p>接下来，在<em>BullsEyeMockTests</em>中声明SUT和模拟对象：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nv">sut</span><span class="p">:</span> <span class="n">ViewController</span><span class="p">!</span>
+<span class="kd">var</span> <span class="nv">mockUserDefaults</span><span class="p">:</span> <span class="n">MockUserDefaults</span><span class="p">!</span>
+</code></pre></div>
+<p>Replace <code>setUpWithError()</code> and <code>tearDownWithError()</code> with:</p>
+<div class="highlight"><pre><span></span><code><span class="kr">override</span> <span class="kd">func</span> <span class="nf">setUpWithError</span><span class="p">()</span> <span class="kr">throws</span> <span class="p">{</span>
+  <span class="k">try</span> <span class="kc">super</span><span class="p">.</span><span class="n">setUpWithError</span><span class="p">()</span>
+  <span class="n">sut</span> <span class="p">=</span> <span class="bp">UIStoryboard</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="s">&quot;Main&quot;</span><span class="p">,</span> <span class="n">bundle</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">instantiateInitialViewController</span><span class="p">()</span> <span class="k">as</span><span class="p">?</span> <span class="n">ViewController</span>
+  <span class="n">mockUserDefaults</span> <span class="p">=</span> <span class="n">MockUserDefaults</span><span class="p">(</span><span class="n">suiteName</span><span class="p">:</span> <span class="s">&quot;testing&quot;</span><span class="p">)</span>
+  <span class="n">sut</span><span class="p">.</span><span class="n">defaults</span> <span class="p">=</span> <span class="n">mockUserDefaults</span>
+<span class="p">}</span>
+
+<span class="kr">override</span> <span class="kd">func</span> <span class="nf">tearDownWithError</span><span class="p">()</span> <span class="kr">throws</span> <span class="p">{</span>
+  <span class="n">sut</span> <span class="p">=</span> <span class="kc">nil</span>
+  <span class="n">mockUserDefaults</span> <span class="p">=</span> <span class="kc">nil</span>
+  <span class="k">try</span> <span class="kc">super</span><span class="p">.</span><span class="n">tearDownWithError</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>这将创建SUT和模拟对象，并将模拟对象作为SUT的一个属性注入。</p>
+<p>现在，将模板中的两个默认测试方法替换成这样：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">testGameStyleCanBeChanged</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// given</span>
+  <span class="kd">let</span> <span class="nv">segmentedControl</span> <span class="p">=</span> <span class="bp">UISegmentedControl</span><span class="p">()</span>
+
+  <span class="c1">// when</span>
+  <span class="n">XCTAssertEqual</span><span class="p">(</span>
+    <span class="n">mockUserDefaults</span><span class="p">.</span><span class="n">gameStyleChanged</span><span class="p">,</span> 
+    <span class="mi">0</span><span class="p">,</span> 
+    <span class="s">&quot;gameStyleChanged should be 0 before sendActions&quot;</span><span class="p">)</span>
+  <span class="n">segmentedControl</span><span class="p">.</span><span class="n">addTarget</span><span class="p">(</span>
+    <span class="n">sut</span><span class="p">,</span>
+    <span class="n">action</span><span class="p">:</span> <span class="k">#selector</span><span class="p">(</span><span class="n">ViewController</span><span class="p">.</span><span class="n">chooseGameStyle</span><span class="p">(</span><span class="kc">_</span><span class="p">:)),</span>
+    <span class="k">for</span><span class="p">:</span> <span class="p">.</span><span class="n">valueChanged</span><span class="p">)</span>
+  <span class="n">segmentedControl</span><span class="p">.</span><span class="n">sendActions</span><span class="p">(</span><span class="k">for</span><span class="p">:</span> <span class="p">.</span><span class="n">valueChanged</span><span class="p">)</span>
+
+  <span class="c1">// then</span>
+  <span class="n">XCTAssertEqual</span><span class="p">(</span>
+    <span class="n">mockUserDefaults</span><span class="p">.</span><span class="n">gameStyleChanged</span><span class="p">,</span> 
+    <span class="mi">1</span><span class="p">,</span> 
+    <span class="s">&quot;gameStyle user default wasn&#39;t changed&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>当<em>断言是，在测试方法改变分段控制之前，<code>gameStyleChanged</code>标志是</em>0<em>。因此，如果</em>then*断言也是真的，这意味着<code>set(_:forKey:)</code>被精确调用了一次。</p>
+<p>运行该测试。它应该成功。</p>
+<h2 id="xcodeui">Xcode中的UI测试<a class="headerlink" href="#xcodeui" title="Permanent link">&para;</a></h2>
+<p>UI测试让您测试与用户界面的交互。UI测试的工作原理是通过查询找到一个应用程序的UI对象，合成事件，然后将事件发送到这些对象。该API使您能够检查一个UI对象的属性和状态，以比较它们与预期的状态。</p>
+<p>在测试导航器中，添加一个新的<em>UI测试目标</em>。检查要测试的<em>目标</em>是<em>BullsEye</em>，然后接受默认名称<em>BullsEyeUITests</em>。</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_11_UITests_NewUITestTarget_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: New UI Test Target" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_11_UITests_NewUITestTarget_annotated-345x500.png" /></a></p>
+<p>打开<em>BullsEyeUITests.swift</em>，在<code>BullsEyeUITests</code>类的顶部添加这个属性：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nv">app</span><span class="p">:</span> <span class="n">XCUIApplication</span><span class="p">!</span>
+</code></pre></div>
+<p>移除<code>tearDownWithError()</code>并将<code>setUpWithError()</code>的内容替换为以下内容：</p>
+<div class="highlight"><pre><span></span><code><span class="k">try</span> <span class="kc">super</span><span class="p">.</span><span class="n">setUpWithError</span><span class="p">()</span>
+<span class="n">continueAfterFailure</span> <span class="p">=</span> <span class="kc">false</span>
+<span class="n">app</span> <span class="p">=</span> <span class="n">XCUIApplication</span><span class="p">()</span>
+<span class="n">app</span><span class="p">.</span><span class="n">launch</span><span class="p">()</span>
+</code></pre></div>
+<p>删除现有的两个测试，并添加一个新的测试，名为 "testGameStyleSwitch()"。</p>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">testGameStyleSwitch</span><span class="p">()</span> <span class="p">{</span>    
+<span class="p">}</span>
+</code></pre></div>
+<p>在<code>testGameStyleSwitch()</code>中打开一个新行，并点击编辑器窗口底部的红色<em>记录</em>按钮：</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_12_UITests_Record_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Recording a UI Test" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_12_UITests_Record_annotated-650x235.png" /></a></p>
+<p>这将在模拟器中打开应用程序的模式，将你的互动记录为测试命令。一旦应用程序加载，点击游戏风格开关的<em>滑动</em>段和<em>顶部标签</em>。再次点击Xcode <em>Record</em>按钮来停止记录。</p>
+<p>你现在在<code>testGameStyleSwitch()</code>中拥有以下三行：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">app</span> <span class="p">=</span> <span class="n">XCUIApplication</span><span class="p">()</span>
+<span class="n">app</span><span class="p">.</span><span class="n">buttons</span><span class="p">[</span><span class="s">&quot;Slide&quot;</span><span class="p">].</span><span class="n">tap</span><span class="p">()</span>
+<span class="n">app</span><span class="p">.</span><span class="n">staticTexts</span><span class="p">[</span><span class="s">&quot;Get as close as you can to: &quot;</span><span class="p">].</span><span class="n">tap</span><span class="p">()</span>
+</code></pre></div>
+<p>记录器已经创建了代码来测试你在应用程序中测试的相同动作。向游戏风格的分段控制和顶部的标签发送一个点击。你将使用这些作为基础来创建你自己的UI测试。如果你看到任何其他的语句，只需删除它们。</p>
+<p>第一行重复了你在<code>setUpWithError()</code>中创建的属性，所以删除这一行。你还不需要点击任何东西，所以也删除第2行和第3行末尾的<code>.tap()</code>。现在，打开<code>["幻灯片"]</code>旁边的小菜单，选择<code>segmentedControls.butts["Slide"]</code>。</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_13_UITests_ChangeRecording.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Changing Recording" src="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_13_UITests_ChangeRecording-650x145.png" /></a></p>
+<p>你应该剩下的是：</p>
+<div class="highlight"><pre><span></span><code><span class="n">app</span><span class="p">.</span><span class="n">segmentedControls</span><span class="p">.</span><span class="n">buttons</span><span class="p">[</span><span class="s">&quot;Slide&quot;</span><span class="p">]</span>
+<span class="n">app</span><span class="p">.</span><span class="n">staticTexts</span><span class="p">[</span><span class="s">&quot;Get as close as you can to: &quot;</span><span class="p">]</span>
+</code></pre></div>
+<p>点任何其他对象，让记录器帮助你找到你可以在测试中访问的代码。现在，用这段代码替换这些行，创建一个*给定的部分：</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// given</span>
+<span class="kd">let</span> <span class="nv">slideButton</span> <span class="p">=</span> <span class="n">app</span><span class="p">.</span><span class="n">segmentedControls</span><span class="p">.</span><span class="n">buttons</span><span class="p">[</span><span class="s">&quot;Slide&quot;</span><span class="p">]</span>
+<span class="kd">let</span> <span class="nv">typeButton</span> <span class="p">=</span> <span class="n">app</span><span class="p">.</span><span class="n">segmentedControls</span><span class="p">.</span><span class="n">buttons</span><span class="p">[</span><span class="s">&quot;Type&quot;</span><span class="p">]</span>
+<span class="kd">let</span> <span class="nv">slideLabel</span> <span class="p">=</span> <span class="n">app</span><span class="p">.</span><span class="n">staticTexts</span><span class="p">[</span><span class="s">&quot;Get as close as you can to: &quot;</span><span class="p">]</span>
+<span class="kd">let</span> <span class="nv">typeLabel</span> <span class="p">=</span> <span class="n">app</span><span class="p">.</span><span class="n">staticTexts</span><span class="p">[</span><span class="s">&quot;Guess where the slider is: &quot;</span><span class="p">]</span>
+</code></pre></div>
+<p>现在你有了分段控件中两个按钮的名称和两个可能的顶部标签，请在下面添加以下代码：</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// then</span>
+<span class="k">if</span> <span class="n">slideButton</span><span class="p">.</span><span class="n">isSelected</span> <span class="p">{</span>
+  <span class="n">XCTAssertTrue</span><span class="p">(</span><span class="n">slideLabel</span><span class="p">.</span><span class="n">exists</span><span class="p">)</span>
+  <span class="n">XCTAssertFalse</span><span class="p">(</span><span class="n">typeLabel</span><span class="p">.</span><span class="n">exists</span><span class="p">)</span>
+
+  <span class="n">typeButton</span><span class="p">.</span><span class="n">tap</span><span class="p">()</span>
+  <span class="n">XCTAssertTrue</span><span class="p">(</span><span class="n">typeLabel</span><span class="p">.</span><span class="n">exists</span><span class="p">)</span>
+  <span class="n">XCTAssertFalse</span><span class="p">(</span><span class="n">slideLabel</span><span class="p">.</span><span class="n">exists</span><span class="p">)</span>
+<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="n">typeButton</span><span class="p">.</span><span class="n">isSelected</span> <span class="p">{</span>
+  <span class="n">XCTAssertTrue</span><span class="p">(</span><span class="n">typeLabel</span><span class="p">.</span><span class="n">exists</span><span class="p">)</span>
+  <span class="n">XCTAssertFalse</span><span class="p">(</span><span class="n">slideLabel</span><span class="p">.</span><span class="n">exists</span><span class="p">)</span>
+
+  <span class="n">slideButton</span><span class="p">.</span><span class="n">tap</span><span class="p">()</span>
+  <span class="n">XCTAssertTrue</span><span class="p">(</span><span class="n">slideLabel</span><span class="p">.</span><span class="n">exists</span><span class="p">)</span>
+  <span class="n">XCTAssertFalse</span><span class="p">(</span><span class="n">typeLabel</span><span class="p">.</span><span class="n">exists</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>这将检查当你<code>tap()</code>分段控件中的每个按钮时，是否存在正确的标签。运行该测试--所有的断言都应该成功。</p>
+<h2 id="_12">测试性能<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h2>
+<p>来自<a href="https://developer.apple.com/library/prerelease/content/documentation/DeveloperTools/Conceptual/testing_with_xcode/chapters/04-writing_tests.html#//apple_ref/doc/uid/TP40014132-CH4-SW8">苹果的文档</a>。</p>
+<p><em>性能测试将你要评估的代码块运行10次，收集平均执行时间和运行的标准偏差。这些单独的测量值的平均值形成了一个测试运行的数值，然后可以与基线进行比较，以评估成功或失败</em>。</p>
+<p>写一个性能测试很简单。只要把你想测量的代码放到<code>measure()</code>的闭合处即可。此外，你可以指定多个指标来测量。</p>
+<p>在<code>BullsEyeTests</code>中添加以下测试：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">testScoreIsComputedPerformance</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">measure</span><span class="p">(</span>
+    <span class="n">metrics</span><span class="p">:</span> <span class="p">[</span>
+      <span class="n">XCTClockMetric</span><span class="p">(),</span> 
+      <span class="n">XCTCPUMetric</span><span class="p">(),</span>
+      <span class="n">XCTStorageMetric</span><span class="p">(),</span> 
+      <span class="n">XCTMemoryMetric</span><span class="p">()</span>
+    <span class="p">]</span>
+  <span class="p">)</span> <span class="p">{</span>
+    <span class="n">sut</span><span class="p">.</span><span class="n">check</span><span class="p">(</span><span class="n">guess</span><span class="p">:</span> <span class="mi">100</span><span class="p">)</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>Now, no matter what view you’re developing, the previews will always allow you to see both languages. This is also a great way to help developers on multilingual teams see their work in a language they might be more comfortable with. For now, the two previews of <code>QuestionView</code>will look the same because you haven’t translated anything shown in that view.</p>
-<h2 id="utilizing-new-localization-techniques">Utilizing New Localization Techniques<a class="headerlink" href="#utilizing-new-localization-techniques" title="Permanent link">&para;</a></h2>
-<p>In the next sections, you’ll learn about new time-saving enhancements to the localization process introduced in Xcode 13 and iOS 15.</p>
-<h3 id="initializing-strings">Initializing Strings<a class="headerlink" href="#initializing-strings" title="Permanent link">&para;</a></h3>
-<p>In the previous example, iOS could translate your app’s title because a string passed to <code>Text</code>is actually treated as an instance of <code>LocalizedStringKey</code>. Behind the scenes, it handles all the work for you, making it much easier to work with translations. But what happens when you aren’t supplying a string directly to an instance of <code>Text</code>?</p>
-<p>In the past, developers would get around this by using the global function, or macro, <code>NSLocalizedString(_:tableName:bundle:value:comment:)</code>. For the most part, this was fairly easy to use. It does get complicated, though, when your strings require parameters supplied to your code. Open <em>ContentView.swift</em>, and find the property <code>scoreMessage</code>. </p>
-<div class="highlight"><pre><span></span><code><span class="kd">private</span> <span class="kd">var</span> <span class="nv">scoreMessage</span><span class="p">:</span> <span class="nb">String</span> <span class="p">{</span>
-  <span class="c1">// 1</span>
-  <span class="kd">let</span> <span class="nv">localizedString</span> 
-  <span class="p">=</span> <span class="n">NSLocalizedString</span><span class="p">(</span><span class="s">&quot;points-count %lld&quot;</span><span class="p">,</span> <span class="n">comment</span><span class="p">:</span> <span class="s">&quot;The pluralized score&quot;</span><span class="p">)</span>
-  <span class="c1">// 2</span>
-  <span class="k">return</span> <span class="nb">String</span><span class="p">(</span><span class="n">format</span><span class="p">:</span> <span class="n">localizedString</span><span class="p">,</span> <span class="n">quiz</span><span class="p">.</span><span class="n">score</span><span class="p">)</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>Here’s what’s happening in the code above:</p>
-<ol>
-<li>This creates a reference to the pluralized string <em>points-count</em>.</li>
-<li>This replaces the <code>%lld</code> format specifier with the actual score. The previous step is always required so that you can supply the localized string to the string formatter.</li>
-</ol>
-<p>While this certainly isn’t the most complicated process you might encounter, there’s definitely room for improvement. </p>
-<p>New to iOS 15 and Xcode 13 is <code>String(localized:table:bundle:locale:comment:)</code>. This allows you to consolidate the two-step process in the previous code into one. Replace <code>scoreMessage</code> with the following:</p>
-<div class="highlight"><pre><span></span><code><span class="kd">private</span> <span class="kd">var</span> <span class="nv">scoreMessage</span><span class="p">:</span> <span class="nb">String</span> <span class="p">{</span>
-  <span class="nb">String</span><span class="p">(</span>
-    <span class="n">localized</span><span class="p">:</span> <span class="s">&quot;points-count </span><span class="si">\(</span><span class="n">quiz</span><span class="p">.</span><span class="n">score</span><span class="si">)</span><span class="s">&quot;</span><span class="p">,</span>
-    <span class="n">comment</span><span class="p">:</span> <span class="s">&quot;The pluralized score.&quot;</span>
-  <span class="p">)</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>Here, you pass the pluralized string’s key <em>and</em> the value it needs in one easy step. You also have the benefit of the compiler automatically exporting strings found in this initializer, so you don’t need to worry about hunting them down in bigger projects.</p>
-<p>There are several other places in the app that need to use this new initializer. Open <em>QuestionView.swift</em>, and replace this line from <code>optionButton(_:)</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="n">message</span> <span class="p">=</span> <span class="n">isCorrect</span> <span class="p">?</span> <span class="s">&quot;correctly&quot;</span> <span class="p">:</span> <span class="s">&quot;incorrectly&quot;</span>
-</code></pre></div>
-<p>with:</p>
-<div class="highlight"><pre><span></span><code>    <span class="n">message</span> <span class="p">=</span> <span class="n">isCorrect</span> <span class="p">?</span>
-    <span class="nb">String</span><span class="p">(</span><span class="n">localized</span><span class="p">:</span> <span class="s">&quot;correctly&quot;</span><span class="p">,</span> <span class="n">comment</span><span class="p">:</span> <span class="s">&quot;Correct message&quot;</span><span class="p">)</span> <span class="p">:</span>
-    <span class="nb">String</span><span class="p">(</span><span class="n">localized</span><span class="p">:</span> <span class="s">&quot;incorrectly&quot;</span><span class="p">,</span> <span class="n">comment</span><span class="p">:</span> <span class="s">&quot;Incorrect message&quot;</span><span class="p">)</span>
-</code></pre></div>
-<p>This localizes the strings that show when a user answers a question. </p>
-<p>Finally, open <em>QuestionModel.swift</em>. You’ll find twelve places using <code>NSLocalizedString(_:tableName:bundle:value:comment:)</code>. Taking what you learned in the last two steps, convert each one of these to use <code>String(localized:table:bundle:locale:comment:)</code>.</p>
-<h3 id="including-localized-markdown">Including Localized Markdown<a class="headerlink" href="#including-localized-markdown" title="Permanent link">&para;</a></h3>
-<p>One great addition in iOS 15 is the ability to include Markdown directly in views that accept strings, like <code>Text</code>. Open <em>ContentView.swift</em>, and find the line of code where the title is set:</p>
-<div class="highlight"><pre><span></span><code><span class="n">Text</span><span class="p">(</span><span class="s">&quot;Welcome to Country Quiz Time&quot;</span><span class="p">)</span>
-</code></pre></div>
-<p>Replace it with the following:</p>
-<div class="highlight"><pre><span></span><code><span class="n">Text</span><span class="p">(</span><span class="s">&quot;Welcome to _Country Quiz Time_&quot;</span><span class="p">,</span> <span class="n">comment</span><span class="p">:</span> <span class="s">&quot;App welcome title&quot;</span><span class="p">)</span>
-</code></pre></div>
-<p>Here’s what you just added:</p>
+<p>这个测试测量多个指标：</p>
 <ul>
-<li>The string now has an underscore before and after the title of the app. This will cause the app’s title to appear italicized when the app runs.</li>
-<li>You’ve added the parameter <code>comment</code>, making things clearer for the translators. It’s important to remember to give your translators all the help you can.</li>
+<li><code>XCTClockMetric</code>测量经过的时间。</li>
+<li><code>XCTCPUMetric</code>跟踪CPU活动，包括CPU时间、周期和指令数量。</li>
+<li><code>XCTStorageMetric</code>告诉你被测试的代码向存储器写入多少数据。</li>
+<li><code>XCTMemoryMetric</code>跟踪使用的物理内存的数量。</li>
 </ul>
-<p>You’ll also want to go back to <em>Localizable.strings (Spanish)</em> and update the app title line to include the Markdown. Do this by replacing the line beginning “Welcome…” with the following:</p>
-<div class="highlight"><pre><span></span><code><span class="s2">&quot;Welcome to _Country Quiz Time_&quot;</span> <span class="o">=</span> <span class="s2">&quot;Bienvenido a _Country Quiz Time_&quot;</span><span class="p">;</span>
-</code></pre></div>
-<p>Refresh the preview as needed. You’ll see the title of the app with only the name italicized. </p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/09/swiftui_localization_markdown.png"><img alt="SwiftUI Markdown" src="https://koenig-media.raywenderlich.com/uploads/2021/09/swiftui_localization_markdown-231x500.png" /></a></p>
-<p>You may not always be able to directly set the string value within <code>Text</code>. However, if you want to provide a localized string with Markdown, you’ll need to use <code>AttributedString</code>. In <em>ContentView.swift</em>, add the following new property after the <code>scoreMessage</code> property:</p>
-<div class="highlight"><pre><span></span><code><span class="kd">private</span> <span class="kd">var</span> <span class="nv">appTitle</span><span class="p">:</span> <span class="n">AttributedString</span> <span class="p">{</span>
-  <span class="n">AttributedString</span><span class="p">(</span>
-    <span class="n">localized</span><span class="p">:</span> <span class="s">&quot;Welcome to _Country Quiz Time_&quot;</span><span class="p">,</span>
-    <span class="n">comment</span><span class="p">:</span> <span class="s">&quot;App welcome title&quot;</span>
-  <span class="p">)</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>Here, you’ve added a localized string, with Markdown, almost exactly as you did a few steps ago in the tutorial.</p>
-<p>Still in <em>ContentView.swift</em>, replace:</p>
-<div class="highlight"><pre><span></span><code><span class="n">Text</span><span class="p">(</span><span class="s">&quot;Welcome to _Country Quiz Time_&quot;</span><span class="p">,</span> <span class="n">comment</span><span class="p">:</span> <span class="s">&quot;App welcome title&quot;</span><span class="p">)</span>
-</code></pre></div>
-<p>With the following:</p>
-<div class="highlight"><pre><span></span><code><span class="n">Text</span><span class="p">(</span><span class="n">appTitle</span><span class="p">)</span>
-</code></pre></div>
-<p>Resume automatic preview updating as needed. You’ll still see the title formatted the same as before.</p>
-<h3 id="localizing-asset-catalogs">Localizing Asset Catalogs<a class="headerlink" href="#localizing-asset-catalogs" title="Permanent link">&para;</a></h3>
-<p>Colors and symbols can have a variety of meanings across different cultures and languages. You can localize colors and images to your project’s asset catalogs to help bring an even richer cultural experience for all users. </p>
-<p>Open <em>Assets</em>, and select the color asset <em>Region</em>. With the color highlighted, under the <em>Attributes</em> inspector, find and select <em>Spanish</em> under <em>Localization</em>. </p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/10/countryquiztime_spanishcolor.png"><img alt="Adding Spanish color localization" src="https://koenig-media.raywenderlich.com/uploads/2021/10/countryquiztime_spanishcolor-650x243.png" /></a></p>
-<p>Now select the color square for <em>Spanish</em>. Again in the Attributes inspector, change <em>Input Method</em> to <em>8-bit Hexadecimal</em>, and set the <em>Hex</em> value to <code>#006847</code>.</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/10/swiftui_localization_title_color_oval-1.png"><img alt="Changing Spanish color localization to green" src="https://koenig-media.raywenderlich.com/uploads/2021/10/swiftui_localization_title_color_oval-1-650x261.png" /></a></p>
-<p>Set your scheme’s language to Spanish, then build and run. Your title will now be green. </p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/10/swiftui_localization_title_color.png"><img alt="App screenshot showing Spanish title in green" src="https://koenig-media.raywenderlich.com/uploads/2021/10/swiftui_localization_title_color-231x500.png" /></a></p>
-<p>If you switch your scheme’s language back to English, the title will be red. </p>
-<h2 id="using-automatic-grammar-agreement">Using Automatic Grammar Agreement<a class="headerlink" href="#using-automatic-grammar-agreement" title="Permanent link">&para;</a></h2>
-<p>One of the more unique and powerful things Apple introduced with iOS 15 is <em>automatic grammar agreement</em>. In English, the rules behind pluralizing a noun are relatively simple. If you have one of something, you typically use the singular form of the noun. When you have zero or more than one, you use the plural form. There are some exceptions, but for the most part, that’s it. </p>
-<p>One thing most English speakers don’t have to think about is <em>gendered nouns</em>. Many languages apply a grammatical gender to nouns, which can affect the articles, verbs and adjectives used with the nouns. </p>
-<p>As an example, in Spanish, the words paper and house have different genders:</p>
+<p>运行测试，然后点击出现在<code>measure()</code>尾部闭合开始旁边的图标，查看统计数据。你可以改变<em>Metric</em>旁边的选定指标。</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_14_2_PerformanceTests_Result_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Viewing Performance Result" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_14_2_PerformanceTests_Result_annotated-650x246.png" /></a></p>
+<p>点击<em>设置基线</em>来设置一个参考时间。再次运行性能测试并查看结果--它可能比基线更好或更差。通过<em>编辑</em>按钮，你可以将基线重置为这个新的结果。</p>
+<p>基线是按设备配置存储的，所以你可以让同一个测试在几个不同的设备上执行。每个设备可以根据具体配置的处理器速度、内存等保持不同的基线。</p>
+<p>当你对一个应用程序进行修改，可能会影响到被测试方法的性能时，请再次运行性能测试，看看它与基线的比较情况。</p>
+<h2 id="_13">启用代码覆盖<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h2>
+<p>代码覆盖工具会告诉你，你的测试实际上在运行哪些应用程序的代码，所以你知道应用程序的哪些部分没有被测试--至少，还没有。</p>
+<p>要启用代码覆盖，请编辑该方案的<em>测试</em>动作，并在<em>选项</em>标签下勾选<em>收集覆盖</em>的复选框：</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_15_Coverage_GatherCoverage_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Enabling Coverage" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_15_Coverage_GatherCoverage_annotated-650x351.png" /></a></p>
+<p>用<em>Command-U</em>运行<em>所有</em>测试，然后用<em>Command-9</em>打开报告导航器。在该列表的最上面的项目下选择<em>覆盖率</em>：</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_16_Coverage_Log_annotated.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Code Coverage Report" src="https://koenig-media.raywenderlich.com/uploads/2021/03/tests_16_Coverage_Log_annotated-650x159.png" /></a></p>
+<p>点击披露三角形可以看到<em>BullsEyeGame.swift</em>中的函数和闭包列表：</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_17_Coverage_Details.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Code Coverage Report Details" src="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_17_Coverage_Details-650x220.png" /></a></p>
+<p>滚动到<code>getRandomNumber(completion:)</code>，可以看到覆盖率为95.0%。</p>
+<p>点击该函数的箭头按钮，打开该函数的源文件。当你把鼠标移到右侧边栏的覆盖率注释上时，代码的部分会突出显示为绿色或红色：</p>
+<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_18_Coverage_Code.png?__hstc=149040233.d8fe792e85af7b597d50a12165caeb7c.1677596406340.1677596406340.1677596406340.1&amp;__hssc=149040233.1.1677596406340&amp;__hsfp=3535790334"><img alt="iOS Unit Testing: Coverage Highlights in Code Editor" src="https://koenig-media.raywenderlich.com/uploads/2021/02/tests_18_Coverage_Code-650x384.png" /></a></p>
+<p>覆盖率注释显示了测试对每个代码部分的调用次数。没有被调用的部分用红色标注。</p>
+<h3 id="100">实现100%的覆盖率？<a class="headerlink" href="#100" title="Permanent link">&para;</a></h3>
+<p>你应该如何努力争取100%的代码覆盖率？只要谷歌一下"100%单元测试覆盖率"，你就会发现一系列支持和反对的论点，以及对"100%覆盖率"的定义的争论。反对的观点认为，最后10%-15%的覆盖率不值得努力。支持的观点认为最后的10%-15%是最重要的，<em>因为</em>它很难测试。在谷歌上搜索"难以单元测试的坏设计"，可以找到有说服力的论据，即<a href="https://www.toptal.com/qa/how-to-write-testable-code-and-why-it-matters">无法测试的代码是更深层次设计问题的标志</a>。</p>
+<h2 id="_14">从这里开始去哪里？<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h2>
+<p>你可以使用本教程顶部或底部的<em>下载材料</em>按钮下载项目的完成版本。通过添加你自己的额外测试，继续发展你的技能。</p>
+<p>你现在有了一些很好的工具，可以用来为你的项目编写测试。我希望这个iOS单元测试和UI测试教程能让你有信心去测试*所有的东西! </p>
+<p>这里有一些资源供你进一步学习：</p>
 <ul>
-<li><em>Paper, masculine</em>: el papel</li>
-<li><em>House, feminine</em>: la casa</li>
+<li>
+<p>WWDC有几个关于测试主题的视频。WWDC17的两个好的视频是。<a href="https://developer.apple.com/videos/play/wwdc2017/414/">Engineering for Testability</a>和<a href="https://developer.apple.com/videos/play/wwdc2018/417/">Testing Tips &amp; Tricks</a>。</p>
+</li>
+<li>
+<p>下一步是自动化。持续集成和持续交付。从我们的教程开始</p>
+</li>
 </ul>
-<p>In languages that assign gender to nouns, pluralizing words requires the correct <em>agreement</em>between the number and gender. The rules can get quite complex for those not familiar with this concept, especially when learning how to pluralize combinations of things that may contain different genders. In the past, developers relied on a <em>stringsdict</em> file to account for the basic pluralization of things. </p>
-<p>The following block of code might be your first instinct to handle pluralizing strings:</p>
-<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="n">points</span> <span class="p">==</span> <span class="mi">0</span> <span class="p">{</span>
-  <span class="bp">print</span><span class="p">(</span><span class="s">&quot;0 points&quot;</span><span class="p">)</span>
-<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="n">points</span> <span class="p">==</span> <span class="mi">1</span> <span class="p">{</span>
-  <span class="bp">print</span><span class="p">(</span><span class="s">&quot;1 point&quot;</span><span class="p">)</span>
-<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-  <span class="bp">print</span><span class="p">(</span><span class="s">&quot;</span><span class="si">\(</span><span class="n">points</span><span class="si">)</span><span class="s"> points&quot;</span><span class="p">)</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>However, this provides no flexibility for translations. With <em>stringsdict</em> files, you can declare variables and provide the different values for varying amounts. This works really well and allows for all sorts of scalability and localization. It has its own set of challenges, though. </p>
-<p>Enter automatic grammar agreement. To kick things off, open <em>ContentView.swift</em> and find the property <code>scoreView</code>. Note the string it uses to show the score in a <code>Text</code> view.</p>
-<div class="highlight"><pre><span></span><code>  <span class="n">Text</span><span class="p">(</span><span class="s">&quot;Score: </span><span class="si">\(</span><span class="n">quiz</span><span class="p">.</span><span class="n">score</span><span class="si">)</span><span class="s">&quot;</span><span class="p">)</span>
-</code></pre></div>
-<p>You’ll change the localization of this string to include an appropriately pluralized form of ‘point’ after it. Open <em>Localizable.strings (English)</em> and add the following line:</p>
-<div class="highlight"><pre><span></span><code><span class="s2">&quot;Score: %lld&quot;</span> <span class="o">=</span> <span class="s2">&quot;**Score:** ^[%lld Points](inflect: true)&quot;</span><span class="p">;</span>
-</code></pre></div>
-<p>The localization entry you just added does the following:</p>
+<p>使用GitHub、Fastlane和Jenkins的持续集成以及Xcode Server for iOS：入门。</p>
+<p>然后，看看苹果公司的<a href="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/testing_with_xcode/chapters/08-automation.html#//apple_ref/doc/uid/TP40014132-CH7-SW1">Automating the Test Process</a>与Xcode Server和<code>xcodebuild</code>，以及<a href="https://en.wikipedia.org/wiki/Continuous_delivery">Wikipedia的持续交付文章</a>，其中借鉴了<a href="https://www.thoughtworks.com/continuous-delivery">ThoughtWorks</a>的专业知识。</p>
 <ul>
-<li>Sets the value of your translation to include the markup to bold <em>Score:</em>.</li>
-<li>Wraps the phrase to inflect within <code>^[]</code>. This tells the system that there will be values that need inflection, or interpretation at runtime.</li>
-<li>Includes an instruction to inflect the block of text preceding it.</li>
+<li>
+<p>如果你已经有了一个应用程序，但还没有为它编写测试，你可能想参考<a href="https://www.amazon.com/Working-Effectively-Legacy-Michael-Feathers/dp/0131177052/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1481511568&amp;sr=1-1"><em>有效地处理遗留代码</em>，作者Michael Feathers</a>，因为没有测试的代码<em>是</em>遗留代码!</p>
+</li>
+<li>
+<p>Jon Reid的Quality Coding sample app archives对于学习更多关于<a href="http://qualitycoding.org/tdd-sample-archives/">Test-Driven Development</a>是非常好的。</p>
+</li>
 </ul>
-<p>Essentially, your localized string automatically changes the word “points” to the correct form of itself, depending on the integer value passed to the string. If you have one point, it will say “1 Point.” If you have zero or more than one, it will use “Points.”</p>
-<p>Be sure your scheme is set to English, then build and run. Step through the quiz and pay attention to the score in the lower-left corner of the UI to see how the word “points” changes based on your score.</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/10/swiftui_localization_pointschanging.jpg"><img alt="Simulator screenshots showing score changing" src="https://koenig-media.raywenderlich.com/uploads/2021/10/swiftui_localization_pointschanging-650x469.jpg" /></a></p>
-<p><em>Note</em>: The answers to each question are as follows:</p>
-<ol>
-<li><em>What day is Mexican Independence Day?</em> September 16</li>
-<li><em>Which language is spoken in Andorra?</em> Catalan</li>
-<li><em>What is the capital of the United States?</em> Washington, D.C.</li>
-</ol>
-<p>In the example above, the automatic grammar agreement correctly figured out that “Points” is a noun. But if it doesn’t, you can tell it which part of speech a word in your string belongs to. In <em>Localizable (English).strings</em>, you can change the entry for <code>Score: %lld</code> to the following: </p>
-<div class="highlight"><pre><span></span><code><span class="s2">&quot;Score: %lld&quot;</span>
-<span class="o">=</span> <span class="s2">&quot;**Score:** ^[%lld ^[Points](grammar: { partOfSpeech: \&quot;noun\&quot; })]</span>
-<span class="s2">  (inflect: true)&quot;</span><span class="p">;</span>
-</code></pre></div>
-<p>The app will look very similar to its previous state, but you’ve made these changes: </p>
-<ul>
-<li>Wrapped “Points” in brackets, telling the system you are going to provide more instructions about this word. </li>
-<li>Within parentheses, provided a key-value pair with the key <code>grammar</code>.</li>
-<li>Inside, you’ll see another key-value pair, with the key <code>partOfSpeech</code> and the value <code>"noun"</code>. This requires escape characters, as this instruction lives within a string itself.</li>
-</ul>
-<p>This will have the same result as before, as “Points” is already identified by the system as a noun. However, if you find words not behaving as you’d expect, you can customize your localizations as shown.</p>
-<h3 id="terms-of-address">Terms of Address<a class="headerlink" href="#terms-of-address" title="Permanent link">&para;</a></h3>
-<p>In Spanish, even the way you welcome the user can depend on their gender. Spanish-language users can configure a term of address in their <em>Language &amp; Region</em> settings, so you can account for this using automatic grammar agreement also. Change this line in <em>Localizable.strings (Spanish)</em>:</p>
-<div class="highlight"><pre><span></span><code><span class="s2">&quot;Welcome to _Country Quiz Time_&quot;</span> <span class="o">=</span> <span class="s2">&quot;Bienvenido a _Country Quiz Time_&quot;</span><span class="p">;</span>
-</code></pre></div>
-<p>to</p>
-<div class="highlight"><pre><span></span><code><span class="s2">&quot;Welcome to _Country Quiz Time_&quot;</span> <span class="o">=</span> <span class="s2">&quot;^[Bienvenido](inflect: true, </span>
-<span class="s2">  inflectionAlternative:&#39;Te damos la bienvenida&#39;) a _Country Quiz Time_&quot;</span><span class="p">;</span>
-</code></pre></div>
-<p>Here’s what this does:</p>
-<ul>
-<li>Tells the system to inflect ‘Bienvenido’. The system will inflect it to ‘Bienvenido’ (masculine) or Bienvenida’ (feminine) according to the user’s preferred term of address setting.</li>
-<li>Gives a gender-neutral alternative, ‘Te damos la bienvenida’, to display if the user has not specified a term of address.</li>
-</ul>
-<p>Make sure your scheme’s language is set to Spanish, then build and run. If you haven’t configured a term of address, you will now see the gender-neutral welcome message.</p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/10/swiftui_localization_title_agreement.png"><img alt="App screenshot showing the gender-neutral Spanish welcome message" src="https://koenig-media.raywenderlich.com/uploads/2021/10/swiftui_localization_title_agreement-231x500.png" /></a></p>
-<h2 id="finalizing-translations">Finalizing Translations<a class="headerlink" href="#finalizing-translations" title="Permanent link">&para;</a></h2>
-<p>You’re almost done! As the last step, you’re going to add all the possible translations in Spanish and import the values into Xcode. The downloaded project materials contains a file with some of the Spanish translations ready to go.</p>
-<p>In Xcode, select <em>Product ▸ Import Localizations…</em>. Navigate to <em>CountryQuizTime_Materials/translations/es.xcloc</em> from the downloaded materials, and finish importing. </p>
-<p><em>Note</em>: From time to time, Xcode may warn you that translations are missing as you attempt to import. For this tutorial, if you see this, it’s OK to continue without worrying. However, when you’re working on a production app, it’s important to review missing entries.</p>
-<p>With your scheme’s language set to Spanish, build and run. </p>
-<p><a href="https://koenig-media.raywenderlich.com/uploads/2021/10/swiftui_localization_final_spanish.png"><img alt="Screenshot showing the gender-neutral Spanish title in green, and the first question and answers all in Spanish" src="https://koenig-media.raywenderlich.com/uploads/2021/10/swiftui_localization_final_spanish-231x500.png" /></a></p>
-<p>And with that, you’ve finished learning how to use the newest features of SwiftUI and localization!</p>
-<h2 id="where-to-go-from-here">Where to Go From Here?<a class="headerlink" href="#where-to-go-from-here" title="Permanent link">&para;</a></h2>
-<p>You can download the completed version of the project by clicking the <em>Download Materials</em>button at the top or bottom of this tutorial. </p>
-<p>You’re all set to use all the new techniques for localizing your app in iOS 15.</p>
-<p>If you’d like to learn more about localizing your app, not just with SwiftUI, take a look at <a href="https://www.raywenderlich.com/250-internationalizing-your-ios-app-getting-started">Internationalizing Your iOS App: Getting Started</a>. You can also take the multi-part course <a href="https://www.raywenderlich.com/20755921-multi-language-support-with-localization-in-ios">Multi-Language Support with Localization in iOS</a>. To learn more about other ways to make your app welcoming to people from different cultures, watch <a href="https://developer.apple.com/videos/play/wwdc2021/10275/">The practice of inclusive design</a> from WWDC 2021.</p>
-<p>You can learn more about formatting your strings with Markdown at <a href="https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax">GitHub.</a></p>
-<p>We hope you enjoyed this tutorial. If you have any questions or comments, please join the forum discussion below!</p>
+<p>我们希望你喜欢这个教程，如果你有任何问题或评论，请加入下面的论坛讨论!</p>
 
 
 
@@ -8045,6 +8506,42 @@
       </main>
       
         <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="页脚" >
+      
+        
+        <a href="../../SwiftGen/iOS%E7%9A%84SwiftGen%E6%95%99%E7%A8%8B/" class="md-footer__link md-footer__link--prev" aria-label="上一页: iOS的SwiftGen教程" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              iOS的SwiftGen教程
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../iOS%20Unit%20Testing%20and%20UI%20Testing%20Tutorial/" class="md-footer__link md-footer__link--next" aria-label="下一页: iOS Unit Testing and UI Testing Tutorial" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              iOS Unit Testing and UI Testing Tutorial
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
