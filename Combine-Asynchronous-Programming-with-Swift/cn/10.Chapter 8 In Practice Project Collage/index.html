@@ -7846,14 +7846,14 @@
 <p><code>subscriptions</code>是您将存储与主视图生命周期或模型本身相关的任何订阅的集合。如果模型发布，或者您手动重置<code>subscriptions</code>，所有正在进行的订阅都将被方便地取消。</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>如第1章“你好，合并！”所述，订阅者返回<code>Cancellable</code>的令牌，以控制订阅的生命周期。<code>AnyCancellable</code>是一种类型擦除类型，允许将不同类型的可取消内容存储在同一集合中，就像在上面的代码中一样。</p>
+<p>如第1章“你好，<code>Combine</code>！”所述，订阅者返回<code>Cancellable</code>的令牌，以控制订阅的生命周期。<code>AnyCancellable</code>是一种类型擦除类型，允许将不同类型的可取消内容存储在同一集合中，就像在上面的代码中一样。</p>
 </div>
 <p>您将使用<code>images</code>为当前拼贴显示用户当前选择的照片。当您将数据绑定到<code>UI</code>控件时，最适合使用<code>CurrentValueSubject</code>而不是<code>PassthroughSubject</code>。前者总是保证在订阅时至少会发送一个值，并且您的用户界面永远不会有未定义的状态。</p>
 <p>一般来说，<code>CurrentValueSubject</code>非常适合表示状态，例如照片数组或加载状态，而<code>PassthroughSubject</code>更适合表示事件，例如用户点击按钮，或只是指示发生了什么事情。</p>
 <p>接下来，要将一些图像添加到拼贴中并测试您的代码，请将以下行附加到<code>add()</code>中：</p>
 <div class="highlight"><pre><span></span><code><span class="n">images</span><span class="p">.</span><span class="n">value</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="bp">UIImage</span><span class="p">(</span><span class="n">named</span><span class="p">:</span> <span class="s">&quot;IMG_1907&quot;</span><span class="p">)</span><span class="o">!</span><span class="p">)</span>
 </code></pre></div>
-<p>每当用户点击绑定到<code>CollageNeueModel.add()</code>的右上角导航项中的<code>+</code>按钮时，您将向当前<code>images</code>数组添加<code>IMG_1907.jpg</code>，并通过主题发送该值。</p>
+<p>每当用户点击绑定到<code>CollageNeueModel.add()</code>的右上角导航项中的<code>+</code>按钮时，您将向当前<code>images</code>数组添加<code>IMG_1907.jpg</code>，并通过<code>subject</code>发送该值。</p>
 <p>您可以在该项目的资产目录中找到<code>IMG_1907.jpg</code>——这是我几年前在巴塞罗那附近拍的一张好照片。</p>
 <p>方便的是，<code>CurrentValueSubject</code>允许您直接突变其<code>value</code>，而不是使用<code>send(_:)</code>发射新值。两者是相同的，因此您可以使用感觉更好的语法-您可以在下一段中尝试<code>send(_:)</code></p>
 <p>要还能够清除当前选择的照片，请移到同一文件中的<code>clear()</code>，然后添加在那里：</p>
@@ -7864,7 +7864,7 @@
 <p>像这样向您的模型添加一个新属性：</p>
 <div class="highlight"><pre><span></span><code><span class="p">@</span><span class="n">Published</span> <span class="kd">var</span> <span class="nv">imagePreview</span><span class="p">:</span> <span class="bp">UIImage</span><span class="p">?</span>
 </code></pre></div>
-<p><code>@Published</code>是将“香草”属性包装成发布者的属性包装器吗？这有多酷？由于您的模型符合<code>ObservableObject</code>，因此将<code>imagePreview</code>绑定到屏幕上的视图变得超级简单。</p>
+<p><code>@Published</code>是将“香草”属性包装成发布者的属性包装器吗？这有多酷？由于您的模型遵循<code>ObservableObject</code>，因此将<code>imagePreview</code>绑定到屏幕上的视图变得超级简单。</p>
 <p>滚动到<code>bindMainView()</code>，并添加此代码以绑定屏幕上图像预览的<code>images</code>。</p>
 <div class="highlight"><pre><span></span><code><span class="c1">// 1</span>
 <span class="n">images</span>
@@ -7885,18 +7885,18 @@
 <div class="highlight"><pre><span></span><code><span class="n">Image</span><span class="p">(</span><span class="n">uiImage</span><span class="p">:</span> <span class="n">model</span><span class="p">.</span><span class="n">imagePreview</span> <span class="p">??</span> <span class="bp">UIImage</span><span class="p">())</span>
 </code></pre></div>
 <p>您使用最新的预览，或者如果不存在预览，则使用空的<code>UIImage</code>。</p>
-<p>是时候测试那个新订阅了！构建并运行应用程序，并单击几次+按钮。您应该会看到一个拼贴预览，每次单击<code>+</code>时，都会显示同一照片的更多副本：</p>
+<p>是时候测试那个新订阅了！构建并运行应用程序，并单击几次<code>+</code>按钮。您应该会看到一个拼贴预览，每次单击<code>+</code>时，都会显示同一照片的更多副本：</p>
 <p><img alt="img" src="../../graphics/img73.png" /></p>
 <p>您可以获得照片收藏，将其转换为拼贴画，并在单个订阅中将其分配给图像视图！</p>
-<p>然而，在典型的场景中，您不需要更新一个UI控件，而是更新几个。为每个绑定创建单独的订阅可能太过分了。因此，让我们看看如何作为单个批次执行一些更新。</p>
+<p>然而，在典型的场景中，您不需要更新一个<code>UI</code>控件，而是更新几个。为每个绑定创建单独的订阅可能太过分了。因此，让我们看看如何作为单个批次执行一些更新。</p>
 <p><code>MainView</code>中已经包含一种名为<code>updateUI(photosCount:)</code>的方法，它进行各种<code>UI</code>更新：当当前选择包含奇数照片时，它将禁用保存按钮，每当拼贴正在进行时启用清除按钮等。</p>
 <p>要在每次用户将照片添加到拼贴时调用 <code>upateUI(photosCount:)</code>，您将使用 <code>handleEvents(...)</code> 操作符。 如前所述，这是在您想要执行诸如日志记录或其他方面的副作用时使用的操作符。</p>
 <p>通常，建议从<code>sink(...)</code>或<code>assign(to:on:)</code>更新<code>UI</code>，但是，为了尝试一下，在本节中，您将在<code>handleEvents</code>中这样做。</p>
 <p>返回<code>CollageNeueModel.swift</code>并添加新属性：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">updateUISubject</span> <span class="p">=</span> <span class="n">PassthroughSubject</span><span class="p">&lt;</span><span class="nb">Int</span><span class="p">,</span> <span class="n">Never</span><span class="p">&gt;()</span>
 </code></pre></div>
-<p>要练习使用主题在不同类型之间进行通信（例如，在这种情况下，您正在使用它，以便您的模型可以“回看”到您的视图），您添加了一个名为<code>updateUISubject</code>的新主题。</p>
-<p>通过这个新主题，您将发出当前选择的照片数量，以便视图可以观察计数并相应地更新其状态。</p>
+<p>要练习使用<code>subject</code>在不同类型之间进行通信（例如，在这种情况下，您正在使用它，以便您的模型可以“回看”到您的视图），您添加了一个名为<code>updateUISubject</code>的新<code>subject</code>。</p>
+<p>通过这个新<code>subject</code>，您将发出当前选择的照片数量，以便视图可以观察计数并相应地更新其状态。</p>
 <p>在<code>bindMainView()</code>，在使用<code>map</code>的行之前插入此操作符：</p>
 <div class="highlight"><pre><span></span><code><span class="p">.</span><span class="n">handleEvents</span><span class="p">(</span><span class="n">receiveOutput</span><span class="p">:</span> <span class="p">{</span> <span class="p">[</span><span class="kr">weak</span> <span class="kc">self</span><span class="p">]</span> <span class="n">photos</span> <span class="k">in</span>
   <span class="kc">self</span><span class="p">?.</span><span class="n">updateUISubject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">photos</span><span class="p">.</span><span class="bp">count</span><span class="p">)</span>
@@ -7917,27 +7917,27 @@
 <p><img alt="img" src="../../graphics/img75.png" /></p>
 <h2 id="views">展示<code>views</code><a class="headerlink" href="#views" title="Permanent link">&para;</a></h2>
 <p>您看到通过主体路由用户界面的数据并将其绑定到屏幕上的某些控件是多么容易。接下来，您将处理另一个常见任务：呈现新视图，并在用户用完后获取一些数据。</p>
-<p>绑定数据的一般想法保持不变。您只需要更多的发布者或主题来定义正确的数据流。</p>
+<p>绑定数据的一般想法保持不变。您只需要更多的发布者或<code>subject</code>来定义正确的数据流。</p>
 <p>打开<code>PhotosView</code>，您将看到它已经包含从相机胶卷加载照片并将其显示在集合视图中的代码。</p>
 <p>您的下一个任务是将必要的组合代码添加到您的模型中，以便用户选择一些相机胶卷照片并将其添加到他们的拼贴中。</p>
-<p>在<code>CollageNeueModel.swift</code>中添加以下主题：</p>
+<p>在<code>CollageNeueModel.swift</code>中添加以下<code>subject</code>：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">private</span><span class="p">(</span><span class="kr">set</span><span class="p">)</span> <span class="kd">var</span> <span class="nv">selectedPhotosSubject</span> <span class="p">=</span>
   <span class="n">PassthroughSubject</span><span class="p">&lt;</span><span class="bp">UIImage</span><span class="p">,</span> <span class="n">Never</span><span class="p">&gt;()</span>
 </code></pre></div>
-<p>此代码允许<code>CollageNeueModel</code>在主题完成后用新主题替换主题，但其他类型只能访问发送或订阅以接收事件。</p>
-<p>说到这个，让我们将集合视图委托方法连接到该主题。</p>
-<p>向下滚动以 <code>selectImage(asset:)</code>已经提供的代码从设备库中获取给定的照片资产。照片准备就绪后，您应该使用主题将图像发送给任何订阅者。</p>
+<p>此代码允许<code>CollageNeueModel</code>在<code>subject</code>完成后用新<code>subject</code>替换<code>subject</code>，但其他类型只能访问发送或订阅以接收事件。</p>
+<p>说到这个，让我们将集合视图委托方法连接到该<code>subject</code>。</p>
+<p>向下滚动以 <code>selectImage(asset:)</code>已经提供的代码从设备库中获取给定的照片资产。照片准备就绪后，您应该使用<code>subject</code>将图像发送给任何订阅者。</p>
 <p>将<code>// Send the selected image</code>注释替换为：</p>
 <div class="highlight"><pre><span></span><code><span class="kc">self</span><span class="p">.</span><span class="n">selectedPhotosSubject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
 </code></pre></div>
-<p>嗯，那很容易！但是，由于您将主题暴露在其他类型中，您希望显式发送完成事件，以防视图被关闭以拆除任何外部订阅。</p>
+<p>嗯，那很容易！但是，由于您将<code>subject</code>暴露在其他类型中，您希望显式发送完成事件，以防视图被关闭以拆除任何外部订阅。</p>
 <p>同样，您可以通过几种不同的方式实现这一点，但对于本章，请打开<code>PhotosView.swift</code>并找到<code>.onDisappear(...)</code>修饰符。</p>
 <p>添加内部<code>.onDisappear(...)</code></p>
 <div class="highlight"><pre><span></span><code><span class="n">model</span><span class="p">.</span><span class="n">selectedPhotosSubject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">completion</span><span class="p">:</span> <span class="p">.</span><span class="n">finished</span><span class="p">)</span>
 </code></pre></div>
 <p>当您从显示的视图导航回来时，此代码将发送<code>finished</code>的事件。要结束当前任务，您仍然需要订阅所选照片，并将这些照片显示在主视图中。</p>
 <p>打开<code>CollageNeueModel.swift</code>，找到<code>add()</code>，并将其主体替换为：</p>
-<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">newPhotos</span> <span class="p">=</span> <span class="n">selectedPhotos</span>
+<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">newPhotos</span> <span class="p">=</span> <span class="n">selectedPhotosSubject</span>
 
 <span class="n">newPhotos</span>
   <span class="p">.</span><span class="bp">map</span> <span class="p">{</span> <span class="p">[</span><span class="kr">unowned</span> <span class="kc">self</span><span class="p">]</span> <span class="n">newImage</span> <span class="k">in</span>
@@ -7968,15 +7968,15 @@
 <p><img alt="img" src="../../graphics/img78.png" /></p>
 <p>在继续前进之前，有一个松散的一端需要处理。如果您在照片选择器和主视图之间导航几次，您会注意到，在第一次之后，您无法再添加任何照片。</p>
 <p>为什么会发生这种情况？</p>
-<p>这个问题源于您每次展示照片选择器时如何重用<code>selectedPhotosSubject</code>。第一次关闭该视图时，您会发送<code>finished</code>的完成事件，主题已完成。</p>
+<p>这个问题源于您每次展示照片选择器时如何重用<code>selectedPhotosSubject</code>。第一次关闭该视图时，您会发送<code>finished</code>的完成事件，<code>subject</code>已完成。</p>
 <p>您仍然可以使用它来创建新订阅，但这些订阅一旦创建，就会完成。</p>
-<p>要解决这个问题，请在每次展示照片选择器时创建一个新主题。滚动到<code>add()</code>并插入到其顶部：</p>
+<p>要解决这个问题，请在每次展示照片选择器时创建一个新<code>subject</code>。滚动到<code>add()</code>并插入到其顶部：</p>
 <div class="highlight"><pre><span></span><code><span class="n">selectedPhotosSubject</span> <span class="p">=</span> <span class="n">PassthroughSubject</span><span class="p">&lt;</span><span class="bp">UIImage</span><span class="p">,</span> <span class="n">Never</span><span class="p">&gt;()</span>
 </code></pre></div>
-<p>每次您展示照片选择器时，这将创建一个新主题。您现在可以自由地在视图之间来回导航，同时仍然可以将更多照片添加到拼贴中。</p>
+<p>每次您展示照片选择器时，这将创建一个新<code>subject</code>。您现在可以自由地在视图之间来回导航，同时仍然可以将更多照片添加到拼贴中。</p>
 <h2 id="future">将回调函数包装为<code>Future</code><a class="headerlink" href="#future" title="Permanent link">&para;</a></h2>
-<p>在<code>Playground</code>中，您可以与主题和发布者一起玩，并能够完全按照自己喜欢的方式设计一切，但在真正的应用程序中，您将与各种可可<code>API</code>进行交互，例如访问相机胶卷、读取设备的传感器或与某些数据库交互。</p>
-<p>在本书的后面，您将学习如何创建自己的自定义发布者。然而，在许多情况下，只需将主题添加到现有的<code>Cocoa</code>类中就足以将其功能插入您的<code>Combine</code>工作流程中。</p>
+<p>在<code>Playground</code>中，您可以与<code>subject</code>和发布者一起玩，并能够完全按照自己喜欢的方式设计一切，但在真正的应用程序中，您将与各种可可<code>API</code>进行交互，例如访问相机胶卷、读取设备的传感器或与某些数据库交互。</p>
+<p>在本书的后面，您将学习如何创建自己的自定义发布者。然而，在许多情况下，只需将<code>subject</code>添加到现有的<code>Cocoa</code>类中就足以将其功能插入您的<code>Combine</code>工作流程中。</p>
 <p>在本章的这一部分中，您将开发一种名为<code>PhotoWriter</code>的新自定义类型，该类型将允许您将用户的拼贴保存到磁盘。您将使用基于回调的照片<code>API</code>进行保存，并使用<code>Combine Future</code>允许其他类型订阅操作结果。</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -7989,16 +7989,16 @@
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>此函数将尝试异步将给定映像存储在磁盘上，并返回此<code>API</code>订阅者将订阅的未来。</p>
-<p>您将使用基于闭包的<code>Future</code>初始化器返回现成的未来，该未来将在初始化后在提供的闭包中执行代码。</p>
-<p>让我们通过在闭包中插入以下代码来充实未来的逻辑：</p>
+<p>此函数将尝试异步将给定映像存储在磁盘上，并返回此<code>API</code>订阅者将订阅的<code>Future</code>。</p>
+<p>您将使用基于闭包的<code>Future</code>初始化器返回现成的<code>Future</code>，该<code>Future</code>将在初始化后在提供的闭包中执行代码。</p>
+<p>让我们通过在闭包中插入以下代码来充实<code>Future</code>的逻辑：</p>
 <div class="highlight"><pre><span></span><code><span class="k">do</span> <span class="p">{</span>
 
 <span class="p">}</span> <span class="k">catch</span> <span class="p">{</span>
   <span class="n">resolve</span><span class="p">(.</span><span class="n">failure</span><span class="p">(.</span><span class="n">generic</span><span class="p">(</span><span class="n">error</span><span class="p">)))</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>这是一个相当不错的开始。您将执行<code>do</code>块内的保存，如果它抛出错误，您将以失败解决未来问题。</p>
+<p>这是一个相当不错的开始。您将执行<code>do</code>块内的保存，如果它抛出错误，您将以失败解决<code>Future</code>问题。</p>
 <p>由于您不知道保存照片时可能抛出的确切错误，您只需将抛出的错误包装为<code>PhotoWriter.Error.generic</code>错误。</p>
 <p>现在，对于函数的真正“肉”：在<code>do</code>主体内插入以下内容：</p>
 <div class="highlight"><pre><span></span><code><span class="k">try</span> <span class="bp">PHPhotoLibrary</span><span class="p">.</span><span class="n">shared</span><span class="p">().</span><span class="n">performChangesAndWait</span> <span class="p">{</span>
@@ -8020,8 +8020,8 @@
 <ol>
 <li>首先，您创建一个存储<code>image</code>的请求。</li>
 <li>然后，您尝试通过<code>request.placeholderForCreatedAsset?.localIdentifier</code>获取新创建的资产的标识符。</li>
-<li>如果创建失败并且您没有取回标识符，则使用<code>PhotoWriter.Error.couldNotSavePhoto</code>错误解决未来问题。</li>
-<li>最后，如果你得到了一个<code>savedAssetID</code>，你就成功地解决了未来。</li>
+<li>如果创建失败并且您没有取回标识符，则使用<code>PhotoWriter.Error.couldNotSavePhoto</code>错误解决<code>Future</code>问题。</li>
+<li>最后，如果你得到了一个<code>savedAssetID</code>，你就成功地解决了<code>Future</code>。</li>
 </ol>
 <p>这就是包装回调功能所需的一切，如果您收到错误，请用失败解决，或者在收到一些结果要返回时成功解决！</p>
 <p>现在，当用户点击保存时，您可以使用<code>PhotoWriter.save(_:)</code>保存当前拼贴。打开<code>CollageNeueModel.swift</code>，并在<code>save()</code>中附加：</p>
@@ -8046,7 +8046,7 @@
 </code></pre></div>
 <p>在这个代码中，您：</p>
 <ol>
-<li>使用<code>sink(receiveCompletion:receiveValue:)</code>订阅<code>PhotoWriter.save(_:)</code>未来。</li>
+<li>使用<code>sink(receiveCompletion:receiveValue:)</code>订阅<code>PhotoWriter.save(_:) Future</code>。</li>
 <li>如果完成失败，请将错误消息保存到<code>lastErrorMessage</code>。</li>
 <li>如果您找回一个值——新的资产标识符——您将其存储在<code>lastSavedPhotoID</code>中。</li>
 </ol>
@@ -8054,10 +8054,10 @@
 <p>再运行一次应用程序，选择几张照片，然后点击保存。这将调用您闪亮的新发布者，并在保存拼贴画后显示这样的警报：</p>
 <p><img alt="img" src="../../graphics/img79.png" /></p>
 <h3 id="_1">关于内存管理的说明<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
-<p>这里是一个使用<code>Combine</code>快速记内存管理的好地方。如前所述，组合代码必须处理许多异步执行的工作，在处理类时，这些工作总是有点麻烦。</p>
-<p>当您编写自己的自定义组合代码时，您可能主要处理结构，因此您不需要在使用<code>map</code>、<code>flatMap</code>、<code>filter</code>等的闭包中显式指定捕获语义。</p>
+<p>这里是一个使用<code>Combine</code>快速记内存管理的好地方。如前所述，<code>Combine</code>代码必须处理许多异步执行的工作，在处理类时，这些工作总是有点麻烦。</p>
+<p>当您编写自己的自定义<code>Combine</code>代码时，您可能主要处理结构，因此您不需要在使用<code>map</code>、<code>flatMap</code>、<code>filter</code>等的闭包中显式指定捕获语义。</p>
 <p>但是，当您使用<code>UIKit/AppKit</code>代码处理<code>UI</code>代码（即您有<code>UIViewController</code>、<code>UICollectionController</code>等子类）或当您使用<code>SwiftUI</code>视图的<code>ObservableObject</code>时，您需要注意所有这些类的内存管理。</p>
-<p>在编写组合代码时，适用标准规则，因此您应该一如既往地使用相同的Swift捕获语义：</p>
+<p>在编写<code>Combine</code>代码时，适用标准规则，因此您应该一如既往地使用相同的<code>Swift</code>捕获语义：</p>
 <ul>
 <li>如果您正在捕获可以从内存中释放的对象，例如之前显示的照片视图控制器，如果您捕获另一个对象，则应使用<code>[weak self]</code>或<code>self</code>变量。</li>
 <li>如果您捕获了一个无法释放的对象，例如该拼贴应用程序中的主视图控制器，您可以安全地使用<code>[unowned self]</code>例如，您从未从导航堆栈中弹出，因此始终存在。</li>
@@ -8068,8 +8068,8 @@
 <p>事实证明，订阅同一发布者可能会产生不必要的副作用。如果你想一想，你不知道发布者在订阅时在做什么，是吗？它可能是在创建新资源、提出网络请求或其他意外工作。</p>
 <p><img alt="img" src="../../graphics/img80.png" /></p>
 <p>为同一发布者创建多个订阅时，正确的方法是使用<code>share()</code>操作符共享原始发布者。这将发布者包装在一个类中，因此它可以安全地发送给多个订阅者，而无需再次执行其基础工作。</p>
-<p>仍在<code>CollageNeueModel.swift</code>中，找到<code>let newPhotos = selectedPhotos</code>行，并将其替换为：</p>
-<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">newPhotos</span> <span class="p">=</span> <span class="n">selectedPhotos</span><span class="p">.</span><span class="n">share</span><span class="p">()</span>
+<p>仍在<code>CollageNeueModel.swift</code>中，找到<code>let newPhotos = selectedPhotosSubject</code>行，并将其替换为：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">newPhotos</span> <span class="p">=</span> <span class="n">selectedPhotosSubject</span><span class="p">.</span><span class="n">share</span><span class="p">()</span>
 </code></pre></div>
 <p>现在，可以安全地创建多个<code>newPhotos</code>订阅，而不必担心发布者会为每个新订阅者多次执行副作用：</p>
 <p><img alt="img" src="../../graphics/img81.png" /></p>
@@ -8078,8 +8078,8 @@
 <p>解决这个问题的可靠解决方案是构建自己的共享操作符，该操作符在新订阅者订阅时重新发出或重播过去的值。建立自己的操作符一点也不复杂——事实上，您将在第18章“自定义发布者和处理背压”中构建一个名为<code>shareReplay()</code>的操作符，这将允许您以上述方式使用共享。</p>
 <h2 id="_3">实践中的操作符<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <p>现在您已经了解了一些有用的被动模式，是时候练习您在前几章中介绍的一些操作符，并看到它们的实际应用了。</p>
-<p>打开<code>CollageNeueModel.swift</code>，并将您共享<code>selectedPhotos</code>订阅的行替换为：<code>let newPhotos = selectedPhotos.share()</code>：</p>
-<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">newPhotos</span> <span class="p">=</span> <span class="n">selectedPhotos</span>
+<p>打开<code>CollageNeueModel.swift</code>，并将您共享<code>selectedPhotos</code>订阅的行替换为：<code>let newPhotos = selectedPhotosSubject.share()</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">newPhotos</span> <span class="p">=</span> <span class="n">selectedPhotosSubject</span>
   <span class="p">.</span><span class="kr">prefix</span><span class="p">(</span><span class="k">while</span><span class="p">:</span> <span class="p">{</span> <span class="p">[</span><span class="kr">unowned</span> <span class="kc">self</span><span class="p">]</span> <span class="kc">_</span> <span class="k">in</span>
     <span class="kc">self</span><span class="p">.</span><span class="n">images</span><span class="p">.</span><span class="n">value</span><span class="p">.</span><span class="bp">count</span> <span class="o">&lt;</span> <span class="mi">6</span>
   <span class="p">})</span>
@@ -8093,7 +8093,7 @@
 <h2 id="_4">挑战<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
 <p>恭喜您完成了本教程风格的章节！如果您想在下一章进入更多理论之前再完成一个可选任务，请继续阅读以下内容。</p>
 <p>打开<code>Utility/PHPhotoLibrary+Combine.swift</code>，并阅读从用户那里获得<code>Collage Neue</code>应用程序的照片库授权的代码。您肯定会注意到，逻辑非常简单，并且基于“标准”回调<code>API</code>。</p>
-<p>这为您提供了将<code>Cocoa API</code>包装为未来的绝佳机会。对于此挑战，请在<code>PHPhotoLibrary</code>中添加一个新的静态属性，名为 <code>isAuthorized</code>，该属性为类型为<code>Future&lt;Bool, Never&gt;</code>，并允许其他类型订阅照片库授权状态。</p>
+<p>这为您提供了将<code>Cocoa API</code>包装为<code>Future</code>的绝佳机会。对于此挑战，请在<code>PHPhotoLibrary</code>中添加一个新的静态属性，名为 <code>isAuthorized</code>，该属性为类型为<code>Future&lt;Bool, Never&gt;</code>，并允许其他类型订阅照片库授权状态。</p>
 <p>您在本章中已经这样做了几次，现有的<code>fetchAuthorizationStatus(callback:)</code>函数应该非常简单。祝你好运！如果您在此过程中遇到任何困难，请不要忘记，您可以始终进入本章提供的挑战文件夹，并查看示例解决方案。</p>
 <p>最后，别忘了在<code>PhotosView</code>中使用新的<code>isAuthorized</code>发布者！</p>
 <p>对于奖励积分，如果用户不授予对其照片的访问权限，请显示错误消息，并在点击关闭时导航回主视图控制器。</p>
@@ -8104,7 +8104,7 @@
 <p>如果你到目前为止独自成功应对挑战，你真的应该得到一轮额外的掌声！无论哪种方式，本章的挑战文件夹中都提供了您可以随时咨询的一个可能的解决方案。</p>
 <h2 id="_5">关键点<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
 <ul>
-<li>在日常任务中，您很可能必须处理回调或基于委托的<code>API</code>。幸运的是，通过使用主题，这些很容易被包装为期货或发布者。</li>
+<li>在日常任务中，您很可能必须处理回调或基于委托的<code>API</code>。幸运的是，通过使用<code>subject</code>，这些很容易被包装为期货或发布者。</li>
 <li>从委托和回调等各种模式转向单个发布者/订阅者模式，使呈现视图和获取值等平凡任务变得轻而易举。</li>
 <li>为了避免多次订阅发布者时出现不必要的副作用，请通过<code>share()</code>操作符使用共享发布者。</li>
 </ul>
