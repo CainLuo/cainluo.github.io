@@ -7760,7 +7760,7 @@
 <li>流化任务，在双方之间流化数据。</li>
 <li>连接到网络套接程序的<code>Websocket</code>任务。</li>
 </ul>
-<p>其中，只有第一个，数据传输任务，暴露了一个组合发布者。组合使用单个<code>API</code>处理这些任务，具有两个变体，获取<code>URLRequest</code>或仅取<code>URL</code>。</p>
+<p>其中，只有第一个，数据传输任务，暴露了一个<code>Combine</code>发布者。<code>Combine</code>使用单个<code>API</code>处理这些任务，具有两个变体，获取<code>URLRequest</code>或仅取<code>URL</code>。</p>
 <p>以下是如何使用此<code>API</code>的了解：</p>
 <div class="highlight"><pre><span></span><code><span class="k">guard</span> <span class="kd">let</span> <span class="nv">url</span> <span class="p">=</span> <span class="n">URL</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="s">&quot;https://mysite.com/mydata.json&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="p">{</span> 
   <span class="k">return</span> 
@@ -7790,7 +7790,7 @@
 <p>如您所见，<code>Combine</code>在<code>URLSession.dataTask</code>上提供了一个透明的裸骨发布者抽象，只暴露了发布者而不是闭包。</p>
 <h2 id="_1">可提供可提供的支持<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <p><code>Codable</code>协议是一种现代、功能强大且仅限<code>Swift</code>的编码和解码机制，您绝对应该了解。如果您不这样做，请帮自己一个忙，并从<a href="https://raywenderlich.com/">raywenderlich.com</a>上的苹果文档和教程中了解它！</p>
-<p><code>Foundation</code>支持通过<code>JSONEncoder</code>和<code>JSONDecoder</code>对JSON进行编码和解码。您还可以使用<code>PropertyListEncoder</code>和<code>PropertyListDecoder</code>，但这些在网络请求中不太有用。</p>
+<p><code>Foundation</code>支持通过<code>JSONEncoder</code>和<code>JSONDecoder</code>对<code>JSON</code>进行编码和解码。您还可以使用<code>PropertyListEncoder</code>和<code>PropertyListDecoder</code>，但这些在网络请求中不太有用。</p>
 <p>在前面的示例中，您下载了一些<code>JSON</code>。 当然，您可以使用<code>JSONDecoder</code>对其进行解码：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">subscription</span> <span class="p">=</span> <span class="n">URLSession</span><span class="p">.</span><span class="n">shared</span>
   <span class="p">.</span><span class="n">dataTaskPublisher</span><span class="p">(</span><span class="k">for</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span>
@@ -7814,7 +7814,7 @@
 <p>唯一的优势是，在设置发布者时，您只实例化一次<code>JSONDecoder</code>，而不是每次在<code>tryMap(_:)</code>闭包中创建它。</p>
 <h2 id="_2">将网络数据发布给多个订阅者<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <p>每次您订阅发布者时，它都会开始工作。在网络请求的情况下，这意味着如果多个订阅者需要结果，则多次发送相同的请求。</p>
-<p>令人惊讶的是，像其他框架一样，组合缺乏操作符来简化这一点。您可以使用<code>share()</code>操作符，但这很棘手，因为您需要在结果回来之前订阅所有订阅者。</p>
+<p>令人惊讶的是，像其他框架一样，<code>Combine</code>缺乏操作符来简化这一点。您可以使用<code>share()</code>操作符，但这很棘手，因为您需要在结果回来之前订阅所有订阅者。</p>
 <p>除了使用缓存机制外，一个解决方案是使用<code>multicast()</code>操作符，该操作符创建一个<code>ConnectablePublisher</code>，通过<code>Subject</code>发布值。它允许您多次订阅主题，然后在您准备好后调用发布者的<code>connect()</code>方法：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">url</span> <span class="p">=</span> <span class="n">URL</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="s">&quot;https://www.raywenderlich.com&quot;</span><span class="p">)</span><span class="o">!</span>
 <span class="kd">let</span> <span class="nv">publisher</span> <span class="p">=</span> <span class="n">URLSession</span><span class="p">.</span><span class="n">shared</span>
@@ -7858,7 +7858,7 @@
 <p class="admonition-title">Note</p>
 <p>确保存储所有<code>Cancellable</code>；否则，当离开当前代码范围时，它们将被释放和取消，在这种情况下，这将是即时的。</p>
 </div>
-<p>这个过程仍然有点复杂，因为Combin不像其他被动框架那样为此类场景提供操作符。在第18章“自定义发布者和处理背压”中，您将探索制定更好的解决方案。</p>
+<p>这个过程仍然有点复杂，因为<code>Combine</code>不像其他被动框架那样为此类场景提供操作符。在第18章“自定义发布者和处理背压”中，您将探索制定更好的解决方案。</p>
 <h2 id="_3">关键点<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>Combine</code>为其<code>dataTask(with:completionHandler:)</code>方法提供了一个基于发布者的抽象，称为<code>dataTaskPublisher(for:)</code></li>
