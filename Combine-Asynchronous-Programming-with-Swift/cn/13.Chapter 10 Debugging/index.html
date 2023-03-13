@@ -7745,7 +7745,7 @@
 
 
 <h1 id="10">第10章：调试<a class="headerlink" href="#10" title="Permanent link">&para;</a></h1>
-<p>了解异步代码中的事件流一直是一个挑战。在<code>Combine</code>中尤其如此，因为发布者中的操作符链可能不会立即发出事件。例如，像<code>throttle(for:scheduler:latest:)</code>这样的运算符不会发射他们收到的所有事件，因此您需要了解发生了什么。<code>Combine</code>提供了一些运算符来帮助调试您的被动流。了解它们将帮助您对令人困惑的情况进行故障排除。</p>
+<p>了解异步代码中的事件流一直是一个挑战。在<code>Combine</code>中尤其如此，因为发布者中的操作符链可能不会立即发出事件。例如，像<code>throttle(for:scheduler:latest:)</code>这样的运算符不会发送他们收到的所有事件，因此您需要了解发生了什么。<code>Combine</code>提供了一些运算符来帮助调试您的被动流。了解它们将帮助您对令人困惑的情况进行故障排除。</p>
 <h2 id="_1">打印活动<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <p>当您不确定是否有任何东西通过您的发布者时，<code>print(_:to:)</code>运算符是您应该使用的第一个运算符。这是一个直通式发布者，可以打印大量关于正在发生的事情的信息。</p>
 <p>即使有像这样的简单情况：</p>
@@ -7769,7 +7769,7 @@ publisher: receive finished
 <li>最后，打印完成事件。</li>
 </ul>
 <p>还有一个额外的参数，它需要一个<code>TextOutputStream</code>对象。您可以使用它来重定向字符串以打印到记录器。您还可以向日志添加信息，例如当前日期和时间等。可能性是无穷无尽的！</p>
-<p>例如，您可以创建一个简单的记录器，显示每个字符串之间的时间间隔，以便了解发布者发射值的速度：</p>
+<p>例如，您可以创建一个简单的记录器，显示每个字符串之间的时间间隔，以便了解发布者发送值的速度：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">class</span> <span class="nc">TimeLogger</span><span class="p">:</span> <span class="n">TextOutputStream</span> <span class="p">{</span>
   <span class="kd">private</span> <span class="kd">var</span> <span class="nv">previous</span> <span class="p">=</span> <span class="n">Date</span><span class="p">()</span>
   <span class="kd">private</span> <span class="kd">let</span> <span class="nv">formatter</span> <span class="p">=</span> <span class="n">NumberFormatter</span><span class="p">()</span>
@@ -7809,7 +7809,7 @@ publisher: receive finished
 <h2 id="-">对事件采取行动-执行副作用<a class="headerlink" href="#-" title="Permanent link">&para;</a></h2>
 <p>除了打印信息外，对特定事件执行操作通常也很有用。我们称之为执行副作用，因为您“侧面”采取的行动不会直接影响流中的更多发布者，但可能会产生修改外部变量等效果。</p>
 <p><code>handleEvents(receiveSubscription:receiveOutput:receiveCompletion:receiveCancel:receiveRequest:)</code>（哇，多么好的签名！）让您可以拦截发布者生命周期中的所有事件，然后在每个步骤中采取行动。</p>
-<p>想象一下，您正在跟踪发布者必须执行网络请求，然后发送一些数据的问题。当您运行它时，它永远不会收到任何数据。发生什么事了？这个请求真的有效吗？你甚至听什么回来了吗？</p>
+<p>想象一下，您正在跟踪发布者必须执行网络请求，然后发送一些数据的问题。当您运行它时，它永远不会收到任何数据。发生什么事了？这个请求真的有效吗？你甚至看到有什么回来了吗？</p>
 <p>考虑以下代码：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">request</span> <span class="p">=</span> <span class="n">URLSession</span><span class="p">.</span><span class="n">shared</span>
   <span class="p">.</span><span class="n">dataTaskPublisher</span><span class="p">(</span><span class="k">for</span><span class="p">:</span> <span class="n">URL</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="s">&quot;https://www.raywenderlich.com/&quot;</span><span class="p">)</span><span class="o">!</span><span class="p">)</span>
