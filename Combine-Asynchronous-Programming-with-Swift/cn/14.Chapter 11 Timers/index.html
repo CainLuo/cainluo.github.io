@@ -7799,7 +7799,7 @@
   <span class="p">.</span><span class="n">publish</span><span class="p">(</span><span class="n">every</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">on</span><span class="p">:</span> <span class="p">.</span><span class="n">main</span><span class="p">,</span> <span class="k">in</span><span class="p">:</span> <span class="p">.</span><span class="n">common</span><span class="p">)</span>
   <span class="p">.</span><span class="n">autoconnect</span><span class="p">()</span>
 </code></pre></div>
-<p>计时器反复发出当前日期，其<code>Publisher.Output</code>类型为<code>Date</code>。您可以使用<code>scan</code>操作符制作一个发射增加值的计时器：</p>
+<p>计时器反复发出当前日期，其<code>Publisher.Output</code>类型为<code>Date</code>。您可以使用<code>scan</code>操作符制作一个发送增加值的计时器：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">subscription</span> <span class="p">=</span> <span class="n">Timer</span>
   <span class="p">.</span><span class="n">publish</span><span class="p">(</span><span class="n">every</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">on</span><span class="p">:</span> <span class="p">.</span><span class="n">main</span><span class="p">,</span> <span class="k">in</span><span class="p">:</span> <span class="p">.</span><span class="n">common</span><span class="p">)</span>
   <span class="p">.</span><span class="n">autoconnect</span><span class="p">()</span>
@@ -7808,7 +7808,7 @@
     <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Counter is </span><span class="si">\(</span><span class="n">counter</span><span class="si">)</span><span class="s">&quot;</span><span class="p">)</span>
   <span class="p">}</span>
 </code></pre></div>
-<p>还有一个您在这里没有看到的<code>Timer.publish()</code>参数：<code>tolerance</code>。它指定了与您要求的持续时间的可接受的偏差，作为<code>TimeInterval</code>。但请注意，使用低于<code>RunLoop``minimumTolerance</code>值的值可能不会产生预期结果。</p>
+<p>还有一个您在这里没有看到的<code>Timer.publish()</code>参数：<code>tolerance</code>。它指定了与您要求的持续时间的可接受的偏差，作为<code>TimeInterval</code>。但请注意，使用低于<code>RunLoop minimumTolerance</code>值的值可能不会产生预期结果。</p>
 <h2 id="dispatchqueue">使用<code>DispatchQueue</code><a class="headerlink" href="#dispatchqueue" title="Permanent link">&para;</a></h2>
 <p>您可以使用派单队列生成计时器事件。虽然调度框架有一个<code>DispatchTimerSource</code>事件源，但令人惊讶的是，<code>Combine</code>没有为它提供计时器接口。相反，您将使用另一种方法在队列中生成计时器事件。然而，这可能会有点复杂：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">queue</span> <span class="p">=</span> <span class="n">DispatchQueue</span><span class="p">.</span><span class="n">main</span>
