@@ -7243,8 +7243,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#url" class="md-nav__link">
-    URL会话扩展
+  <a href="#urlsession" class="md-nav__link">
+    URLSession扩展
   </a>
   
 </li>
@@ -7695,8 +7695,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#url" class="md-nav__link">
-    URL会话扩展
+  <a href="#urlsession" class="md-nav__link">
+    URLSession扩展
   </a>
   
 </li>
@@ -7745,20 +7745,20 @@
 
 
 <h1 id="9">第9章：网络<a class="headerlink" href="#9" title="Permanent link">&para;</a></h1>
-<p>作为程序员，我们所做的许多工作都围绕着网络。与后端通信，获取数据，推送更新，编码和解码<code>JSON</code>......这是移动开发人员的日常肉。</p>
+<p>作为程序员，我们所做的许多工作都围绕着网络。与后端通信，获取数据，推送更新，编码和解码<code>JSON</code>......这是移动开发人员的日常。</p>
 <p><code>Combine</code>提供了一些精选的<code>API</code>，以帮助声明性地执行常见任务。这些<code>API</code>围绕着现代应用程序的两个关键组件展开：</p>
 <ul>
 <li>使用<code>URLSession</code>执行网络请求。</li>
 <li>使用<code>Codable</code>协议对<code>JSON</code>数据进行编码和解码。</li>
 </ul>
-<h2 id="url"><code>URL</code>会话扩展<a class="headerlink" href="#url" title="Permanent link">&para;</a></h2>
+<h2 id="urlsession"><code>URLSession</code>扩展<a class="headerlink" href="#urlsession" title="Permanent link">&para;</a></h2>
 <p><code>URLSession</code>是执行网络数据传输任务的标准方式。它提供了一个现代化的异步<code>API</code>，具有强大的配置选项和完全透明的背景支持。它支持各种操作，例如：</p>
 <ul>
 <li>数据传输任务，以检索<code>URL</code>的内容。</li>
 <li>下载任务以检索<code>URL</code>的内容并将其保存到文件中。</li>
 <li>上传任务以将文件和数据上传到<code>URL</code>。</li>
 <li>流化任务，在双方之间流化数据。</li>
-<li>连接到网络套接程序的<code>Websocket</code>任务。</li>
+<li>连接到网络套字节程序的<code>Websocket</code>任务。</li>
 </ul>
 <p>其中，只有第一个，数据传输任务，暴露了一个<code>Combine</code>发布者。<code>Combine</code>使用单个<code>API</code>处理这些任务，具有两个变体，获取<code>URLRequest</code>或仅取<code>URL</code>。</p>
 <p>以下是如何使用此<code>API</code>的了解：</p>
@@ -7810,7 +7810,7 @@
 <div class="highlight"><pre><span></span><code><span class="p">.</span><span class="bp">map</span><span class="p">(</span><span class="err">\</span><span class="p">.</span><span class="n">data</span><span class="p">)</span>
 <span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="n">type</span><span class="p">:</span> <span class="n">MyType</span><span class="p">.</span><span class="kc">self</span><span class="p">,</span> <span class="n">decoder</span><span class="p">:</span> <span class="n">JSONDecoder</span><span class="p">())</span>
 </code></pre></div>
-<p>不幸的是，由于<code>dataTaskPublisher(for:)</code>会发出元组，如果不首先使用仅发射结果<code>Data</code>部分的<code>map(_:)</code>，您就无法直接使用<code>decode(type:decoder:)</code>。</p>
+<p>不幸的是，由于<code>dataTaskPublisher(for:)</code>会发出元组，如果不首先使用仅发送结果<code>Data</code>部分的<code>map(_:)</code>，您就无法直接使用<code>decode(type:decoder:)</code>。</p>
 <p>唯一的优势是，在设置发布者时，您只实例化一次<code>JSONDecoder</code>，而不是每次在<code>tryMap(_:)</code>闭包中创建它。</p>
 <h2 id="_2">将网络数据发布给多个订阅者<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <p>每次您订阅发布者时，它都会开始工作。在网络请求的情况下，这意味着如果多个订阅者需要结果，则多次发送相同的请求。</p>
@@ -7862,7 +7862,7 @@
 <h2 id="_3">关键点<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>Combine</code>为其<code>dataTask(with:completionHandler:)</code>方法提供了一个基于发布者的抽象，称为<code>dataTaskPublisher(for:)</code></li>
-<li>您可以使用发射<code>Data</code>值的发布者上的内置<code>decode</code>操作符解码符合<code>Codable</code>的模型。</li>
+<li>您可以使用发送<code>Data</code>值的发布者上的内置<code>decode</code>操作符解码符合<code>Codable</code>的模型。</li>
 <li>虽然没有操作符可以与多个订阅者共享订阅的重播，但您可以使用<code>ConnectablePublisher</code>和<code>multicast</code>操作符重新创建此行为。</li>
 </ul>
 <h2 id="_4">接下来去哪？<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
