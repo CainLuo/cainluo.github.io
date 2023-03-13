@@ -7747,7 +7747,7 @@
 <h1 id="11">第11章：计时器<a class="headerlink" href="#11" title="Permanent link">&para;</a></h1>
 <p>重复和非重复计时器在编码时总是有用的。 除了异步执行代码之外，您通常还需要控制任务应该重复的<code>何时</code>和<code>频率</code>。</p>
 <p>在<code>Dispatch</code>框架可用之前，开发人员依靠<code>RunLoop</code>异步执行任务并实现并发。您可以使用<code>Timer</code>创建重复和非重复计时器。然后，苹果发布了<code>Dispatch</code>框架，包括<code>DispatchSourceTimer</code>。</p>
-<p>虽然上述所有内容都能够创建计时器，但并非所有计时器在组合中都是相等的。继续阅读！</p>
+<p>虽然上述所有内容都能够创建计时器，但并非所有计时器在<code>Combine</code>中都是相等的。继续阅读！</p>
 <h2 id="runloop">使用<code>RunLoop</code><a class="headerlink" href="#runloop" title="Permanent link">&para;</a></h2>
 <p>主线程和您创建的任何线程，最好使用<code>Thread</code>类，都可以有自己的<code>RunLoop</code>。只需从当前线程中调用<code>RunLoop.current</code>：如果需要，<code>Foundation</code>将为您创建一个。请注意，除非您了解运行循环的操作方式——特别是您需要运行运行循环的循环——否则您最好使用运行应用程序主线程的主<code>RunLoop</code>。</p>
 <div class="admonition note">
@@ -7765,7 +7765,7 @@
   <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Timer fired&quot;</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>此计时器不会传递任何值，也不会创建发布者。它从<code>after:</code>带有指定<code>interval</code>和<code>tolerance</code>的参数中指定的日期开始，仅此而已。它与组合的唯一有用之处是，它返回的<code>Cancellable</code>允许您在一段时间后停止计时器。</p>
+<p>此计时器不会传递任何值，也不会创建发布者。它从<code>after:</code>带有指定<code>interval</code>和<code>tolerance</code>的参数中指定的日期开始，仅此而已。它与<code>Combine</code>的唯一有用之处是，它返回的<code>Cancellable</code>允许您在一段时间后停止计时器。</p>
 <p>这方面的一个例子可能是：</p>
 <div class="highlight"><pre><span></span><code><span class="n">runLoop</span><span class="p">.</span><span class="n">schedule</span><span class="p">(</span><span class="n">after</span><span class="p">:</span> <span class="p">.</span><span class="kd">init</span><span class="p">(</span><span class="n">Date</span><span class="p">(</span><span class="n">timeIntervalSinceNow</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">)))</span> <span class="p">{</span>
   <span class="n">subscription</span><span class="p">.</span><span class="n">cancel</span><span class="p">()</span>
@@ -7835,10 +7835,10 @@
 </code></pre></div>
 <p>在之前的代码中，您：</p>
 <ol>
-<li>创建一个主题，您将向其发送计时器值。</li>
-<li>准备一个计数器。每次计时器开火时，你都会增加它。</li>
+<li>创建一个<code>subject</code>，您将向其发送计时器值。</li>
+<li>准备一个计数器。每次计时器工作时，你都会增加它。</li>
 <li>每秒对所选队列安排重复操作。操作立即开始。</li>
-<li>订阅主题以获取计时器值。</li>
+<li>订阅<code>subject</code>以获取计时器值。</li>
 </ol>
 <p>正如你所看到的，这并不漂亮。这有助于将此代码移动到函数，并传递间隔和开始时间。</p>
 <h2 id="_2">关键点<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
