@@ -7830,7 +7830,7 @@
 <div class="highlight"><pre><span></span><code><span class="n">URLSession</span><span class="p">.</span><span class="n">shared</span>
   <span class="p">.</span><span class="n">dataTaskPublisher</span><span class="p">(</span><span class="k">for</span><span class="p">:</span> <span class="n">EndPoint</span><span class="p">.</span><span class="n">story</span><span class="p">(</span><span class="n">id</span><span class="p">).</span><span class="n">url</span><span class="p">)</span>
 </code></pre></div>
-<p>您首先向<code>Endpoint.story(id).url</code>提出请求。端点的<code>url</code>属性包含要请求的完整<code>HTTP URL</code>。单层<code>URL</code>如下所示（具有匹配的<code>ID</code>）：<a href="https://hacker-news.firebaseio.com/v0/item/12345.json">https://hacker-news.firebaseio.com/v0/item/12345.json</a>（如果您想预览<code>API</code>响应，请访问<code>https://bit.ly/2nL2ojS</code>。）</p>
+<p>您首先向<code>Endpoint.story(id).url</code>提出请求。端点的<code>url</code>属性包含要请求的完整<code>HTTP URL</code>。单层<code>URL</code>如下所示（具有匹配的<code>ID</code>）：<a href="https://hacker-news.firebaseio.com/v0/item/12345.json">https://hacker-news.firebaseio.com/v0/item/12345.json</a>（如果您想预览<code>API</code>响应，请访问<a href="https://bit.ly/2nL2ojS">https://bit.ly/2nL2ojS</a>。）</p>
 <p>接下来，要在后台线程上解析<code>JSON</code>并保持应用程序的其余部分响应，让我们创建一个新的自定义调度队列。<code>story(id:)</code>方法上方的<code>API</code>中添加一个新属性，如下所示：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">private</span> <span class="kd">let</span> <span class="nv">apiQueue</span> <span class="p">=</span> <span class="n">DispatchQueue</span><span class="p">(</span><span class="n">label</span><span class="p">:</span> <span class="s">&quot;API&quot;</span><span class="p">,</span>
                                      <span class="n">qos</span><span class="p">:</span> <span class="p">.</span><span class="k">default</span><span class="p">,</span>
@@ -7856,7 +7856,7 @@
 <p><img alt="img" src="../../graphics/img86.png" /></p>
 <p>通过<code>catch(_)</code>以这种方式处理上游错误允许您：</p>
 <ul>
-<li>如果您拿回了一个<code>Story</code>，请发出价值并完成。</li>
+<li>如果您拿回了一个<code>Story</code>，请发出数值并完成。</li>
 <li>返回一个<code>Empty</code>发布者，该发布者在失败时成功完成，而不发出任何值。</li>
 </ul>
 <p>接下来，要包装方法代码并返回设计整齐的发布者，您需要在末尾替换当前订阅。添加：</p>
@@ -7892,16 +7892,16 @@
 <p>一旦<code>Playground</code>再次运行，它将对<code>hacker-news.firebaseio.com</code>进行网络通话，并在控制台中打印结果：</p>
 <p><img alt="img" src="../../graphics/img87.png" /></p>
 <p>从服务器返回的<code>JSON</code>数据是一个相当简单的结构，如下：</p>
-<div class="highlight"><pre><span></span><code>{
-  &quot;by&quot;:&quot;python_kiss&quot;,
-  &quot;descendants&quot;:0,
-  &quot;id&quot;:1000,
-  &quot;score&quot;:4,
-  &quot;time&quot;:1172394646,
-  &quot;title&quot;:&quot;How Important is the .com TLD?&quot;,
-  &quot;type&quot;:&quot;story&quot;,
-  &quot;url&quot;:&quot;http://www.netbusinessblog.com/2007/02/19/how-important-is-the-dot-com/&quot;
-}
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;by&quot;</span><span class="p">:</span><span class="s2">&quot;python_kiss&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;descendants&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="mi">1000</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;score&quot;</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;time&quot;</span><span class="p">:</span><span class="mi">1172394646</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="s2">&quot;How Important is the .com TLD?&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;story&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;url&quot;</span><span class="p">:</span><span class="s2">&quot;http://www.netbusinessblog.com/2007/02/19/how-important-is-the-dot-com/&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 <p><code>Story</code>的<code>Codable</code>一致性解析并存储以下属性的值：<code>by</code>、<code>id</code>、 <code>time</code>、<code>title</code>和<code>url</code>。</p>
 <p>请求成功完成后，您将在控制台中看到以下输出，或者如果您更改了请求中的<code>1000</code>值，则会看到类似的输出：</p>
@@ -7995,7 +7995,7 @@ finished
 <div class="highlight"><pre><span></span><code><span class="n">URLSession</span><span class="p">.</span><span class="n">shared</span>
   <span class="p">.</span><span class="n">dataTaskPublisher</span><span class="p">(</span><span class="k">for</span><span class="p">:</span> <span class="n">EndPoint</span><span class="p">.</span><span class="n">stories</span><span class="p">.</span><span class="n">url</span><span class="p">)</span>
 </code></pre></div>
-<p><code>stories</code>端点允许您点击以下URL以获取最新故事<code>id</code>：<a href="https://hacker-news.firebaseio.com/v0/newstories.json">https://hacker-news.firebaseio.com/v0/newstories.json</a>。</p>
+<p><code>stories</code>端点允许您点击以下<code>URL</code>以获取最新故事<code>id</code>：<a href="https://hacker-news.firebaseio.com/v0/newstories.json">https://hacker-news.firebaseio.com/v0/newstories.json</a>。</p>
 <p>同样，您需要抓住发射结果的数据组件。因此，通过添加以下内容来映射输出：</p>
 <div class="highlight"><pre><span></span><code><span class="p">.</span><span class="bp">map</span><span class="p">(</span><span class="err">\</span><span class="p">.</span><span class="n">data</span><span class="p">)</span>
 </code></pre></div>
@@ -8011,15 +8011,15 @@ finished
 <p><code>API.Error</code>是您将限制从<code>stories()</code>抛出的错误的错误类型。您有两个错误被定义为枚举案例：</p>
 <ul>
 <li><code>invalidResponse</code>：当您无法将服务器响应解码为预期类型时。</li>
-<li><code>addressUnreachable(URL)</code>：当您无法到达端点URL时。</li>
+<li><code>addressUnreachable(URL)</code>：当您无法到达端点<code>URL</code>时。</li>
 </ul>
 <p>目前，您在 <code>stories()</code> 中的订阅代码可能会引发两种类型的错误：</p>
 <ul>
 <li><code>dataTaskPublisher(for:)</code>当发生网络问题时，可能会抛出<code>URLError</code>的不同变体。</li>
-<li><code>decode(type:decoder:)</code>当JSON与预期类型不匹配时，可能会抛出解码错误。</li>
+<li><code>decode(type:decoder:)</code>当<code>JSON</code>与预期类型不匹配时，可能会抛出解码错误。</li>
 </ul>
 <p>您的下一个任务是以一种将它们映射到单个<code>API.Error</code>类型的方式处理这些不同的错误，以匹配返回的发布者的预期失败。</p>
-<p>您将再次跳槽，并向另一位错误处理操作符提供“软”介绍。<code>decode</code>后，将此代码附加到您当前的订阅中：</p>
+<p>您将再次抢先一步，并向另一位错误处理操作符提供“软”介绍。在<code>decode</code>后，将此代码附加到您当前的订阅中：</p>
 <div class="highlight"><pre><span></span><code><span class="p">.</span><span class="n">mapError</span> <span class="p">{</span> <span class="n">error</span> <span class="p">-&gt;</span> <span class="n">API</span><span class="p">.</span><span class="n">Error</span> <span class="k">in</span>
   <span class="k">switch</span> <span class="n">error</span> <span class="p">{</span>
   <span class="k">case</span> <span class="k">is</span> <span class="n">URLError</span><span class="p">:</span>
@@ -8046,7 +8046,7 @@ finished
   <span class="k">return</span> <span class="kc">self</span><span class="p">.</span><span class="n">mergedStories</span><span class="p">(</span><span class="n">ids</span><span class="p">:</span> <span class="n">storyIDs</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>将所有发布者合并到一个下游将产生连续<code>Story</code>价值流。一旦从网络中获取这些，发布者就会在下游发布这些：</p>
+<p>将所有发布者合并到一个下游将产生连续<code>Story</code>数值流。一旦从网络中获取这些，发布者就会在下游发布这些：</p>
 <p><img alt="img" src="../../graphics/img89.png" /></p>
 <p>您可以保持当前订阅的原样，但您希望将API设计为易于绑定到列表UI控件。这将允许订阅者简单地订阅<code>stories()</code>并将结果分配给其视图控制器或SwiftUI视图中的<code>[Story]</code>属性。</p>
 <p>要实现这一目标，您需要汇总发射的故事并映射订阅以返回不断增长的数组，而不是单个<code>Story</code>值。</p>
