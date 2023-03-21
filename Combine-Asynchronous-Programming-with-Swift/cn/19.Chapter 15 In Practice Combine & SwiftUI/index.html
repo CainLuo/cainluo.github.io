@@ -8030,13 +8030,13 @@ s
 <img alt="img" src="../../graphics/img94.png" /></p>
 <p>在本章中，您将完成一些任务，这些任务涵盖了<code>Combine</code>和<code>SwiftUI</code>之间的互操作以及一些<code>SwiftUI</code>基础知识。</p>
 <h3 id="_1">内存管理<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
-<p>信不信由你，上述所有滚动的很大一部分是内存管理如何为您的用户界面工作的转变。</p>
+<p>信不信由你，上述所有内容的一个重要组成部分是内存管理在<code>UI</code>中工作方式的转变。</p>
 <h4 id="_2">没有数据重复<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h4>
 <p>让我们看看这意味着什么的例子。使用<code>UIKit/AppKit</code>时，您会用大笔画将代码分隔在数据模型、某种控制器和视图之间：</p>
 <p><img alt="img" src="../../graphics/img95.png" /></p>
 <p>这三种类型可以有几个类似的功能。它们包括数据存储、支持可变性、可以是引用类型等。</p>
 <p>假设你想在屏幕上显示当前的天气。在本例中，假设模型类型是一个名为<code>Weather</code>的结构，并将当前条件存储在名为<code>conditions</code>文本属性中。要向用户显示该信息，您需要创建一个另一种类型的实例，即<code>UILabel</code>，并将<code>conditions</code>值复制到标签的<code>text</code>属性中。</p>
-<p>现在，你有两份你工作的价值的副本。一个在您的模型类型中，另一个存储在<code>UILabel</code>中，只是为了在屏幕上显示它：</p>
+<p>现在，您有了所使用的值的两个副本。 一个在您的模型类型中，另一个存储在<code>UILabel</code>中，只是为了在屏幕上显示它：</p>
 <p><img alt="img" src="../../graphics/img96.png" /></p>
 <p><code>text</code>和<code>conditions</code>之间没有联系或绑定。您只需要将<code>String</code>值复制到您需要的任何地方。</p>
 <p>现在，您已将依赖项添加到用户界面中。屏幕上信息的新鲜度取决于<code>Weather.conditions</code>。每当<code>conditions</code>属性发生变化时，您有责任使用<code>Weather.conditions</code>的新副本手动更新标签的<code>text</code>属性。</p>
@@ -8067,7 +8067,7 @@ s
 <p>完成的项目将显示黑客新闻故事列表，并允许用户管理关键字过滤器：</p>
 <p><img alt="img" src="../../graphics/img97.png" /></p>
 <h2 id="_5">管理视图状态的第一味觉<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
-<p>构建并运行入门项目，您将在屏幕上看到一个空表和一个名为“设置"的条形按钮：</p>
+<p>构建并运行入门项目，您将在屏幕上看到一个空表格和一个名为<code>"Settings"</code>的条形按钮：</p>
 <p><img alt="img" src="../../graphics/img98.png" /></p>
 <p>这就是你开始的地方。要了解通过数据更改与用户界面交互的工作原理，您将使设置按钮在点击时显示<code>SettingsView</code>。</p>
 <p>打开<code>View/ReaderView.swift</code>，其中包含显示主应用程序界面的<code>ReaderView</code>视图。</p>
@@ -8084,11 +8084,11 @@ s
 </code></pre></div>
 <p><code>@State</code>属性包装：</p>
 <ol>
-<li>将属性存储移出视图，因此修改 <code>presentingSettingsSheet</code>不会<code>self</code>突变。</li>
-<li>将该属性标记为本地存储。换句话说，它表示视图拥有的部分数据。</li>
-<li>将一个发布者添加到<code>ReaderView</code>中，有点像<code>@Published</code>，称为<code>$presentingSettingsSheet</code>，您可以使用它订阅属性或将其绑定到UI控件或其他视图。</li>
+<li>将属性存储移出视图，因此修改<code>presentingSettingsSheet</code>不会改变<code>self</code>。</li>
+<li>将属性标记为本地存储。换句话说，它表示数据块由视图拥有。</li>
+<li>向名为<code>$presentingSettingsSheet</code>的<code>ReaderView</code>添加发布者（有点像<code>@Published</code>所做的），您可以使用该发布者订阅属性或将其绑定到<code>UI</code>控件或其他视图。</li>
 </ol>
-<p>一旦您将<code>@State</code>添加到 <code>presentingSettingsSheet</code>中，错误将清除，因为编译器知道您可以从非突变上下文修改此特定属性。</p>
+<p>一旦您将<code>@State</code>添加到<code>presentingSettingsSheet</code>中，错误将清除，因为编译器知道您可以从非突变上下文修改此特定属性。</p>
 <p>最后，要使用 <code>presentingSettingsSheet</code>，您需要声明新状态如何影响用户界面。在这种情况下，您将向视图层次结构中添加<code>sheet(...)</code>视图修饰符，并将<code>$presentingSettingsSheet</code>绑定到工作表中。每当您更改<code>presentingSettingsSheet</code>，<code>SwiftUI</code>都会根据布尔值接受当前值并呈现或关闭您的视图。</p>
 <p>找到注释<code>// Present the Settings sheet here</code>，并将其替换为：</p>
 <div class="highlight"><pre><span></span><code><span class="p">.</span><span class="n">sheet</span><span class="p">(</span><span class="n">isPresented</span><span class="p">:</span> <span class="kc">self</span><span class="p">.</span><span class="err">$</span><span class="n">presentingSettingsSheet</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="p">{</span>
@@ -8096,7 +8096,7 @@ s
 <span class="p">})</span>
 </code></pre></div>
 <p><code>sheet(isPresented:content:)</code>修饰符需要<code>Bool</code>发布者和视图，以便在演示文稿发布者发出<code>true</code>时呈现。</p>
-<p>构建并运行项目。轻点“设置"，您的新演示文稿将显示目标视图：</p>
+<p>构建并运行项目。轻点<code>"Settings"</code>，您的新演示文稿将显示目标视图：</p>
 <p><img alt="img" src="../../graphics/img100.png" /></p>
 <h2 id="_6">获取最新故事<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
 <p>接下来，是时候回到一些组合代码了。在本节中，您将组合现有的<code>ReaderViewModel</code>并将其连接到<code>API</code>网络类型。</p>
@@ -8117,7 +8117,7 @@ s
   <span class="p">.</span><span class="n">stories</span><span class="p">()</span>
   <span class="p">.</span><span class="n">receive</span><span class="p">(</span><span class="n">on</span><span class="p">:</span> <span class="n">DispatchQueue</span><span class="p">.</span><span class="n">main</span><span class="p">)</span>
 </code></pre></div>
-<p>您使用reget<code>receive(on:)</code>运算符接收主队列上的任何输出。可以说，您可以将线程管理留给<code>API</code>的订阅者。然而，由于<code>InReaderViewModel</code>的情况当然是<code>ReaderView</code>，因此您可以在这里进行优化，然后切换到主队列，为提交对<code>UI</code>的更改做准备。</p>
+<p>你使用<code>receive(on:)</code>操作符接收主队列上的任何输出。可以说，您可以将线程管理留给<code>API</code>的使用者。然而，由于在<code>ReaderViewModel</code>的情况下，这肯定是<code>ReaderView</code>，您可以在这里优化并切换到主队列，以准备提交对<code>UI</code>的更改。</p>
 <p>接下来，您将使用<code>sink(...)</code>订阅者来存储模型中的故事和任何发出的错误。附录：</p>
 <div class="highlight"><pre><span></span><code><span class="p">.</span><span class="n">sink</span><span class="p">(</span><span class="n">receiveCompletion</span><span class="p">:</span> <span class="p">{</span> <span class="n">completion</span> <span class="k">in</span>
   <span class="k">if</span> <span class="k">case</span> <span class="p">.</span><span class="n">failure</span><span class="p">(</span><span class="kd">let</span> <span class="nv">error</span><span class="p">)</span> <span class="p">=</span> <span class="n">completion</span> <span class="p">{</span>
@@ -8129,7 +8129,7 @@ s
 <span class="p">})</span>
 <span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="k">in</span><span class="p">:</span> <span class="p">&amp;</span><span class="n">subscriptions</span><span class="p">)</span>
 </code></pre></div>
-<p>首先，您检查<code>completion</code>是否失败。如果是这样，您将关联的错误存储在<code>self.error</code>中。如果您从故事发布者那里收到价值，您可以将它们存储在<code>self.allStories</code>。</p>
+<p>首先，您检查<code>completion</code>是否失败。如果是这样，您将关联的错误存储在<code>self.error</code>中。如果您从故事发布者那里收到数值，您可以将它们存储在<code>self.allStories</code>。</p>
 <p>这是您将在本节中添加到模型中的所有逻辑。<code>fetchStories()</code>方法现已完成，您可以在屏幕上显示<code>ReaderView</code>后立即“启动"模型。</p>
 <p>为此，请打开<code>App/App.swift</code>，并向<code>ReaderView</code>添加一个新的 <code>onAppear(...)</code>视图修饰符，如下所示：</p>
 <div class="highlight"><pre><span></span><code><span class="n">ReaderView</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">viewModel</span><span class="p">)</span>
