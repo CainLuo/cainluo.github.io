@@ -7996,7 +7996,7 @@ finished
   <span class="p">.</span><span class="n">dataTaskPublisher</span><span class="p">(</span><span class="k">for</span><span class="p">:</span> <span class="n">EndPoint</span><span class="p">.</span><span class="n">stories</span><span class="p">.</span><span class="n">url</span><span class="p">)</span>
 </code></pre></div>
 <p><code>stories</code>端点允许您点击以下<code>URL</code>以获取最新故事<code>id</code>：<a href="https://hacker-news.firebaseio.com/v0/newstories.json">https://hacker-news.firebaseio.com/v0/newstories.json</a>。</p>
-<p>同样，您需要抓住发射结果的数据组件。因此，通过添加以下内容来映射输出：</p>
+<p>同样，您需要抓住发送结果的数据组件。因此，通过添加以下内容来映射输出：</p>
 <div class="highlight"><pre><span></span><code><span class="p">.</span><span class="bp">map</span><span class="p">(</span><span class="err">\</span><span class="p">.</span><span class="n">data</span><span class="p">)</span>
 </code></pre></div>
 <p>您将从服务器获得的<code>JSON</code>响应是像这样的简单列表：</p>
@@ -8048,15 +8048,15 @@ finished
 </code></pre></div>
 <p>将所有发布者合并到一个下游将产生连续<code>Story</code>数值流。一旦从网络中获取这些，发布者就会在下游发布这些：</p>
 <p><img alt="img" src="../../graphics/img89.png" /></p>
-<p>您可以保持当前订阅的原样，但您希望将API设计为易于绑定到列表UI控件。这将允许订阅者简单地订阅<code>stories()</code>并将结果分配给其视图控制器或SwiftUI视图中的<code>[Story]</code>属性。</p>
-<p>要实现这一目标，您需要汇总发射的故事并映射订阅以返回不断增长的数组，而不是单个<code>Story</code>值。</p>
+<p>您可以保持当前订阅的原样，但您希望将<code>API</code>设计为易于绑定到列表<code>UI</code>控件。这将允许订阅者简单地订阅<code>stories()</code>并将结果分配给其视图控制器或<code>SwiftUI</code>视图中的<code>[Story]</code>属性。</p>
+<p>要实现这一目标，您需要汇总发送的故事并映射订阅以返回不断增长的数组，而不是单个<code>Story</code>值。</p>
 <p>是时候进行一些严肃的魔法了！还记得第3章“改造操作符”中的<code>scan</code>操作符吗？我知道那是很久以前的事了，但是，这是帮助您完成当前任务的操作符。因此，如果需要，请跳回到该章，并在刷新<code>scan</code>时回到这里。</p>
 <p>附加到您当前的订阅：</p>
 <div class="highlight"><pre><span></span><code><span class="p">.</span><span class="n">scan</span><span class="p">([])</span> <span class="p">{</span> <span class="n">stories</span><span class="p">,</span> <span class="n">story</span> <span class="p">-&gt;</span> <span class="p">[</span><span class="n">Story</span><span class="p">]</span> <span class="k">in</span>
   <span class="k">return</span> <span class="n">stories</span> <span class="o">+</span> <span class="p">[</span><span class="n">story</span><span class="p">]</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>您让<code>scan(...)</code>开始使用空数组发射。每次发布新故事时，您都会通过<code>stories + [story]</code>将其附加到当前汇总结果中。</p>
+<p>您让<code>scan(...)</code>开始使用空数组发送。每次发布新故事时，您都会通过<code>stories + [story]</code>将其附加到当前汇总结果中。</p>
 <p>订阅代码的这种添加会改变其行为，因此每次收到您正在处理的批次的新故事时，您都会获得缓冲内容：</p>
 <p><img alt="img" src="../../graphics/img90.png" /></p>
 <p>最后，在发布输出之前对故事进行排序不会有什么坏处。<code>Story</code>符合<code>Comparable</code>，因此您无需实现任何自定义排序。你只需要对结果调用<code>sorted()</code>。附录：</p>
@@ -8115,7 +8115,7 @@ https://arstechnica.com/tech-policy/2019/07/people-forged-judges-signatures-to-t
 -----]
 </code></pre></div>
 <p>请注意，由于您正在从黑客新闻网站获取实时数据，因此您在控制台中看到的内容将有所不同，因为每隔几分钟就会添加越来越多的故事。要查看您确实在获取实时数据，请等待几分钟，然后重新运行<code>Playground</code>。你应该看到一些新故事出现在你已经看过的故事旁边。</p>
-<p>完成本章这一更长的部分，付出了很大的努力！您已经完成了黑客新闻API客户端的开发，并准备进入下一章。在那里，您将使用SwiftUI构建一个合适的黑客新闻阅读器应用程序。</p>
+<p>完成本章这一更长的部分，付出了很大的努力！您已经完成了黑客新闻API客户端的开发，并准备进入下一章。在那里，您将使用<code>SwiftUI</code>构建一个合适的黑客新闻阅读器应用程序。</p>
 <h2 id="_4">挑战<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
 <p><code>API</code>客户端本身没有什么可添加的，但如果您想在本章的项目中投入更多工作，您仍然可以玩一会儿。</p>
 <h3 id="1apiuikit">挑战1：将<code>API</code>客户端与<code>UIKit</code>集成<a class="headerlink" href="#1apiuikit" title="Permanent link">&para;</a></h3>
