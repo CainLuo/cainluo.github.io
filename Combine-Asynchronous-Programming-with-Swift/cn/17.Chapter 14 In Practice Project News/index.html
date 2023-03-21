@@ -7807,7 +7807,7 @@
 <p>在第15章“实践中：组合和<code>SwiftUI</code>”中，您将使用完整的<code>API</code>，并通过将网络层插入基于<code>SwiftUI</code>的用户界面来构建真正的黑客新闻阅读器应用程序。在此过程中，您将学习<code>SwiftUI</code>的基础知识，以及如何让您的组合代码与新的声明性苹果框架配合使用，以构建令人惊叹的被动应用程序用户界面。</p>
 <p>不用再多说，让我们开始吧！</p>
 <h2 id="api">开始使用黑客新闻<code>API</code><a class="headerlink" href="#api" title="Permanent link">&para;</a></h2>
-<p>在项目/启动器中打开包含的入门<code>Playground API.playground</code>，并窥视内部。您将找到一些简单的入门代码，可帮助您开始运行，并让您专注于仅组合代码：</p>
+<p>在<code>projects/starter</code>中打开包含的入门<code>Playground API.playground</code>，并窥视内部。您将找到一些简单的入门代码，可帮助您开始运行，并让您专注于仅组合代码：</p>
 <p><img alt="img" src="../../graphics/img85.png" /></p>
 <p>在<code>API</code>类型中，您将找到两种嵌套的助手类型：</p>
 <ul>
@@ -7815,10 +7815,10 @@
 <li>第二个名为<code>EndPoint</code>的枚举，其中包含您类型将要连接的两个<code>API</code>端点的<code>URL</code>。</li>
 </ul>
 <p>往下走，你会发现<code>maxStories</code>属性。您将使用此功能来限制您的API客户端将获取多少最新故事，以帮助减少黑客新闻服务器上的负载，以及用于解码<code>JSON</code>数据的<code>decoder</code>。</p>
-<p>此外，<code>Playground</code>的“来源”文件夹包含一个名为<code>Story</code>的简单结构，您将将其解码为故事数据。</p>
+<p>此外，<code>Playground</code>的<code>"Sources"</code>文件夹包含一个名为<code>Story</code>的简单结构，您将将其解码为故事数据。</p>
 <p>黑客新闻<code>API</code>可以免费使用，不需要注册开发人员帐户。这很棒，因为您可以立即开始处理代码，而无需像其他公共<code>API</code>一样，首先完成一些长时间的注册。黑客新闻团队赢得了大量的因果报应积分！</p>
 <h2 id="_1">得到一个故事<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<p>您的首要任务是向<code>API</code>添加一种方法，该方法将使用<code>EndPoint</code>类型与服务器联系以获取正确的端点URL，并将获取有关单个故事的数据。新方法将返回<code>API</code>订阅者将订阅的发布者，并获得有效和解析<code>Story</code>或失败。</p>
+<p>您的首要任务是向<code>API</code>添加一种方法，该方法将使用<code>EndPoint</code>类型与服务器联系以获取正确的端点<code>URL</code>，并将获取有关单个故事的数据。新方法将返回<code>API</code>订阅者将订阅的发布者，并获得有效和解析<code>Story</code>或失败。</p>
 <p>向下滚动<code>Playground</code>源代码，找到注释，上面写着<code>// Add your API code here</code>。在该行下方，插入一个新的方法声明：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">story</span><span class="p">(</span><span class="n">id</span><span class="p">:</span> <span class="nb">Int</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="n">AnyPublisher</span><span class="p">&lt;</span><span class="n">Story</span><span class="p">,</span> <span class="n">Error</span><span class="p">&gt;</span> <span class="p">{</span>
   <span class="k">return</span> <span class="n">Empty</span><span class="p">().</span><span class="n">eraseToAnyPublisher</span><span class="p">()</span>
@@ -7830,13 +7830,13 @@
 <div class="highlight"><pre><span></span><code><span class="n">URLSession</span><span class="p">.</span><span class="n">shared</span>
   <span class="p">.</span><span class="n">dataTaskPublisher</span><span class="p">(</span><span class="k">for</span><span class="p">:</span> <span class="n">EndPoint</span><span class="p">.</span><span class="n">story</span><span class="p">(</span><span class="n">id</span><span class="p">).</span><span class="n">url</span><span class="p">)</span>
 </code></pre></div>
-<p>您首先向<code>Endpoint.story(id).url</code>提出请求。端点的<code>url</code>属性包含要请求的完整<code>HTTP URL</code>。单层<code>URL</code>如下所示（具有匹配的<code>ID</code>）：https://hacker-news.firebaseio.com/v0/item/12345.json（如果您想预览<code>API</code>响应，请访问<code>https://bit.ly/2nL2ojS</code>。）</p>
-<p>接下来，要在后台线程上解析JSON并保持应用程序的其余部分响应，让我们创建一个新的自定义调度队列。<code>story(id:)</code>方法上方的<code>API</code>中添加一个新属性，如下所示：</p>
+<p>您首先向<code>Endpoint.story(id).url</code>提出请求。端点的<code>url</code>属性包含要请求的完整<code>HTTP URL</code>。单层<code>URL</code>如下所示（具有匹配的<code>ID</code>）：<a href="https://hacker-news.firebaseio.com/v0/item/12345.json">https://hacker-news.firebaseio.com/v0/item/12345.json</a>（如果您想预览<code>API</code>响应，请访问<code>https://bit.ly/2nL2ojS</code>。）</p>
+<p>接下来，要在后台线程上解析<code>JSON</code>并保持应用程序的其余部分响应，让我们创建一个新的自定义调度队列。<code>story(id:)</code>方法上方的<code>API</code>中添加一个新属性，如下所示：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">private</span> <span class="kd">let</span> <span class="nv">apiQueue</span> <span class="p">=</span> <span class="n">DispatchQueue</span><span class="p">(</span><span class="n">label</span><span class="p">:</span> <span class="s">&quot;API&quot;</span><span class="p">,</span>
                                      <span class="n">qos</span><span class="p">:</span> <span class="p">.</span><span class="k">default</span><span class="p">,</span>
                                      <span class="n">attributes</span><span class="p">:</span> <span class="p">.</span><span class="n">concurrent</span><span class="p">)</span>
 </code></pre></div>
-<p>您将使用此队列处理JSON响应，因此，您需要将网络订阅切换到该队列。回到<code>story(id:)</code>添加以下行调用<code>dataTaskPublisher(for:)</code>：</p>
+<p>您将使用此队列处理<code>JSON</code>响应，因此，您需要将网络订阅切换到该队列。回到<code>story(id:)</code>添加以下行调用<code>dataTaskPublisher(for:)</code>：</p>
 <div class="highlight"><pre><span></span><code><span class="p">.</span><span class="n">receive</span><span class="p">(</span><span class="n">on</span><span class="p">:</span> <span class="n">apiQueue</span><span class="p">)</span>
 </code></pre></div>
 <p>切换到后台队列后，您需要从响应中获取JSON数据。<code>dataTaskPublisher(for:)</code>发布者以元组的形式返回类型<code>(Data, URLResponse)</code>的输出，但对于您的订阅，您只需要数据。</p>
@@ -7878,7 +7878,7 @@
 </code></pre></div>
 <p>即使您的代码编译，此方法目前仍不会产生任何输出。你接下来就要处理这件事了。</p>
 <p>现在，您可以实例化<code>API</code>并尝试调用黑客新闻服务器。</p>
-<p>向下滚动一点，找到评论行<code>// Call the API here</code>。这是一个进行测试API调用的好地方。插入以下代码：</p>
+<p>向下滚动一点，找到评论行<code>// Call the API here</code>。这是一个进行测试<code>API</code>调用的好地方。插入以下代码：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">api</span> <span class="p">=</span> <span class="n">API</span><span class="p">()</span>
 <span class="kd">var</span> <span class="nv">subscriptions</span> <span class="p">=</span> <span class="p">[</span><span class="n">AnyCancellable</span><span class="p">]()</span>
 </code></pre></div>
@@ -7911,7 +7911,7 @@ http://www.netbusinessblog.com/2007/02/19/how-important-is-the-dot-com/
 -----
 finished
 </code></pre></div>
-<p><code>Story</code>类型符合<code>CustomDebugStringConvertible</code>，它有一个<code>customdebugDescription</code>，可以像上面一样整齐地返回标题、作者姓名和故事URL。</p>
+<p><code>Story</code>类型符合<code>CustomDebugStringConvertible</code>，它有一个<code>customdebugDescription</code>，可以像上面一样整齐地返回标题、作者姓名和故事<code>URL</code>。</p>
 <p>输出以<code>finished</code>的完成事件结束。要尝试在出现错误时会发生什么，请将<code>id 1000</code>替换为<code>-5</code>，并在控制台中检查输出。您只会看到<code>finished</code>的打印，因为您捕获了错误并返回了<code>Empty()</code>。</p>
 <p>干得好！<code>API</code>类型的第一种方法是完整的，您练习了前几章中涵盖的一些概念，例如调用网络和解码<code>JSON</code>。此外，您还温和地介绍了基本的调度队列切换和一些简单的错误处理。您将在未来的章节中更详细地介绍这些。</p>
 <p>尽管这项任务是一项令人难以置信的好练习，但你可能渴望更多。因此，在下一节中，您将更深入地挖掘并放下一些严肃的代码。</p>
@@ -7990,12 +7990,12 @@ finished
 </code></pre></div>
 <p>与之前一样，在构建方法主体和发布者时，您返回一个<code>Empty</code>对象，以防止任何编译错误。</p>
 <p>然而，与以前不同，这次您返回的发布者的输出是一个故事列表。您将设计发布者以获取多个故事并将其累积到数组中，当响应从服务器传入时发出每个中间状态。</p>
-<p>此行为将允许您在下一章中将此新发布者直接绑定到<code>List</code> <code>UI</code>控件，该控件将自动为从服务器进入的故事实时动画。</p>
+<p>此行为将允许您在下一章中将此新发布者直接绑定到<code>List UI</code>控件，该控件将自动为从服务器进入的故事实时动画。</p>
 <p>像以前一样，首先向黑客新闻<code>API</code>发出网络请求。在<code>return</code>语句上方的新方法中插入以下内容：</p>
 <div class="highlight"><pre><span></span><code><span class="n">URLSession</span><span class="p">.</span><span class="n">shared</span>
   <span class="p">.</span><span class="n">dataTaskPublisher</span><span class="p">(</span><span class="k">for</span><span class="p">:</span> <span class="n">EndPoint</span><span class="p">.</span><span class="n">stories</span><span class="p">.</span><span class="n">url</span><span class="p">)</span>
 </code></pre></div>
-<p><code>stories</code>端点允许您点击以下URL以获取最新故事<code>id</code>：https://hacker-news.firebaseio.com/v0/newstories.json。</p>
+<p><code>stories</code>端点允许您点击以下URL以获取最新故事<code>id</code>：<a href="https://hacker-news.firebaseio.com/v0/newstories.json">https://hacker-news.firebaseio.com/v0/newstories.json</a>。</p>
 <p>同样，您需要抓住发射结果的数据组件。因此，通过添加以下内容来映射输出：</p>
 <div class="highlight"><pre><span></span><code><span class="p">.</span><span class="bp">map</span><span class="p">(</span><span class="err">\</span><span class="p">.</span><span class="n">data</span><span class="p">)</span>
 </code></pre></div>
