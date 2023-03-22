@@ -8172,7 +8172,7 @@ s
 </code></pre></div>
 <p>本节的最后一步是，由于<code>ReaderViewModel</code>现在符合<code>ObservableObject</code>，实际上将数据模型绑定到<code>ReaderView</code>。</p>
 <p>打开<code>View/ReaderView.swift</code>并将<code>@ObservedObject</code>属性包装器添加到<code>var model: ReaderViewModel</code>行，如下所示：</p>
-<div class="highlight"><pre><span></span><code>@ObservedObject var model: ReaderViewModel
+<div class="highlight"><pre><span></span><code><span class="p">@</span><span class="n">ObservedObject</span> <span class="kd">var</span> <span class="nv">model</span><span class="p">:</span> <span class="n">ReaderViewModel</span>
 </code></pre></div>
 <p>您绑定模型，以便每当其状态发生变化时，您的视图都会收到最新数据并生成其新的<code>UI</code>“快照"。</p>
 <p><code>@ObservedObject</code>包装器可以做到以下几点：</p>
@@ -8184,7 +8184,7 @@ s
 <p>通过添加<code>@ObservedObject</code>，您使<code>model</code>变得动态。这意味着当您的视图模型从黑客新闻服务器获取故事时，它将获得所有更新。事实上，现在运行该应用程序，当模型获取故事时，您将看到视图会刷新：</p>
 <p><img alt="img" src="../../graphics/img101.png" /></p>
 <h2 id="_7">显示错误<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
-<p>您还将以显示获取的故事的方式显示错误。目前，视图模型在其<code>error</code>属性中存储任何错误，您可以将其绑定到屏幕上的UI警报。</p>
+<p>您还将以显示获取的故事的方式显示错误。目前，视图模型在其<code>error</code>属性中存储任何错误，您可以将其绑定到屏幕上的<code>UI</code>警报。</p>
 <p>打开<code>View/ReaderView.swift</code>并找到注释 <code>// Display errors here</code>。 将此注释替换为以下代码以将模型绑定到警报视图：</p>
 <div class="highlight"><pre><span></span><code><span class="p">.</span><span class="n">alert</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="kc">self</span><span class="p">.</span><span class="err">$</span><span class="n">model</span><span class="p">.</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span> <span class="n">error</span> <span class="k">in</span>
   <span class="n">Alert</span><span class="p">(</span>
@@ -8201,7 +8201,7 @@ s
 <p><img alt="img" src="../../graphics/img102.png" /></p>
 <p>在继续并完成下一节之前，请花点时间将更改恢复到<code>baseURL</code>，以便您的应用程序再次成功连接到服务器。</p>
 <h2 id="_8">订阅外部发布者<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
-<p>有时，您不想走<code>ObservableObject</code>/<code>ObservedObject</code>路由，因为您只想订阅单个发布者，并在<code>SwiftUI</code>视图中接收其值。对于像这样的更简单情况，无需创建额外的类型——您只需使用theonReceive<code>onReceive(_)</code>视图修饰符即可。它允许您直接从您的视图中订阅发布者。</p>
+<p>有时候，您并不想沿着<code>ObservableObject</code>/<code>ObservedObject</code>这条路走下去，因为您只想订阅一个发布者，并在<code>SwiftUI</code>视图中接收其值。 对于像这样简单的情况，不需要创建额外的类型-您可以简单地使用<code>onReceive（_）</code>视图修饰符。它允许您直接从视图订阅发布者。</p>
 <p>如果您现在运行该应用程序，您将看到每个故事都与故事作者的姓名一起包含一个相对时间：</p>
 <p><img alt="img" src="../../graphics/img103.png" /></p>
 <p>那里的相对时间有助于立即向用户传达故事的“新鲜度"。然而，一旦在屏幕上呈现，信息在一段时间后就会变质。如果用户打开该应用程序很长时间，“1分钟前"可能会关闭相当长一段时间。</p>
