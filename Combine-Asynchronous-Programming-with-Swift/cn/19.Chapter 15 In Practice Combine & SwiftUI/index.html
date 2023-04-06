@@ -8240,16 +8240,16 @@ s
 <p>除了在您的视图上拥有发布者属性外，您还可以通过视图的初始化器或环境将<code>Combine</code>模型中的任何发布者注入视图中。然后，这只是以与上述相同的方式使用<code>onReceive(...)</code>的问题。</p>
 <h2 id="_9">初始化应用程序的设置<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
 <p>在本章的这一部分中，您将继续使<code>Settings</code>视图正常工作。在处理用户界面本身之前，您需要先完成<code>Settings</code>类型实现。</p>
-<p>打开<code>Model/Settings.swift</code>，你会发现，目前，这种类型几乎是裸露的骨头。它包含一个包含<code>FilterKeyword</code>值列表的属性。</p>
+<p>打开<code>Model/Settings.swift</code>，你会看到，目前，这个类型几乎是骨架。它包含一个属性，其中包含<code>FilterKeyword</code>值的列表。</p>
 <p>现在，打开<code>Model/FilterKeyword.swift</code>。<code>FilterKeyword</code>是一种助手模型类型，它包装了一个关键字，用作主阅读器视图中故事列表的过滤器。它符合<code>Identifiable</code>，这需要一个唯一标识每个实例的<code>id</code>属性，例如当您在<code>SwiftUI</code>代码中使用这些类型时。如果您分别阅读<code>Network/API.swift</code>和<code>Model/Story.swift</code>中的<code>API.Error</code>和<code>Story</code>定义，您将看到这些类型也符合<code>Identifiable</code>。</p>
-<p>让我们再来一次旋转木马。您需要将普通、旧的模型<code>Settings</code>转换为现代类型，以便与您的<code>Combine</code>和<code>SwiftUI</code>代码一起使用。</p>
+<p>我们再去玩一次旋转木马吧。您需要将普通的旧模型<code>Settings</code>转换为现代类型，以便与你的<code>Combine</code>和<code>SwiftUI</code>代码一起使用。</p>
 <p>首先在<code>Model/Settings.swift</code>的顶部添加：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">import</span> <span class="nc">Combine</span>
 </code></pre></div>
 <p>然后，通过向<code>keywords</code>添加<code>@Published</code>属性包装器将发布者添加到关键字中，因此它看起来如下：</p>
 <div class="highlight"><pre><span></span><code><span class="p">@</span><span class="n">Published</span> <span class="kd">var</span> <span class="nv">keywords</span> <span class="p">=</span> <span class="p">[</span><span class="n">FilterKeyword</span><span class="p">]()</span>
 </code></pre></div>
-<p>现在，其他类型可以订阅<code>Settings</code>的当前关键字。您还可以在关键字列表中将接受绑定的视图。</p>
+<p>现在，其他类型可以订阅<code>Settings</code>的当前关键字。您还可以通过管道将关键字列表传递到接受绑定的视图。</p>
 <p>最后，为了启用对<code>Settings</code>的观察，请使类型符合<code>ObservableObject</code>如下所示：</p>
 <div class="highlight"><pre><span></span><code><span class="kr">final</span> <span class="kd">class</span> <span class="nc">Settings</span><span class="p">:</span> <span class="n">ObservableObject</span> <span class="p">{</span>
 </code></pre></div>
@@ -8319,7 +8319,7 @@ s
 <div class="highlight"><pre><span></span><code><span class="n">ForEach</span><span class="p">(</span><span class="n">settings</span><span class="p">.</span><span class="n">keywords</span><span class="p">)</span> <span class="p">{</span> <span class="n">keyword</span> <span class="k">in</span>
 </code></pre></div>
 <p>更新后的代码将使用屏幕上列表的过滤器关键字。然而，这仍然会显示一个空列表，因为用户没有办法添加新关键字。</p>
-<p>启动项目包含一个用于添加关键字的视图。因此，当用户点击+按钮时，您只需展示它。<code>+</code>按钮操作设置为在<code>SettingsView``addKeyword()</code>）。</p>
+<p>启动项目包含一个用于添加关键字的视图。因此，当用户点击+按钮时，您只需展示它。<code>+</code>按钮操作设置为在<code>SettingsView addKeyword()</code>。</p>
 <p>滚动到私有<code>addKeyword()</code>方法，并在其中添加：</p>
 <div class="highlight"><pre><span></span><code><span class="n">presentingAddKeywordSheet</span> <span class="p">=</span> <span class="kc">true</span>
 </code></pre></div>
@@ -8377,7 +8377,7 @@ s
 <p>这样，用户的过滤器将在应用程序启动之间保持不变，就像在真实应用程序中一样。</p>
 <p>如果您不确定这些挑战的解决方案，或需要一些帮助，请随时查看<code>projects/challenge</code>文件夹中的已完成项目。</p>
 <h2 id="_14">关键点<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h2>
-<p>使用<code>SwiftUI</code>，您的<code>UI</code>是您所在状态的函数。您通过提交对声明为视图状态的数据以及其他视图依赖项的数据进行更改来渲染自己。您学习了在`SwiftUI中管理状态的各种方法：</p>
+<p>使用<code>SwiftUI</code>，您的<code>UI</code>是您所在状态的函数。您通过提交对声明为视图状态的数据以及其他视图依赖项的数据进行更改来渲染自己。您学习了在<code>SwiftUI</code>中管理状态的各种方法：</p>
 <ul>
 <li>使用<code>@State</code>将本地状态添加到视图中，使用<code>@ObservedObject</code>在组合代码中添加对外部<code>ObservableObject</code>的依赖关系。</li>
 <li>使用<code>onReceive</code>视图修饰符直接订阅外部发布者。</li>
