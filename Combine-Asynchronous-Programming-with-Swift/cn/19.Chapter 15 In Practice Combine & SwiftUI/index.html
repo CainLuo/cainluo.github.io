@@ -8025,9 +8025,8 @@
 <p>如上一节所述，在使用<code>SwiftUI</code>时，您可以声明性地描述用户界面，并将渲染留给框架。</p>
 <p>您为<code>UI</code>声明的每个视图——文本标签、图像、形状等——都符合<code>View</code>协议。<code>View</code>的唯一要求是一个叫做<code>body</code>的属性。</p>
 <p>每当您更改数据模型时，<code>SwiftUI</code>都会询问您的每个视图的当前<code>body</code>表示。这可能会根据您最新的数据模型变化而变化。然后，框架通过仅计算受模型更改影响的视图来构建视图层次结构，以便在屏幕上呈现，从而产生高度优化和有效的绘图机制。</p>
-<p>实际上，<code>SwiftUI</code>使<code>UI</code>“快照"是由数据模型的任何更改触发的：
-s
-<img alt="img" src="../../graphics/img94.png" /></p>
+<p>实际上，<code>SwiftUI</code>使<code>UI</code>“快照"是由数据模型的任何更改触发的：</p>
+<p><img alt="img" src="../../graphics/img94.png" /></p>
 <p>在本章中，您将完成一些任务，这些任务涵盖了<code>Combine</code>和<code>SwiftUI</code>之间的互操作以及一些<code>SwiftUI</code>基础知识。</p>
 <h3 id="_1">内存管理<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
 <p>信不信由你，上述所有内容的一个重要组成部分是内存管理在<code>UI</code>中工作方式的转变。</p>
