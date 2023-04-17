@@ -8321,7 +8321,7 @@ Received computation result on thread 1 &#39;Computation complete&#39;
 <p><code>ImmediateScheduler</code>的一个具体之处是，它是即时的。您将无法使用<code>Scheduler</code>协议的任何<code>schedule(after:)</code>变体，因为您需要指定延迟的<code>SchedulerTimeType</code>没有公共初始化器，并且对立即调度毫无意义。</p>
 <p>您将在本章中学习的第二种<code>Scheduler</code>存在类似但不同的陷阱：<code>RunLoop</code>。</p>
 <h3 id="runloop"><code>RunLoop</code>调度程序<a class="headerlink" href="#runloop" title="Permanent link">&para;</a></h3>
-<p>长期的<code>iOS</code>和<code>macOS</code>开发人员熟悉<code>RunLoop</code>。在<code>DispatchQueue</code>之前，这是一种在线程级别管理输入源的方法，包括在主（UI）线程中。您的应用程序的主线程仍然有一个关联的<code>RunLoop</code>。您还可以通过从当前线程调用<code>RunLoop.current</code>为任何基础<code>Thread</code>获取一个。</p>
+<p>长期的<code>iOS</code>和<code>macOS</code>开发人员熟悉<code>RunLoop</code>。在<code>DispatchQueue</code>之前，这是一种在线程级别管理输入源的方法，包括在主<code>(UI)</code>线程中。您的应用程序的主线程仍然有一个关联的<code>RunLoop</code>。您还可以通过从当前线程调用<code>RunLoop.current</code>为任何基础<code>Thread</code>获取一个。</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>现在 <code>RunLoop</code> 是一个不太有用的类，因为 <code>DispatchQueue</code> 在大多数情况下是一个明智的选择。 这就是说，仍有一些特定情况下运行循环很有用。 例如，<code>Timer</code> 将自己安排在 <code>RunLoop</code> 上。 <code>UIKit</code>和<code>AppKit</code>依靠 <code>RunLoop</code> 及其执行模式来处理各种用户输入情况。 描述关于 <code>RunLoop</code> 的所有内容超出了本书的范围。</p>
@@ -8345,7 +8345,7 @@ Received computation result on thread 1 &#39;Computation complete&#39;
 <li>像之前所做的那样，您首先使值通过全局并发队列。为什么？因为它很有趣！</li>
 <li>然后，您要求在<code>RunLoop.current</code>上接收值。</li>
 </ol>
-<p>但什么是<code>RunLoop.current</code>？它是与调用时当前线程关联的RunLoop。<code>ThreadRecorderView</code>正在调用闭包，从主线程设置发布者和记录器。因此，<code>RunLoop.current</code>是主线程的<code>RunLoop</code>。</p>
+<p>但什么是<code>RunLoop.current</code>？它是与调用时当前线程关联的<code>RunLoop</code>。<code>ThreadRecorderView</code>正在调用闭包，从主线程设置发布者和记录器。因此，<code>RunLoop.current</code>是主线程的<code>RunLoop</code>。</p>
 <p>执行<code>Playground</code>，看看会发生什么：</p>
 <p><img alt="img" src="../../graphics/img126.png" /></p>
 <p>根据您的要求，第一个<code>recordThread</code>显示每个值都经过全局并发队列的一个线程，然后在主线程上继续。</p>
@@ -8371,7 +8371,7 @@ Received computation result on thread 1 &#39;Computation complete&#39;
 <p>捕捉录音机的有趣选择！</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>您已经在第<code>10</code>章“调试”中了解了 <code>handleEvents</code>。它具有很长的签名，允许您在发布者生命周期的不同点执行代码（在被动编程术语中，这被称为注入副作用），而无需实际与它发出的值交互。在这种情况下，您正在拦截录音机订阅发布者的时刻，以便在全局变量中捕获记录器。不漂亮，但它以一种有趣的方式完成了工作！</p>
+<p>您已经在第<code>10</code>章"调试"中了解了 <code>handleEvents</code>。它具有很长的签名，允许您在发布者生命周期的不同点执行代码（在被动编程术语中，这被称为注入副作用），而无需实际与它发出的值交互。在这种情况下，您正在拦截录音机订阅发布者的时刻，以便在全局变量中捕获记录器。不漂亮，但它以一种有趣的方式完成了工作！</p>
 </div>
 <p>现在，您都准备好了，可以在几秒钟后安排一些操作。在页面末尾添加此代码：</p>
 <div class="highlight"><pre><span></span><code><span class="n">RunLoop</span><span class="p">.</span><span class="n">current</span><span class="p">.</span><span class="n">schedule</span><span class="p">(</span>
@@ -8384,7 +8384,7 @@ Received computation result on thread 1 &#39;Computation complete&#39;
 <p>跑完<code>Playground</code>。您可以看到列表在第四个项目之后停止更新。这是您的取消机制！</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>如果您只获得三个值，这可能意味着您的Mac运行速度有点慢，无法容纳半秒的公差，因此您可以尝试将日期增加，例如，<code>settimeIntervaleSinceNow</code>设置为<code>5.0</code>，<code>tolerance</code>为<code>1.0</code>。</p>
+<p>如果您只获得三个值，这可能意味着您的<code>Mac</code>运行速度有点慢，无法容纳半秒的公差，因此您可以尝试将日期增加，例如，<code>settimeIntervaleSinceNow</code>设置为<code>5.0</code>，<code>tolerance</code>为<code>1.0</code>。</p>
 </div>
 <h4 id="runloop_2"><code>RunLoop</code>选项<a class="headerlink" href="#runloop_2" title="Permanent link">&para;</a></h4>
 <p>与<code>ImmediateScheduler</code>一样，<code>RunLoop</code>不为采用<code>SchedulerOptions</code>参数的调用提供任何合适的选项。</p>
@@ -8401,7 +8401,7 @@ Received computation result on thread 1 &#39;Computation complete&#39;
 <li>并发队列将同时执行尽可能多的操作。因此，它更适合纯计算。</li>
 </ul>
 <h4 id="_6">队列和线程<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h4>
-<p>您一直使用的最熟悉的队列是<code>DispatchQueue.main</code>。它直接映射到主（<code>UI</code>）线程，在此队列上执行的所有操作都可以自由更新用户界面。用户界面更新仅允许从主线程进行。</p>
+<p>您一直使用的最熟悉的队列是<code>DispatchQueue.main</code>。它直接映射到主<code>(UI)</code>线程，在此队列上执行的所有操作都可以自由更新用户界面。用户界面更新仅允许从主线程进行。</p>
 <p>所有其他队列，无论是串行还是并发队列，都在系统管理的线程池中执行其代码。这意味着您永远不应该对在队列中运行的代码中的当前线程做出任何假设。特别是，由于<code>DispatchQueue</code>管理其线程的方式，您不应该使用<code>RunLoop.current</code>安排工作。</p>
 <p>所有调度队列共享相同的线程池。您要执行的串行队列将使用该池中的任何可用线程。一个直接的后果是，来自同一队列的两个连续工作项可能会在继续按顺序执行时使用不同的线程。</p>
 <p>这是一个重要的区别：当使用<code>subscribe(on:) receive(on:)</code>或任何其他使用<code>Scheduler</code>参数的运算符时，您绝不应假设每次都支持调度程序的线程是相同的。</p>
