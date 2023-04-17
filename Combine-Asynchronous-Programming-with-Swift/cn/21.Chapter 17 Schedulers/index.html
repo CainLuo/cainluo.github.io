@@ -7479,29 +7479,29 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    调度队列调度程序
+  <a href="#dispatchqueue" class="md-nav__link">
+    DispatchQueue调度程序
   </a>
   
-    <nav class="md-nav" aria-label="调度队列调度程序">
+    <nav class="md-nav" aria-label="DispatchQueue调度程序">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     队列和线程
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#dispatchqueue" class="md-nav__link">
+  <a href="#dispatchqueue_1" class="md-nav__link">
     使用DispatchQueue作为调度器
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#dispatchqueue_1" class="md-nav__link">
+  <a href="#dispatchqueue_2" class="md-nav__link">
     DispatchQueue选项
   </a>
   
@@ -7513,23 +7513,23 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    操作队列
+  <a href="#operationqueue" class="md-nav__link">
+    OperationQueue
   </a>
   
-    <nav class="md-nav" aria-label="操作队列">
+    <nav class="md-nav" aria-label="OperationQueue">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
-    操作队列选项
+  <a href="#operationqueue_1" class="md-nav__link">
+    OperationQueue选项
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#_9" class="md-nav__link">
-    操作队列陷阱
+  <a href="#operationqueue_2" class="md-nav__link">
+    OperationQueue陷阱
   </a>
   
 </li>
@@ -7545,7 +7545,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_10" class="md-nav__link">
+  <a href="#_6" class="md-nav__link">
     挑战
   </a>
   
@@ -7572,14 +7572,14 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_11" class="md-nav__link">
+  <a href="#_7" class="md-nav__link">
     关键点
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_12" class="md-nav__link">
+  <a href="#_8" class="md-nav__link">
     接下来去哪？
   </a>
   
@@ -7987,29 +7987,29 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    调度队列调度程序
+  <a href="#dispatchqueue" class="md-nav__link">
+    DispatchQueue调度程序
   </a>
   
-    <nav class="md-nav" aria-label="调度队列调度程序">
+    <nav class="md-nav" aria-label="DispatchQueue调度程序">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     队列和线程
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#dispatchqueue" class="md-nav__link">
+  <a href="#dispatchqueue_1" class="md-nav__link">
     使用DispatchQueue作为调度器
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#dispatchqueue_1" class="md-nav__link">
+  <a href="#dispatchqueue_2" class="md-nav__link">
     DispatchQueue选项
   </a>
   
@@ -8021,23 +8021,23 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    操作队列
+  <a href="#operationqueue" class="md-nav__link">
+    OperationQueue
   </a>
   
-    <nav class="md-nav" aria-label="操作队列">
+    <nav class="md-nav" aria-label="OperationQueue">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
-    操作队列选项
+  <a href="#operationqueue_1" class="md-nav__link">
+    OperationQueue选项
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#_9" class="md-nav__link">
-    操作队列陷阱
+  <a href="#operationqueue_2" class="md-nav__link">
+    OperationQueue陷阱
   </a>
   
 </li>
@@ -8053,7 +8053,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_10" class="md-nav__link">
+  <a href="#_6" class="md-nav__link">
     挑战
   </a>
   
@@ -8080,14 +8080,14 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_11" class="md-nav__link">
+  <a href="#_7" class="md-nav__link">
     关键点
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_12" class="md-nav__link">
+  <a href="#_8" class="md-nav__link">
     接下来去哪？
   </a>
   
@@ -8392,7 +8392,7 @@ Received computation result on thread 1 &#39;Computation complete&#39;
 <p><code>RunLoop</code>的使用应仅限于主线程的运行循环，以及根据需要，您控制的基础线程中可用的<code>RunLoop</code>。也就是说，您自己使用<code>Thread</code>对象启动的任何内容。</p>
 <p>要避免的一个特殊陷阱是在<code>DispatchQueue</code>上执行的代码中使用<code>RunLoop.current</code>。 这是因为 <code>DispatchQueue</code> 线程可能是短暂的，这使得它们几乎不可能被 <code>RunLoop</code> 依赖。</p>
 <p>您现在准备好了解最通用和最有用的调度程序：<code>DispatchQueue</code>！</p>
-<h3 id="_5">调度队列调度程序<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<h3 id="dispatchqueue"><code>DispatchQueue</code>调度程序<a class="headerlink" href="#dispatchqueue" title="Permanent link">&para;</a></h3>
 <p>在本章和前几章中，您一直在各种情况下使用<code>DispatchQueue</code>。<code>DispatchQueue</code>符合<code>Scheduler</code>协议，并且完全可用于所有以<code>Scheduler</code>为参数的操作符。</p>
 <p>但首先，快速复习调度队列。调度框架是<code>Foundation</code>的一个强大组件，允许您通过将工作提交到系统管理的调度队列，在多核硬件上同时执行代码。</p>
 <p><code>DispatchQueue</code>可以是串行的（默认的）或并发的。串行队列按顺序执行您提供给它的所有工作项。并发队列将并行启动多个工作项，以最大限度地提高<code>CPU</code>使用率。两种队列类型都有不同的用法：</p>
@@ -8400,12 +8400,12 @@ Received computation result on thread 1 &#39;Computation complete&#39;
 <li>串行队列通常用于保证某些操作不会重叠。因此，如果所有操作都在同一队列中进行，他们可以在不锁定的情况下使用共享资源。</li>
 <li>并发队列将同时执行尽可能多的操作。因此，它更适合纯计算。</li>
 </ul>
-<h4 id="_6">队列和线程<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h4>
+<h4 id="_5">队列和线程<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h4>
 <p>您一直使用的最熟悉的队列是<code>DispatchQueue.main</code>。它直接映射到主<code>(UI)</code>线程，在此队列上执行的所有操作都可以自由更新用户界面。用户界面更新仅允许从主线程进行。</p>
 <p>所有其他队列，无论是串行还是并发队列，都在系统管理的线程池中执行其代码。这意味着您永远不应该对在队列中运行的代码中的当前线程做出任何假设。特别是，由于<code>DispatchQueue</code>管理其线程的方式，您不应该使用<code>RunLoop.current</code>安排工作。</p>
 <p>所有调度队列共享相同的线程池。您要执行的串行队列将使用该池中的任何可用线程。一个直接的后果是，来自同一队列的两个连续工作项可能会在继续按顺序执行时使用不同的线程。</p>
 <p>这是一个重要的区别：当使用<code>subscribe(on:) receive(on:)</code>或任何其他使用<code>Scheduler</code>参数的运算符时，您绝不应假设每次都支持调度程序的线程是相同的。</p>
-<h4 id="dispatchqueue">使用<code>DispatchQueue</code>作为调度器<a class="headerlink" href="#dispatchqueue" title="Permanent link">&para;</a></h4>
+<h4 id="dispatchqueue_1">使用<code>DispatchQueue</code>作为调度器<a class="headerlink" href="#dispatchqueue_1" title="Permanent link">&para;</a></h4>
 <p>是时候让你做实验了！像往常一样，您将使用计时器发出值，并观看它们在调度器之间迁移。但这次，您将使用调度队列计时器创建计时器。</p>
 <p>打开名为<code>DispatchQueue</code>的<code>Playground</code>页面。首先，您将创建几个队列来处理。将此代码添加到您的<code>Playground</code>：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">serialQueue</span> <span class="p">=</span> <span class="n">DispatchQueue</span><span class="p">(</span><span class="n">label</span><span class="p">:</span> <span class="s">&quot;Serial queue&quot;</span><span class="p">)</span>
@@ -8459,7 +8459,7 @@ Received computation result on thread 1 &#39;Computation complete&#39;
 <p>现在，再次执行<code>Playground</code>：</p>
 <p><img alt="img" src="../../graphics/img128.png" /></p>
 <p>有趣！您再次看到<code>DispatchQueue</code>的无线程保证效果，但您也看到<code>receive(on:)</code>运算符从不切换线程！看起来内部正在进行一些优化，以避免额外的切换。你将在本章的挑战中探索这一点！</p>
-<h4 id="dispatchqueue_1"><code>DispatchQueue</code>选项<a class="headerlink" href="#dispatchqueue_1" title="Permanent link">&para;</a></h4>
+<h4 id="dispatchqueue_2"><code>DispatchQueue</code>选项<a class="headerlink" href="#dispatchqueue_2" title="Permanent link">&para;</a></h4>
 <p><code>DispatchQueue</code>是唯一提供当运算符接受<code>SchedulerOptions</code>参数时可以传递的一组选项的调度器。这些选项主要围绕指定<code>QoS</code>（服务质量）值，独立于<code>DispatchQueue</code>上已经设置的值。工作项目有一些额外的旗帜，但在绝大多数情况下，你不需要它们。</p>
 <p>要查看如何指定<code>QoS</code>，请将<code>setupPublisher</code>中的<code>receive(on:options:)</code>修改为以下内容：</p>
 <div class="highlight"><pre><span></span><code><span class="p">.</span><span class="n">receive</span><span class="p">(</span>
@@ -8470,7 +8470,7 @@ Received computation result on thread 1 &#39;Computation complete&#39;
 <p>您将<code>DispatchQueue.SchedulerOptions</code>的实例传递给指定最高服务质量的<code>options</code>：<code>.userInteractive</code>。它指示操作系统尽最大努力将交付价值优先于不太重要的任务。当您想尽快更新用户界面时，您可以使用此功能。相反，如果快速交货的压力较小，您可以使用<code>.background</code>服务质量。在本示例的上下文中，您不会看到真正的区别，因为它是唯一正在运行的任务。</p>
 <p>在实际应用程序中使用这些选项有助于操作系统在您同时有多个队列繁忙的情况下决定首先安排哪个任务。它真的在微调你的应用程序性能！</p>
 <p>你快用完调度器了！再坚持一点。你还有最后一个调度器要学习。</p>
-<h3 id="_7">操作队列<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<h3 id="operationqueue"><code>OperationQueue</code><a class="headerlink" href="#operationqueue" title="Permanent link">&para;</a></h3>
 <p>您在本章中学习的最后一位调度器是<code>OperationQueue</code>。该文档将其描述为一个规范操作执行的队列。这是一个丰富的监管机制，允许您创建具有依赖项的高级操作。但在<code>Combine</code>的背景下，您不会使用这些机制。</p>
 <p>由于<code>OperationQueue</code>在引擎盖下使用<code>Dispatch</code>，因此使用其中一个表面没有什么区别。还是有？</p>
 <p>用一个简单的例子试试看。打开<code>OperationQueue Playground</code>页面并开始编码：</p>
@@ -8528,17 +8528,17 @@ Received 9 on thread 3
 Received 10 on thread 3
 </code></pre></div>
 <p>这一次，您将获得真正的顺序执行——将<code>maxConcurrentOperationCount</code>设置为<code>1</code>相当于使用串行队列——并且您的值按顺序到达。</p>
-<h4 id="_8">操作队列选项<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h4>
+<h4 id="operationqueue_1"><code>OperationQueue</code>选项<a class="headerlink" href="#operationqueue_1" title="Permanent link">&para;</a></h4>
 <p><code>OperationQueue</code>没有可用的<code>SchedulerOptions</code>。它实际上是类型别名到<code>RunLoop.SchedulerOptions</code>，它本身没有提供任何选项。</p>
-<h4 id="_9">操作队列陷阱<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h4>
+<h4 id="operationqueue_2"><code>OperationQueue</code>陷阱<a class="headerlink" href="#operationqueue_2" title="Permanent link">&para;</a></h4>
 <p>您刚刚看到<code>OperationQueue</code>默认同时执行操作。您需要非常清楚这一点，因为它可能会给您带来麻烦：默认情况下，<code>OperationQueue</code>的行为类似于并发<code>DispatchQueue</code>。</p>
 <p>然而，当你每次发布者发出价值时都有大量工作要做时，它可能是一个很好的工具。您可以通过调整<code>maxConcurrentOperationCount</code>参数来控制负载。</p>
-<h2 id="_10">挑战<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h2>
+<h2 id="_6">挑战<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
 <p>唷，这是一个漫长而复杂的章节！ 恭喜你成功了！ 有一些脑力可以应对几个挑战吗？ 我们开始做吧！</p>
 <h3 id="1">挑战1：停止计时器<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
 <p>这是一个简单的。在本章关于<code>DispatchQueue</code>的部分中，您创建了一个可取消的计时器，为您的源发布者提供值。</p>
 <p>设计两种不同的方法，在<code>4</code>秒后停止计时器。提示：您需要使用<code>DispatchQueue.SchedulerTimeType.advanced(by:)</code></p>
-<p>找到解决方案了吗？将它们与<code>projects/challenge/challenge1/final playground</code>中的比较：</p>
+<p>找到解决方案了吗？将它们与<code>projects/challenge/challenge1/Final.playground</code>中的比较：</p>
 <ol>
 <li>使用串行队列的调度器协议<code>schedule(after:_:)</code>方法来安排取消<code>subscription</code>的闭包的执行。</li>
 <li>使用<code>serialQueue</code>的正常<code>asyncAfter(_:_:)</code>方法（预组合）来做同样的事情。</li>
@@ -8554,15 +8554,15 @@ Received 10 on thread 3
 <li>创建第二个串行队列，针对第一个队列。</li>
 <li>为第二个串行队列添加<code>.receive(on:)</code>以及<code>.recordThread</code>步骤。</li>
 </ol>
-<p>完整的解决方案可在<code>projects/challenge/challenge2/final playground</code>中找到。</p>
-<h2 id="_11">关键点<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
+<p>完整的解决方案可在<code>projects/challenge/challenge2/Final.playground</code>中找到。</p>
+<h2 id="_7">关键点<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>Scheduler</code>定义了一件作品的执行上下文。</li>
 <li><code>Apple</code>的操作系统提供了多种工具，可帮助您安排代码执行。</li>
 <li>将这些调度器与<code>Scheduler</code>协议相结合，以帮助您在任何给定情况下为工作选择最好的调度器。</li>
 <li>每次您使用<code>receive(on:)</code>发布者中的进一步运算符都会在指定的调度器上执行。也就是说，除非他们自己使用<code>Scheduler</code>参数！</li>
 </ul>
-<h2 id="_12">接下来去哪？<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h2>
+<h2 id="_8">接下来去哪？<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
 <p>你学到了很多东西，你的大脑一定被所有这些信息融化了！下一章更加复杂，因为它教你如何创建自己的发布者和处理背压。确保您现在安排一个当之无愧的休息时间，并在下一章中刷新！</p>
 
 
