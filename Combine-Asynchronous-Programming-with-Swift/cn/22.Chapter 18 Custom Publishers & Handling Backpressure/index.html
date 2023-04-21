@@ -7433,14 +7433,14 @@
         
           <li class="md-nav__item">
   <a href="#_5" class="md-nav__link">
-    建立您的订阅
+    建立订阅
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#_6" class="md-nav__link">
-    将所需属性添加到您的订阅中
+    添加订阅所需属性
   </a>
   
 </li>
@@ -7965,14 +7965,14 @@
         
           <li class="md-nav__item">
   <a href="#_5" class="md-nav__link">
-    建立您的订阅
+    建立订阅
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#_6" class="md-nav__link">
-    将所需属性添加到您的订阅中
+    添加订阅所需属性
   </a>
   
 </li>
@@ -8285,20 +8285,20 @@ Received value: 4
 </code></pre></div>
 <p>如果您曾经使用过<code>DispatchSourceTimer</code>，那么其中一些属性应该看起来很熟悉：</p>
 <ol>
-<li>您希望计时器能够在某个队列上点火，但如果您不在乎，您也希望使队列成为可选的。在这种情况下，计时器将在其选择的队列上点火。</li>
-<li>计时器触发的间隔，从订阅时间开始。</li>
-<li>回旋余地，即系统在截止日期后可能延迟交付计时器事件的最大时间。</li>
-<li>您要接收的计时器事件数量。由于您正在制作自己的计时器，请使其灵活，并在完成之前交付数量有限的活动！</li>
+<li>您希望计时器能够在某个队列上触发，但如果您不关心，也希望使该队列成为可选的。在这种情况下，计时器将在其选择的队列上触发。</li>
+<li>从订阅时间开始计时器触发的间隔。</li>
+<li>裕量，这是截止日期之后系统可以延迟定时器事件的递送的最大时间量。</li>
+<li>要接收的计时器事件数。 既然你在制作自己的计时器，那么就让它变得灵活，并且在完成之前能够提供有限数量的事件！</li>
 </ol>
-<h3 id="dispatchtimer">添加DispatchTimer发布者<a class="headerlink" href="#dispatchtimer" title="Permanent link">&para;</a></h3>
-<p>您现在可以开始创建<code>DispatchTimer</code>发布者了。这将是直截了当的，因为所有工作都发生在订阅中！</p>
-<p>在您的配置下方添加此代码：</p>
+<h3 id="dispatchtimer">添加<code>DispatchTimer</code>发布者<a class="headerlink" href="#dispatchtimer" title="Permanent link">&para;</a></h3>
+<p>您现在可以开始创建<code>DispatchTimer</code>发布者。这将很简单，因为所有的工作都发生在订阅中！</p>
+<p>在配置下面添加以下代码：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">extension</span> <span class="nc">Publishers</span> <span class="p">{</span>
   <span class="kd">struct</span> <span class="nc">DispatchTimer</span><span class="p">:</span> <span class="n">Publisher</span> <span class="p">{</span>
-    <span class="c1">// 5</span>
+    <span class="c1">// 1</span>
     <span class="kd">typealias</span> <span class="n">Output</span> <span class="p">=</span> <span class="n">DispatchTime</span>
     <span class="kd">typealias</span> <span class="n">Failure</span> <span class="p">=</span> <span class="n">Never</span>
-    <span class="c1">// 6</span>
+    <span class="c1">// 2</span>
     <span class="kd">let</span> <span class="nv">configuration</span><span class="p">:</span> <span class="n">DispatchTimerConfiguration</span>
 
     <span class="kd">init</span><span class="p">(</span><span class="n">configuration</span><span class="p">:</span> <span class="n">DispatchTimerConfiguration</span><span class="p">)</span> <span class="p">{</span>
@@ -8309,54 +8309,54 @@ Received value: 4
 </code></pre></div>
 <ol>
 <li>您的计时器将当前时间作为<code>DispatchTime</code>值发出。当然，它永远不会失败，所以发布者的<code>Failure</code>类型是<code>Never</code>。</li>
-<li>保留给定配置的副本。您现在不使用它，但当您收到订阅者时，您将需要它。</li>
+<li>保留给定配置的副本。 您现在不使用它，但当您收到订阅者时会需要它。</li>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>在编写代码时，您将开始看到编译器错误。请放心，在您完成实施要求之前，您将对这些进行补救。</p>
+<p>在编写代码时，您将开始看到编译器错误。请放心，在您完成实现这些需求时，您将对这些问题进行补救。</p>
 </div>
-<p>现在，通过将此代码添加到初始化器下方的<code>DispatchTimer</code>定义中，实现<code>Publisher</code>协议所需的<code>receive(subscriber:)</code>方法：</p>
-<div class="highlight"><pre><span></span><code><span class="c1">// 7</span>
+<p>现在，通过将以下代码添加到初始化器下面的<code>DispatchTimer</code>定义中，实现<code>Publisher</code>协议所需的<code>receive(subscriber:)</code>方法：</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// 1</span>
 <span class="kd">func</span> <span class="nf">receive</span><span class="p">&lt;</span><span class="n">S</span><span class="p">:</span> <span class="n">Subscriber</span><span class="p">&gt;(</span><span class="n">subscriber</span><span class="p">:</span> <span class="n">S</span><span class="p">)</span>
   <span class="k">where</span> <span class="n">Failure</span> <span class="p">==</span> <span class="n">S</span><span class="p">.</span><span class="n">Failure</span><span class="p">,</span>
         <span class="n">Output</span> <span class="p">==</span> <span class="n">S</span><span class="p">.</span><span class="n">Input</span> <span class="p">{</span>
-  <span class="c1">// 8</span>
+  <span class="c1">// 2</span>
   <span class="kd">let</span> <span class="nv">subscription</span> <span class="p">=</span> <span class="n">DispatchTimerSubscription</span><span class="p">(</span>
     <span class="n">subscriber</span><span class="p">:</span> <span class="n">subscriber</span><span class="p">,</span>
     <span class="n">configuration</span><span class="p">:</span> <span class="n">configuration</span>
   <span class="p">)</span>
-  <span class="c1">// 9</span>
+  <span class="c1">// 3</span>
   <span class="n">subscriber</span><span class="p">.</span><span class="n">receive</span><span class="p">(</span><span class="n">subscription</span><span class="p">:</span> <span class="n">subscription</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div>
 <ol>
-<li>该函数是通用的；它需要编译时专业化来匹配订阅者类型。</li>
-<li>大部分操作将在不久后定义的<code>DispatchTimerSubscription</code>中进行。</li>
-<li>正如您在第2章“发布者和订阅者”中了解到的那样，订阅者会收到<code>Subscription</code>，然后可以向订阅发送值请求。</li>
+<li>该函数是一个通用函数;它需要编译时专门化来匹配订阅者类型。</li>
+<li>大部分操作将发生在您稍后要定义的<code>DispatchTimerSubscription</code>中。</li>
+<li>正如您在第2章“发布者和订阅者”中所了解的，订阅者接收一个“订阅”，然后可以向其发送值请求。</li>
 </ol>
-<p>发布者真的只有这么多！真正的工作将在订阅本身内进行。</p>
-<h3 id="_5">建立您的订阅<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p>这就是发布者的全部！真实的的工作将发生在订阅本身内部。</p>
+<h3 id="_5">建立订阅<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
 <p>订阅的作用是：</p>
 <ul>
-<li>接受订阅者的初始要求。</li>
+<li>接受来自订阅者的初始请求。</li>
 <li>按需生成计时器事件。</li>
-<li>每次订阅者收到值并返回需求时，都会添加到需求计数中。</li>
-<li>确保它提供的值不会超过配置中要求的值。</li>
+<li>每次订阅服务器接收到值并返回请求时，将该值添加到请求计数中。</li>
+<li>确保它不会提供比配置中请求的值更多的值。</li>
 </ul>
-<p>这听起来可能像很多代码，但没那么复杂！</p>
-<p>开始在<code>Publishers</code>上的扩展下方定义订阅：</p>
+<p>这可能听起来像很多代码，但它并不那么复杂！</p>
+<p>开始定义<code>Publishers</code>上扩展下面的订阅：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">private</span> <span class="kr">final</span> <span class="kd">class</span> <span class="nc">DispatchTimerSubscription</span>
   <span class="p">&lt;</span><span class="n">S</span><span class="p">:</span> <span class="n">Subscriber</span><span class="p">&gt;:</span> <span class="n">Subscription</span> <span class="k">where</span> <span class="n">S</span><span class="p">.</span><span class="n">Input</span> <span class="p">==</span> <span class="n">DispatchTime</span> <span class="p">{</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>签名本身提供了许多信息：</p>
+<p>签名本身提供了很多信息：</p>
 <ul>
-<li>这个订阅在外部是不可见的，只能通过<code>Subscription</code>协议，所以你把它设为<code>private</code>。</li>
-<li>这是一个班级，因为你想通过参考来通过它。然后，订阅者可以将其添加到<code>Cancellable</code>集合中，但也可以保留它并独立调用<code>cancel()</code>。</li>
-<li>它迎合了<code>Input</code>值类型为<code>DispatchTime</code>订阅者，这是该订阅发出的。</li>
+<li>该订阅在外部不可见，只能通过<code>Subscription</code>协议，因此您将其设置为<code>private</code>。</li>
+<li>它是一个类，因为你想通过引用传递它。然后，订阅者可以将其添加到<code>Cancellable</code>集合中，但也可以保留它并独立地调用<code>cancel()</code>。</li>
+<li>它迎合了<code>Input</code>值类型为<code>DispatchTime</code>的订阅者，这就是此订阅发出的内容。</li>
 </ul>
-<h3 id="_6">将所需属性添加到您的订阅中<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
-<p>现在将以下属性添加到订阅类的定义中：</p>
+<h3 id="_6">添加订阅所需属性<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p>现在将这些属性添加到订阅类的定义中：</p>
 <div class="highlight"><pre><span></span><code><span class="c1">// 10</span>
 <span class="kd">let</span> <span class="nv">configuration</span><span class="p">:</span> <span class="n">DispatchTimerConfiguration</span>
 <span class="c1">// 11</span>
@@ -8370,11 +8370,11 @@ Received value: 4
 </code></pre></div>
 <p>此代码包含：</p>
 <ol>
-<li>订阅者通过的配置。</li>
-<li>您从配置中复制的计时器触发的最大次数。您将把它用作每次发送值时都会递减的计数器。</li>
-<li>当前需求；例如，订阅者请求的值数量——每次发送值时，您都会减少它。</li>
+<li>订阅服务器传递的配置。</li>
+<li>计时器将触发的最大次数，从配置中复制。 您将把它用作计数器，每次发送值时它都会递减。</li>
+<li>当前需求;例如，订阅者请求的值的数量-每次发送值时递减。</li>
 <li>将生成计时器事件的内部<code>DispatchSourceTimer</code>。</li>
-<li>订阅者。这清楚地表明，只要订阅没有完成、失败或取消，订阅就有责任保留订阅者。</li>
+<li>订阅者。这清楚地表明，订阅负责保留订阅者，只要它没有完成，失败或取消。</li>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
