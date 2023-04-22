@@ -8163,8 +8163,8 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 </div>
-<p>与本书中的所有项目一样，您也将在本章中与SwiftUI合作。如果您想了解更多信息，请查看raywenderlich.com库中的<a href="http://bit.ly/2OMLYmp">SwiftUI教程</a>。</p>
-<p>在项目导航器顶部选择`ChuckNorrisJokes 项目：</p>
+<p>与本书中的所有项目一样，您也将在本章中与<code>SwiftUI</code>合作。如果您想了解更多信息，请查看<code>raywenderlich.com</code>库中的<a href="http://bit.ly/2OMLYmp">SwiftUI教程</a>。</p>
+<p>在项目导航器顶部选择<code>ChuckNorrisJokes</code>项目：</p>
 <p><img alt="img" src="../../graphics/img133.png" /></p>
 <p>该项目有三个目标：</p>
 <ol>
@@ -8203,7 +8203,7 @@
 <p>在<code>ChuckNorrisJokesModel</code>目标中，打开<code>View Models/JokesViewModel.swift</code>。您将看到一个裸骨实现，其中包括：</p>
 <ul>
 <li>导入组合和<code>SwiftUI</code>。</li>
-<li><code>DecisionState``enum</code>。</li>
+<li><code>DecisionState enum</code>。</li>
 <li><code>JSONDecoder</code>实例。</li>
 <li>两个<code>AnyCancellable</code>的集合。</li>
 <li>一个空的初始化器和几个空的方法。</li>
@@ -8464,7 +8464,10 @@
 <p>这就是你现在需要用<code>JokeView</code>做的一切。</p>
 <h3 id="_13">试用您的应用程序<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
 <p>要查看您到目前为止的进度，请显示预览，必要时单击“恢复”，然后单击实时预览播放按钮。</p>
-<p>注意：您还可以在模拟器或设备上构建运行该应用程序，以检查您的进度。</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>您还可以在模拟器或设备上构建运行该应用程序，以检查您的进度。</p>
+</div>
 <p>您可以分别向左或向右轻扫以不喜欢或喜欢笑话。这样做还将显示大拇指向下或ROFL图像和“获取”动画。如果您在不确定的状态下释放卡，笑话卡将恢复到原始位置。</p>
 <p>如果您的应用程序遇到错误，它将显示错误笑话。您稍后会编写一个单元测试来验证这一点，但是如果您想现在看到错误笑话，请暂时关闭<code>Mac</code>的<code>Wi-Fi</code>，运行该应用程序并向左轻扫以获取一个新的笑话。你会看到错误的笑话：“休斯顿，我们有一个问题——没有笑话。检查您的互联网连接，然后重试。”</p>
 <p>毫无疑问，这是一个最小的实现。如果您感到雄心勃勃，您可以应用您在第16章“错误处理”中学到的知识，实施更强大的错误处理机制。</p>
@@ -8485,7 +8488,7 @@
 </ul>
 <p>是时候保存一些笑话了！</p>
 <h2 id="combinecore-data">通过<code>Combine</code>实现<code>Core Data</code><a class="headerlink" href="#combinecore-data" title="Permanent link">&para;</a></h2>
-<p>过去几年，核心数据团队一直在努力工作。设置<code>Core Data</code>堆栈的过程再简单不过了，新推出的与<code>Combine</code>的集成使其成为<code>Combine</code>和SwiftUI应用程序中持久数据的首选，更具吸引力。</p>
+<p>过去几年，核心数据团队一直在努力工作。设置<code>Core Data</code>堆栈的过程再简单不过了，新推出的与<code>Combine</code>的集成使其成为<code>Combine</code>和<code>SwiftUI</code>应用程序中持久数据的首选，更具吸引力。</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>本章不详述使用<code>Core Data</code>的细节。它只会引导您完成与<code>Combine</code>一起使用的必要步骤。如果您想了解有关<code>Core Data</code>的更多信息，请查看<code>raywenderlich.com</code>库中的<a href="http://bit.ly/2BqtbVX">Core Data by Tutorials</a>。</p>
@@ -8542,7 +8545,7 @@
 <li>导入<code>Core Data</code>、<code>SwiftUI</code>和模型模块。</li>
 <li>扩展自动生成的<code>JokeManagedObject</code>类。</li>
 <li>添加一个静态方法以使用传入的视图上下文保存传入的笑话。如果您不熟悉<code>Core Data</code>，您可以将视图上下文视为<code>Core Data</code>的暂存器。它与主队列相关联。</li>
-<li>用于指示问题发生时的错误笑话有ID<code>error</code>。没有理由保存那个笑话，所以在继续之前，你不要让它成为错误的笑话。</li>
+<li>用于指示问题发生时的错误笑话有<code>ID</code>的<code>error</code>。没有理由保存那个笑话，所以在继续之前，你不要让它成为错误的笑话。</li>
 <li>为<code>JokeManagedObject</code>实体名称创建一个获取请求。</li>
 <li>设置获取请求的谓词，以过滤获取到与传入笑话相同的<code>ID</code>的笑话。</li>
 <li>使用<code>viewContext</code>尝试执行获取请求。如果它成功了，这意味着这个笑话已经存在，所以用传递的笑话中的值来更新它。</li>
@@ -8611,7 +8614,7 @@
 </code></pre></div>
 <p>使用此代码，您：</p>
 <ol>
-<li>定义一个名为<code>CoreDataStack``private``enum</code>。使用无写<code>enum</code>在这里很有用，因为它无法初始化。<code>CoreDataStack</code>仅用作命名空间——您实际上不希望能够创建它的实例。</li>
+<li>定义一个名为<code>CoreDataStack private enum</code>。使用无写<code>enum</code>在这里很有用，因为它无法初始化。<code>CoreDataStack</code>仅用作命名空间——您实际上不希望能够创建它的实例。</li>
 <li>创建一个持久容器。这是实际的核心数据堆栈，封装了托管对象模型、持久存储协调员和托管对象上下文。一旦您拥有了一个容器，您就会返回其视图上下文。您稍后将使用<code>SwiftUI Environment API</code>在整个应用程序中共享此上下文。</li>
 <li>创建一个静态<code>save</code>方法，只有场景委托才能用于保存上下文。在启动保存操作之前，验证上下文是否已更改始终是一个好主意。</li>
 </ol>
