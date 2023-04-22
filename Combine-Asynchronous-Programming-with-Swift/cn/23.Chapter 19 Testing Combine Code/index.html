@@ -8261,7 +8261,7 @@
 <li>定义预期结果和数组以存储实际结果。</li>
 <li>创建一个自动连接的计时器发布者，并仅获取它发出的前三个值。请参阅第11章“<code>Timers</code>”，了解该操作符的详细信息。</li>
 </ol>
-<p>接下来，添加此代码以测试此发布者</p>
+<p>接下来，添加此代码以测试此发布者：</p>
 <div class="highlight"><pre><span></span><code><span class="c1">// When</span>
 <span class="n">publisher</span>
   <span class="p">.</span><span class="n">sink</span><span class="p">(</span>
@@ -8274,7 +8274,7 @@
   <span class="p">)</span>
   <span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="k">in</span><span class="p">:</span> <span class="p">&amp;</span><span class="n">subscriptions</span><span class="p">)</span>
 </code></pre></div>
-<p>在上面的订阅处理程序中，您可以使用助手函数获取每个发出日期的时间间隔的规范化版本，然后附加到结果数组中。</p>
+<p>在上面的订阅处理程序中，您可以使用助手函数获取每个发出日期的时间间隔的格式化版本，然后附加到结果数组中。</p>
 <p>完成后，是时候等待发布者完成工作并完成，然后进行验证了。</p>
 <p>添加此代码以执行此操作：</p>
 <div class="highlight"><pre><span></span><code><span class="c1">// Then</span>
@@ -8287,7 +8287,7 @@
   <span class="s">&quot;Results expected to be </span><span class="si">\(</span><span class="n">expected</span><span class="si">)</span><span class="s"> but were </span><span class="si">\(</span><span class="n">results</span><span class="si">)</span><span class="s">&quot;</span>
 <span class="p">)</span>
 </code></pre></div>
-<p>给你：</p>
+<p>在这里你：</p>
 <ol>
 <li>最多等待<code>2</code>秒。</li>
 <li>断言实际结果等于预期结果。</li>
@@ -8311,7 +8311,7 @@
 <p>与之前的测试类似，您：</p>
 <ol>
 <li>创建一个<code>subject</code>来发送新的整数值。</li>
-<li>使用容量为两个的<code>shareReplay</code>从该<code>subject</code>创建一个发布者。</li>
+<li>使用容量为<code>2</code>的<code>shareReplay</code>从该<code>subject</code>创建发布者。</li>
 <li>定义预期结果，并创建一个数组来存储实际输出。</li>
 </ol>
 <p>接下来，添加此代码以触发应该产生预期输出的操作：</p>
@@ -8348,7 +8348,7 @@
 <span class="p">)</span>
 </code></pre></div>
 <p>这是与前两次测试相同的断言代码。</p>
-<p>运行这个测试，瞧，你有一个真正的成员值得在你的联合驱动项目中使用！</p>
+<p>运行这个测试，你就拥有了一个值得在<code>Combine</code>驱动的项目中使用的真正的成员！</p>
 <p>通过学习如何测试这种小品种的<code>Combine</code>运算符，您已经掌握了测试<code>Combine</code>可以扔给您的几乎任何东西所需的技能。在下一节中，您将通过测试您之前看到的<code>ColorCalc</code>应用程序来练习这些技能。</p>
 <h2 id="_2">测试生产代码<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <p>在本章开头，您观察到<code>ColorCalc</code>应用程序的几个问题。现在是时候做点什么了。</p>
@@ -8402,7 +8402,7 @@
 <li>执行应触发预期结果的操作。</li>
 <li>断言实际结果等于预期结果。</li>
 </ol>
-<p>运行此测试，它将因以下消息而失败：<code>Name expected to be rwGreen 66% but was Optional(ColorCalc.ColorName.rwGreen)66%</code>。啊，<code>Optional</code>的虫子又咬了！</p>
+<p>运行此测试，它将失败并显示以下消息：<code>Name expected to be rwGreen 66% but was Optional(ColorCalc.ColorName.rwGreen)66%</code>。 啊，<code>Optional</code>错误再次出现！</p>
 <p>打开<code>View Models/CalculatorViewModel.swift</code>。类定义的底部是一个名为<code>configure()</code>的方法。此方法在初始化器中调用，它是设置所有视图模型订阅的地方。首先，创建一个<code>hexTextShared</code>发布者来共享<code>hexText</code>发布者。</p>
 <p>自我记录代码怎么样？紧接着是设置<code>name</code>的订阅：</p>
 <div class="highlight"><pre><span></span><code><span class="n">hexTextShared</span>
@@ -8602,7 +8602,7 @@
 <p>调查视图模型中的相关代码，您会发现处理<code>process(_:)</code>中<code>Constant.clear</code>输入的案例只有<code>break</code>。也许编写此代码的开发人员渴望休息一下？</p>
 <p>修复方法是将<code>break</code>更改为<code>hexText = "#"</code>然后，测试将通过，您将防范该领域未来的回归。</p>
 <h3 id="25">挑战2：解决问题5：输入的十六进制的红绿蓝不透明度显示不正确<a class="headerlink" href="#25" title="Permanent link">&para;</a></h3>
-<p>目前，在将应用程序启动时显示的初始十六进制更改为其他内容后，红绿蓝不透明度（<code>RGBO</code>）显示不正确。这可能是那种从开发中获得“无法重现”响应的问题，因为它“在我的设备上工作正常”。幸运的是，您的<code>QA</code>团队提供了明确说明，即在输入<code>006636</code>等值后显示不正确，这应该会导致RGBO显示器设置为<code>0, 102, 54, 170</code>。</p>
+<p>目前，在将应用程序启动时显示的初始十六进制更改为其他内容后，红绿蓝不透明度<code>(RGBO)</code>显示不正确。这可能是那种从开发中获得“无法重现”响应的问题，因为它“在我的设备上工作正常”。幸运的是，您的<code>QA</code>团队提供了明确说明，即在输入<code>006636</code>等值后显示不正确，这应该会导致<code>RGBO</code>显示器设置为<code>0, 102, 54, 170</code>。</p>
 <p>因此，您创建的最初会失败的测试如下所示：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">test_correctRGBOTextReceived</span><span class="p">()</span> <span class="p">{</span>
   <span class="c1">// Given</span>
@@ -8648,7 +8648,7 @@
 </ul>
 <h2 id="_7">接下来去哪？<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
 <p>干得好！您已经解决了测试几种不同的<code>Combine</code>运算符的问题，并将法律和秩序带到了以前未经测试和不守规矩的代码库中。</p>
-<p>在你越过终点线之前，还有一章要走。您将完成开发一个完整的iOS应用程序，该应用程序可以借鉴您在书中学到的内容，包括本章。加油！</p>
+<p>在你越过终点线之前，还有一章要走。您将完成开发一个完整的<code>iOS</code>应用程序，该应用程序可以借鉴您在书中学到的内容，包括本章。加油！</p>
 
 
 
