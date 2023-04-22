@@ -8064,7 +8064,7 @@
 </ul>
 <h4 id="2">问题2<a class="headerlink" href="#2" title="Permanent link">&para;</a></h4>
 <ul>
-<li>行动：点击←按钮。</li>
+<li>行动：点击<code>←</code>按钮。</li>
 <li>预期：十六进制显示器中的最后一个字符将被删除。</li>
 <li>实际：删除后两个字符。</li>
 </ul>
@@ -8187,8 +8187,8 @@
 </code></pre></div>
 <p>您通过创建以下内容来开始此测试：</p>
 <ol>
-<li>三个直通主题期望整数值的实例。</li>
-<li>当前值主题本身接受并发布整数直通主题，用第一个整数主题初始化。</li>
+<li>三个直通<code>subject</code>期望整数值的实例。</li>
+<li>当前值<code>subject</code>本身接受并发布整数直通<code>subject</code>，用第一个整数<code>subject</code>初始化。</li>
 <li>预期结果和用于保存实际收到结果的数组。</li>
 <li>订阅发布者，使用<code>flatMap</code>最多两个发布者。在处理程序中，您将收到的每个值附加到结果数组中。</li>
 </ol>
@@ -8209,12 +8209,12 @@
 <span class="c1">// 8</span>
 <span class="n">publisher</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">completion</span><span class="p">:</span> <span class="p">.</span><span class="n">finished</span><span class="p">)</span>
 </code></pre></div>
-<p>由于发布者是当前价值主题，它将向新订阅者重播当前值。因此，有了上述代码，您可以继续该发布者的工作，并且：</p>
+<p>由于发布者是当前数值<code>subject</code>，它将向新订阅者重播当前值。因此，有了上述代码，您可以继续该发布者的工作，并且：</p>
 <ol>
 <li>向第一个整数发布者发送一个新值。</li>
-<li>通过当前值主题发送第二个整数主题，然后向该主题发送新值。</li>
-<li>对第三个整数主题重复上一步，但这次传递两个值除外。</li>
-<li>通过当前值主题发送完成事件。</li>
+<li>通过当前值<code>subject</code>发送第二个整数<code>subject</code>，然后向该<code>subject</code>发送新值。</li>
+<li>对第三个整数<code>subject</code>重复上一步，但这次传递两个值除外。</li>
+<li>通过当前值<code>subject</code>发送完成事件。</li>
 </ol>
 <p>完成此测试的只是断言这些操作将产生预期结果。添加此代码以创建此断言：</p>
 <div class="highlight"><pre><span></span><code><span class="c1">// Then</span>
@@ -8310,8 +8310,8 @@
 </code></pre></div>
 <p>与之前的测试类似，您：</p>
 <ol>
-<li>创建一个主题来发送新的整数值。</li>
-<li>使用容量为两个的<code>shareReplay</code>从该主题创建一个发布者。</li>
+<li>创建一个<code>subject</code>来发送新的整数值。</li>
+<li>使用容量为两个的<code>shareReplay</code>从该<code>subject</code>创建一个发布者。</li>
 <li>定义预期结果，并创建一个数组来存储实际输出。</li>
 </ol>
 <p>接下来，添加此代码以触发应该产生预期输出的操作：</p>
@@ -8337,9 +8337,9 @@
 <p>从顶部，你：</p>
 <ol>
 <li>创建发布者的订阅并存储任何发出的值。</li>
-<li>通过发布者正在共享重播的主题发送一些值。</li>
+<li>通过发布者正在共享重播的<code>subject</code>发送一些值。</li>
 <li>创建另一个订阅，并存储任何发出的值。</li>
-<li>通过主题再发送一个值。</li>
+<li>通过<code>subject</code>再发送一个值。</li>
 </ol>
 <p>完成后，剩下的就是确保这个运算符是最新的，那就是创建一个断言。添加此代码以结束此测试：</p>
 <div class="highlight"><pre><span></span><code><span class="n">XCTAssert</span><span class="p">(</span>
