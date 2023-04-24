@@ -8416,9 +8416,10 @@
 <p>In Xcode, choose <strong>File ▸ New ▸ Target…</strong>, then select <strong>Widget Extension</strong> from the <strong>watchOS</strong>tab. For the <strong>Product Name</strong>, enter <strong>TideWatch Widget</strong>. Be sure to select <strong>Include Configuration Intent</strong> if it’s not already selected:</p>
 <p><img alt="img" src="https://assets.alexandria.kodeco.com/books/a1b0d30e72f4ba701a1ba20d40ae4977dd501250e017913b4f8fd6f02a54791f/images/a37d6bc9acfbc317cdaaaff71834b16e/original.png" /></p>
 <p>Xcode will place all of the widget-related code into a single file named <strong>TideWatch_Widget</strong>. The first thing you’ll want to do is separate the single file into individual files. The rest of this chapter will assume you’ve done so and refer to the files accordingly.</p>
-<blockquote>
-<p><strong>Note</strong>: The current version of Xcode gets confused and will make the target membership of your new files <strong>TideWatch Watch App</strong> instead of <strong>TideWatch WidgetExtension</strong>, resulting in numerous compiler errors.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The current version of Xcode gets confused and will make the target membership of your new files <strong>TideWatch Watch App</strong> instead of <strong>TideWatch WidgetExtension</strong>, resulting in numerous compiler errors.</p>
+</div>
 <p>You’ll end up with a structure that looks like this:</p>
 <p><img alt="img" src="https://assets.alexandria.kodeco.com/books/a1b0d30e72f4ba701a1ba20d40ae4977dd501250e017913b4f8fd6f02a54791f/images/12c97051ecbe64442a610e45b6499423/original.png" /></p>
 <p>In <strong>Provider</strong>, edit the signature of <code>getTimeline(for:in:completion:)</code>. The generic parameter <code>Entry</code> needs to be updated to say <code>SimpleEntry</code> to resolve the compiler error.****</p>

@@ -8202,8 +8202,8 @@
 <p>In the <strong>CampgroundManager</strong> sample project, the necessary classes and methods in the app target are already marked as <code>public</code> or <code>open</code>. That means you’ll just need to <code>import CampgroundManager</code> from the tests and you’ll be able to access whatever you need.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>Using <code>@testable</code> would be the easiest approach, but its existence in the language is somewhat debatable. In theory, only public methods should be unit tested; anything not <code>public</code> isn’t testable because there isn’t a public interface or contract. Using <code>@testable</code> is definitely more acceptable than just blindly adding <code>public</code> to all of your classes and functions.</p>
+</div>
 <h2 id="core-data-stack-for-testing">Core Data stack for testing<a class="headerlink" href="#core-data-stack-for-testing" title="Permanent link">&para;</a></h2>
 <p>Since you’ll be testing the Core Data parts of the app, the first order of business is getting the Core Data stack set up for testing.</p>
 <p>Good unit tests follow the acronym <strong>FIRST</strong>:</p>
@@ -8255,8 +8255,8 @@
 <p>This class subclasses <code>CoreDataStack</code> and only overrides the default value of a single property: <code>storeContainer</code>. Since you’re overriding the value in <code>init()</code>, the persistent container from <code>CoreDataStack</code> isn’t used — or even instantiated. The persistent container in <code>TestCoreDataStack</code> uses a file location of <code>/dev/null</code>, which is the <strong>null device</strong>. This is a special file system location where all data is discarded, and this causes SQLite to create an in-memory store instead of one held on disk. You can instantiate the stack and write as much data you want in the test. When the test ends — <em>poof</em> — the in-memory store clears out automatically. With the stack in place, it’s time to create your first test!</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>Core Data also has an in-memory store type, <code>NSInMemoryStoreType</code>, which you could use for tests, but there are fundamental differences between how an SQLite store and an in-memory store operate under the covers. Using a memory-backed SQLite store gives the closest match to your app’s real behavior.</p>
+</div>
 <p>If your tests require a lot of data, an in-memory SQLite store might not be the best approach. In these cases, follow the approach above but use a test-specific URL to make an on-disk store just for testing. Your <code>tearDown()</code> method would then close the test store and delete the file with every test.</p>
 <h3 id="your-first-test">Your first test<a class="headerlink" href="#your-first-test" title="Permanent link">&para;</a></h3>
 <p>Unit tests work best when you design your app as a collection of small modules. Instead of throwing all of your business logic into one huge view controller, you create a class (or classes) to encapsulate that logic.</p>
@@ -8315,8 +8315,8 @@
 <p>It’s a simple test, but it ensures if any logic inside of <code>addCamper</code> is modified, the basic operation doesn’t change. For example, if you add some new data validation logic to prevent bacon-loving people from reserving campgrounds, <code>addCamper</code> might return <code>nil</code>. This test would then fail, alerting you that either you made a mistake in the validation or the test needs to be updated.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>To round out this test case in a real development context, you’d want to write unit tests for strange scenarios such as <code>nil</code> parameters, empty parameters, or duplicate camper namess.</p>
+</div>
 <p>Run the unit tests by clicking on the <strong>Product</strong> menu, then selecting <strong>Test</strong> (or type <strong>Command+U</strong>). You should see a green checkmark in Xcode.</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/ef8c78a6ddb07cc22b83bec35c33422bc1ca1924b65a05ce2cbdaf035af59e7d/original.png" /></p>
 <p>There’s your first test! This type of testing is useful for leveraging your data models and checking the attributes were stored correctly.</p>
@@ -8463,8 +8463,8 @@
 <p>This method should also look quite familiar to the ones you created earlier. Run the unit tests; everything should pass. At this point, you should be feeling a bit paranoid. What if the tests are broken and they <em>always</em> pass? It’s time to do some test-driven development and get the buzz that comes from turning red tests to green!</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>Test-Driven Development (TDD) is a way of developing an application by writing a test first, then incrementally implementing the feature until the test passes. The code is then refactored for the next feature or improvement. Covering TDD methodologies is beyond the scope of this chapter, but the steps you’re covering here will help you use TDD if you do decide to follow it.</p>
+</div>
 <p>Add the following methods to the end of <strong>CampSiteServiceTests.swift</strong> to test <code>getCampSite()</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">testGetCampSiteWithMatchingSiteNumber</span><span class="p">()</span> <span class="p">{</span>
   <span class="kc">_</span> <span class="p">=</span> <span class="n">campSiteService</span><span class="p">.</span><span class="n">addCampSite</span><span class="p">(</span>
@@ -8511,8 +8511,8 @@
 <p>Now rerun the unit tests and you should see green check marks. Ah, the sweet satisfaction of success!</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>The final project for this chapter included in the resources bundled with this book includes unit tests covering multiple scenarios for each method. You can browse through that code for even more examples.</p>
+</div>
 <h2 id="validation-and-refactoring">Validation and refactoring<a class="headerlink" href="#validation-and-refactoring" title="Permanent link">&para;</a></h2>
 <p><code>ReservationService</code> will contain some fairly complex logic to figure out if a camper is able to reserve a site. The unit tests for <code>ReservationService</code> will require every service created so far to test its operation.</p>
 <p>Create a new test class as you’ve done before:</p>

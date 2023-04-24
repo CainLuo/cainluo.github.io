@@ -8433,8 +8433,8 @@
 <p>When you initialize a Core Data stack, one of the steps involved is adding a store to the persistent store coordinator. When you encounter this step, Core Data does a few things prior to adding the store to the coordinator. First, Core Data analyzes the store’s model version. Next, it compares this version to the coordinator’s configured data model. If the store’s model version and the coordinator’s model version don’t match, Core Data will perform a migration, when enabled.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>If migrations aren’t enabled, and the store is incompatible with the model, Core Data will simply not attach the store to the coordinator and specify an error with an appropriate reason code.</p>
+</div>
 <p>To start the migration process, Core Data needs the original data model and the destination model. It uses these two versions to load or create a mapping model for the migration, which it uses to convert data in the original store to data that it can store in the new store. Once Core Data determines the mapping model, the migration process can start in earnest.</p>
 <p>Migrations happen in three steps:</p>
 <ol>
@@ -8467,8 +8467,8 @@
 <p>In Xcode, select the <code>UnCloudNotes</code> data model file if you haven’t already. This will show you the Entity Modeler in the main work area. Next, open the Editor menu and select <strong>Add Model Version…</strong>. Name the new version <code>UnCloudNotesDataModel v2</code> and ensure <code>UnCloudNotesDataModel</code> is selected in the <code>Based on model</code> field. Xcode will now create a copy of the data model.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>You can give this file any name you want. The sequential v2, v3, v4, et cetera naming helps you easily tell the versions apart.</p>
+</div>
 <p>This step will create a second version of the data model, but you still need to tell Xcode to use the new version as the current model. If you forget this step, selecting the top level <strong>UnCloudNotesDataModel.xcdatamodeld</strong> file will perform any changes you make to the original model file. You can override this behavior by selecting an individual model version, but it’s still a good idea to make sure you don’t accidentally modify the original file.</p>
 <p>In order to perform any migration, you want to keep the original model file as it is, and make changes to an entirely new model file.</p>
 <p>In the <code>File Inspector</code> pane on the right, there is a selection menu toward the bottom called Model Version.</p>
@@ -8482,8 +8482,8 @@
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/f14889b0df56617239c49f6bb2a32559f47d8c561a22cc0f6f1887ca653dc0ea/original.png" /></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>When referencing code from your model files, just like in Xib and Storyboard files, you’ll need to specify a <strong>module</strong> (<code>UnCloudNotes</code> or <code>Current Product Module</code>depending on what your drop down provides) to allow the class loader to find the exact code you want to attach.</p>
+</div>
 <p>The new model is now ready for some code! Open <strong>Note.swift</strong> and add the following property below <code>displayIndex</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="kr">@NSManaged</span> <span class="kd">var</span> <span class="nv">image</span><span class="p">:</span> <span class="bp">UIImage</span><span class="p">?</span>
 </code></pre></div>
@@ -8506,8 +8506,8 @@
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>Check out Apple’s documentation for more information on how Core Data infers a lightweight migration mapping: https://developer.apple.com/documentation/coredata/using_lightweight_migration.</p>
+</div>
 <p>As you see from this list, Core Data can detect, and more importantly, automatically react to, a wide variety of common changes between data models.</p>
 <p>As a rule of thumb, all migrations, if necessary, should start as lightweight migrations and only move to more complex mappings when the need arises.</p>
 <p>As for the migration from <code>UnCloudNotes</code> to <code>UnCloudNotes v2</code>, the image property has a default value of nil since it’s an optional property. This means Core Data can easily migrate the old data store to a new one, since this change follows item 3 in the list of lightweight migration patterns.</p>
@@ -8581,14 +8581,14 @@
 <p>The app uses the standard <code>UIImagePickerController</code> to add photos as attachments to notes.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>To add your own images to the Simulator’s photo album, drag an image file onto the open Simulator window. Thankfully, the iOS Simulator comes with a library of photos ready for your use.</p>
+</div>
 <p>If you’re using a device, open <strong>AttachPhotoViewController.swift</strong> and set the <code>sourceType</code>attribute on the image picker controller to <code>.camera</code> to take photos with the device camera. The existing code uses the photo album, since there is no camera in the Simulator.</p>
 <p>Add a couple of sample notes with photos, since in the next section you’ll be using the sample data to move forward with a slightly more complex migration.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>At this point, you might want to make a copy of the v2 source code into a different folder to come back to later. Or if you’re using source control, set a tag here so you can come back to this point. You may also want to save a copy of the data store file and append the name with “v2” for this version of the application as you’ll use this later on for more complex migrations.</p>
+</div>
 <p>Congratulations; you’ve successfully migrated your data and added a new feature based on the migrated data.</p>
 <h2 id="a-manual-migration">A manual migration<a class="headerlink" href="#a-manual-migration" title="Permanent link">&para;</a></h2>
 <p>The next step in the evolution of this data model is to move from attaching a single image to a note to attaching multiple images. The note entity will stay, and you’ll need a new entity for an image. Since a note can have many images, there will be a to-many relationship.</p>
@@ -8698,8 +8698,8 @@
 <p>So, the mapping model is calling a method on the <code>$manager</code> object. The <code>$manager</code> token is a special reference to the <code>NSMigrationManager</code> object handling the migration process.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>Using FUNCTION expressions still relies on some knowledge of Objective-C syntax. It might be some time until Apple gets around to porting Core Data 100% to Swift!</p>
+</div>
 <p>Core Data creates the migration manager during the migration. The migration manager keeps track of which source objects are associated with which destination objects. The method <code>destinationInstancesForEntityMappingNamed:sourceInstances:</code> will look up the destination instances for a source object.</p>
 <p>The expression on the previous page says “set the note relationship to whatever the <code>$source</code> object for this mapping gets migrated to by the <code>NoteToNote</code> mapping,” which in this case will be the <code>Note</code> entity in the new data store. You’ve completed your custom mapping! You now have a mapping that is configured to split a single entity into two and relate the proper data objects together.</p>
 <h3 id="one-last-thing">One last thing<a class="headerlink" href="#one-last-thing" title="Permanent link">&para;</a></h3>
@@ -8714,8 +8714,8 @@
 <p>Build and run the app. You’ll notice not a whole lot has changed on the surface! However, if you still see your notes and images as before, the mapping model worked. Core Data has updated the underlying schema of the SQLite store to reflect the changes in the v3 data model.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>Again, you might want to make a copy of the v3 source code into a different folder to come back to later. Or if you’re using source control, set a tag here so you can come back to this point. Again, you may also want to save a copy of the data store file and append the name with “v3” for this version of the application as you’ll use this later on for more complex migrations.</p>
+</div>
 <h2 id="a-complex-mapping-model">A complex mapping model<a class="headerlink" href="#a-complex-mapping-model" title="Permanent link">&para;</a></h2>
 <p>The higher-ups have thought of a new feature for <code>UnCloudNotes</code>, so you know what that means. It’s time to migrate the data model once again! This time, they’ve decided that supporting only image attachments isn’t enough. They want future versions of the app to support videos, audio files or really add any kind of attachment that makes sense.</p>
 <p>You make the decision to have a base entity called <code>Attachment</code> and a subclass called <code>ImageAttachment</code>. This will enable each attachment type to have its own useful information. Images could have attributes for caption, image size, compression level, file size, et cetera. Later, you can add more subclasses for other attachment types.</p>
@@ -8927,8 +8927,8 @@
 <p>You’ll use the <code>lazy</code> attribute to guarantee the stack is only initialized once. Second, initialization is actually handled by the <code>DataMigrationManager</code>, so the stack used will be the one returned from the <code>migration manager</code>. As mentioned, the signature of the new <code>DataMigrationManager</code> initializer is similar to the <code>CoreDataStack</code>. That’s because you’ve got a large bit of migration code coming up, and its a good idea to separate the responsibility of migration from the responsibility of saving data.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>The project won’t build just yet as you’ve yet to initialize a value for the <code>stack</code>property in the <code>DataMigrationManager</code>. Rest assured, that’s coming up soon.</p>
+</div>
 <p>Now to the harder part: How do you figure out if the store needs migrations? And if it does, how do you figure out where to start? In order to do a fully custom migration, you’re going to need a little bit of support. First, finding out whether models match or not is not obvious. You’ll also need a way to check a persistent store file for compatibility with a model. Let’s get started with all the support functions first!</p>
 <p>At the bottom of <strong>DataMigrationManager.swift</strong>, add an extension on <code>NSManagedObjectModel</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="kd">extension</span> <span class="bp">NSManagedObjectModel</span> <span class="p">{</span>
@@ -8960,8 +8960,8 @@
 <p>The first method returns all model versions for a given name. The second method returns a specific instance of <code>NSManagedObjectModel</code> named <code>UnCloudNotesDataModel</code>. Usually, Core Data will give you the most recent data model version, but this method will let you dig inside for a specific version.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>When Xcode compiles your app into its app bundle, it will also compile your data models. The app bundle will have at its root a <code>.momd</code> folder that contains <code>.mom</code>files. <strong>MOM</strong>, or Managed Object Model, files are the compiled versions of .xcdatamodel files. You’ll have a <code>.mom</code> for each data model version.</p>
+</div>
 <p>To use this method, add the following method inside the <code>NSManagedObjectModel</code> class extension:</p>
 <div class="highlight"><pre><span></span><code><span class="kd">class</span> <span class="nc">var</span> <span class="n">version1</span><span class="p">:</span> <span class="bp">NSManagedObjectModel</span> <span class="p">{</span>
   <span class="n">uncloudNotesModel</span><span class="p">(</span><span class="n">named</span><span class="p">:</span> <span class="s">&quot;UnCloudNotesDataModel&quot;</span><span class="p">)</span>
@@ -9242,8 +9242,8 @@
 <p>This solution is manually applying each migration in sequence rather than letting Core Data try to do things automatically.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>If you’re starting from version 1 or 2, there’s a recursive call to performMigration() at the end. This will trigger another run to continue the sequence; once you’re at version 3 and run the migration to get to version 4. You will continue adding to this method as you add more data model versions to continue the automatic sequence of migrations.</p>
+</div>
 <h2 id="testing-sequential-migrations">Testing sequential migrations<a class="headerlink" href="#testing-sequential-migrations" title="Permanent link">&para;</a></h2>
 <p>Testing this type of migration can be a little complicated, since you need to go back in time and run previous versions of the app to generate data to migrate. If you saved copies of the app project along the way, great!</p>
 <p>Otherwise, you’ll find previous versions of the project in the resources bundled with the book.</p>

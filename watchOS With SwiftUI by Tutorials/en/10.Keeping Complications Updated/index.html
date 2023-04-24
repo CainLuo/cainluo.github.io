@@ -8139,9 +8139,10 @@
 <p>When your complication’s timeline runs out of data, or even before, you’ll want to initiate a background download. While your first instinct is likely to call one of the <code>dataTask</code> methods from <code>URLSession</code>, that won’t work. watchOS might pause and restart your widget extension multiple times during the download. Instead, you’ll have to create a download task.</p>
 <h3 id="refactor-coopsapi">Refactor CoOpsApi<a class="headerlink" href="#refactor-coopsapi" title="Permanent link">&para;</a></h3>
 <p>Now that both the app and the widget extension need to download data, you’ll need to move some files from <strong>TideWatch Watch App</strong> into <strong>Shared</strong>. The main file you need is <strong>CoOpsApi</strong>, but moving it has a cascading effect. Move the <strong>CurrentTideKeys</strong> file, as well as the <strong>Download</strong> and <strong>Extensions</strong> folders into <strong>Shared</strong>.</p>
-<blockquote>
-<p><strong>Note</strong>: Add the newly moved files to the widget extension’s target membership.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Add the newly moved files to the widget extension’s target membership.</p>
+</div>
 <p>Build your project to ensure the moved files all have the correct target membership.</p>
 <p>A few refactorings are required to support downloading data from both projects. The first step you should perform is to declare a property for the root URL in <strong>CoOpsApi</strong>:</p>
 <div class="highlight"><pre><span></span><code><span class="kd">private</span> <span class="kd">let</span> <span class="nv">rootUrl</span> <span class="p">=</span> <span class="s">&quot;https://api.tidesandcurrents.noaa.gov/api/prod/datagetter&quot;</span>

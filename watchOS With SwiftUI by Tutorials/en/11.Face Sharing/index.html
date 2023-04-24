@@ -8176,9 +8176,10 @@
 <p>Written by Scott Grosch</p>
 <p>While the ability to create and use <strong>complications</strong> has existed for years, being able to share the perfect watch face with your friends and customers is a newer feature. Most apps you develop will only have a single complication. Sometimes, however, you might provide multiple complications.</p>
 <p>Consider the <strong>TideWatch</strong> app you built in previous chapters. When it makes sense to group multiple complications from your app <em>or other apps</em>, you can now offer a way for your customers to receive a preconfigured watch face easily.</p>
-<blockquote>
-<p><strong>Note</strong>: You’ll need a physical device to send a watch face from the iPhone to the Apple Watch.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You’ll need a physical device to send a watch face from the iPhone to the Apple Watch.</p>
+</div>
 <h2 id="sharing-faces">Sharing Faces<a class="headerlink" href="#sharing-faces" title="Permanent link">&para;</a></h2>
 <p>There are four ways you can share a watch face:</p>
 <ol>
@@ -8199,9 +8200,10 @@
 <p>If you want to share multiple watch faces, you may wish to host them on your app’s website. Point your favorite browser to <a href="https://apple.co/3s33S5P">Apple’s Human Interface Guide (HIG)</a>. Scroll down to the <strong>Technologies</strong> section, and you’ll see a download available for <strong>Add Apple Watch Face</strong>. Download the file, which is a DMG, and then double-click it. You’ll see a window containing the developer license as well as an <strong>Assets</strong> folder.</p>
 <p>The <strong>Assets</strong> folder contains multiple images you can place on your webpage to let customers know they can download a watch face. Each style of button contains images that work well with both light and dark mode websites. Apple has also provided the images in <strong>PDF</strong>, <strong>PNG</strong>and <strong>SVG</strong> formats.</p>
 <p>Once you create a watch face on your physical device that looks the way you want with the appropriately placed complications, share the face with yourself by choosing the <strong>Mail</strong> app. Unlike the other sharing types, if you choose Mail, you’ll get both the watch face file and a graphic showing how the face looks.</p>
-<blockquote>
-<p><strong>Note</strong>: The preview is only included in the email if you share the face from the Watch app on the iPhone, not directly from the Apple Watch.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The preview is only included in the email if you share the face from the Watch app on the iPhone, not directly from the Apple Watch.</p>
+</div>
 <p>Now, you simply create a standard webpage that showcases your awesome watch face with a few simple steps:</p>
 <ol>
 <li>Choose the <strong>SVG</strong> graphic you wish to use for the download button.</li>
@@ -8255,9 +8257,10 @@
 <li>The face’s preview image is in <strong>Assets.xcassets</strong>.</li>
 <li><strong>Session</strong> with the standard boilerplate.</li>
 </ul>
-<blockquote>
-<p><strong>Note</strong>: Be sure you include any <strong>.watchface</strong> file you add to Xcode in the <strong>FaceSharing</strong>target membership. If you use Xcode to add the file, that’s automatic. If you drag the file in from Finder, then it isn’t.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Be sure you include any <strong>.watchface</strong> file you add to Xcode in the <strong>FaceSharing</strong>target membership. If you use Xcode to add the file, that’s automatic. If you drag the file in from Finder, then it isn’t.</p>
+</div>
 <p>Unlike other chapters in this book, there’s no watchOS target. iOS handles sending a watch face and only requires an active and paired Apple Watch.</p>
 <h4 id="setting-up-the-session">Setting Up the Session<a class="headerlink" href="#setting-up-the-session" title="Permanent link">&para;</a></h4>
 <p>In Chapter 4, “Watch Connectivity”, you learned about <code>WCSession</code> and <code>WCSessionDelegate</code>. To know whether an Apple Watch is paired to the iOS device, you’ll need the same type of session running. If there’s not a paired Apple Watch, then you wouldn’t want to provide the option to install a custom watch face.</p>
@@ -8356,9 +8359,10 @@
 <li>You <code>try</code> to perform <code>addWatchFace(at:)</code> by passing the URL of the face you loaded from the <code>Bundle</code>. As the method is asynchronous, you add the <code>await</code> keyword after <code>try</code>.</li>
 <li>If the face can’t be transferred, you’ll need to handle the error. In a production app, that would likely mean displaying some type of alert.</li>
 </ol>
-<blockquote>
-<p><strong>Note</strong>: Remember, it’s always <code>try await</code>, never <code>await try</code>. You try to wait for the call to complete. You don’t wait for a method to try and run.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Remember, it’s always <code>try await</code>, never <code>await try</code>. You try to wait for the call to complete. You don’t wait for a method to try and run.</p>
+</div>
 <p>According to Apple’s documentation on <code>addWatchFace(at:)</code>:</p>
 <blockquote>
 <p><em>All of the complications on the watch face must come from apps with a valid App Store ID, such as an app from the App Store or a TestFlight build. If you try to use complications from a development build, the system won’t recognize the development ID as a valid App Store ID.</em></p>
@@ -8379,9 +8383,10 @@
 <p>Tap the <strong>add button</strong>, and you’ll be asked to add the face to your Apple Watch:</p>
 <p><img alt="img" src="https://assets.alexandria.kodeco.com/books/a1b0d30e72f4ba701a1ba20d40ae4977dd501250e017913b4f8fd6f02a54791f/images/23a4de53f55fd3a6d666fa15cf828282/original.png" /></p>
 <p>While it seems redundant since you just tapped the download button, Apple wants to make sure faces don’t magically appear on your devices without you being aware.</p>
-<blockquote>
-<p><strong>Note</strong>: Never install a face to the watch without the user explicitly requesting it via a download button.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Never install a face to the watch without the user explicitly requesting it via a download button.</p>
+</div>
 <p>After you tap <strong>Add to My Faces</strong>, go to the Watch app on your iPhone, and the new watch face should now be visible:</p>
 <p><img alt="img" src="https://assets.alexandria.kodeco.com/books/a1b0d30e72f4ba701a1ba20d40ae4977dd501250e017913b4f8fd6f02a54791f/images/5313421653b312e6089891597f1d7214/original.png" /></p>
 <p>Finally, for the <em>pièce de résistance</em>. Set the newly installed watch face and then glance at your Apple Watch. You’ll see your shiny new watch face!</p>

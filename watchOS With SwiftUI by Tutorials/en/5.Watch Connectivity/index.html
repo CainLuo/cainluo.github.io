@@ -8461,22 +8461,22 @@
 <p>The magic of the Apple Watch experience comes from seamless interactions between the watch and your iOS apps.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>This is the first chapter that requires the app to run on <strong>both</strong> the Apple Watch and iPhone at the same time. While this setup is possible by starting both simulators from Xcode, the connectivity mechanisms you’ll use in this chapter rarely work between them. You may need to run the example projects on real devices to see them in action. Even if you don’t have the hardware, it’s still a good read.</p>
+</div>
 <p><strong>Watch Connectivity</strong>, an Apple-provided framework, lets an iOS app and its counterpart watchOS app transfer data and files back and forth. If both apps are active, communication occurs <em>mostly</em> in real time. Otherwise, communication happens in the background, so data is available as soon as the receiving app launches.</p>
 <p>The OS takes many factors into account when determining exactly how quickly to pass data packets between devices. While the transfers frequently happen within a matter of moments, sometimes you’ll see a significant lag.</p>
 <p>Be aware, to transfer data between devices, multiple system resources, such as Bluetooth, must be on. This can result in significant energy use.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>Bundle messages together whenever possible to limit battery consumption.</p>
+</div>
 <p>In this chapter, after learning about the different types of messaging options, you’ll implement data transfers between the iPhone and Apple Watch versions of <strong>CinemaTime</strong>, an app for patrons of a fictional theater. It lets customers view movie showtimes and buy tickets right from their iPhones and Apple Watches.</p>
 <h2 id="device-to-device-communication">Device-to-Device Communication<a class="headerlink" href="#device-to-device-communication" title="Permanent link">&para;</a></h2>
 <p>The Watch Connectivity framework provides five different methods for transferring data between devices. Four of those methods send arbitrary data, while the fifth sends files between devices. All of the methods are part of <code>WCSession</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>Although most data transfer methods accept a dictionary of type <code>[String: Any]</code>, this doesn’t mean you can send just anything. The dictionary can only accept primitive types. See the <a href="http://apple.co/1PZEPXD">Property List Programming Guide</a>, for a complete list of supported types.</p>
+</div>
 <p>Those five methods are further subdivided into two categories: interactive messaging and background transfers.</p>
 <h3 id="interactive-messaging">Interactive Messaging<a class="headerlink" href="#interactive-messaging" title="Permanent link">&para;</a></h3>
 <p>Interactive messaging works best in situations where you need to transfer information immediately. For example, if a watchOS app needs to trigger the iOS app to check the user’s current location, the interactive messaging API can transfer the request from the Apple Watch to the iPhone.</p>
@@ -8579,8 +8579,8 @@
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>You don’t have to wrap the <code>isSupported</code> call in an OS check, but I like to make it clear when something is only necessary on a certain type of device.</p>
+</div>
 <p>Be sure to add the file to the target membership of both the iOS app and the extension in the file inspector. Press <strong>Option</strong>‑<strong>Command</strong>‑<strong>1</strong> to bring up the <strong>File Inspector</strong>.</p>
 <p><img alt="img" src="https://assets.alexandria.kodeco.com/books/a1b0d30e72f4ba701a1ba20d40ae4977dd501250e017913b4f8fd6f02a54791f/images/75e66280287d054ab408dc61ed52f2c1/original.png" /></p>
 <p>If you were to run the above code right now, you’d receive an error log message. The documentation explicitly says that activating a session without a delegate is a no-no. So, you’ll fix that now!</p>
@@ -8689,8 +8689,8 @@ In Chapter 2, “Project Structure”, you learned that a watchOS app doesn’t 
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>You can learn more about <code>@Published</code> in our RW book: <em><a href="https://bit.ly/3y8Ot5o">Combine: Asynchronous Programming with Swift</a></em>.</p>
+</div>
 <p>Using <code>@Published</code>, you enable other parts of your program to observe changes to <code>purchasedIds</code>.</p>
 <p>Add the following method to the delegate extension:</p>
 <div class="highlight"><pre><span></span><code><span class="c1">// 1</span>
@@ -8761,8 +8761,8 @@ In Chapter 2, “Project Structure”, you learned that a watchOS app doesn’t 
 <p>After a few moments, the Apple Watch will update.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>Remember, updates can take some time. While writing this book, I saw the iPhone update the Apple Watch almost immediately, whereas the watch sometimes updated the phone three minutes or so later.</p>
+</div>
 <h3 id="application-context">Application Context<a class="headerlink" href="#application-context" title="Permanent link">&para;</a></h3>
 <p>While functional, using <code>transferUserInfo(:_)</code> isn’t the best choice for <strong>CinemaTime</strong>. If you purchase a movie ticket on one device, you don’t need to see it immediately on the other device. Unless you’re standing right outside the theater, it’s OK if the transfer happens later. Even if you <em>are</em> outside the theater, you’d still use the device you purchased the ticket on.</p>
 <p>In this case, the best choice is to use <code>updateApplicationContext(_:)</code>. You need the message to arrive, so none of the <code>sendMessage</code> variants would make sense.</p>
@@ -8783,8 +8783,8 @@ In Chapter 2, “Project Structure”, you learned that a watchOS app doesn’t 
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>Remember to update the target membership to include both the iOS app <strong>and</strong>the watchOS extension.</p>
+</div>
 <p>You’ll use that <code>enum</code> to specify the type of delivery the caller wants to use. I chose the labels I did because they make more sense to me. <code>guaranteed</code> and <code>highPriority</code> make sense to me when I glance at code later, instead of trying to remember whether it was a user information transfer or an updated application context guaranteed to arrive quickly.</p>
 <p>Now jump back to <strong>Shared/Connectivity</strong>. Add a couple of extra parameters to the send method:</p>
 <div class="highlight"><pre><span></span><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">send</span><span class="p">(</span>
@@ -8814,8 +8814,8 @@ In Chapter 2, “Project Structure”, you learned that a watchOS app doesn’t 
 <p>Updating the application context might throw an exception, which is why the send method now accepts an optional error handler.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>Remember, you call the session delegate methods on a background thread, so be kind to your consumers and dispatch back to the main queue for them.</p>
+</div>
 <p>In the delegate, you need to receive the application context like you received user information. Since the code is going to be the same, do a quick bit of refactoring.</p>
 <p>Extract the contents of <code>session(_:didReceiveUserInfo:)</code> into a private method:</p>
 <div class="highlight"><pre><span></span><code><span class="kd">private</span> <span class="kd">func</span> <span class="nf">update</span><span class="p">(</span><span class="n">from</span> <span class="n">dictionary</span><span class="p">:</span> <span class="p">[</span><span class="nb">String</span><span class="p">:</span> <span class="nb">Any</span><span class="p">])</span> <span class="p">{</span>
@@ -8855,8 +8855,8 @@ In Chapter 2, “Project Structure”, you learned that a watchOS app doesn’t 
 <p>The most common reason for an error is when the paired device isn’t reachable, but other errors are possible.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>Remember, if you’re not expecting a reply from the peer device, you <em>must</em> pass <code>nil</code> as the reply handler when calling <code>sendMessage(_:replyHandler:errorHandler:)</code>. If you pass a closure to the parameter, you tell the OS you expect a reply, and it should generate an error if one isn’t received.</p>
+</div>
 <p>Also, don’t directly pass <code>replyHandler</code> and <code>errorHandler</code> from your custom send method, as the handlers would then run on a background thread, not the main thread.</p>
 <p>How do you handle both situations? With the addition of a small helper function to <strong>Shared/Connectivity</strong>. It’s quite clean.</p>
 <p>Add this to the end of the <code>Connectivity</code> class:</p>
@@ -8992,8 +8992,8 @@ In Chapter 2, “Project Structure”, you learned that a watchOS app doesn’t 
 <p>An image like this is an excellent example wherein you might opt to use file transfers. When you purchase a ticket on the Apple Watch, the iOS device gets a message with the new movie list. Wouldn’t that be a great time to ask the iOS device to generate a QR code and send it back?</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>When debugging file transfer issues, consider using the <code>.failable</code> delivery type, so the transfer is attempted immediately.</p>
+</div>
 <h4 id="qr-codes">QR Codes<a class="headerlink" href="#qr-codes" title="Permanent link">&para;</a></h4>
 <p>Move <strong>CinemaTime/QRCode</strong> into <strong>Shared</strong>. Then add the watch app to the target membership. To fix the error that immediately appears, wrap both the import of CoreImage and <code>generate(movie:size:)</code> in a compiler check:</p>
 <div class="highlight"><pre><span></span><code><span class="kd">import</span> <span class="nc">SwiftUI</span>
@@ -9022,9 +9022,10 @@ In Chapter 2, “Project Structure”, you learned that a watchOS app doesn’t 
 <span class="cp">#endif</span>
 </code></pre></div>
 <p>iOS doesn’t need to look at a file URL, but watchOS does. The preceding code gets the path to the app’s documents directory and then appends the movie’s ID to the path.</p>
-<blockquote>
-<p><strong>Note</strong>: If you don’t name the file with a <code>.png</code> suffix, then the OS will refuse to turn that file into an image.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you don’t name the file with a <code>.png</code> suffix, then the OS will refuse to turn that file into an image.</p>
+</div>
 <p>Open <strong>Shared/Connectivity</strong> and edit <code>send(movieIds:delivery:replyHandler:errorHandler:)</code> to add <code>wantedQrCodes</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">send</span><span class="p">(</span>
   <span class="n">movieIds</span><span class="p">:</span> <span class="p">[</span><span class="nb">Int</span><span class="p">],</span>
@@ -9122,9 +9123,10 @@ In Chapter 2, “Project Structure”, you learned that a watchOS app doesn’t 
 <li>Determine where you should write the indicated movie’s QR code.</li>
 <li>Remove the QR code if there’s already one there, and then move the received file to the proper location.</li>
 </ol>
-<blockquote>
-<p><strong>Note</strong>: watchOS will delete the received file if it still exists when the method ends. You must <em>synchronously</em> move the file to a new location if you wish to keep it.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>watchOS will delete the received file if it still exists when the method ends. You must <em>synchronously</em> move the file to a new location if you wish to keep it.</p>
+</div>
 <p>Now that you have a way to request and receive QR codes, you just need to modify the <code>TicketOffice</code> code. Open <strong>Shared/TicketOffice</strong> and edit the <code>delete</code> method. If you delete a ticket from the Apple Watch, you might as well remove the image, too. At the start of the method, add:</p>
 <div class="highlight"><pre><span></span><code><span class="cp">#if</span> <span class="cp">os</span><span class="p">(</span><span class="cp">watchOS</span><span class="p">)</span>
 <span class="n">offsets</span>

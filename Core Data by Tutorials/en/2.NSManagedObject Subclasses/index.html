@@ -8221,13 +8221,13 @@
 <p>Don’t worry if the order of the attributes is different — all that matters is the attribute names and types are correct.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>You may have noticed you have three options for the <code>timesWorn</code> integer attribute: <strong>Integer 16</strong>, <strong>Integer 32</strong> or <strong>Integer 64</strong>.
-  16, 32 and 64 refer to the number of bits representing the integer. This is important for two reasons: the number of bits reflects how much space an integer takes up on disk as well as how many values it can represent, also known as its <code>range</code>. Here are the ranges for the three types of integers:
-  Range for 16-bit integer: -32768 to 32767
-  Range for 32-bit integer: –2147483648 to 2147483647
-  Range for 64-bit integer: –9223372036854775808 to 9223372036854775807
-  How do you choose? The source of your data will dictate the best type of integer. You’re assuming your users <em>really</em> like bow ties, so a 32-bit integer should offer enough storage for a lifetime of bow tie wear.</p>
+16, 32 and 64 refer to the number of bits representing the integer. This is important for two reasons: the number of bits reflects how much space an integer takes up on disk as well as how many values it can represent, also known as its <code>range</code>. Here are the ranges for the three types of integers:
+Range for 16-bit integer: -32768 to 32767
+Range for 32-bit integer: –2147483648 to 2147483647
+Range for 64-bit integer: –9223372036854775808 to 9223372036854775807
+How do you choose? The source of your data will dictate the best type of integer. You’re assuming your users <em>really</em> like bow ties, so a 32-bit integer should offer enough storage for a lifetime of bow tie wear.</p>
+</div>
 <p>Each bow tie has an associated image. How will you store it in Core Data? Add one more attribute to the <code>BowTie</code> entity, name it <strong>photoData</strong> and change its data type to <strong>Binary Data</strong>:</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/5587c3ae020def164885ecb9492b7db72236b1c32e7c18f7514ea2bd24c526da/original.png" /></p>
 <p>Core Data provides the option of storing arbitrary blobs of binary data directly in your data model. These could be anything from images, to PDF files, to anything that can be serialized into zeroes and ones.</p>
@@ -8237,8 +8237,8 @@
 <p>When you enable <strong>Allows External Storage</strong>, Core Data heuristically decides on a per-value basis if it should save the data directly in the database or store a URI that points to a separate file.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>The <strong>Allows External Storage</strong> option is only available for the binary data attribute type. In addition, if you turn it on, you won’t be able to query Core Data using this attribute.</p>
+</div>
 <p>In summary, besides Strings, Integers, Doubles, Booleans and Dates, Core Data can also save Binary Data, and it can do so efficiently and intelligently.</p>
 <h2 id="storing-non-standard-data-types-in-core-data">Storing non-standard data types in Core Data<a class="headerlink" href="#storing-non-standard-data-types-in-core-data" title="Permanent link">&para;</a></h2>
 <p>Still, there are many other types of data you may want to save. For example, what would you do if you had to store an instance of <code>UIColor</code>?</p>
@@ -8318,9 +8318,9 @@
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/7dbd5a5cdb38da4deaf024d1a86c675344b38c9330b020c9d7bb7010adb86337/original.png" /></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>Make sure you change this code generation setting <strong>before</strong> your first compilation, after you add the <code>BowTie</code> entity to the model.
-  If you set the code generation setting <em>after</em> your first compilation, you’ll have two versions of the managed object subclass: one in derived data, and a second one in your source code. If this happens, you’ll run into problems when you try to compile again.</p>
+If you set the code generation setting <em>after</em> your first compilation, you’ll have two versions of the managed object subclass: one in derived data, and a second one in your source code. If this happens, you’ll run into problems when you try to compile again.</p>
+</div>
 <p>Next, go to <strong>Editor\Create NSManagedObject Subclass…</strong>. Select the data model and then the <code>BowTie</code> entity in the next two dialog boxes. Click <strong>Create</strong> to save the file.</p>
 <p>Xcode generated two Swift files for you, one called <strong>BowTie+CoreDataClass.swift</strong> and a second called <strong>BowTie+CoreDataProperties.swift</strong>. Open <strong>BowTie+CoreDataClass.swift</strong>. It should look similar to the following:</p>
 <div class="highlight"><pre><span></span><code><span class="kd">import</span> <span class="nc">Foundation</span>
@@ -8362,8 +8362,8 @@
 <p>In object-oriented parlance, an object is a set of <strong>values</strong> along with a set of <strong>operations</strong>defined on those values. In this case, Xcode separates these two things into two separate files. The values (i.e. the properties that correspond to the BowTie attributes in your data model) are in <strong>BowTie+CoreDataProperties.swift</strong>, whereas the operations are in the currently empty <strong>BowTie+CoreDataClass.swift</strong>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>You might be wondering why two separate files are generated. It’s quite common to add custom code to your <code>NSManagedObject</code> subclass. You wouldn’t want to lose that code if you updated the <code>BowTie</code> entity in the model editor and went to <strong>Editor\Create NSManagedObject Subclass…</strong> again. Code creation is smart - if the <strong>BowTie+CoreDataClass.swift</strong> already exists, it will only create <strong>BowTie+CoreDataProperties.swift</strong>, keeping all your custom code. This is the primary reason why Core Data generates two files, instead of generating one as it used to do in previous versions of Xcode.</p>
+</div>
 <p>Xcode has created a class with a property for each attribute in your data model. Since it has created a property of <code>UIColor</code> you’ll need to add the following <code>import UIKit</code> below <code>import CoreData</code> to fix the error.</p>
 <p>There is a corresponding class in <code>Foundation</code> or in the Swift standard library for every attribute type in the model editor. Here’s the full mapping of attribute types to runtime classes:</p>
 <ul>
@@ -8383,10 +8383,10 @@
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>Similar to <code>@dynamic</code> in Objective-C, the <code>@NSManaged</code> attribute informs the Swift compiler that the backing store and implementation of a property will be provided at runtime instead of compile time.
-  The normal pattern is for a property to be backed by an instance variable in memory. A property on a managed object is different: It’s backed by the managed object context, so the source of the data is not known at compile time.
-  Note since you’ve provided a <strong>Custom Class</strong> of <code>UIColor</code> for the <code>tintColor</code>property, Core Data has generated that property using <code>UIColor?</code> instead of <code>NSObject?</code>.</p>
+The normal pattern is for a property to be backed by an instance variable in memory. A property on a managed object is different: It’s backed by the managed object context, so the source of the data is not known at compile time.
+Note since you’ve provided a <strong>Custom Class</strong> of <code>UIColor</code> for the <code>tintColor</code>property, Core Data has generated that property using <code>UIColor?</code> instead of <code>NSObject?</code>.</p>
+</div>
 <p>Congratulations, you’ve just made your first managed object subclass in Swift!</p>
 <p>Compared with key-value coding, this is a much better way of working with Core Data entities and has two main benefits:</p>
 <ol>
@@ -8592,8 +8592,8 @@
 <p>Finally, the <code>tintColor</code> transformable attribute that stores your bow tie’s color changes the color of not one, but <code>all</code> the elements on the screen. Simply set the tint color on the view controller’s view and <em>voilà</em>! Everything is now tinted the same color.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>Xcode generates some <code>NSManagedObject</code> subclass properties as optional types. That’s why inside the <code>populate</code> method, you unwrap some of the Core Data properties on <code>BowTie</code> using a <code>guard</code> statement at the beginning of the method.</p>
+</div>
 <p>Build and run the app. The red bow tie appears on the screen, like so:</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/40a85d522eeb92ffb5a8473ebcbc2d995814ca50bac43741f74645908031f20b/original.png" /></p>
 <p>The <strong>Wear</strong> and <strong>Rate</strong> buttons do nothing at the moment. Tapping on the different parts of the segmented controls also does nothing. You’ve still got work to do!</p>
@@ -8680,9 +8680,9 @@
 <p>Next to <strong>Validation</strong>, type <strong>0</strong> for minimum and <strong>5</strong> for maximum. That’s it! No need to write any Swift to reject invalid data.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>Normally, you have to <strong>version</strong> your data model if you want to change it after you’ve shipped your app. You’ll learn more about this in Chapter 6, “Versioning &amp; Migration.”
-  Attribute validation is one of the few exceptions. If you add it to your app after shipping, you don’t have to version your data model. Lucky you!</p>
+Attribute validation is one of the few exceptions. If you add it to your app after shipping, you don’t have to version your data model. Lucky you!</p>
+</div>
 <p>But what does this do, exactly?</p>
 <p>Validation kicks in immediately after you call <code>save()</code> on your managed object context. The managed object context checks with the model to see if any of the new values conflict with the validation rules you’ve put in place.</p>
 <p>If there’s a validation error, the save fails. Remember that <code>NSError</code> in the <code>do-catch</code> block wrapping the <code>save</code> method? Up until now, you’ve had no reason to do anything special if there’s an error other than log it to the console. Validation changes that.</p>
@@ -8747,8 +8747,8 @@
 <p>For a full list of Core Data errors and code definitions, you can consult <strong>CoreDataErrors.h</strong> in Xcode by Cmd-clicking on <code>NSValidationNumberTooLargeError</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>When an <code>NSError</code> is involved, it’s standard practice to check the domain and code for the error to determine what went wrong. You can read more about this in Apple’s <code>Error Handling Programming Guide</code>:https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ErrorHandlingCocoa/CreateCustomizeNSError/CreateCustomizeNSError.html</p>
+</div>
 <p>Build and run the app. Verify the new validation rules work properly by once again showing the red tie some love.</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/1bde8727a4d0f6fc074440e80c46185006cb0f382be54523230ed030d57ef453/original.png" /></p>
 <p>If you enter any value above 5 and try to save, the app rejects your rating and asks you to try again with a new alert view. Success!</p>

@@ -8404,10 +8404,14 @@
 <li>Call <code>applicationDidBecomeActive()</code> and set the <code>scenePhase</code> to <code>.active</code>.</li>
 <li>The app will appear on the screen, and then watchOS will call the root view’s <code>onAppear(perform:)</code>.</li>
 </ul>
-<blockquote>
-<p><strong>Note</strong>: As of watchOS 7 and later, the <code>scenePhase</code> environment variable is preferred over the <code>WKExtensionDelegate</code> methods when using SwiftUI.</p>
-<p><strong>Note</strong>: watchOS will not call any <code>WKExtensionDelegate</code> lifecycle methods other than <code>applicationDidFinishLaunching()</code> for events unrelated to the main interface. Things like complications and notifications will not trigger lifecycle events.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As of watchOS 7 and later, the <code>scenePhase</code> environment variable is preferred over the <code>WKExtensionDelegate</code> methods when using SwiftUI.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>watchOS will not call any <code>WKExtensionDelegate</code> lifecycle methods other than <code>applicationDidFinishLaunching()</code> for events unrelated to the main interface. Things like complications and notifications will not trigger lifecycle events.</p>
+</div>
 <h3 id="transitioning-to-an-inactive-state">Transitioning to an Inactive State<a class="headerlink" href="#transitioning-to-an-inactive-state" title="Permanent link">&para;</a></h3>
 <p>As soon as the user lowers their arm, they’re no longer actively using the app. At that point, watchOS will change to the <em>inactive</em> state. As previously mentioned, the app is still running and executing your code. Having your app still running, even though it’s in an inactive state, is a point of confusion for many new watchOS developers.</p>
 <p>The inactive state is a great time to reduce your app’s impact on the Apple Watch’s battery. You should pause any battery-intensive actions which don’t need to continue. For example, you may be able to disable any active animations that are currently running.</p>
@@ -8479,9 +8483,10 @@
 <p>Now, by default, your app’s user interface displays instead of the time. watchOS won’t blur it as long as it’s either the frontmost app or running a background session. When in the Always On state, the watch will dim, and the UI will update slower to preserve battery life.</p>
 <p>If the user interacts with your app, the system will return to its active state. One noticeable advantage of Always On relates to dates and times. If your app displays a timer, an offset or a relative date, the UI will continue to update with the correct value.</p>
 <p>If you wish to disable Always On for your app, simply set the <code>WKSupportsAlwaysOnDisplay</code>key to false in the Watch App’s <strong>Info.plist</strong>.</p>
-<blockquote>
-<p><strong>Note</strong>: Users can disable <em>Always On</em> for your app, or the entire device, by going to <strong>Settings</strong> ▸ <strong>Display &amp; Brightness</strong> ▸ <strong>Always On</strong>.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Users can disable <em>Always On</em> for your app, or the entire device, by going to <strong>Settings</strong> ▸ <strong>Display &amp; Brightness</strong> ▸ <strong>Always On</strong>.</p>
+</div>
 <h2 id="state-change-sample">State Change Sample<a class="headerlink" href="#state-change-sample" title="Permanent link">&para;</a></h2>
 <p>The sample materials for this chapter contain a <strong>Lifecycle</strong> project which you can run against a physical device to observe state changes. When you raise and lower your wrist, you’ll see the state changing between active and inactive. If you leave the app inactive for two minutes, you’ll notice it switching to background mode.</p>
 <h2 id="extended-runtime-sessions">Extended Runtime Sessions<a class="headerlink" href="#extended-runtime-sessions" title="Permanent link">&para;</a></h2>
@@ -8498,9 +8503,10 @@
 <p>Smart alarms are a great option when you need to schedule a time to check the user’s heart rate and motion. You’ll get a <em>30 minute</em> session for your watch to run in the <em>background</em>.</p>
 <p>Unlike the other three session types, you must schedule smart alarms to start in the future. You need to start the session within the next 36 hours and schedule it while your app is in the <code>WKApplicationState.active</code> state. Your app will likely suspend or terminate, but the session will continue.</p>
 <p>When it’s time to handle the session, watchOS will call your <code>WKExtensionDelegate</code>’s <code>handle(_:)</code>.</p>
-<blockquote>
-<p><strong>Note</strong>: You must set the session’s <code>delegate</code> before the handler exits, or your session will terminate.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You must set the session’s <code>delegate</code> before the handler exits, or your session will terminate.</p>
+</div>
 <p>Once the session is running, you must trigger an alarm by calling the session’s <code>notifyUser(hapticType:repeatHandler:)</code>. If you forget, watchOS will display a warning and offer to disable future sessions.</p>
 <h3 id="brush-your-teeth">Brush Your Teeth<a class="headerlink" href="#brush-your-teeth" title="Permanent link">&para;</a></h3>
 <p>If you have children, you know what a chore it can be to get them to brush their teeth. Not only do you have to convince them to <em>start</em> brushing, but then they have to brush for the full two minutes recommended by most dentists. Seems like a great job for an Apple Watch app!</p>

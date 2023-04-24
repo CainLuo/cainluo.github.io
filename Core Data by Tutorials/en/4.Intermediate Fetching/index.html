@@ -8238,9 +8238,9 @@
 <p>The first three examples are the simple cases you’ve already seen. You’ll see even more of these simple cases in the rest of this chapter, in addition to stored fetch requests and other tricks of <code>NSFetchRequest</code>!</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>If you’re not already familiar with it, <code>NSFetchRequest</code> is a generic type. If you inspect <code>NSFetchRequest</code>‘s initializer, you’ll notice it takes in type as a parameter <code>&lt;ResultType : NSFetchRequestResult&gt;</code>.
-  <code>ResultType</code> specifies the type of objects you <strong>expect</strong> as a result of the fetch request. For example, if you’re expecting an array of <code>Venue</code> objects, the result of the fetch request is now going to be <code>[Venue]</code> instead of <code>[Any]</code>. This is helpful because you don’t have to cast down to <code>[Venue]</code> anymore.</p>
+<code>ResultType</code> specifies the type of objects you <strong>expect</strong> as a result of the fetch request. For example, if you’re expecting an array of <code>Venue</code> objects, the result of the fetch request is now going to be <code>[Venue]</code> instead of <code>[Any]</code>. This is helpful because you don’t have to cast down to <code>[Venue]</code> anymore.</p>
+</div>
 <h2 id="introducing-the-bubbletea-app">Introducing the BubbleTea app<a class="headerlink" href="#introducing-the-bubbletea-app" title="Permanent link">&para;</a></h2>
 <p>This chapter’s sample project is a bubble tea app. For those of you who don’t know about bubble tea (also known as “boba tea”), it’s a Taiwanese tea-based drink containing large tapioca pearls. It’s very yummy!</p>
 <p>You can think of this bubble tea app as an ultra-niche Yelp. Using the app, you can find locations near you selling your favorite Taiwanese drink.</p>
@@ -8282,8 +8282,8 @@
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/6d2dd33243e13a7a9095f78c1b26bb5a3db58b9644b6560d1c09eb27fd7e0ec9/original.png" /></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>You can click on the newly created fetch request on the left-hand sidebar to change its name.</p>
+</div>
 <p>You can make your fetch request as general or as specific as you want using the visual tool in Xcode’s data model editor. To start, create a fetch request that retrieves all <code>Venue</code> objects from the persistent store.</p>
 <p>You only need to make one change here: click the dropdown menu next to <strong>Fetch all</strong> and select <strong>Venue</strong>.</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/33aa4eb74ea8835e4d9bf56943aa113c5220185caa5b21945bed6c4ebe856f03/original.png" /></p>
@@ -8361,9 +8361,9 @@
 <p>Scroll down the list of bubble tea venues. These are all real places in New York City that sell the delicious drink.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>When should you store fetch requests in your data model?
-  If you know you’ll be making the same fetch over and over in different parts of your app, you can use this feature to save you from writing the same code multiple times. A drawback of stored fetch requests is that there is no way to specify a sort order for the results. Therefore, the list of venues you saw may have been in a different order than in the book.</p>
+If you know you’ll be making the same fetch over and over in different parts of your app, you can use this feature to save you from writing the same code multiple times. A drawback of stored fetch requests is that there is no way to specify a sort order for the results. Therefore, the list of venues you saw may have been in a different order than in the book.</p>
+</div>
 <h2 id="fetching-different-result-types">Fetching different result types<a class="headerlink" href="#fetching-different-result-types" title="Permanent link">&para;</a></h2>
 <p>All this time, you’ve probably been thinking of <code>NSFetchRequest</code> as a fairly simple tool. You give it some instructions and you get some objects in return. What else is there to it?</p>
 <p>If this is the case, you’ve been underestimating this class. <code>NSFetchRequest</code> is the multi-function Swiss army knife of the Core Data framework!</p>
@@ -8415,9 +8415,9 @@
 <p>You’ll use this lazily-instantiated <code>NSPredicate</code> to calculate the number of venues in the lowest price category.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p><code>NSPredicate</code> supports string-based key paths. This is why you can drill down from the <code>Venue</code> entity into the <code>PriceInfo</code> entity using <code>priceInfo.priceCategory</code>, and use the <code>#keyPath</code> keyword to get safe, compile-time checked values for the key path.
-  As of this writing, <code>NSPredicate</code> does not support Swift 4 style key paths such as <code>\Venue.priceInfo.priceCategory</code>.</p>
+As of this writing, <code>NSPredicate</code> does not support Swift 4 style key paths such as <code>\Venue.priceInfo.priceCategory</code>.</p>
+</div>
 <p>Next, add the following extension below the <code>UITableViewDelegate</code> extension:</p>
 <div class="highlight"><pre><span></span><code><span class="c1">// </span><span class="cs">MARK:</span><span class="c1"> - Helper methods</span>
 <span class="kd">extension</span> <span class="nc">FilterViewController</span> <span class="p">{</span>
@@ -8454,9 +8454,9 @@
 <p>The label under the first price filter now says “27 bubble tea places.” Hooray! You’ve successfully used <code>NSFetchRequest</code> to calculate a count.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>You may be thinking that you could have just as easily fetched the actual Venue objects and gotten the count from the array’s <code>count</code> property. That’s true. Fetching counts instead of objects is mainly a performance optimization. For example, if you had census data for New York City and wanted to know how many people lived in its metropolitan area, would you prefer Core Data gave you the number 8,300,000 (an integer) or an array of 8,300,000 records?
-  Obviously, getting the count directly is more memory-efficient. There’s a whole chapter devoted to Core Data performance. If you want to learn more about performance optimization in Core Data, check out Chapter 8, “Measuring &amp; Boosting Performance.”</p>
+Obviously, getting the count directly is more memory-efficient. There’s a whole chapter devoted to Core Data performance. If you want to learn more about performance optimization in Core Data, check out Chapter 8, “Measuring &amp; Boosting Performance.”</p>
+</div>
 <p>Now that you’re acquainted with the count result type, you can quickly implement the count for the second price category filter. Add the following lazy property below <code>cheapVenuePredicate</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="kr">lazy</span> <span class="kd">var</span> <span class="nv">moderateVenuePredicate</span><span class="p">:</span> <span class="bp">NSPredicate</span> <span class="p">=</span> <span class="p">{</span>
   <span class="k">return</span> <span class="bp">NSPredicate</span><span class="p">(</span><span class="n">format</span><span class="p">:</span> <span class="s">&quot;%K == %@&quot;</span><span class="p">,</span> 
@@ -8581,8 +8581,8 @@
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>What other functions does Core Data support? To name a few: count, min, max, average, median, mode, absolute value and many more. For a comprehensive list, check out Apple’s documentation for <code>NSExpression</code>.</p>
+</div>
 <p>Fetching a calculated value from Core Data requires you to follow many, often unintuitive steps, so make sure you have a good reason for using this technique, such as performance considerations. Finally, add the following line to the bottom of <code>viewDidLoad()</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="n">populateDealsCountLabel</span><span class="p">()</span>
 </code></pre></div>
@@ -8595,8 +8595,8 @@
 <p>Now that thread confinement has been deprecated in favor of more modern concurrency models, there’s little reason to fetch by object ID anymore.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>You can set up multiple managed object contexts to run concurrent operations and keep long-running operations off the main thread. For more information, check out Chapter 9, “Multiple Managed Object Contexts.”</p>
+</div>
 <p>You’ve gotten a taste of all the things a fetch request can do for you. But just as important as the information a fetch request returns, is the information it <strong>doesn’t</strong> return. For practical reasons, you have to cap the incoming data at some point.</p>
 <p>Why? Imagine a perfectly connected object graph, one where each Core Data object is connected to every other object through a series of relationships. If Core Data didn’t put limits on the information a fetch request returned, you’d be fetching the entire object graph every single time! That’s not memory efficient.</p>
 <p>You can manually limit the information you get back from a fetch request. For example, <code>NSFetchRequest</code> supports fetching batches. You can use the properties <code>fetchBatchSize</code>, <code>fetchLimit</code> and <code>fetchOffset</code> to control the batching behavior.</p>
@@ -8723,11 +8723,11 @@
 <p>The first predicate specifies venues currently offering one or more deals, the second predicate specifies venues less than 500 meters away from your current location and the third predicate specifies venues that have at least one user tip.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>So far in the book, you’ve written predicates with a single condition. You should also know that you can write predicates that check two conditions instead of one by using compound predicate operators such as <strong>AND</strong>, <strong>OR</strong> and <strong>NOT</strong>.
-  Alternatively, you can string two simple predicates into one compound predicate by using the class <code>NSCompoundPredicate</code>.
-  <code>NSPredicate</code> isn’t technically part of Core Data (it’s part of <code>Foundation</code>) so this book won’t cover it in depth, but you can seriously improve your Core Data chops by learning the ins and outs of this nifty class. For more information, make sure to check out Apple’s Predicate Programming Guide:
-  <a href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Predicates/Articles/pUsing.html">https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Predicates/Articles/pUsing.html</a></p>
+Alternatively, you can string two simple predicates into one compound predicate by using the class <code>NSCompoundPredicate</code>.
+<code>NSPredicate</code> isn’t technically part of Core Data (it’s part of <code>Foundation</code>) so this book won’t cover it in depth, but you can seriously improve your Core Data chops by learning the ins and outs of this nifty class. For more information, make sure to check out Apple’s Predicate Programming Guide:
+<a href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Predicates/Articles/pUsing.html">https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Predicates/Articles/pUsing.html</a></p>
+</div>
 <p>Next, scroll down to <code>tableView(_:didSelectRowAt:)</code>. You’re going to add three more cases to the switch statement you added earlier:</p>
 <div class="highlight"><pre><span></span><code><span class="kr">override</span> <span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="kc">_</span> <span class="n">tableView</span><span class="p">:</span> <span class="bp">UITableView</span><span class="p">,</span> <span class="n">didSelectRowAt</span> <span class="n">indexPath</span><span class="p">:</span> <span class="n">IndexPath</span><span class="p">)</span> <span class="p">{</span>
 
@@ -8789,9 +8789,9 @@
 <p>To initialize an instance of <code>NSSortDescriptor</code> you need three things: a key path to specify the attribute which you want to sort, a specification of whether the sort is ascending or descending and an optional selector to perform the comparison operation.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>If you’ve worked with <code>NSSortDescriptor</code> before, then you probably know there’s a block-based API that takes a comparator instead of a selector. Unfortunately, Core Data doesn’t support this method of defining a sort descriptor.
-  The same thing goes for the block-based method of defining a <code>NSPredicate</code>. Core Data doesn’t support this either. The reason is filtering and sorting happens in the SQLite database, so the predicate/sort descriptor has to match nicely to something that can be written as an SQL statement.</p>
+The same thing goes for the block-based method of defining a <code>NSPredicate</code>. Core Data doesn’t support this either. The reason is filtering and sorting happens in the SQLite database, so the predicate/sort descriptor has to match nicely to something that can be written as an SQL statement.</p>
+</div>
 <p>The three sort descriptors are going to sort by name, distance and price category, respectively, in ascending order. Before moving on, take a closer look at the first sort descriptor, <code>nameSortDescriptor</code>. The initializer takes in an optional selector, <code>NSString.localizedStandardCompare(_:)</code>. What is that?</p>
 <p>Any time you’re sorting user-facing strings, Apple recommends that you pass in <code>NSString.localizedStandardCompare(_:)</code> to sort according to the language rules of the current locale. This means sort will “just work” and do the right thing for languages with special characters. It’s the little things that matter, <em>bien sûr</em>!</p>
 <p>Next, find <code>tableView(_:didSelectRowAt:)</code> and add the following cases to the end of the <code>switch</code> statement above the <code>default</code> case:</p>
@@ -8868,8 +8868,8 @@
 <p><code>execute(_:)</code> returns immediately. You don’t need to do anything with the return value since you’re going to update the table view from within the completion block. The return type is <code>NSAsynchronousFetchResult</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>As an added bonus to this API, you can cancel the fetch request with <code>NSAsynchronousFetchResult</code>’s <code>cancel()</code> method.</p>
+</div>
 <p>Time to see if your asynchronous fetch delivers as promised. If everything goes well, you shouldn’t notice any difference in the user interface.</p>
 <p>Build and run the sample app, and you should see the list of venues as before:</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/d5922d1dc93c3a81845f6acc6848774f61bee8213e400d79a38308399efc7668/original.png" /></p>
@@ -8913,9 +8913,9 @@
 <p>Like <code>NSBatchUpdateRequest</code>, <code>NSBatchDeleteRequest</code> is also a subclass of <code>NSPersistentStoreRequest</code>. Both types of batch request behave similarly since they both operate directly on the persistent store.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>Since you’re sidestepping your <code>NSManagedObjectContext</code>, you won’t get any validation if you use a batch update request or a batch delete request. Your changes also won’t be reflected in your managed context.
-  Make sure you’re sanitizing and validating your data properly before using a persistent store request!</p>
+Make sure you’re sanitizing and validating your data properly before using a persistent store request!</p>
+</div>
 <h2 id="key-points">Key points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>NSFetchRequest</code> is a <strong>generic type</strong>. It takes a type parameter that specifies the type of objects you expect to get as the result of the fetch request.</li>

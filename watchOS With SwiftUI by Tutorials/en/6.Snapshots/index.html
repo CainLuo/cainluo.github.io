@@ -8367,20 +8367,15 @@
 <p>The Apple Watch has only two physical buttons. While the Digital Crown is the most visible, there’s also a Side button right below the crown. Most users interact with the Side button by quickly pressing it twice to bring up Apple Pay.</p>
 <p>If you press the button a single time, the Dock will launch. The Dock displays one of two sets of apps:</p>
 <ol>
-<li></li>
-<li>
-<p>Recently run</p>
-</li>
-<li></li>
-<li>
-<p>Favorites</p>
-</li>
+<li>Recently run</li>
+<li>Favorites</li>
 </ol>
 <p>By default, recently run apps will display in the Dock:</p>
 <p><img alt="img" src="https://assets.alexandria.kodeco.com/books/a1b0d30e72f4ba701a1ba20d40ae4977dd501250e017913b4f8fd6f02a54791f/images/e074fd671d1b5a4b4e1f611229861787/original.png" /></p>
-<blockquote>
-<p><strong>Note</strong>: If you choose favorites, then you’ll <em>only</em> see apps that you’ve identified. The most recently run app no longer displays in the Dock. To choose what appears, you have to open the Watch app on your iPhone, tap <strong>My Watch</strong>, then tap <strong>Dock</strong> and select either <strong>Recents</strong> or <strong>Favorites</strong>.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you choose favorites, then you’ll <em>only</em> see apps that you’ve identified. The most recently run app no longer displays in the Dock. To choose what appears, you have to open the Watch app on your iPhone, tap <strong>My Watch</strong>, then tap <strong>Dock</strong> and select either <strong>Recents</strong> or <strong>Favorites</strong>.</p>
+</div>
 <p>The Dock provides multiple benefits:</p>
 <ul>
 <li>Tapping an image launches the app <em>immediately</em>.</li>
@@ -8409,22 +8404,10 @@
 <p>Having a custom view could make sense in some situations, especially if you need to remove some elements from the snapshot. If you make a custom view, you want to ensure that the snapshot doesn’t look radically different from the normal display. People expect the snapshot to represent your app. If the snapshot looks too different, it becomes hard to recognize and find the app they’re looking for.</p>
 <p>If you determine that you do need a different visual, please keep these points in mind:</p>
 <ol>
-<li></li>
-<li>
-<p>Focus on important information.</p>
-</li>
-<li></li>
-<li>
-<p>Hide objects that aren’t as relevant when viewed in the Dock.</p>
-</li>
-<li></li>
-<li>
-<p>Exaggerate the size of certain objects for legibility.</p>
-</li>
-<li></li>
-<li>
-<p>Don’t make the interface look radically different.</p>
-</li>
+<li>Focus on important information.</li>
+<li>Hide objects that aren’t as relevant when viewed in the Dock.</li>
+<li>Exaggerate the size of certain objects for legibility.</li>
+<li>Don’t make the interface look radically different.</li>
 </ol>
 <h4 id="progress-and-status">Progress and Status<a class="headerlink" href="#progress-and-status" title="Permanent link">&para;</a></h4>
 <p>Progress screens, timers and general status updates are great use cases for snapshots. You may think that complications cover all of those cases. Hopefully, you created said complications! However, you need to remember that your customers may not want to use your complication.</p>
@@ -8433,9 +8416,10 @@
 <p>During state changes, be sure that you’re not snapshotting errors or confirmation dialogs. Such issues are better handled via a local notification.</p>
 <h4 id="changing-screens">Changing Screens<a class="headerlink" href="#changing-screens" title="Permanent link">&para;</a></h4>
 <p>Keep the currently active view the same as when the user last interacted with your app whenever possible. If the app’s state changes in unpredictable ways, it can confuse and disorient the user. You want the interaction between the Dock and your app to be so seamless that your customers don’t understand anything special is happening. If you need to leave the app in a different state, ensure that the end-user can quickly determine what happened.</p>
-<blockquote>
-<p><strong>Note</strong>: In the interests of keeping the sample app less complicated, UHL blatantly violates this tip. :]</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In the interests of keeping the sample app less complicated, UHL blatantly violates this tip. :]</p>
+</div>
 <h4 id="anticipating-a-timeline">Anticipating a Timeline<a class="headerlink" href="#anticipating-a-timeline" title="Permanent link">&para;</a></h4>
 <p>The inverse to the previous tip is that you should anticipate what the user would want to see when they look in the Dock.</p>
 <p>Similar to the food delivery example, consider a sporting event. Depending on the time of the event, you might want to have something like this:</p>
@@ -8461,9 +8445,10 @@
 </ul>
 <h2 id="working-with-snapshots">Working With Snapshots<a class="headerlink" href="#working-with-snapshots" title="Permanent link">&para;</a></h2>
 <p>Now that you better understand how to use snapshots, it’s time to implement what you’ve learned in the UHL app!</p>
-<blockquote>
-<p><strong>Note</strong>: The simulator frequently gets confused while working with snapshots and the Dock. If that happens, quit and restart the simulator or preferably use a physical device instead.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The simulator frequently gets confused while working with snapshots and the Dock. If that happens, quit and restart the simulator or preferably use a physical device instead.</p>
+</div>
 <h3 id="snapshots-handler">Snapshots Handler<a class="headerlink" href="#snapshots-handler" title="Permanent link">&para;</a></h3>
 <p>First, you need to implement the method watchOS calls when it’s time to take snapshot. Open <strong>ExtensionDelegate</strong> and add the following method:</p>
 <div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">handle</span><span class="p">(</span><span class="kc">_</span> <span class="n">backgroundTasks</span><span class="p">:</span> <span class="n">Set</span><span class="p">&lt;</span><span class="n">WKRefreshBackgroundTask</span><span class="p">&gt;)</span> <span class="p">{</span>
@@ -8485,22 +8470,10 @@
 </code></pre></div>
 <p>Whenever watchOS wakes up your app from the background, it calls <code>handle(_:)</code>. Here’s what the preceding code accomplishes:</p>
 <ol>
-<li></li>
-<li>
-<p>First, it schedules one or more tasks for you to handle. Loop through each one.</p>
-</li>
-<li></li>
-<li>
-<p>You only care about snapshots, so mark the task completed if it’s not a snapshot. Passing <code>false</code> tells the system not to auto-schedule another snapshot.</p>
-</li>
-<li></li>
-<li>
-<p>I’ll bet this statement confuses you! :]</p>
-</li>
-<li></li>
-<li>
-<p>Finally, you mark the snapshot task as complete and specify <code>true</code> so that watchOS automatically schedules another snapshot for an hour from now.</p>
-</li>
+<li>First, it schedules one or more tasks for you to handle. Loop through each one.</li>
+<li>You only care about snapshots, so mark the task completed if it’s not a snapshot. Passing <code>false</code> tells the system not to auto-schedule another snapshot.</li>
+<li>I’ll bet this statement confuses you! :]</li>
+<li>Finally, you mark the snapshot task as complete and specify <code>true</code> so that watchOS automatically schedules another snapshot for an hour from now.</li>
 </ol>
 <p>When watchOS calls <code>handle(_:)</code>, you have a limited amount of time, on the order of seconds, to finish the task. If you neglect to mark the task as having completed, the system continues to run it in the background. Your task will then run until all available time has been consumed, which wastes battery power.</p>
 <p>In step two, where you pass <code>false</code> to <code>setTaskCompletedWithSnapshot</code>, you might be wondering why you don’t specify <code>true</code> instead. Since you took no action on the task, there’s no reason to force an immediate snapshot to happen.</p>
@@ -8515,18 +8488,9 @@
 <h3 id="viewing-a-snapshot">Viewing a Snapshot<a class="headerlink" href="#viewing-a-snapshot" title="Permanent link">&para;</a></h3>
 <p>You can see what your snapshot looks like by visiting the Dock. In the simulator, you get to the Dock in three separate ways:</p>
 <ol>
-<li></li>
-<li>
-<p>Click the Side button in the simulated Apple Watch display.</p>
-</li>
-<li></li>
-<li>
-<p>Click <strong>Device</strong> ▸ <strong>Side Button</strong> in the simulator’s menu bar.</p>
-</li>
-<li></li>
-<li>
-<p>Press <strong>Shift-Command-B</strong> on your keyboard. Scholars have pondered for ages why it’s not <strong>Shift-Command-D</strong>. :]</p>
-</li>
+<li>Click the Side button in the simulated Apple Watch display.</li>
+<li>Click <strong>Device</strong> ▸ <strong>Side Button</strong> in the simulator’s menu bar.</li>
+<li>Press <strong>Shift-Command-B</strong> on your keyboard. Scholars have pondered for ages why it’s not <strong>Shift-Command-D</strong>. :]</li>
 </ol>
 <p>After bringing up the dock, you’ll see that your app is the first on the list:</p>
 <p><img alt="img" src="https://assets.alexandria.kodeco.com/books/a1b0d30e72f4ba701a1ba20d40ae4977dd501250e017913b4f8fd6f02a54791f/images/f83196804adb8449544bcd4855424015/original.png" /></p>
@@ -8555,18 +8519,9 @@
 </code></pre></div>
 <p>The preceding code accomplishes these three tasks:</p>
 <ol>
-<li></li>
-<li>
-<p>If there’s no upcoming match, you return <code>.distantFuture</code> for the date. Using <code>.distantFuture</code> essentially tells watchOS that there are no more scheduled snapshots.</p>
-</li>
-<li></li>
-<li>
-<p>Using calendrical calculations, you determine what the date will be in two days. This calculation can’t fail, so it’s safe to force unwrap the return value.</p>
-</li>
-<li></li>
-<li>
-<p>Finally, you determine the start of the day for when the snapshot will happen.</p>
-</li>
+<li>If there’s no upcoming match, you return <code>.distantFuture</code> for the date. Using <code>.distantFuture</code> essentially tells watchOS that there are no more scheduled snapshots.</li>
+<li>Using calendrical calculations, you determine what the date will be in two days. This calculation can’t fail, so it’s safe to force unwrap the return value.</li>
+<li>Finally, you determine the start of the day for when the snapshot will happen.</li>
 </ol>
 <h3 id="snapshot-user-info">Snapshot User Info<a class="headerlink" href="#snapshot-user-info" title="Permanent link">&para;</a></h3>
 <p>The Snapshot API is based around a user info type dictionary. While you <em>could</em> use a dictionary, there’s a better way to handle the data. You don’t want to have to hardcode strings for the keys or define global <code>let</code> type constants. Instead, create a new Swift file named <strong>SnapshotUserInfo</strong>.</p>
@@ -8585,18 +8540,9 @@
 </code></pre></div>
 <p><code>SnapshotUserInfo</code> implemented this so far:</p>
 <ol>
-<li></li>
-<li>
-<p>You have to tell the snapshot when it’s completed. More on that in a moment.</p>
-</li>
-<li></li>
-<li>
-<p><code>ContentView.Destination</code> is an <code>enum</code> identifying which view will be pushed onto the navigation stack.</p>
-</li>
-<li></li>
-<li>
-<p>You need to identify a match to snapshot.</p>
-</li>
+<li>You have to tell the snapshot when it’s completed. More on that in a moment.</li>
+<li><code>ContentView.Destination</code> is an <code>enum</code> identifying which view will be pushed onto the navigation stack.</li>
+<li>You need to identify a match to snapshot.</li>
 </ol>
 <p>Look in <strong>Match</strong> located in <strong>Model</strong> group. You’ll see that the <code>Identifiable</code> protocol is implemented, and the type of the identifier is a <code>UUID</code>. While you could use a <code>UUID</code> type throughout the app, it’s a better idea to reference <code>Match.ID</code> instead. Why? If at a later date you realize you need the identifier to be an <code>Int</code> instead, there’s only a single location you need to update.</p>
 <p>Next, in <strong>SnapshotUserInfo</strong>, implement an initializer:</p>
@@ -8629,18 +8575,9 @@
 </code></pre></div>
 <p>Here’s a code breakdown:</p>
 <ol>
-<li></li>
-<li>
-<p>You define an <code>enum</code> to store the keys to the dictionary. You could also use <code>let</code> strings, but the <code>enum</code> is cleaner for this use case.</p>
-</li>
-<li></li>
-<li>
-<p>You create a method that encodes the <code>struct</code> into the type of dictionary the Snapshot API requires.</p>
-</li>
-<li></li>
-<li>
-<p>The match identifier could be <code>nil</code>, so you must explicitly add the <code>as Any</code> cast to make the compiler happy.</p>
-</li>
+<li>You define an <code>enum</code> to store the keys to the dictionary. You could also use <code>let</code> strings, but the <code>enum</code> is cleaner for this use case.</li>
+<li>You create a method that encodes the <code>struct</code> into the type of dictionary the Snapshot API requires.</li>
+<li>The match identifier could be <code>nil</code>, so you must explicitly add the <code>as Any</code> cast to make the compiler happy.</li>
 </ol>
 <p>You’ll also need a way to convert from the API’s dictionary into the object you defined. Add a custom error type right outside the <code>struct</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="kd">enum</span> <span class="nc">SnapshotError</span><span class="p">:</span> <span class="n">Error</span> <span class="p">{</span>
@@ -8676,22 +8613,10 @@
 </code></pre></div>
 <p>Here’s what’s happening:</p>
 <ol>
-<li></li>
-<li>
-<p>Using a <code>static</code> method allows for a factory pattern type of creation.</p>
-</li>
-<li></li>
-<li>
-<p>You pull the individual pieces out of the posted <code>Notification</code>, throwing an appropriate error if anything goes wrong.</p>
-</li>
-<li></li>
-<li>
-<p>Then, you create and return a properly initialized object.</p>
-</li>
-<li></li>
-<li>
-<p>Similarly to the other method, using an <code>as? Match.ID</code> cast handles the case when no match identifier is provided.</p>
-</li>
+<li>Using a <code>static</code> method allows for a factory pattern type of creation.</li>
+<li>You pull the individual pieces out of the posted <code>Notification</code>, throwing an appropriate error if anything goes wrong.</li>
+<li>Then, you create and return a properly initialized object.</li>
+<li>Similarly to the other method, using an <code>as? Match.ID</code> cast handles the case when no match identifier is provided.</li>
 </ol>
 <h3 id="viewing-the-last-games-score">Viewing the Last Game’s Score<a class="headerlink" href="#viewing-the-last-games-score" title="Permanent link">&para;</a></h3>
 <p>Sometimes, even the best of fans will miss a game. If the most recent match was yesterday or today, wouldn’t it be great if you showed the score?</p>
@@ -8713,14 +8638,8 @@
 </code></pre></div>
 <p>Here’s what’s happening:</p>
 <ol>
-<li></li>
-<li>
-<p>If there’s a previously played match, grab the date. If not, simply return <code>false</code>.</p>
-</li>
-<li></li>
-<li>
-<p>Determine if the last match occurred yesterday or today.</p>
-</li>
+<li>If there’s a previously played match, grab the date. If not, simply return <code>false</code>.</li>
+<li>Determine if the last match occurred yesterday or today.</li>
 </ol>
 <p>In the <code>handle(_:)</code> method, delete the final line which completes the snapshot and replace it with:</p>
 <div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">nextSnapshotDate</span> <span class="p">=</span> <span class="n">nextSnapshotDate</span><span class="p">()</span>
@@ -8766,22 +8685,10 @@
 </code></pre></div>
 <p>Lots going on with that code:</p>
 <ol>
-<li></li>
-<li>
-<p>You create a variable of type <code>SnapshotUserInfo</code>, which is currently not set.</p>
-</li>
-<li></li>
-<li>
-<p>If there’s been a recent match, you populate that variable with the <code>handler</code> you just defined and specify that the record view is what should display in the snapshot.</p>
-</li>
-<li></li>
-<li>
-<p>If there’s data for the <code>snapshotUserInfo</code>, you post a notification with that object. Notice how the <code>userInfo</code> of the notification is the encoded object.</p>
-</li>
-<li></li>
-<li>
-<p>If not, then you simply call the handler to complete the task.</p>
-</li>
+<li>You create a variable of type <code>SnapshotUserInfo</code>, which is currently not set.</li>
+<li>If there’s been a recent match, you populate that variable with the <code>handler</code> you just defined and specify that the record view is what should display in the snapshot.</li>
+<li>If there’s data for the <code>snapshotUserInfo</code>, you post a notification with that object. Notice how the <code>userInfo</code> of the notification is the encoded object.</li>
+<li>If not, then you simply call the handler to complete the task.</li>
 </ol>
 <p>The sample project includes a file called <strong>Notification.Name+Extension</strong> which defines the notification type for you.</p>
 <p>Putting the details into a <code>struct</code> instead of just populating the <code>userInfo</code> dictionary directly makes the code much cleaner. By abstracting away the data’s details, it also becomes much easier to test.</p>
@@ -8818,14 +8725,8 @@
 </code></pre></div>
 <p>For those two properties:</p>
 <ol>
-<li></li>
-<li>
-<p>Since <code>ContentView</code> is the top of your navigation stack, the property you store the snapshot handler in has to be <code>@State</code> as this is the view that will assign the value based on the notification.</p>
-</li>
-<li></li>
-<li>
-<p>Taking advantage of Combine makes responding to notifications quite simple in SwiftUI.</p>
-</li>
+<li>Since <code>ContentView</code> is the top of your navigation stack, the property you store the snapshot handler in has to be <code>@State</code> as this is the view that will assign the value based on the notification.</li>
+<li>Taking advantage of Combine makes responding to notifications quite simple in SwiftUI.</li>
 </ol>
 <p>Add a function to call the snapshot handler and then clear it out so it doesn’t get called a second time.</p>
 <div class="highlight"><pre><span></span><code><span class="kd">private</span> <span class="kd">func</span> <span class="nf">handleSnapshot</span><span class="p">()</span> <span class="p">{</span>
@@ -8857,52 +8758,30 @@
 </code></pre></div>
 <p>For <code>pushViewForSnapshot(_:)</code>:</p>
 <ol>
-<li></li>
-<li>
-<p>You pull the <code>SnapshotUserInfo</code> details from the notification you posted in <code>ExtensionDelegate</code>.</p>
-</li>
-<li></li>
-<li>
-<p>Extract the handler into a local variable for ease of use.</p>
-</li>
-<li></li>
-<li>
-<p>Adding the destination to <code>path</code> is what tells the UI to switch to that particular view.</p>
-</li>
-<li></li>
-<li>
-<p>If the info provides a specific match, add a detail view for that match to the navigation path.</p>
-</li>
+<li>You pull the <code>SnapshotUserInfo</code> details from the notification you posted in <code>ExtensionDelegate</code>.</li>
+<li>Extract the handler into a local variable for ease of use.</li>
+<li>Adding the destination to <code>path</code> is what tells the UI to switch to that particular view.</li>
+<li>If the info provides a specific match, add a detail view for that match to the navigation path.</li>
 </ol>
-<blockquote>
-<p><strong>Note</strong>: When the user taps on an app in the doc, the app will still have the state from the last snapshot. Adding more than one destination to the navigation path puts the navigation path in the same state it would be in if the user tapped through to the match detail view themselves.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When the user taps on an app in the doc, the app will still have the state from the last snapshot. Adding more than one destination to the navigation path puts the navigation path in the same state it would be in if the user tapped through to the match detail view themselves.</p>
+</div>
 <p>All that’s left to do is “catch” the notification. After the second <code>NavigationLink</code>, before closing the <code>VStack</code>, call your helper method when a notification appears:</p>
 <div class="highlight"><pre><span></span><code><span class="p">.</span><span class="n">onReceive</span><span class="p">(</span><span class="n">pushViewForSnapshotPublisher</span><span class="p">)</span> <span class="p">{</span>
   <span class="n">pushViewForSnapshot</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div>
-<blockquote>
-<p><strong>Note</strong>: There are multiple ways to catch and handle a notification in SwiftUI. Use whatever method feels most natural to you.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There are multiple ways to catch and handle a notification in SwiftUI. Use whatever method feels most natural to you.</p>
+</div>
 <p>At this point, build and run the app. Perform the following steps to test all your hard work:</p>
 <ol>
-<li></li>
-<li>
-<p>Ensure you’ve navigated to the first screen of the app.</p>
-</li>
-<li></li>
-<li>
-<p>Change to the Home screen.</p>
-</li>
-<li></li>
-<li>
-<p>In Xcode’s menu bar, click <strong>Debug</strong> ▸ <strong>Simulate UI Snapshot</strong>.</p>
-</li>
-<li></li>
-<li>
-<p>In the simulator, bring up the Dock.</p>
-</li>
+<li>Ensure you’ve navigated to the first screen of the app.</li>
+<li>Change to the Home screen.</li>
+<li>In Xcode’s menu bar, click <strong>Debug</strong> ▸ <strong>Simulate UI Snapshot</strong>.</li>
+<li>In the simulator, bring up the Dock.</li>
 </ol>
 <p>You’ll now see that your app did move to the proper view before taking a snapshot.</p>
 <p><img alt="img" src="https://assets.alexandria.kodeco.com/books/a1b0d30e72f4ba701a1ba20d40ae4977dd501250e017913b4f8fd6f02a54791f/images/b7880a2334ec539e238ec7853823dec2/original.png" /></p>
@@ -8972,18 +8851,9 @@
 </code></pre></div>
 <p>Make the same changes to <strong>ScheduleView</strong>, remembering all three steps:</p>
 <ol>
-<li></li>
-<li>
-<p>Add the <code>snapshotHandler</code> property.</p>
-</li>
-<li></li>
-<li>
-<p>Add the <code>.task</code> to the end of the <code>body</code>.</p>
-</li>
-<li></li>
-<li>
-<p>Update the <code>PreviewProvider</code> to pass in a <code>nil</code> value for the <code>snapshotHandler</code>.</p>
-</li>
+<li>Add the <code>snapshotHandler</code> property.</li>
+<li>Add the <code>.task</code> to the end of the <code>body</code>.</li>
+<li>Update the <code>PreviewProvider</code> to pass in a <code>nil</code> value for the <code>snapshotHandler</code>.</li>
 </ol>
 <p>In your best pirate voice, think, “Here be compiler errors.”</p>
 <p>Back in <strong>ContentView</strong>, inside the <code>navigationDestination(for:)</code> modifier, update the call to include the snapshot provider:</p>

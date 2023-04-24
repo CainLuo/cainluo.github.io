@@ -8159,8 +8159,8 @@
 <p>This will set a title on the navigation bar and register the <code>UITableViewCell</code> class with the table view.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p><code>register(_:forCellReuseIdentifier:)</code> guarantees your table view will return a cell of the correct type when the <strong>Cell</strong> <code>reuseIdentifier</code> is provided to the <code>dequeue</code> method.</p>
+</div>
 <p>Next, still in <strong>ViewController.swift</strong>, add the following <code>UITableViewDataSource</code> extension below your class definition for <code>ViewController</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="c1">// </span><span class="cs">MARK:</span><span class="c1"> - UITableViewDataSource</span>
 <span class="kd">extension</span> <span class="nc">ViewController</span><span class="p">:</span> <span class="bp">UITableViewDataSource</span> <span class="p">{</span>
@@ -8239,9 +8239,9 @@
 <p>By default, Core Data uses a SQLite database as the persistent store, so you can think of the Data Model as the database schema.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>You’ll come across the word <em>managed</em> quite a bit in this book. If you see “managed” in the name of a class, such as in <code>NSManagedObjectContext</code>, chances are you are dealing with a Core Data class. “Managed” refers to Core Data’s management of the life cycle of Core Data objects.
-  However, don’t assume all Core Data classes contain the word “managed”. Most don’t. For a comprehensive list of Core Data classes, check out the Core Data framework reference in the documentation browser.</p>
+However, don’t assume all Core Data classes contain the word “managed”. Most don’t. For a comprehensive list of Core Data classes, check out the Core Data framework reference in the documentation browser.</p>
+</div>
 <p>Since you’ve elected to use Core Data, Xcode automatically created a Data Model file for you and named it <strong>HitList.xcdatamodeld</strong>:</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/1322927dd614fc6e0d09e599db9be05290c087e71648ffd60523ddd51ede6d7f/original.png" /></p>
 <p>Open <strong>HitList.xcdatamodeld</strong>. As you can see, Xcode has a powerful Data Model editor:</p>
@@ -8257,8 +8257,8 @@
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>You’ve probably noticed entities sound a lot like classes. Likewise, attributes and relationships sound a lot like properties. What’s the difference? You can think of a Core Data entity as a class definition and the managed object as an instance of that class.</p>
+</div>
 <p>Now you know what an attribute is, you can add an attribute to <code>Person</code> object created earlier. Still in <strong>HitList.xcdatamodeld</strong>, select <code>Person</code> on the left-hand side and click the plus sign (+) under <strong>Attributes</strong>.</p>
 <p>Set the new attribute’s name to, er, <strong>name</strong> and change its type to <strong>String</strong>:</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/b769164ea7bdd6834c16670f9aabecd88c2efb54267b70ce54b182936ca9a7e0/original.png" /></p>
@@ -8302,9 +8302,9 @@
 <p>Why do you have to do this? As it turns out, <code>NSManagedObject</code> doesn’t know about the <code>name</code> attribute you defined in your data model, so there’s no way of accessing it directly with a property. The only way Core Data provides to read the value is <strong>key-value coding</strong>, commonly referred to as KVC.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>KVC is a mechanism in <code>Foundation</code> for accessing an object’s properties indirectly using strings. In this case, KVC makes <code>NSMangedObject</code> behave somewhat like a dictionary at runtime.
-  Key-value coding is available to all classes inheriting from <code>NSObject</code>, including <code>NSManagedObject</code>. You can’t access properties using KVC on a Swift object that doesn’t descend from <code>NSObject</code>.</p>
+Key-value coding is available to all classes inheriting from <code>NSObject</code>, including <code>NSManagedObject</code>. You can’t access properties using KVC on a Swift object that doesn’t descend from <code>NSObject</code>.</p>
+</div>
 <p>Next, find <code>addName(_:)</code> and replace the <code>save</code> <code>UIAlertAction</code> with the following:</p>
 <div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">saveAction</span> <span class="p">=</span> <span class="bp">UIAlertAction</span><span class="p">(</span><span class="n">title</span><span class="p">:</span> <span class="s">&quot;Save&quot;</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="p">.</span><span class="k">default</span><span class="p">)</span> <span class="p">{</span>
   <span class="p">[</span><span class="kr">unowned</span> <span class="kc">self</span><span class="p">]</span> <span class="n">action</span> <span class="k">in</span>
@@ -8409,16 +8409,16 @@
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>Like <code>save()</code>, <code>fetch(_:)</code> can also throw an error so you have to use it within a <code>do</code> block. If an error occurred during the fetch, you can inspect the error inside the <code>catch</code> block and respond appropriately.</p>
+</div>
 <p>Build and run the application. Immediately, you should see the list of names you added earlier:</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/be77808d5138f8eb12750b12373f8503c609a63dd5edc7c8aedfd86dbe94a62f/original.png" /></p>
 <p>Great! They’re back from the dead (pun intended). Add a few more names to the list and restart the app to verify saving and fetching are working. Short of deleting the app, resetting the Simulator or throwing your phone off a tall building, the names will appear in the table view no matter what.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>There were a few rough edges in this sample app: you had to get the managed object context from the app delegate each time, and you used KVC to access an entity’s attributes rather than a more natural object-style <code>person.name</code>.
-  There are better ways to save and fetch data from Core Data, which you’ll explore in future chapters. The purpose of doing it the “long way” here is to learn what’s going on behind the scenes!</p>
+There are better ways to save and fetch data from Core Data, which you’ll explore in future chapters. The purpose of doing it the “long way” here is to learn what’s going on behind the scenes!</p>
+</div>
 <h2 id="key-points">Key points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Core Data provides <strong>on-disk persistence</strong>, which means your data will be accessible even after terminating your app or shutting down your device. This is different from in-memory persistence, which will only save your data as long as your app is in memory, either in the foreground or in the background.</li>

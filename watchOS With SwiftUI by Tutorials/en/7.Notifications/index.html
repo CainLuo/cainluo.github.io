@@ -8401,9 +8401,10 @@ Local and remote notifications are a great way to inform your users about new or
 <span class="p">}</span>
 </code></pre></div>
 <p>The asset catalog provided with the starter project has images numbered from one to twenty. If the payload includes an image number in that range, you display the specified cat photo. If not, you provide a random image.</p>
-<blockquote>
-<p><strong>Note</strong>: Since the view will always be generated, you need to ensure that valid data is always available, even if it means presenting a default set of data.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since the view will always be generated, you need to ensure that valid data is always available, even if it means presenting a default set of data.</p>
+</div>
 <p>Add the following line right before the final closing <code>}</code> character in <strong>PushNotificationPayload.apns</strong>:</p>
 <div class="highlight"><pre><span></span><code><span class="p">,</span> <span class="s">&quot;imageNumber&quot;</span><span class="p">:</span> <span class="mi">19</span>
 </code></pre></div>
@@ -8462,20 +8463,23 @@ Local and remote notifications are a great way to inform your users about new or
 <h3 id="adding-the-capability">Adding the Capability<a class="headerlink" href="#adding-the-capability" title="Permanent link">&para;</a></h3>
 <p>Xcode will perform magic if you add the <strong>Push Notifications</strong> capability. In the Project navigator (<strong>Command‑1</strong>), select the project name, <strong>Pawsome</strong>. Then select the <strong>Pawsome Watch App</strong> target.</p>
 <p>On the <strong>Signing &amp; Capabilities</strong> tab, add the <strong>Push Notifications</strong> capability. If you try to add a capability and nothing seems to show, that generally means you haven’t chosen the correct target.</p>
-<blockquote>
-<p><strong>Note</strong>: Xcode does not generate a valid identifier for watchOS push notifications!</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Xcode does not generate a valid identifier for watchOS push notifications!</p>
+</div>
 <p>Years ago, Apple finally automated almost everything around certificate and identifier generation. Unfortunately, for watchOS push notifications, sometimes it doesn’t work.</p>
 <p>The solution, while annoying to have to deal with, is quite simple. Go into your team’s <a href="https://apple.co/31pwmKV">Certificates, Identifiers &amp; Profiles</a> page on the Apple Developer Portal and manually create an identifier for your watchOS app. Use the app identifier <strong>com.yourcompany.Pawsome.watchkitapp</strong> and add Push Notification support.</p>
-<blockquote>
-<p><strong>Note</strong>: Replace <strong>yourcompany</strong> in the app identifier with your team’s name.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Replace <strong>yourcompany</strong> in the app identifier with your team’s name.</p>
+</div>
 <h3 id="add-a-scheme">Add a Scheme<a class="headerlink" href="#add-a-scheme" title="Permanent link">&para;</a></h3>
 <p>Edit the current scheme via your preferred method. I like to press the <strong>Command+&lt;</strong> keyboard shortcut, or you can click on the current scheme and then click <strong>Edit Scheme…</strong>.</p>
 <p>Earlier, you created a notification scheme you used to test the local notifications. You’ll need another scheme to test the remote notification because the payload is a different file. You could, of course, just change the file on the existing scheme if you wanted to.</p>
-<blockquote>
-<p><strong>Note</strong>: If your app supports more than one notification, you can add multiple APNS files and multiple schemes to make it easy to test each one.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If your app supports more than one notification, you can add multiple APNS files and multiple schemes to make it easy to test each one.</p>
+</div>
 <p>Follow these steps to configure a new scheme:</p>
 <ol>
 <li>With the notification scheme still chosen, press <strong>Duplicate Scheme</strong> at the bottom of the dialog window.</li>

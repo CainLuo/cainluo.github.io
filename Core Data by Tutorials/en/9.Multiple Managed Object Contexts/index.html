@@ -8221,8 +8221,8 @@
 <p>In this chapter, you’ll learn about multiple managed object contexts by taking a journaling app for surfers and improving it in several ways by adding multiple contexts.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>If common Core Data phrases such as managed object subclass and persistent store coordinator don’t ring any bells, or if you’re unsure what a Core Data stack is supposed to do, you may want to read or reread the first three chapters of this book before proceeding. This chapter covers advanced topics and assumes you already know the basics.</p>
+</div>
 <h2 id="getting-started">Getting started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
 <p>This chapter’s starter project is a simple journal app for surfers. After each surf session, a surfer can use the app to create a new journal entry that records marine parameters, such as swell height or period, and rate the session from 1 to 5. Dude, if you’re not fond of hanging ten and getting barreled, no worries, brah. Just replace the surfing terminology with your favorite hobby of choice!</p>
 <h2 id="introducing-surfjournal">Introducing SurfJournal<a class="headerlink" href="#introducing-surfjournal" title="Permanent link">&para;</a></h2>
@@ -8319,9 +8319,9 @@
 <p>The only reason <strong>SurfJournalModel.sqlite</strong>, <strong>SurfJournalModel.sqlite-shm</strong> or <strong>SurfJournalModel.sqlite-wal</strong> would fail to copy on first launch is if something really bad happened, such as disk corruption from cosmic radiation. In that case, the device, including any apps, would likely also fail. If the files fail to copy, there’s no point in continuing, so the <code>catch</code> blocks call <code>fatalError</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>Developers often frown upon using <code>abort</code> and <code>fatalError</code>, as it confuses users by causing the app to quit suddenly and without explanation. This is one scenario where <code>fatalError</code> is acceptable, since the app needs Core Data to work. If an app requires Core Data and Core Data isn’t working, there’s no point in letting the app continue on, only to fail sometime later in a non-deterministic way.
-  Calling <code>fatalError</code>, at the very least, generates a stack trace, which can be helpful when trying to fix the problem. If your app has support for remote logging or crash reporting, you should log any relevant information that might be helpful for debugging before calling <code>fatalError</code>.</p>
+Calling <code>fatalError</code>, at the very least, generates a stack trace, which can be helpful when trying to fix the problem. If your app has support for remote logging or crash reporting, you should log any relevant information that might be helpful for debugging before calling <code>fatalError</code>.</p>
+</div>
 <p>To support concurrent reads and writes, the persistent SQLite store in this sample app uses SHM (shared memory file) and WAL (write-ahead logging) files. You don’t need to know how these extra files work, but you <em>do</em> need to be aware of their existence, and that you need to copy them over when seeding the database. If you fail to copy over these files, the app will work, but it might be missing data.</p>
 <p>Now that you know something about beginning with a seeded database, you’ll learn about multiple managed object contexts by working on a temporary private context.</p>
 <h2 id="doing-work-in-the-background">Doing work in the background<a class="headerlink" href="#doing-work-in-the-background" title="Permanent link">&para;</a></h2>
@@ -8357,8 +8357,8 @@
 <p>As you can see, <code>JournalEntry</code> returns a comma-separated string of the entity’s attributes. Because the <code>JournalEntry</code> attributes are allowed to be <code>nil</code>, the function uses the nil coalescing operator (<code>??</code>) to export an empty string instead of an unhelpful debug message that the attribute is <code>nil</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>The nil coalescing operator (<code>??</code>) unwraps an optional if it contains a value; otherwise it returns a default value. For example, the following: <code>let coalescedHeight = height != nil ? height! : ""</code> can be shortened using the nil coalescing operator to: <code>let coalescedHeight = height ?? ""</code>.</p>
+</div>
 <p>That’s how the app creates the CSV strings for an individual journal entry, but how does the app save the CSV file to disk? Open <strong>JournalListViewController.swift</strong> and find the following code in <code>exportCSVFile()</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="c1">// 1</span>
 <span class="kd">let</span> <span class="nv">context</span> <span class="p">=</span> <span class="n">coreDataStack</span><span class="p">.</span><span class="n">mainContext</span>
@@ -8434,8 +8434,8 @@
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/6fc21b62990991d36ec726148714fd04932c7deaf34e9552151ba712409eded7/original.png" /></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>This alert controller with the export path is fine for learning purposes, but for a real app, you’ll need to provide the user with a way to retrieve the exported CSV file, for example using <code>UIActivityViewController</code>.</p>
+</div>
 <p>To open the exported CSV file, use Excel, Numbers or your favorite text editor to navigate to and open the file specified in the alert dialog. If you open the file in Numbers you will see the following:</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/d73d50d3825e174b7855f5f262dc71cd7eaacceb21bf8bbdc827170e19e478a0/original.png" /></p>
 <p>Now that you’ve seen how the app currently exports data, it’s time to make some improvements.</p>
@@ -8468,11 +8468,11 @@
 <p>You could also manually create a new temporary private context with a concurrency type of <code>.privateQueueConcurrencyType</code> instead of using <code>performBackgroundTask(_:)</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>There are two concurrency types a managed object context can use:
-  <strong>Private Queue</strong> specifies the context that will be associated with a private dispatch queue instead of the main queue. This is the type of queue you just used to move the export operation off of the main queue so it would no longer interfere with the UI.
-  <strong>Main Queue</strong>, the default type, specifies that the context will be associated with the main queue. This type is what the main context (<code>coreDataStack.mainContext</code>) uses. Any UI operation, such as creating the fetched results controller for the table view, must use a context of this type.
-  Contexts and their managed objects must <strong>only</strong> be accessed from the correct queue. <code>NSManagedObjectContext</code> has <code>perform(_:)</code> and <code>performAndWait(_:)</code> to direct work to the correct queue. You can add the launch argument <code>-com.apple.CoreData.ConcurrencyDebug 1</code> to your app’s scheme to catch mistakes in the debugger.</p>
+<strong>Private Queue</strong> specifies the context that will be associated with a private dispatch queue instead of the main queue. This is the type of queue you just used to move the export operation off of the main queue so it would no longer interfere with the UI.
+<strong>Main Queue</strong>, the default type, specifies that the context will be associated with the main queue. This type is what the main context (<code>coreDataStack.mainContext</code>) uses. Any UI operation, such as creating the fetched results controller for the table view, must use a context of this type.
+Contexts and their managed objects must <strong>only</strong> be accessed from the correct queue. <code>NSManagedObjectContext</code> has <code>perform(_:)</code> and <code>performAndWait(_:)</code> to direct work to the correct queue. You can add the launch argument <code>-com.apple.CoreData.ConcurrencyDebug 1</code> to your app’s scheme to catch mistakes in the debugger.</p>
+</div>
 <p>Next, find the following code in the same method:</p>
 <div class="highlight"><pre><span></span><code>  <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Export Path: </span><span class="si">\(</span><span class="n">exportFilePath</span><span class="si">)</span><span class="s">&quot;</span><span class="p">)</span>
   <span class="kc">self</span><span class="p">.</span><span class="n">navigationItem</span><span class="p">.</span><span class="n">leftBarButtonItem</span> <span class="p">=</span>
@@ -8596,9 +8596,9 @@
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>If a managed object context is of type <code>MainQueueConcurrencyType</code>, you don’t <em>have</em> to wrap code in <code>perform(_:)</code>, but it doesn’t hurt to use it.
-  If you don’t know what type the context will be, as is the case in <code>didFinish(viewController:didSave:)</code>, it’s safest to use <code>perform(_:)</code> so it will work with both parent and child contexts.</p>
+If you don’t know what type the context will be, as is the case in <code>didFinish(viewController:didSave:)</code>, it’s safest to use <code>perform(_:)</code> so it will work with both parent and child contexts.</p>
+</div>
 <p>There’s a problem with the above implementation — have you spotted it?</p>
 <p>When the app adds a new journal entry, it creates a new object and adds it to the managed object context. If the user taps the Cancel button, the app won’t save the context, but the new object will still be present. If the user then adds and saves another entry, the canceled object will <em>still</em> be present! You won’t see it in the UI unless you’ve got the patience to scroll all the way to the end, but it will show up at the bottom of the CSV export.</p>
 <p>You could solve this problem by deleting the object when the user cancels the view controller. But what if the changes were complex, involved multiple objects, or required you to alter properties of an object as part of the editing workflow? Using a child context will help you manage these complex situations with ease.</p>
@@ -8633,8 +8633,8 @@
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>You might be wondering why you need to pass <em>both</em> the managed object and the managed object context to the <code>detailViewController</code>, since managed objects already have a context variable. This is because managed objects only have a weak reference to the context. If you don’t pass the context, ARC will remove the context from memory (since nothing else is retaining it) and the app will not behave as you expect.</p>
+</div>
 <p>Build and run your app; it should work exactly as before. In this case, no visible changes to the app are a good thing; the user can still tap on a row to view and edit a surf session journal entry.</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/0d02f10f0ab686806c959faa34f0a44814a99a813827107ad68240b452bd94cd/original.png" /></p>
 <p>By using a child context as a container for the journal edits, you’ve reduced the complexity of your app’s architecture. With the edits on a separate context, canceling or saving managed object changes is trivial.</p>

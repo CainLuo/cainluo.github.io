@@ -8433,8 +8433,8 @@
 <p>The app will take a long time to launch and once it does launch, it will feel sluggish and may even crash as you use it. Rest assured, this is by design!</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>It’s possible the starter project may not even launch on your system. The app was architected to be as sluggish as possible while still able to run on most systems, so the performance improvements you’ll make will be easily noticeable. If the app refuses to work on your system, continue to follow along. The first set of changes you make should enable the app to work on even the slowest devices.</p>
+</div>
 <p>As you can see in the following screenshots, the first tab includes a table view and a custom cell with basic information, such as name and department, for all employees.</p>
 <p>Tap a cell to reveal more details for the selected employee, such as start date and remaining vacation days.</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/7de30cf71fb47ae77cf9e2d4c269dfaffe2149adf079423e4ea5d66a5f74d923/original.png" /></p>
@@ -8473,8 +8473,8 @@
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>If you use a device besides an iPhone 6S or iPhone SE, including the iOS Simulator, your memory gauge may not look exactly like these screenshots. The utilization percentages will be based off of the amount of available RAM on your test device, which may not match the RAM available on an iPhone 6S.</p>
+</div>
 <p>The RAM usage is quite high, considering there’s only 50 employee records in the app. The data model itself could be at fault here, so that’s where you’ll start your investigation.</p>
 <h3 id="exploring-the-data-source">Exploring the data source<a class="headerlink" href="#exploring-the-data-source" title="Permanent link">&para;</a></h3>
 <p>In Xcode, open the project navigator and click on <strong>EmployeeDirectory.xcdatamodeld</strong> to view the data model. The model for the starter project consists of an <code>Employee</code> entity with 11 attributes and a <code>Sale</code> entity with two attributes.</p>
@@ -8496,8 +8496,8 @@
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>You can vary the amount and type of data the app imports from the <strong>seed.json</strong>file by modifying the <code>amountToImport</code> and <code>addSalesRecords</code> constants located at the top of <strong>AppDelegate.swift</strong>. For now, leave these constants set to their default values.</p>
+</div>
 <p>In terms of performance, the text showing the employee names, departments, email addresses and phone numbers is inconsequential compared to the size of the profile pictures, which are large enough to potentially impact the performance of the list.</p>
 <p>Now that you’ve measured the problem and have a baseline for future comparisons, you’ll make changes to the data model to reduce the amount of RAM in use.</p>
 <h3 id="making-changes-to-improve-performance">Making changes to improve performance<a class="headerlink" href="#making-changes-to-improve-performance" title="Permanent link">&para;</a></h3>
@@ -8542,8 +8542,8 @@
 <p>This is a very simple class with just two properties. The first, <strong>picture</strong>, matches the single attribute on the <strong>EmployeePicture</strong> entity you just created in the visual data model editor. The second property, <strong>employee</strong>, matches the relationship you created on the <strong>EmployeePicture</strong>entity.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>You could also have Xcode create the <strong>EmployeePicture</strong> class automatically. To add a new class this way, open <strong>EmployeeDirectory.xcdatamodeld</strong>, go to <strong>Editor ▸ Create NSManagedObject Subclass…</strong>, select the data model and then select the <strong>EmployeePicture</strong> entity in the next two dialog boxes. Select <strong>Swift</strong> as the language option in the final box. If you’re asked, say <strong>No</strong> to creating an Objective-C bridging header. Click <strong>Create</strong> to save the file.</p>
+</div>
 <p>Next, select the <strong>Employee.swift</strong> file from the project navigator and update the code to make use of the new <strong>pictureThumbnail</strong> attribute and <strong>picture</strong> relationship. Rename the picture variable to <code>pictureThumbnail</code> and add a new variable named <code>picture</code> of type <code>EmployeePicture</code>. Your variables will now look like this:</p>
 <div class="highlight"><pre><span></span><code><span class="kr">@NSManaged</span> <span class="kd">public</span> <span class="kd">var</span> <span class="nv">about</span><span class="p">:</span> <span class="nb">String</span><span class="p">?</span>
 <span class="kr">@NSManaged</span> <span class="kd">public</span> <span class="kd">var</span> <span class="nv">active</span><span class="p">:</span> <span class="bp">NSNumber</span><span class="p">?</span>
@@ -8602,8 +8602,8 @@
 <p>You set the <code>picture</code> attribute on the new <code>EmployeePicture</code> entity to the <code>pictureData</code>constant. Finally, you set the <code>picture</code> relationship on the <code>employee</code> entity to the newly-created <code>picture</code> entity.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p><code>imageDataScaledToHeight</code> takes in image data, resizes it to the passed-in height and sets the quality to 80% before returning the new image data.</p>
+</div>
 <p>If you have an app that needs pictures and retrieves data via a network call, you should make sure the API doesn’t already include smaller thumbnail versions of the pictures. There’s a small performance cost associated with converting images on the fly like this.</p>
 <p>Since you changed the model, delete the app from your testing device. Build and run the app. Give it a go! You should see exactly what you saw before:</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/4abd497bb4dd3d941b3bf550de47e4e68a2bb013aa86a00b6281031c3eaef57a/original.png" /></p>
@@ -8631,8 +8631,8 @@
 <p>First, select one of the iPhone simulator targets and then from Xcode’s menu bar, select <strong>Product</strong> and then <strong>Profile</strong> (or press ⌘ + I). This will build the app and launch Instruments.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>You can only use the Instruments Core Data template with the Simulator, as the template requires the DTrace tool which is not available on real iOS devices. You may also need to select a development team for the Target to enable Instruments to run.</p>
+</div>
 <p>You’ll be greeted by the following selection window:</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/7910ff76a15cc48192768844cbb56fada7b7e83d195f1daed3332f836262b1de/original.png" /></p>
 <p>Select the <strong>Core Data</strong> template and click <strong>Choose</strong>. This will launch the Instruments window. If this is the first time you’ve launched Instruments, you might be asked for your password to authorize Instruments to analyze running processes — don’t worry, it’s safe to enter your password in this dialog.</p>
@@ -8653,8 +8653,8 @@
 <p>The Fetches tool corroborates your experience, the fetch is slow and it’s easily noticeable, as you can see it takes about 5,000 microseconds. The app has to complete this fetch before it makes the table view visible and ready for user interaction.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>Depending on your Mac, the numbers onscreen (and the thickness of the bars) might not match those shown in these screenshots. Faster Macs will have quicker fetches. Don’t worry — what’s important is the change in time you’ll see after you modify the project.</p>
+</div>
 <h4 id="changes-to-improve-performance">Changes to improve performance<a class="headerlink" href="#changes-to-improve-performance" title="Permanent link">&para;</a></h4>
 <p>Open <strong>EmployeeListViewController.swift</strong> and find the following line of code in <code>employeeFetchRequest(_:)</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">fetchRequest</span><span class="p">:</span> <span class="bp">NSFetchRequest</span><span class="p">&lt;</span><span class="n">Employee</span><span class="p">&gt;</span> <span class="p">=</span>
@@ -8672,8 +8672,8 @@
 <p>Next launch Instruments again: from Xcode, select <strong>Product</strong> and then <strong>Profile</strong>, or press <strong>⌘ + I</strong>) and repeat the steps you followed previously. Remember to scroll up and down the employee list for about <strong>20 seconds</strong> before clicking the <strong>Stop</strong> button in Instruments.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>To use the latest code, make sure you launch the app from Xcode, which triggers a build, rather than just hitting the red button in Instruments.</p>
+</div>
 <p>This time, the Core Data Instrument should look like this:</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/e29853c899585fb1cd28e934cd05b3c7212a870617c98e5df81b6f2d8c6ecdba/original.png" /></p>
 <p>Now there are multiple fetches, and the initial fetch is faster!</p>
@@ -8696,8 +8696,8 @@
 <p>Instead of Instruments, you’ll use the <strong>XCTest</strong> framework to measure the performance of the department list screen. XCTest is usually used for unit tests, but it also contains useful tools for testing performance.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>For more information on unit tests and Core Data, check out Chapter 7, “Unit Testing”.</p>
+</div>
 <p>First, familiarize yourself with how the app creates the department list screen. Open <strong>DepartmentListViewController.swift</strong> and find the following code in <code>totalEmployeesPerDepartment()</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="c1">//1</span>
 <span class="kd">let</span> <span class="nv">fetchRequest</span><span class="p">:</span> <span class="bp">NSFetchRequest</span><span class="p">&lt;</span><span class="n">Employee</span><span class="p">&gt;</span> <span class="p">=</span>
@@ -8763,8 +8763,8 @@
 <p>On the low-spec test device you might see times as long as 0.252 seconds to perform the <code>totalEmployeesPerDepartment</code> operation. These results might seem good, but there is still room for improvement.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>You might get somewhat different test results, depending on your test device. Don’t worry — what’s important is the change in time you’ll see after you modify the project.</p>
+</div>
 <h4 id="changes-to-improve-performance_1">Changes to improve performance<a class="headerlink" href="#changes-to-improve-performance_1" title="Permanent link">&para;</a></h4>
 <p>The current implementation of <code>totalEmployeesPerDepartment</code> uses a fetch request to iterate through all employee records. Remember the very first optimization in this chapter, where you split out the full-size photo into a separate entity? There’s a similar issue here: Core Data loads the entire employee record, but all you really need is a count of employees by department.</p>
 <p>It would be more efficient to somehow group the records by department and count them. You don’t need details like employee names and photo thumbnails!</p>
@@ -8818,9 +8818,9 @@
 <p>Now the app populates the table view data source for the department list screen with the faster, NSExpression-backed fetch request.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>NSExpression is a powerful API, yet it is seldom used, at least directly. When you create predicates with comparison operations, you may not know it, but you’re actually using expressions. There are many pre-built statistical and arithmetical expressions available in NSExpression, including <code>average</code>, <code>sum</code>, <code>count</code>, <code>min</code>, <code>max</code>, <code>median</code>, <code>mode</code> and <code>stddev</code>.
-  Consult the NSExpression documentation for a comprehensive overview.</p>
+Consult the NSExpression documentation for a comprehensive overview.</p>
+</div>
 <h4 id="verify-the-changes_2">Verify the changes<a class="headerlink" href="#verify-the-changes_2" title="Permanent link">&para;</a></h4>
 <p>Now that you’ve made all the necessary changes to the project, it’s once again time to see if you’ve improved the app’s performance.</p>
 <p>Open <strong>DepartmentListViewControllerTests.swift</strong> and add a new function to test the <code>totalEmployeesPerDepartmentFast</code> function you just created.</p>
@@ -8845,8 +8845,8 @@
 <p>This time, you’ll see two messages with total execution time, one next to each test function.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>If you don’t see the time messages, you can view the details of each individual test run in the logs generated during the test. From Xcode’s menu bar, select <strong>View</strong>, <strong>Debug Area</strong>, and then <strong>Show Debug Area</strong>.</p>
+</div>
 <p>Depending on your test device, the new function, <code>totalEmployeesPerDepartmentFast</code>, will take approximately 0.002 seconds to complete. That’s much faster than the 0.1 to 0.3 seconds used by the original function, <code>totalEmployeesPerDepartment</code>. You’ve increased the speed by over 100%!</p>
 <h3 id="fetching-counts">Fetching counts<a class="headerlink" href="#fetching-counts" title="Permanent link">&para;</a></h3>
 <p>As you’ve already seen, your app doesn’t always need all information from your Core Data objects; some screens simply need the counts of objects that have certain attributes.</p>

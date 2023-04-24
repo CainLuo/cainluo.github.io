@@ -8281,8 +8281,8 @@
 <p>Furthermore, the number of rows in each table view section corresponds to the number of objects in each fetched results controller section. You can query information about a fetched results controller section through its <code>sections</code> property.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>The <code>sections</code> array contains opaque objects that implement the <code>NSFetchedResultsSectionInfo</code> protocol. This lightweight protocol provides information about a section, such as its title and number of objects.</p>
+</div>
 <p>Implementing <code>tableView(_:cellForRowAt:)</code> would typically be the next step.</p>
 <p>A quick look at the method, however, reveals it’s already vending <code>TeamCell</code> cells as necessary. What you need to change is the helper method that populates the cell.</p>
 <p>Find <code>configure(cell:for:)</code> and replace it with the following:</p>
@@ -8375,8 +8375,8 @@
 <p>How exactly are these sections generated? Each unique attribute value becomes a section. <code>NSFetchedResultsController</code> then groups its fetched results into these sections. In this case, it will generate sections for each unique value of <code>qualifyingZone</code> such as “Africa”, “Asia”, “Oceania“ and so on. This is exactly what you want!</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p><code>sectionNameKeyPath</code> takes a keyPath string. It can take the form of an attribute name such as <code>qualifyingZone</code> or <code>teamName</code>, or it can drill deep into a Core Data relationship, such as <code>employee.address.street</code>. Use the <code>#keyPath</code>syntax to defend against typos and stringly typed code.</p>
+</div>
 <p>The fetched results controller will now report the sections and rows to the table view, but the current UI won’t look any different.</p>
 <p>To fix this problem, add the following method to the <code>UITableViewDataSource</code> extension:</p>
 <div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="kc">_</span> <span class="n">tableView</span><span class="p">:</span> <span class="bp">UITableView</span><span class="p">,</span>
@@ -8413,8 +8413,8 @@
 <p>Indeed it did. Changing the sort descriptor restored the geopolitical balance in your sample application. African teams are in Africa, European teams are in Europe and so on.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>The only team that may still raise eyebrows is Australia, which appears under Asia’s qualifying zone. This is how FIFA categorizes Australia. If you don’t like it, you can file a bug report with them!</p>
+</div>
 <p>Notice that within each qualifying zone, teams are sorted by number of wins from highest to lowest, then by name. This is because in the previous code snippet, you added three sort descriptors: first sort by qualifying zone, then by number of wins, then finally by name.</p>
 <p>Before moving on, take a moment to think of what you would have needed to do to separate the teams by qualifying zone <em>without</em> the fetched results controller. First, you would have had to create a dictionary and iterate over the teams to find unique qualifying zones.</p>
 <p>As you traversed the array of teams, you would have had to associate each team with the correct qualifying zone. Once you had the list of teams by zone, you’d then would have had to sort the data.</p>
@@ -8434,8 +8434,8 @@
 <p>You specify a cache name to turn on <code>NSFetchedResultsController</code>’s on-disk section cache. That’s all you need to do! Keep in mind that this section cache is completely separate from Core Data’s persistent store, where you persist the teams.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p><code>NSFetchedResultsController</code>’s section cache is very sensitive to changes in its fetch request. As you can imagine, any changes — such as a different entity description or different sort descriptors — would give you a completely different set of fetched objects, invalidating the cache completely. If you make changes like this, you must delete the existing cache using <code>deleteCache(withName:)</code> or use a different cache name.</p>
+</div>
 <p>Build and run the application a few times. The second launch should be a <em>little</em> bit faster than the first. This is not the author’s power of suggestion (psst, say “fast” five times in a row); it’s <code>NSFetchedResultsController</code>’s cache system at work!</p>
 <p>On the second launch, <code>NSFetchedResultsController</code> reads directly from your cache. This saves a round trip to Core Data’s persistent store, as well as the time needed to compute those sections. Hooray!</p>
 <p>You’ll learn about measuring performance and seeing if your code changes really did make things faster in Chapter 8, “Measuring &amp; Boosting Performance”.</p>
@@ -8463,8 +8463,8 @@
 <p>That’s all you need to start monitoring changes! Of course, the next step is to do something when those change reports come in. You’ll do that next.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>A fetched results controller can only monitor changes made via the managed object context specified in its initializer. If you create a separate <code>NSManagedObjectContext</code> somewhere else in your app and start making changes there, your delegate method won’t run until those changes have been saved and merged with the fetched results controller’s context.</p>
+</div>
 <h3 id="responding-to-changes">Responding to changes<a class="headerlink" href="#responding-to-changes" title="Permanent link">&para;</a></h3>
 <p>First, remove the <code>reloadData()</code> call from <code>tableView(_:didSelectRowAt:)</code>. As mentioned before, this was the brute force approach that you’re now going to replace.</p>
 <p><code>NSFetchedResultsControllerDelegate</code> has four methods that come in varying degrees of granularity. To start out, implement the broadest delegate method, the one that says: “Hey, something just changed!”</p>
@@ -8524,8 +8524,8 @@
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>What you end up doing with the change notifications depends on your individual app. The implementation you see above is an example Apple provided in the <code>NSFetchedResultsControllerDelegate</code> documentation.</p>
+</div>
 <p>Note the order and nature of the methods ties in very neatly to the “begin updates, make changes, end updates” pattern used to update table views. This is not a coincidence!</p>
 <p>Build and run to see your work in action. Right off the bat, each qualifying zone lists teams by the number of wins. Tap on different countries a few times. You’ll see the cells animate smoothly to maintain this order.</p>
 <p>First:</p>
@@ -8754,8 +8754,8 @@
 <p>If you got this far, pat yourself on the back. Not only did you re-implement the sample project with diffable data sources, but you also modernized how you monitor changes with the new fetched results controller delegate method. Along the way, you also removed a lot of boilerplate that was previously required.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>If you are monitoring changes to manage the state of views that don’t support diffable data sources, you should keep in mind there is another <code>NSFetchedResultsControllerDelegate</code> method that gives you a summary of all changes to the fetched results in one shot, but uses <code>CollectionDifference&lt;NSManagedObjectID&gt;</code> to return the results.</p>
+</div>
 <h2 id="key-points">Key points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>NSFetchedResultsController</strong> abstracts away most of the code needed to synchronize a table view with a Core Data store.</li>

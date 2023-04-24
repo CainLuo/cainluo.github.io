@@ -8228,18 +8228,18 @@
 <p>Before you jump into the code, let’s consider what each of the four classes in the Core Data stack — <code>NSManagedObjectModel</code>, <code>NSPersistentStore</code>, <code>NSPersistentStoreCoordinator</code> and <code>NSManagedObjectContext</code> — does in detail.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>This is one of the few parts of the book where you’ll read about the theory before using the concepts in practice. It’s almost impossible to separate one component from the rest of the stack and use it in isolation.</p>
+</div>
 <h2 id="the-managed-object-model">The managed object model<a class="headerlink" href="#the-managed-object-model" title="Permanent link">&para;</a></h2>
 <p>The <code>NSManagedObjectModel</code> represents each object type in your app’s data model, the properties they can have, and the relationships between them. Other parts of the Core Data stack use the model to create objects, store properties and save data.</p>
 <p>As mentioned earlier in the book, it can be helpful to think about <code>NSManagedObjectModel</code> as a database schema. If your Core Data stack uses SQLite under the hood, <code>NSManagedObjectModel</code> represents the schema for the database.</p>
 <p>However, SQLite is only one of many persistent store types you can use in Core Data (more on this later), so it’s better to think of the managed object model in more general terms.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>You may be wondering how <code>NSManagedObjectModel</code> relates to the data model editor you’ve been using all along. Good question!
-  The visual editor creates and edits an <strong>xcdatamodel</strong> file. There’s a special compiler, <code>momc</code>, that compiles the model file into a set of files in a <strong>momd</strong> folder.
-  Just as your Swift code is compiled and optimized so it can run on a device, the compiled model can be accessed efficiently at runtime. Core Data uses the compiled contents of the <strong>momd</strong> folder to initialize an <code>NSManagedObjectModel</code> at runtime.</p>
+The visual editor creates and edits an <strong>xcdatamodel</strong> file. There’s a special compiler, <code>momc</code>, that compiles the model file into a set of files in a <strong>momd</strong> folder.
+Just as your Swift code is compiled and optimized so it can run on a device, the compiled model can be accessed efficiently at runtime. Core Data uses the compiled contents of the <strong>momd</strong> folder to initialize an <code>NSManagedObjectModel</code> at runtime.</p>
+</div>
 <h2 id="the-persistent-store">The persistent store<a class="headerlink" href="#the-persistent-store" title="Permanent link">&para;</a></h2>
 <p><code>NSPersistentStore</code> reads and writes data to whichever storage method you’ve decided to use. Core Data provides four types of <code>NSPersistentStore</code> out of the box: three atomic and one non-atomic.</p>
 <p>An <strong>atomic</strong> persistent store needs to be completely deserialized and loaded into memory before you can make any read or write operations. In contrast, a <strong>non-atomic</strong> persistent store can load chunks of itself onto memory as needed.</p>
@@ -8252,10 +8252,10 @@
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>Were you holding your breath for a persistent store type backed by a JSON file or a CSV file? Bummer. The good news is you can create your own type of persistent store by subclassing <code>NSIncrementalStore</code>.
-  Refer to Apple’s Incremental Store Programming Guide if you’re curious about this option:
-  <a href="https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/IncrementalStorePG/Introduction/Introduction.html">https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/IncrementalStorePG/Introduction/Introduction.html</a></p>
+Refer to Apple’s Incremental Store Programming Guide if you’re curious about this option:
+<a href="https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/IncrementalStorePG/Introduction/Introduction.html">https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/IncrementalStorePG/Introduction/Introduction.html</a></p>
+</div>
 <h2 id="the-persistent-store-coordinator">The persistent store coordinator<a class="headerlink" href="#the-persistent-store-coordinator" title="Permanent link">&para;</a></h2>
 <p><code>NSPersistentStoreCoordinator</code> is the bridge between the managed object model and the persistent store. It’s responsible for using the model and the persistent stores to do most of the hard work in Core Data. It understands the <code>NSManagedObjectModel</code> and knows how to send information to, and fetch information from, the <code>NSPersistentStore</code>.</p>
 <p><code>NSPersistentStoreCoordinator</code> also hides the implementation details of how your persistent store or stores are configured. This is useful for two reasons:</p>
@@ -8349,8 +8349,8 @@
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/9347909433239e83ccdf82fd9d5ec76d824a9992a9dc910101bf5121fdaaab6f/original.png" /></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>You’ll have problems later on if you don’t name your data model file precisely <strong>DogWalk.xcdatamodeld</strong>. This is because <strong>CoreDataStack.swift</strong> expects to find the compiled version at <strong>DogWalk.momd.</strong></p>
+</div>
 <p>Open the data model file and create a new entity named <strong>Dog</strong>. You should be able to do this on your own by now, but in case you forgot how, click the <strong>Add Entity</strong> button on the bottom left.</p>
 <p>Add an attribute named <strong>name</strong> of type <strong>String</strong>. Your data model should look like this:</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/82f546d1374c87ff866a34eba35ab39f4830301b78a402f6a8982bf8e606ebe3/original.png" /></p>
@@ -8438,9 +8438,9 @@
 <p>Like before, the <code>name</code> attribute is a <code>String</code> optional. But what about the <code>walks</code>relationship? Core Data represents to-many relationships using sets, not arrays. Because you made the walks relationship ordered, you’ve got an <code>NSOrderedSet</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p><code>NSSet</code> seems like an odd choice, doesn’t it? Unlike arrays, sets don’t allow accessing their members by index. In fact, there’s no ordering at all! Core Data uses NSSet because a set forces uniqueness among its members. The same object can’t feature more than once in a to-many relationship.
-  If you need to access individual objects by index, you can check the <strong>Ordered</strong>checkbox in the visual editor, as you’ve done here. Core Data will then represent the relationship as an <code>NSOrderedSet</code>.</p>
+If you need to access individual objects by index, you can check the <strong>Ordered</strong>checkbox in the visual editor, as you’ve done here. Core Data will then represent the relationship as an <code>NSOrderedSet</code>.</p>
+</div>
 <p>Similarly, <strong>Walk+CoreDataProperties.swift</strong> should look like this:</p>
 <div class="highlight"><pre><span></span><code><span class="kd">import</span> <span class="nc">Foundation</span>
 <span class="kd">import</span> <span class="nc">CoreData</span>
@@ -8463,8 +8463,8 @@
 <p>The inverse relationship back to <code>Dog</code> is simply a property of type <code>Dog</code>. Easy as pie.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>Sometimes Xcode will create relationship properties with the generic <code>NSManagedObject</code> type instead of the specific class, especially if you’re making lots of subclasses at the same time. If this happens, just correct the type yourself or generate the specific file again.</p>
+</div>
 <h2 id="a-walk-down-persistence-lane">A walk down persistence lane<a class="headerlink" href="#a-walk-down-persistence-lane" title="Permanent link">&para;</a></h2>
 <p>Now your setup is complete; your Core Data stack, your data model and your managed object subclasses. It’s time to convert <strong>DogWalk</strong> to use Core Data. You’ve done this several times before, so this should be an easy section for you.</p>
 <p>Pretend for a moment this application will at some point support tracking multiple dogs. The first step is to track the currently selected dog.</p>
@@ -8558,12 +8558,12 @@
 <p>However, the walks attribute is of type <code>NSOrderedSet</code>. <code>NSOrderedSet</code> is immutable, so you first have to create a mutable copy (<code>NSMutableOrderedSet</code>), insert the new walk and <code>then</code> reset an immutable copy of this mutable ordered set back on the dog.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>Is adding a new object into a to-many relationship making your head spin? Many people can sympathize, which is why <strong>Dog+CoreDataProperties</strong> contains generated accessors to the <code>walks</code> ordered set that will handle all of this for you.
-  For example, you can replace the entire <code>if-let</code> statement in the last code snippet with the following:
-  <div class="highlight"><pre><span></span><code><span class="n">currentDog</span><span class="p">?.</span><span class="n">addToWalks</span><span class="p">(</span><span class="n">walk</span><span class="p">)</span>
+For example, you can replace the entire <code>if-let</code> statement in the last code snippet with the following:
+<div class="highlight"><pre><span></span><code><span class="n">currentDog</span><span class="p">?.</span><span class="n">addToWalks</span><span class="p">(</span><span class="n">walk</span><span class="p">)</span>
 </code></pre></div>
-  Give it a try!</p>
+Give it a try!</p>
+</div>
 <p>Core Data can make things easier for you, though. If the relationship weren’t ordered, you’d just be able to set the <code>one</code> side of the relationship (e.g., walk.dog = currentDog) rather than the <code>many</code> side and Core Data would use the inverse relationship defined in the model editor to add the walk to the dog’s set of walks.</p>
 <p>Finally, you commit your changes to the persistent store by calling <code>saveContext()</code> on the Core Data stack and you reload the table view.</p>
 <p>Build and run the app, and tap the plus (+) button a few times.</p>
@@ -8616,10 +8616,10 @@
 <p>Tap on the Delete button to remove the walk. Verify that the walk is actually gone by terminating the app and re-launching from scratch. The walk you just removed is gone for good. Core Data giveth and Core Data taketh away.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>Deleting used to be one of the most “dangerous” Core Data operations. Why is this? When you remove something from Core Data, you have to delete <em>both</em> the record on disk as well as any outstanding references in code.
-  Trying to access an <code>NSManagedObject</code> that had no Core Data backing store resulted in the the much-feared <code>inaccessible fault</code> Core Data crash.
-  Starting with iOS 9, deletion is safer than ever. Apple introduced the property <code>shouldDeleteInaccessibleFaults</code> on <code>NSManagedObjectContext</code>, which is turned on by default. This marks bad faults as deleted and treats missing data as <code>NULL</code>/<code>nil</code>/<code>0</code>.</p>
+Trying to access an <code>NSManagedObject</code> that had no Core Data backing store resulted in the the much-feared <code>inaccessible fault</code> Core Data crash.
+Starting with iOS 9, deletion is safer than ever. Apple introduced the property <code>shouldDeleteInaccessibleFaults</code> on <code>NSManagedObjectContext</code>, which is turned on by default. This marks bad faults as deleted and treats missing data as <code>NULL</code>/<code>nil</code>/<code>0</code>.</p>
+</div>
 <h2 id="key-points">Key points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
 <li>The <strong>Core Data stack</strong> is made up of five classes: <code>NSManagedObjectModel</code>, <code>NSPersistentStore</code>, <code>NSPersistentStoreCoordinator</code>, <code>NSManagedObjectContext</code>and the <code>NSPersistentContainer</code> that holds everything together.</li>
