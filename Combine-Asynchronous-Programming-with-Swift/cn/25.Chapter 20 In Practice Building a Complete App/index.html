@@ -8962,7 +8962,7 @@
 </code></pre></div>
 <p>使用此代码，您：</p>
 <ol>
-<li>定义一个名为<code>CoreDataStack private enum</code>。使用无写<code>enum</code>在这里很有用，因为它无法初始化。<code>CoreDataStack</code>仅用作命名空间——您实际上不希望能够创建它的实例。</li>
+<li>定义一个名为<code>CoreDataStack</code>的私有<code>enum</code>。使用没有<code>case</code>的<code>enum</code>在这里很有用，因为它无法初始化。<code>CoreDataStack</code>仅用作命名空间——您实际上不希望能够创建它的实例。</li>
 <li>创建一个持久容器。这是实际的核心数据堆栈，封装了托管对象模型、持久存储协调员和托管对象上下文。一旦您拥有了一个容器，您就会返回其视图上下文。您稍后将使用<code>SwiftUI Environment API</code>在整个应用程序中共享此上下文。</li>
 <li>创建一个静态<code>save</code>方法，只有场景委托才能用于保存上下文。在启动保存操作之前，验证上下文是否已更改始终是一个好主意。</li>
 </ol>
