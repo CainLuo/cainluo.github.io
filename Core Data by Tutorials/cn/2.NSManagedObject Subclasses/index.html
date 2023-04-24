@@ -15,7 +15,7 @@
     
     
   
-    <title>Vapor:  2.NSManagedObject Subclasses</title>
+    <title>Vapor:  Core Data By Tutorials &rarr;  2.NSManagedObject Subclasses</title>
   
 
     
@@ -211,12 +211,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
       
       
       
@@ -239,7 +241,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../en/1.Your%20First%20Core%20Data%20App/" class="md-nav__link">
+      <a href="../1.Your%20First%20Core%20Data%20App/" class="md-nav__link">
         1.Your First Core Data App
       </a>
     </li>
@@ -251,11 +253,101 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../en/2.NSManagedObject%20Subclasses/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          2.NSManagedObject Subclasses
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         2.NSManagedObject Subclasses
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#getting-started" class="md-nav__link">
+    Getting started
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modeling-your-data" class="md-nav__link">
+    Modeling your data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storing-non-standard-data-types-in-core-data" class="md-nav__link">
+    Storing non-standard data types in Core Data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managed-object-subclasses" class="md-nav__link">
+    Managed object subclasses
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#propagating-a-managed-context" class="md-nav__link">
+    Propagating a managed context
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-validation-in-core-data" class="md-nav__link">
+    Data validation in Core Data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tying-everything-up" class="md-nav__link">
+    Tying everything up
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-points" class="md-nav__link">
+    Key points
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -267,7 +359,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../en/3.The%20Core%20Data%20Stack/" class="md-nav__link">
+      <a href="../3.The%20Core%20Data%20Stack/" class="md-nav__link">
         3.The Core Data Stack
       </a>
     </li>
@@ -281,7 +373,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../en/4.Intermediate%20Fetching/" class="md-nav__link">
+      <a href="../4.Intermediate%20Fetching/" class="md-nav__link">
         4.Intermediate Fetching
       </a>
     </li>
@@ -295,7 +387,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../en/5.NSFetchedResults%20Controller/" class="md-nav__link">
+      <a href="../5.NSFetchedResults%20Controller/" class="md-nav__link">
         5.NSFetchedResults Controller
       </a>
     </li>
@@ -309,7 +401,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../en/6.Versioning%20%26%20Migration/" class="md-nav__link">
+      <a href="../6.Versioning%20%26%20Migration/" class="md-nav__link">
         6.Versioning & Migration
       </a>
     </li>
@@ -323,7 +415,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../en/7.Unit%20Testing/" class="md-nav__link">
+      <a href="../7.Unit%20Testing/" class="md-nav__link">
         7.Unit Testing
       </a>
     </li>
@@ -337,7 +429,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../en/8.Measuring%20%26%20Boosting%20Performance/" class="md-nav__link">
+      <a href="../8.Measuring%20%26%20Boosting%20Performance/" class="md-nav__link">
         8.Measuring & Boosting Performance
       </a>
     </li>
@@ -351,7 +443,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../en/9.Multiple%20Managed%20Object%20Contexts/" class="md-nav__link">
+      <a href="../9.Multiple%20Managed%20Object%20Contexts/" class="md-nav__link">
         9.Multiple Managed Object Contexts
       </a>
     </li>
@@ -8712,6 +8804,42 @@ Attribute validation is one of the few exceptions. If you add it to your app aft
       </main>
       
         <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="页脚" >
+      
+        
+        <a href="../1.Your%20First%20Core%20Data%20App/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 1.Your First Core Data App" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              1.Your First Core Data App
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../3.The%20Core%20Data%20Stack/" class="md-footer__link md-footer__link--next" aria-label="下一页: 3.The Core Data Stack" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              3.The Core Data Stack
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
