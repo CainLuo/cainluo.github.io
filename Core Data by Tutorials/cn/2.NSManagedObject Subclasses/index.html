@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#2nsmanagedobject-subclasses" class="md-skip">
+        <a href="#2nsmanagedobject" class="md-skip">
           跳转至
         </a>
       
@@ -289,57 +289,57 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#getting-started" class="md-nav__link">
-    Getting started
+  <a href="#_1" class="md-nav__link">
+    入门
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#modeling-your-data" class="md-nav__link">
-    Modeling your data
+  <a href="#_2" class="md-nav__link">
+    数据建模
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#storing-non-standard-data-types-in-core-data" class="md-nav__link">
-    Storing non-standard data types in Core Data
+  <a href="#core-data" class="md-nav__link">
+    在Core Data中存储非标准数据类型
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#managed-object-subclasses" class="md-nav__link">
-    Managed object subclasses
+  <a href="#_3" class="md-nav__link">
+    托管对象子类
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#propagating-a-managed-context" class="md-nav__link">
-    Propagating a managed context
+  <a href="#_4" class="md-nav__link">
+    传播托管上下文
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#data-validation-in-core-data" class="md-nav__link">
-    Data validation in Core Data
+  <a href="#_5" class="md-nav__link">
+    核心数据中的数据校验
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#tying-everything-up" class="md-nav__link">
-    Tying everything up
+  <a href="#_6" class="md-nav__link">
+    把一切绑起来
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#key-points" class="md-nav__link">
-    Key points
+  <a href="#_7" class="md-nav__link">
+    关键点
   </a>
   
 </li>
@@ -8064,57 +8064,57 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#getting-started" class="md-nav__link">
-    Getting started
+  <a href="#_1" class="md-nav__link">
+    入门
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#modeling-your-data" class="md-nav__link">
-    Modeling your data
+  <a href="#_2" class="md-nav__link">
+    数据建模
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#storing-non-standard-data-types-in-core-data" class="md-nav__link">
-    Storing non-standard data types in Core Data
+  <a href="#core-data" class="md-nav__link">
+    在Core Data中存储非标准数据类型
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#managed-object-subclasses" class="md-nav__link">
-    Managed object subclasses
+  <a href="#_3" class="md-nav__link">
+    托管对象子类
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#propagating-a-managed-context" class="md-nav__link">
-    Propagating a managed context
+  <a href="#_4" class="md-nav__link">
+    传播托管上下文
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#data-validation-in-core-data" class="md-nav__link">
-    Data validation in Core Data
+  <a href="#_5" class="md-nav__link">
+    核心数据中的数据校验
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#tying-everything-up" class="md-nav__link">
-    Tying everything up
+  <a href="#_6" class="md-nav__link">
+    把一切绑起来
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#key-points" class="md-nav__link">
-    Key points
+  <a href="#_7" class="md-nav__link">
+    关键点
   </a>
   
 </li>
@@ -8134,26 +8134,22 @@
                   
 
 
-<h1 id="2nsmanagedobject-subclasses">2.NSManagedObject Subclasses<a class="headerlink" href="#2nsmanagedobject-subclasses" title="Permanent link">&para;</a></h1>
-<p>Written by Pietro Rea</p>
-<p>You got your feet wet with a simple Core Data app in Chapter 1; now it’s time to explore more of what Core Data has to offer!</p>
-<p>At the core of this chapter is the subclassing of <code>NSManagedObject</code> to make your own classes for each data entity. This creates a direct one-to-one mapping between entities in the data model editor and classes in your code. This means in some parts of your code, you can work with objects and properties without worrying too much about the Core Data side of things.</p>
-<p>Along the way, you’ll learn about all the data types available in Core Data entities, including a few outside the usual string and number types. And with all the data type options available, you’ll also learn about validating data to automatically check values before saving.</p>
-<h2 id="getting-started">Getting started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
-<p>Head over to the files accompanying this book and open the sample project named <strong>BowTies</strong>in the starter folder. Like <strong>HitList</strong>, this project uses Xcode’s Core Data-enabled template. Like before, this means Xcode generated its own ready-to-use Core Data stack located in <strong>AppDelegate.swift</strong>.</p>
-<p>Open <strong>Main.storyboard</strong>. Here you’ll find the sample project’s single-page UI:</p>
+<h1 id="2nsmanagedobject">2.<code>NSManagedObject</code>子类<a class="headerlink" href="#2nsmanagedobject" title="Permanent link">&para;</a></h1>
+<p>在第1章中，您已经熟悉了一个简单的<code>Core Data</code>应用程序;现在是时候探索更多的核心数据所提供的！</p>
+<p>本章的核心是对<code>NSManagedObject</code>进行子类化，以便为每个数据实体创建自己的类。 这将在数据模型编辑器中的实体和代码中的类之间创建直接的一对一映射。 这意味着在代码的某些部分，您可以使用对象和属性，而无需过多担心核心数据方面的事情。</p>
+<p>在此过程中，您将了解<code>Core Data</code>实体中可用的所有数据类型，包括一些常见的字符串和数字类型之外的数据类型。 通过所有可用的数据类型选项，您还将了解验证数据以在保存前自动检查值。</p>
+<h2 id="_1">入门<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>转到本书附带的文件，并在<code>starter</code>文件夹中打开名为 <strong>BowTies</strong> 的示例项目。 和 <strong>HitList</strong> 一样，这个项目使用了<code>Xcode</code>的<code>Core Data</code>模板。 像以前一样，这意味着<code>Xcode</code>生成了自己的现成的<code>Core Data</code>堆栈，位于 <strong> AppDelegate.swift </strong> 中。</p>
+<p>打开 <strong>Main.storyboard</strong>。 在这里，您将找到示例项目的单页<code>UI</code>：</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/091774d31b53ae80b6fd4acdf1c956600e74b5984cf1329b185923ca9ed2a806/original.png" /></p>
-<p>As you can probably guess, BowTies is a lightweight bow tie management application. You can switch between the different colors of bow ties you own — the app assumes one of each — using the topmost segmented control. Tap “R” for red, “O” for orange and so on.</p>
-<p>Tapping on a particular color pulls up an image of the tie and populates several labels on the screen with specific information about the tie. This includes:</p>
+<p>正如您可能猜到的，<code>BowTies</code>是一个轻量级的领结管理应用程序。 你可以在你拥有的不同颜色的领结之间切换--应用程序假设每种颜色都有一个--使用最上面的分段控件。 点击<code>“R”</code>代表红色，<code>“O”</code>代表橙子，依此类推。</p>
+<p>点击特定的颜色会弹出领带的图像，并在屏幕上填充几个标签，其中包含有关领带的特定信息。 这包括：</p>
 <ul>
-<li>The name of the bow tie (so you can tell similarly-colored ones apart)</li>
-<li>The number of times you’ve worn the tie</li>
-<li>The date you last wore the tie</li>
-<li>Whether the tie is a favorite of yours</li>
+<li>领结的名称（这样你就可以区分颜色相似的领结）-你戴领结的次数-你最后一次戴领结的日期-这条领带是否是你的最爱</li>
 </ul>
-<p>The <strong>Wear</strong> button on the bottom-left increments the number of times you’ve worn that particular tie and sets the <code>last worn</code> date to today.</p>
-<p>Orange is not your color? Not to worry. The <strong>Rate</strong> button on the bottom-right changes a bow tie’s rating. This particular rating system uses a scale from 0 to 5, allowing for decimal values.</p>
-<p>That’s what the application is <strong>supposed</strong> to do in its final state. Open <strong>ViewController.swift</strong> to see what it currently does:</p>
+<p>左下角的 <strong>Wear</strong> 按钮会增加您佩戴该领带的次数，并将“最后一次佩戴”日期设置为今天。</p>
+<p>橙子不适合你吗 不用担心 右下角的 <strong>Rate</strong> 按钮可以更改领结的评级。 该特定评级系统使用从0到5的标度，允许十进制值。</p>
+<p>这就是应用程序在其最终状态下应该做的事情。 打开 <strong>ViewController.swift</strong>，看看它现在做什么：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">import</span> <span class="nc">UIKit</span>
 
 <span class="kd">class</span> <span class="nc">ViewController</span><span class="p">:</span> <span class="bp">UIViewController</span> <span class="p">{</span>
@@ -8189,74 +8185,74 @@
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>The bad news is in its current state, BowTies doesn’t do anything. The good news is you don’t need to do any Ctrl-dragging!</p>
-<p>The segmented control and all the labels on the user interface are already connected to <code>IBOutlets</code> in code. In addition, the segmented control, <code>Wear</code> and <code>Rate</code> button all have corresponding <code>IBActions</code>.</p>
-<p>It looks like you have everything you need to get started adding some Core Data — but wait, what are you going to display onscreen? There’s no input method to speak of, so the app must ship with sample data. That’s exactly right. BowTies includes a property list called <strong>SampleData.plist</strong> containing the information for seven sample ties, one for each color of the rainbow.</p>
-<p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/5d290897e2b98356d3bb392e1bb35843c7eb9f7f197919d18face0fd83087925/original.png" /></p>
-<p>Furthermore, the application’s asset catalog <strong>Assets.xcassets</strong> contains seven images corresponding to the seven bow ties in <strong>SampleData.plist</strong>.</p>
-<p>What you have to do now is take this sample data, store it in Core Data and use it to implement the bow tie management functionality.</p>
-<h2 id="modeling-your-data">Modeling your data<a class="headerlink" href="#modeling-your-data" title="Permanent link">&para;</a></h2>
-<p>In the previous chapter, you learned one of the first things you have to do when starting a new Core Data project is create your data model.</p>
-<p>Open <strong>BowTies.xcdatamodeld</strong> and click <strong>Add Entity</strong> on the lower-left to create a new entity. Double-click on the new entity and change its name to <strong>BowTie</strong>, like so:</p>
-<p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/778003335dbaae0c19da30a3cdb416ee7105d2d0a25a69a9a7448e5843c0e37f/original.png" /></p>
-<p>In the previous chapter, you created a simple <code>Person</code> entity with a single string attribute to hold the person’s name. Core Data supports several other data types, and you’ll use most of them for the new <code>BowTie</code> entity.</p>
-<p>An attribute’s data type determines what kind of data you can store in it and how much space it will occupy on disk. In Core Data, an attribute’s data type begins as <code>Undefined</code> so you’ll have to change it to something else.</p>
-<p>If you remember from <strong>SampleData.plist</strong>, each bow tie has ten associated pieces of information. This means the <code>BowTie</code> entity will end up with at least ten attributes in the model editor.</p>
-<p>Select <code>BowTie</code> on the left-hand side and click the plus sign (+) under <strong>Attributes</strong>. Change the new attribute’s name to <strong>name</strong> and set its type to <strong>String</strong>:</p>
-<p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/27d57976d38ca7332471871a0c6223c192d36a995c9fa4115e4aac49c6a4b1db/original.png" /></p>
-<p>Repeat this process seven more times to add the following attributes:</p>
+<p>坏消息是在目前的状态下，领结什么也不做。 好消息是您不需要执行任何<code>Ctrl</code>拖动！</p>
+<p>用户界面上的分段控件和所有标签都已经在代码中连接到<code>IBOutlets</code>。 另外，分段控件、<code>Wear</code>、<code>Rate</code>按钮都有对应的<code>IBActions</code>。</p>
+<p>看起来你已经拥有了开始添加一些核心数据所需的一切-但是等等，你要在屏幕上显示什么？ 没有输入法可言，所以应用程序必须附带样本数据。 完全正确。 <code>BowTies</code>包含一个名为 <strong>SampleData.plist</strong> 的属性列表，其中包含七个样本领带的信息，彩虹的每种颜色对应一个领带。
+<img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/5d290897e2b98356d3bb392e1bb35843c7eb9f7f197919d18face0fd83087925/original.png" /></p>
+<p>此外，应用程序的资产目录 <strong> Assets.xcassets </strong> 包含与 <strong> SampleData.plist </strong> 中的七个领结对应的七个图像。</p>
+<p>您现在要做的是获取此示例数据，将其存储在<code>Core Data</code>中，并使用它来实现领结管理功能。</p>
+<h2 id="_2">数据建模<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>在上一章中，您了解了在开始一个新的Core Data项目时必须做的第一件事之一是创建数据模型。</p>
+<p>打开 <strong>BowTies.xcdatamodeld</strong>，点击左下方【添加实体】，新建实体。 双击新实体并将其名称更改为 <strong>BowTie</strong>，如下所示：
+<img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/778003335dbaae0c19da30a3cdb416ee7105d2d0a25a69a9a7448e5843c0e37f/original.png" /></p>
+<p>在上一章中，您创建了一个简单的<code>Person</code>实体，它具有一个字符串属性来保存人名。 <code>Core Data</code>支持其他几种数据类型，您将在新的<code>BowTie</code>实体中使用其中的大多数。</p>
+<p>属性的数据类型决定了您可以在其中存储什么类型的数据以及它将占用磁盘上的多少空间。 在<code>Core Data</code>中，属性的数据类型以<code>Undefined</code>开头，因此您必须将其更改为其他类型。</p>
+<p>如果您还记得 <strong>SampleData.plist</strong> 中的内容，每个领结都有十条相关的信息。 这意味着<code>BowTie</code>实体将在模型编辑器中至少有十个属性。</p>
+<p>选择左侧的<code>BowTie</code>，然后单击 <strong> 属性 </strong> 下的加号（+）。 将新属性的名称更改为 <strong>name</strong>，类型设置为 <strong>String</strong>：
+<img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/27d57976d38ca7332471871a0c6223c192d36a995c9fa4115e4aac49c6a4b1db/original.png" /></p>
+<p>再重复此过程七次，以添加以下属性：</p>
 <ul>
-<li>A <strong>Boolean</strong> named <strong>isFavorite</strong></li>
-<li>A <strong>Date</strong> named <strong>lastWorn</strong></li>
-<li>A <strong>Double</strong> named <strong>rating</strong></li>
-<li>A <strong>String</strong> named <strong>searchKey</strong></li>
-<li>An <strong>Integer 32</strong> named <strong>timesWorn</strong></li>
-<li>A <strong>UUID</strong> named <strong>id</strong></li>
-<li>A <strong>URI</strong> named <strong>url</strong></li>
+<li>名为 <strong>isFavorite</strong> 的 <strong> Boolean </strong></li>
+<li>名为 <strong>lastWorn</strong> 的 <strong> Date </strong></li>
+<li>一个 <strong> Double </strong> 命名的 <strong> rating </strong></li>
+<li>一个名为 <strong>searchKey</strong> 的 <strong>String</strong></li>
+<li>名为 <strong>timesWorn</strong> 的 <strong>Integer 32</strong></li>
+<li>名为 <strong>id</strong> 的 <strong> UUID</strong></li>
+<li>名为 <strong>url </strong> 的 <strong>URI</strong></li>
 </ul>
-<p>Most of these data types are common in everyday programming. If you haven’t heard of a <strong>UUID</strong> before, it’s short for <strong>universally unique identifier</strong> and it’s commonly used to uniquely identify information.</p>
-<p><strong>URI</strong> stands for <strong>uniform resource identifier</strong> and it’s used to name and identify different resources like files and web pages. In fact, all URLs are URIs!</p>
-<p>When you’re finished, your Attributes section should look similar to the following:</p>
+<p>这些数据类型中的大多数在日常编程中很常见。 如果您以前没有听说过 <strong>UUID</strong>，它是 <strong>universally unique identifier</strong> 的缩写，通常用于唯一标识信息。</p>
+<p><strong>URI</strong> 代表 <strong> 统一资源标识符 </strong>，用于命名和标识文件、网页等不同资源。 事实上，所有的<code>URL</code>都是<code>URI</code>！</p>
+<p>完成后，<code>Attributes</code>部分应类似于以下内容：</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/9fa9a043824044abd16ba7bebe581b0e8633a0ff3bedb20b8565113f62d6d775/original.png" /></p>
-<p>Don’t worry if the order of the attributes is different — all that matters is the attribute names and types are correct.</p>
+<p>不要担心属性的顺序是否不同-重要的是属性名称和类型是否正确。</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>You may have noticed you have three options for the <code>timesWorn</code> integer attribute: <strong>Integer 16</strong>, <strong>Integer 32</strong> or <strong>Integer 64</strong>.
-16, 32 and 64 refer to the number of bits representing the integer. This is important for two reasons: the number of bits reflects how much space an integer takes up on disk as well as how many values it can represent, also known as its <code>range</code>. Here are the ranges for the three types of integers:
-Range for 16-bit integer: -32768 to 32767
-Range for 32-bit integer: –2147483648 to 2147483647
-Range for 64-bit integer: –9223372036854775808 to 9223372036854775807
-How do you choose? The source of your data will dictate the best type of integer. You’re assuming your users <em>really</em> like bow ties, so a 32-bit integer should offer enough storage for a lifetime of bow tie wear.</p>
+<p>您可能已经注意到，<code>timesWorn</code> integer属性有三个选项：<strong> Integer 16</strong>、<strong> Integer 32</strong> 或 <strong> Integer 64</strong>。
+16、32和64是指表示整数的位数。 这一点很重要，原因有二：位的数量反映了一个整数在磁盘上占据了多少空间，以及它可以表示多少值，也称为它的<code>range</code>。 下面是三种类型的整数的范围：
+16位整数的范围：-32768至32767
+32位整数的范围：-2147483648至2147483647
+64位整数的范围：-9223372036854775808至9223372036854775807
+你怎么选择？ 数据的来源将决定最佳的整数类型。 你假设你的用户真的很喜欢领结，所以一个32位的整数应该提供足够的存储空间，可以让你一生都戴着领结。</p>
 </div>
-<p>Each bow tie has an associated image. How will you store it in Core Data? Add one more attribute to the <code>BowTie</code> entity, name it <strong>photoData</strong> and change its data type to <strong>Binary Data</strong>:</p>
+<p>每个领结都有一个相关的图像。 您将如何将其存储在核心数据中？ 在<code>BowTie</code>实体中增加一个属性，命名为 <strong>photoData</strong>，数据类型改为 <strong>Binary Data</strong>：</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/5587c3ae020def164885ecb9492b7db72236b1c32e7c18f7514ea2bd24c526da/original.png" /></p>
-<p>Core Data provides the option of storing arbitrary blobs of binary data directly in your data model. These could be anything from images, to PDF files, to anything that can be serialized into zeroes and ones.</p>
-<p>As you can imagine, this convenience can come at a steep cost. Storing a large amount of binary data in the same SQLite database as your other attributes will likely impact your app’s performance. That means a giant binary blob would be loaded into memory each time you access an entity, even if you only need to access its name!</p>
-<p>Luckily, Core Data anticipates this problem. With the <code>photoData</code> attribute selected, open the <strong>Attributes Inspecto</strong><strong>r</strong> and check the <strong>Allows External Storage</strong> option.</p>
+<p><code>Core Data</code>提供了将任意二进制数据<code>blob</code>直接存储在数据模型中的选项。 这些可以是任何东西，从图像到<code>PDF</code>文件，再到任何可以序列化为<code>0</code>和<code>1</code>的东西。</p>
+<p>正如你所能想象的，这种便利可能会付出高昂的代价。 将大量二进制数据存储在与其他属性相同的<code>SQLite</code>数据库中可能会影响应用的性能。 这意味着每次访问一个实体时，一个巨大的二进制<code>blob</code>将被加载到内存中，即使您只需要访问它的名称！</p>
+<p>幸运的是，<code>Core Data</code>预见到了这个问题。 选择<code>photoData</code>属性，打开属性检查，勾选允许外存储选项。</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/6ead99c0503bd9d47b359ac4bcd687e35918a25fb77463ebba64d8e48d2329a3/original.png" /></p>
-<p>When you enable <strong>Allows External Storage</strong>, Core Data heuristically decides on a per-value basis if it should save the data directly in the database or store a URI that points to a separate file.</p>
+<p>当您启用 <strong>Allows External Storage</strong> 时，<code>Core Data</code>会根据每个值试探性地决定是将数据直接保存在数据库中，还是存储指向单独文件的<code>URI</code>。</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The <strong>Allows External Storage</strong> option is only available for the binary data attribute type. In addition, if you turn it on, you won’t be able to query Core Data using this attribute.</p>
+<p><strong>Allows External Storage</strong> 选项仅对二进制数据属性类型可用。 此外，如果启用此属性，则无法使用此属性查询Core Data。</p>
 </div>
-<p>In summary, besides Strings, Integers, Doubles, Booleans and Dates, Core Data can also save Binary Data, and it can do so efficiently and intelligently.</p>
-<h2 id="storing-non-standard-data-types-in-core-data">Storing non-standard data types in Core Data<a class="headerlink" href="#storing-non-standard-data-types-in-core-data" title="Permanent link">&para;</a></h2>
-<p>Still, there are many other types of data you may want to save. For example, what would you do if you had to store an instance of <code>UIColor</code>?</p>
-<p>With the options presented so far, you’d have to deconstruct the color into its individual components and save them as integers (e.g., red: 255, green: 101, blue: 155). Then, after fetching these components, you’d have to reconstitute your color at runtime.</p>
-<p>Alternatively, you could serialize the <code>UIColor</code> instance to <code>Data</code> and save it as binary data. Then again, you’d also have to “add water” afterward to reconstitute the binary data back to the <code>UIColor</code> object you wanted in the first place.</p>
-<p>Once again, Core Data has your back. If you took a close look at <strong>SampleData.plist</strong>, you probably noticed each bow tie has an associated color. Select the <code>BowTie</code> entity in the model editor and add a new attribute named <strong>tintColor</strong> of type <strong>Transformable</strong>.</p>
+<p>总之，除了字符串，整数，双精度，布尔值和日期之外，<code>Core Data</code>还可以保存二进制数据，并且可以高效和智能地保存。</p>
+<h2 id="core-data">在<code>Core Data</code>中存储非标准数据类型<a class="headerlink" href="#core-data" title="Permanent link">&para;</a></h2>
+<p>不过，还有许多其他类型的数据，你可能要保存。 例如，如果你必须存储一个<code>UIColor</code>的实例，你会怎么做？</p>
+<p>使用到目前为止提供的选项，您必须将颜色分解为单个组件并将其保存为整数（例如，<code>red: 255, green: 101, blue: 155</code>）。 然后，在获取这些组件之后，您必须在运行时重新构建颜色。</p>
+<p>或者，您可以将<code>UIColor</code>实例序列化为<code>Data</code>并将其保存为二进制数据。 然后，您还必须“加水”，以便将二进制数据重新构造回您最初想要的<code>UIColor</code>对象。</p>
+<p>再一次，核心数据支持你。 如果您仔细查看 <strong> SampleData.plist </strong>，您可能会注意到每个领结都有一个相关的颜色。 在模型编辑器中选择<code>BowTie</code>实体，添加一个新属性，名为 <strong>tintColor</strong>，类型为 <strong>Transformable</strong>。</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/75866fcd0090f95bda5dd197ddfe334cf8c86595ebb7ad0812088b74cbdcce55/original.png" /></p>
-<p>Transformable attributes persist data types that are not listed in Xcode’s Data Model Inspector. These include types that Apple ships in their frameworks such as <code>UIColor</code> and <code>CLLocationCoordinate2D</code> as well as your own types.</p>
-<p>Transformable attributes are extremely powerful and flexible but you need to do some work up front to tell iOS how to convert these types to and from <code>Data</code>. You have to meet three requirements to make an attribute Transformable:</p>
+<p>可转换属性持久化未在<code>Xcode</code>的数据模型检查器中列出的数据类型。 这些类型包括<code>Apple</code>在其框架中提供的类型，如<code>UIColor</code>和<code>CLLocationCoordinate 2D</code>以及您自己的类型。</p>
+<p>可转换属性非常强大和灵活，但你需要做一些工作，告诉<code>iOS</code>如何将这些类型转换为<code>Data</code>。 要使属性可变换，必须满足三个要求：</p>
 <ol>
-<li>Add <code>NSSecureCoding</code> protocol conformance to the backing data type.</li>
-<li>Create and register an <code>NSSecureUnarchiveFromDataTransformer</code> subclass.</li>
-<li>Associate the custom data transformer subclass with the Transformable attribute in the Data Model Editor.</li>
+<li>将<code>NSSecureCoding</code>协议一致性添加到后台数据类型。</li>
+<li>创建并注册<code>NSSecureUnarchiveFromDataTransformer</code>子类。</li>
+<li>将自定义数据转换器子类与数据模型编辑器中的<code>Transformable</code>属性相关联。</li>
 </ol>
-<p>Since you’re dealing with <code>UIColor</code>, the good news is it already conforms to <code>NSSecureCoding</code>. Most data types in Apple’s frameworks do. Hooray!</p>
-<p>To fulfill the second requirement, click on <strong>File\New\File…</strong> and create a file from the Cocoa Touch template. Name the file <code>ColorAttributeTransformer</code> and make it a subclass of <code>NSSecureUnarchiveFromDataTransformer</code>. Click <strong>Next</strong> and save the file within your project.</p>
+<p>由于您正在处理<code>UIColor</code>，好消息是它已经符合<code>NSSecureCoding</code>。 <code>Apple</code>框架中的大多数数据类型都是如此。 万岁！</p>
+<p>要满足第二个要求，请单击 <strong>File\New\File... </strong> 并从可可<code>Touch</code>模板创建一个文件。 将文件命名为<code>ColorAttributeTransformer</code>，并使其成为<code>NSSecureUnarchiveFromDataTransformer</code>的子类。 单击【下一步】，将文件保存到项目中。</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/a9663759a75ef092f54a76b6d444abb93447f577a807c4e7593424bbea5c1347/original.png" /></p>
-<p>Next, replace the contents of the new file with the following implementation.</p>
+<p>接下来，用下面的实现替换新文件的内容。</p>
 <div class="highlight"><pre><span></span><code><span class="kd">import</span> <span class="nc">UIKit</span>
 
 <span class="kd">class</span> <span class="nc">ColorAttributeTransformer</span><span class="p">:</span>
@@ -8279,12 +8275,12 @@ How do you choose? The source of your data will dictate the best type of integer
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>Here’s what this code does: </p>
+<p>下面是这段代码的作用： </p>
 <ol>
-<li>Override <code>allowedTopLevelClasses</code> to return a list of classes this data transformer can decode. We want to persist and retrieve instances of <code>UIColor</code>, so here you return an array that contains only that class.</li>
-<li>Like the name implies, the static function <code>register()</code> helps you register your subclass with <code>ValueTransformer</code>. But why do you need to do this? <code>ValueTransformer</code>maintains a key-value mapping where the key is a name you provide using <code>NSValueTransformerName</code> and the value is an instance of the corresponding transformer. You will need this mapping later in the Data Model Editor.</li>
+<li>重载<code>allowedTopLevelClasses</code>返回此数据转换器可以解码的类列表。 我们希望持久化并检索<code>UIColor</code>的实例，因此在这里返回一个仅包含该类的数组。</li>
+<li>顾名思义，静态函数<code>register（）</code>可以帮助您使用<code>ValueTransformer</code>注册子类。 但你为什么要这么做 <code>ValueTransformer</code>维护了一个键值映射，其中key是您使用<code>NSValueTransformerName</code>提供的名称，<code>value</code>是对应<code>transformer</code>的实例。 稍后在数据模型编辑器中将需要此映射。</li>
 </ol>
-<p>Next, open <strong>AppDelegate.swift</strong> and replace <code>application(_:didFinishLaunchingWithOptions:)</code> with the following implementation:</p>
+<p>接下来打开 <strong>AppDelegate.swift</strong>，将<code>application（_：didFinishLaunchingWithOptions：）</code>替换为如下实现：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="kc">_</span> <span class="n">application</span><span class="p">:</span> <span class="bp">UIApplication</span><span class="p">,</span>
                  <span class="n">didFinishLaunchingWithOptions</span>
   <span class="n">launchOptions</span><span class="p">:</span> <span class="p">[</span><span class="bp">UIApplication</span><span class="p">.</span><span class="n">LaunchOptionsKey</span><span class="p">:</span> <span class="nb">Any</span><span class="p">]?)</span>
@@ -8295,34 +8291,33 @@ How do you choose? The source of your data will dictate the best type of integer
   <span class="k">return</span> <span class="kc">true</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>Here you register your data transformer with the static method you implemented earlier. Registration can happen at any point before your application sets up the Core Data stack.</p>
-<p>Next, go back to <strong>BowTies.xcdatamodeld</strong>, select the <strong>tintColor</strong> attribute and open the Data Model Inspector.</p>
-<p>Change the value of Transformer to <strong>ColorAttributeTransformer</strong> and set the Custom Class to <strong>UIColor</strong>.</p>
+<p>在这里，您使用前面实现的静态方法注册数据转换器。 注册可以在应用程序设置<code>Core Data</code>堆栈之前的任何时候进行。</p>
+<p>接下来，返回 <strong>BowTies.xcdatamodeld</strong>，选择 <strong>tintColor</strong> 属性，打开数据模型检查器。</p>
+<p>将<code>Transformer</code>的值更改为 <strong>ColorAttributeTransformer</strong>，将<code>Custom Class</code>设置为 <strong>UIColor</strong>。</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/1c2bf695dd5cad2eb23772945f4f7295e23d4ef3a73dfe15be218c3cacc38206/original.png" /></p>
-<p>Your data model is now complete. The <code>BowTie</code> entity has the ten attributes it needs to store all the information in <strong>SampleData.plist</strong>.</p>
-<h2 id="managed-object-subclasses">Managed object subclasses<a class="headerlink" href="#managed-object-subclasses" title="Permanent link">&para;</a></h2>
-<p>In the sample project from the last chapter, you used key-value coding to access the attributes on the <code>Person</code> entity. It looked similar to the following:</p>
+<p>您的数据模型现在已经完成。 <code>BowTie</code>实体有十个属性，它需要将所有信息存储在 <strong>SampleData.plist</strong> 中。</p>
+<h2 id="_3">托管对象子类<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>在上一章的示例项目中，您使用了键-值编码来访问<code>Person</code>实体的属性。 它看起来类似于以下内容：</p>
 <div class="highlight"><pre><span></span><code><span class="c1">// Set the name</span>
 <span class="n">person</span><span class="p">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">aName</span><span class="p">,</span> <span class="n">forKeyPath</span><span class="p">:</span> <span class="s">&quot;name&quot;</span><span class="p">)</span>
 
 <span class="c1">// Get the name</span>
 <span class="kd">let</span> <span class="nv">name</span> <span class="p">=</span> <span class="n">person</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="n">forKeyPath</span><span class="p">:</span> <span class="s">&quot;name&quot;</span><span class="p">)</span>
 </code></pre></div>
-<p>Even though you can do everything directly on <code>NSManagedObject</code> using key-value coding, that doesn’t mean you should!</p>
-<p>The biggest problem with key-value coding is you’re accessing data using strings instead of strongly-typed classes. This is often jokingly referred to as writing <code>stringly typed</code> code.</p>
-<p>As you probably know from experience, <code>stringly typed</code> code is vulnerable to silly human errors such as mistyping and misspelling. Key-value coding also doesn’t take full advantage of Swift’s type-checking and Xcode’s auto-completion. “There must be another way!” you may be thinking, and you’re right.</p>
-<p>The best alternative to key-value coding is to create <code>NSManagedObject</code> subclasses for each entity in your data model. That means there will be a <code>BowTie</code> class with correct types for each property.</p>
-<p>Xcode can generate the subclass for you either manually or automatically. Why would you want Xcode to do it for you? It can be a bit of a hassle having to generate these subclass files and have them clutter up your project if you never have to look at them or change them. Since Xcode 8, you can choose, on a per-entity basis, to have Xcode automatically generate and update these files, and store them in the derived data folder for your project.</p>
-<p>This setting is in the <strong>Codegen</strong> field of the <strong>Data Model</strong> inspector when using the model editor. Because you’re learning about Core Data in this book, you’re not going to use automatic code generation because it helps a lot to be able to easily see the files that have been generated for you.</p>
-<p>Make sure you still have <strong>BowTies.xcdatamodeld</strong> open, select the <code>BowTie</code> entity and open the Data Model inspector. Set the <strong>Codegen</strong> dropdown to <strong>Manual/None</strong>, as shown below:</p>
+<p>即使您可以使用键-值编码直接在<code>NSManagedObject</code>上执行所有操作，但这并不意味着您应该这样做！</p>
+<p>键值编码的最大问题是使用字符串而不是强类型类访问数据。 这通常被戏称为编写<code>stringly typed</code>代码。</p>
+<p>你可能从经验中知道，字符串类型的代码很容易出现愚蠢的人为错误，比如输入错误和拼写错误。 键值编码也没有充分利用<code>Swift</code>的类型检查和<code>Xcode</code>的自动完成。 “一定还有别的办法！” 你可能在想，你是对的</p>
+<p>键值编码的最佳替代方法是为数据模型中的每个实体创建<code>NSManagedObject</code>子类。 这意味着将有一个<code>BowTie</code>类，每个属性都有正确的类型。</p>
+<p><code>Xcode</code>可以手动或自动为您生成子类。 为什么你想让<code>Xcode</code>为你做这件事？ 如果您从来不需要查看或更改这些子类文件，那么生成这些子类文件并使它们在您的项目中变得杂乱可能会有点麻烦。 从<code>Xcode 8</code>开始，您可以选择在每个实体的基础上让<code>Xcode</code>自动生成和更新这些文件，并将它们存储在项目的派生数据文件夹中。</p>
+<p>使用模型编辑器时，此设置位于 <strong>Data Model</strong> 检查器的 <strong>Codegen</strong> 字段中。 因为您在本书中学习的是<code>Core Data</code>，所以您不会使用自动代码生成，因为它可以帮助您轻松地查看已为您生成的文件。</p>
+<p>确保 <strong>BowTies.xcdatamodeld</strong> 仍然打开，选择<code>BowTie</code>实体并打开数据模型检查器。 设置 <strong>Codegen</strong> 下拉菜单为 <strong> Manual/None </strong>，如下图所示：</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/7dbd5a5cdb38da4deaf024d1a86c675344b38c9330b020c9d7bb7010adb86337/original.png" /></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Make sure you change this code generation setting <strong>before</strong> your first compilation, after you add the <code>BowTie</code> entity to the model.
-If you set the code generation setting <em>after</em> your first compilation, you’ll have two versions of the managed object subclass: one in derived data, and a second one in your source code. If this happens, you’ll run into problems when you try to compile again.</p>
+<p>请确保在第一次编译之前，在将<code>BowTie</code>实体添加到模型之后，更改此代码生成设置。如果你在第一次编译后设置代码生成设置，你将有两个版本的托管对象子类：一个在派生数据中，另一个在源代码中。 如果发生这种情况，当您尝试再次编译时，您将遇到问题。</p>
 </div>
-<p>Next, go to <strong>Editor\Create NSManagedObject Subclass…</strong>. Select the data model and then the <code>BowTie</code> entity in the next two dialog boxes. Click <strong>Create</strong> to save the file.</p>
-<p>Xcode generated two Swift files for you, one called <strong>BowTie+CoreDataClass.swift</strong> and a second called <strong>BowTie+CoreDataProperties.swift</strong>. Open <strong>BowTie+CoreDataClass.swift</strong>. It should look similar to the following:</p>
+<p>接下来，转到 <strong>Editor\Create NSManagedObject Subclass...</strong>。 选择数据模型，然后在接下来的两个对话框中选择<code>BowTie</code>实体。 单击 <strong>Create</strong> 按钮，保存文件。</p>
+<p><code>Xcode</code>生成了两个<code>Swift</code>文件，一个名为 <strong>BowTie+CoreDataClass.swift </strong>，另一个名为 <strong>BowTie+CoreDataProperties.swift</strong>。 打开 <strong>BowTie+CoreDataClass.swift</strong>。 它应该类似于以下内容：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">import</span> <span class="nc">Foundation</span>
 <span class="kd">import</span> <span class="nc">CoreData</span>
 
@@ -8331,7 +8326,7 @@ If you set the code generation setting <em>after</em> your first compilation, yo
 
 <span class="p">}</span>
 </code></pre></div>
-<p>Next, open <strong>BowTie+CoreDataProperties.swift</strong>. Your generated properties may not be in the same order as shown here, but the file should look similar to the following:</p>
+<p>接下来打开 <strong>BowTie+CoreDataProperties.swift</strong>。 生成的属性可能与此处显示的顺序不同，但文件应类似于以下内容：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">import</span> <span class="nc">Foundation</span>
 <span class="kd">import</span> <span class="nc">CoreData</span>
 
@@ -8359,13 +8354,13 @@ If you set the code generation setting <em>after</em> your first compilation, yo
 
 <span class="p">}</span>
 </code></pre></div>
-<p>In object-oriented parlance, an object is a set of <strong>values</strong> along with a set of <strong>operations</strong>defined on those values. In this case, Xcode separates these two things into two separate files. The values (i.e. the properties that correspond to the BowTie attributes in your data model) are in <strong>BowTie+CoreDataProperties.swift</strong>, whereas the operations are in the currently empty <strong>BowTie+CoreDataClass.swift</strong>.</p>
+<p>在面向对象的说法中，对象是一组 <strong>values</strong> 沿着在这些值上定义的一组 <strong>operations</strong>。 在这种情况下，<code>Xcode</code>将这两个东西分成两个单独的文件。 值（即对应于数据模型中<code>BowTie</code>属性的属性）在 <strong>BowTie+CoreDataProperties.swift</strong> 中，而操作在当前为空的 <strong>BowTie+CoreDataClass.swift</strong> 中。</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>You might be wondering why two separate files are generated. It’s quite common to add custom code to your <code>NSManagedObject</code> subclass. You wouldn’t want to lose that code if you updated the <code>BowTie</code> entity in the model editor and went to <strong>Editor\Create NSManagedObject Subclass…</strong> again. Code creation is smart - if the <strong>BowTie+CoreDataClass.swift</strong> already exists, it will only create <strong>BowTie+CoreDataProperties.swift</strong>, keeping all your custom code. This is the primary reason why Core Data generates two files, instead of generating one as it used to do in previous versions of Xcode.</p>
+<p>您可能想知道为什么会生成两个单独的文件。 在<code>NSManagedObject</code>子类中添加自定义代码是很常见的。 如果您在模型编辑器中更新了<code>BowTie</code>实体并再次转到 <strong>Editor\Create NSManagedObject Subclass... </strong>，您不会希望丢失这些代码。 代码创建是智能的-如果 <strong>BowTie+CoreDataClass.swift</strong> 已经存在，它只会创建 <strong>BowTie+CoreDataProperties.swift</strong>，保留您所有的自定义代码。 这就是Core Data生成两个文件的主要原因，而不是像以前版本的Xcode那样生成一个文件。</p>
 </div>
-<p>Xcode has created a class with a property for each attribute in your data model. Since it has created a property of <code>UIColor</code> you’ll need to add the following <code>import UIKit</code> below <code>import CoreData</code> to fix the error.</p>
-<p>There is a corresponding class in <code>Foundation</code> or in the Swift standard library for every attribute type in the model editor. Here’s the full mapping of attribute types to runtime classes:</p>
+<p><code>Xcode</code>已经为数据模型中的每个属性创建了一个类。 由于它已经创建了<code>UIColor</code>的属性，因此您需要在<code>import CoreData</code>下面添加以下<code>import UIKit</code>来修复错误。</p>
+<p>模型编辑器中的每个属性类型在<code>Foundation</code>或<code>Swift</code>标准库中都有对应的类。 下面是属性类型到运行时类的完整映射：</p>
 <ul>
 <li><strong>String</strong> maps to <code>String?</code></li>
 <li><strong>Integer 16</strong> maps to <code>Int16</code></li>
@@ -8383,18 +8378,16 @@ If you set the code generation setting <em>after</em> your first compilation, yo
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Similar to <code>@dynamic</code> in Objective-C, the <code>@NSManaged</code> attribute informs the Swift compiler that the backing store and implementation of a property will be provided at runtime instead of compile time.
-The normal pattern is for a property to be backed by an instance variable in memory. A property on a managed object is different: It’s backed by the managed object context, so the source of the data is not known at compile time.
-Note since you’ve provided a <strong>Custom Class</strong> of <code>UIColor</code> for the <code>tintColor</code>property, Core Data has generated that property using <code>UIColor?</code> instead of <code>NSObject?</code>.</p>
+<p>类似于<code>Objective-C</code>中的<code>@dynamic</code>，<code>@NSCmanaged</code>属性通知<code>Swift</code>编译器，属性的后备存储和实现将在运行时而不是编译时提供。正常模式是由内存中的实例变量支持属性。 托管对象的属性不同：它由托管对象上下文支持，因此在编译时不知道数据的源。请注意，由于您为<code>tintColor</code>属性提供了<code>UIColor</code>的 <strong>Custom Class</strong>，因此<code>Core Data</code>已使用<code>UIColor？</code>生成该属性 而不是<code>NSObject?</code>。</p>
 </div>
-<p>Congratulations, you’ve just made your first managed object subclass in Swift!</p>
-<p>Compared with key-value coding, this is a much better way of working with Core Data entities and has two main benefits:</p>
+<p>恭喜你，你已经在<code>Swift</code>中创建了你的第一个托管对象子类！</p>
+<p>与键-值编码相比，这是一种更好的处理核心数据实体的方法，有两个主要好处：</p>
 <ol>
-<li>Managed object subclasses unleash the syntactic power of Swift properties. By accessing attributes using properties instead of key-value coding, you befriend Xcode and the compiler.</li>
-<li>You gain the ability to override existing methods or to add your own. Note there are some <code>NSManagedObject</code> methods you must never override. Check Apple’s documentation of <code>NSManagedObject</code> for a complete list.</li>
+<li>托管对象子类释放了<code>Swift</code>属性的语法能力。 通过使用<code>properties</code>而不是<code>key-value</code>编码来访问属性，您可以与<code>Xcode</code>和编译器友好相处。</li>
+<li>您可以重写现有方法或添加自己的方法。 请注意，有一些<code>NSManagedObject</code>方法您永远不能覆盖。 查看<code>Apple</code>的<code>NSManagedObject</code>文档以获取完整列表。</li>
 </ol>
-<p>To make sure everything is hooked up correctly between the data model and your new managed object subclass, you’ll perform a small test.</p>
-<p>Open <strong>AppDelegate.swift</strong> and replace <code>application(_:didFinishLaunchingWithOptions:)</code> with the following implementation:</p>
+<p>为了确保数据模型和新的托管对象子类之间的一切都正确连接，您将执行一个小测试。</p>
+<p>打开 <strong>AppDelegate.swift</strong>，将<code>application（_：didFinishLaunchingWithOptions：）</code>替换为如下实现：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="kc">_</span> <span class="n">application</span><span class="p">:</span> <span class="bp">UIApplication</span><span class="p">,</span>
                  <span class="n">didFinishLaunchingWithOptions</span>
   <span class="n">launchOptions</span><span class="p">:</span> <span class="p">[</span><span class="bp">UIApplication</span><span class="p">.</span><span class="n">LaunchOptionsKey</span><span class="p">:</span> <span class="nb">Any</span><span class="p">]?)</span>
@@ -8425,20 +8418,20 @@ Note since you’ve provided a <strong>Custom Class</strong> of <code>UIColor</c
   <span class="k">return</span> <span class="kc">true</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>On app launch, this test creates a bow tie and sets its <code>name</code> and <code>lastWorn</code> properties before saving the managed object context. Immediately after that, it fetches all <code>BowTie</code>entities and prints the name and the <code>lastWorn</code> date of the first one to the console; there should only be one at this point. Build and run the application and pay close attention to the console:</p>
+<p>在应用程序启动时，此测试将创建一个领结，并在保存托管对象上下文之前设置其<code>name</code>和<code>lastWorn</code>属性。紧接着，它获取所有的<code>BowTie</code>实体，并将第一个实体的名称和<code>lastWorn</code>日期打印到控制台;现在应该只有一个构建并运行应用程序，并密切关注控制台：</p>
 <div class="highlight"><pre><span></span><code><span class="n">Name</span><span class="p">:</span> <span class="n">My</span> <span class="n">bow</span> <span class="n">tie</span><span class="p">,</span> <span class="n">Worn</span><span class="p">:</span> <span class="mi">2020</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">02</span> <span class="mi">15</span><span class="p">:</span><span class="mi">05</span><span class="p">:</span><span class="mi">13</span> <span class="o">+</span><span class="mi">0000</span>
 </code></pre></div>
-<p>If you’ve been following along carefully, <code>name</code> and <code>lastWorn</code> print to the console as expected. This means you were able to save and fetch a <code>BowTie</code> managed object subclass successfully. With this new knowledge under your belt, it’s time to implement the entire sample app.</p>
-<h2 id="propagating-a-managed-context">Propagating a managed context<a class="headerlink" href="#propagating-a-managed-context" title="Permanent link">&para;</a></h2>
-<p>Open <strong>ViewController.swift</strong> and add the following below <code>import UIKit</code>:</p>
+<p>如果您已经仔细地沿着了以下操作，那么<code>name</code>和<code>lastWorn</code>将按预期打印到控制台。 这意味着您能够成功地保存和获取<code>BowTie</code>托管对象子类。 掌握了这些新知识之后，就可以实现整个示例应用程序了。</p>
+<h2 id="_4">传播托管上下文<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>打开 <strong>ViewController.swift</strong>，在<code>import UIKit</code>下面添加如下内容：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">import</span> <span class="nc">CoreData</span>
 </code></pre></div>
-<p>Next, add the following below the last <code>IBOutlet</code> property:</p>
+<p>接下来，在最后一个<code>IBOutlet</code>属性下面添加以下内容：</p>
 <div class="highlight"><pre><span></span><code><span class="c1">// </span><span class="cs">MARK:</span><span class="c1"> - Properties</span>
 <span class="kd">var</span> <span class="nv">managedContext</span><span class="p">:</span> <span class="bp">NSManagedObjectContext</span><span class="p">!</span>
 </code></pre></div>
-<p>To reiterate, before you can do anything in Core Data, you first have to get an <code>NSManagedObjectContext</code> to work with. Knowing how to <strong>propagate</strong> a managed object context to different parts of your app is an important aspect of Core Data programming.</p>
-<p>Open <strong>AppDelegate.swift</strong> and replace <code>application(_:didFinishLaunchingWithOptions:)</code>, which currently contains the test code, with its previous implementation:</p>
+<p>重申一下，在您可以在<code>Core Data</code>中执行任何操作之前，您首先必须获得要使用的<code>NSManagedObjectContext</code>。 了解如何将托管对象上下文 <strong>propagate</strong> 到应用的不同部分是<code>Core Data</code>编程的一个重要方面。</p>
+<p>打开 <strong>AppDelegate.swift</strong>，将当前包含测试代码的<code>application（_：didFinishLaunchingWithOptions：）</code>替换为之前的实现：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="kc">_</span> <span class="n">application</span><span class="p">:</span> <span class="bp">UIApplication</span><span class="p">,</span>
                   <span class="n">didFinishLaunchingWithOptions</span>
   <span class="n">launchOptions</span><span class="p">:</span> <span class="p">[</span><span class="bp">UIApplication</span><span class="p">.</span><span class="n">LaunchOptionsKey</span><span class="p">:</span> <span class="nb">Any</span><span class="p">]?)</span>
@@ -8447,7 +8440,7 @@ Note since you’ve provided a <strong>Custom Class</strong> of <code>UIColor</c
   <span class="k">return</span> <span class="kc">true</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>You’ve got seven bow ties dying to enter your Core Data store. Open <strong>ViewController.swift</strong>and add the following method below <code>rate(_:)</code>:</p>
+<p>你有七个领结等着进入你的核心数据库。 打开 <strong>ViewController.swift</strong>，在<code>rate(_:)</code>下面添加如下方法：</p>
 <div class="highlight"><pre><span></span><code><span class="c1">// Insert sample data</span>
 <span class="kd">func</span> <span class="nf">insertSampleData</span><span class="p">()</span> <span class="p">{</span>
 
@@ -8493,7 +8486,7 @@ Note since you’ve provided a <strong>Custom Class</strong> of <code>UIColor</c
   <span class="k">try</span><span class="p">?</span> <span class="n">managedContext</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>Xcode will complain about a missing method declaration on <code>UIColor</code>. To fix this, add the following private <code>UIColor</code> extension to the end of the file below the last curly brace.</p>
+<p>Xcode将报告<code>UIColor</code>上缺少方法声明。 要解决此问题，请将以下私有<code>UIColor</code>扩展名添加到文件末尾最后一个大括号下方。</p>
 <div class="highlight"><pre><span></span><code><span class="kd">private</span> <span class="kd">extension</span> <span class="bp">UIColor</span> <span class="p">{</span>
 
   <span class="kd">static</span> <span class="kd">func</span> <span class="nf">color</span><span class="p">(</span><span class="n">dict</span><span class="p">:</span> <span class="p">[</span><span class="nb">String</span><span class="p">:</span> <span class="nb">Any</span><span class="p">])</span> <span class="p">-&gt;</span> <span class="bp">UIColor</span><span class="p">?</span> <span class="p">{</span>
@@ -8512,15 +8505,15 @@ Note since you’ve provided a <strong>Custom Class</strong> of <code>UIColor</c
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>That’s quite a bit of code, but it’s all relatively straightforward. The first method, <code>insertSampleData</code>, checks for any bow ties; you’ll learn how this works later. If none are present, it grabs the bow tie information in <strong>SampleData.plist</strong>, iterates through each bow tie dictionary and inserts a new <code>BowTie</code> entity into your Core Data store. At the end of this iteration, it saves the managed object context property to commit these changes to disk.</p>
-<p>The <code>color(dict:)</code> method you added to <code>UIColor</code> via private extension is also simple. <strong>SampleData.plist</strong> stores colors in a dictionary containing three keys: <code>red</code>, <code>green</code> and <code>blue</code>. This static method takes in this dictionary and returns a bona fide <code>UIColor</code>.</p>
-<p>There are two things here to make special note of:</p>
+<p>这是相当多的代码，但它都是相对简单的。 第一个方法，<code>insertSampleData</code>，检查是否有蝴蝶结; 你以后会知道这是怎么回事 如果不存在，它会抓取 <strong>SampleData.plist</strong> 中的领结信息，遍历每个领结字典，并将新的<code>BowTie</code>实体插入到<code>Core Data</code>存储中。 在此迭代结束时，它保存托管对象上下文属性以将这些更改提交到磁盘。</p>
+<p>您通过私有扩展添加到<code>UIColor</code>的<code>color（dict：）</code>方法也很简单。 <strong>SampleData.plist</strong> 将颜色存储在一个包含三个键的字典中：<code>red</code>、<code>green</code>和<code>blue</code>。 这个静态方法接受这个字典并返回一个真正的<code>UIColor</code>。</p>
+<p>这里有两件事需要特别注意：</p>
 <ol>
-<li><strong>The way you store images in Core Data.</strong> The property list contains a file name for each bow tie, not the file image — the actual images are in the project’s asset catalog. With this file name, you instantiate the <code>UIImage</code> and immediately convert it into <code>Data</code> by means of <code>pngData()</code> before storing it in the <code>imageData</code> property.</li>
-<li><strong>The way you store the color.</strong> Even though the color is stored in a transformable attribute, it doesn’t require any special treatment before you store it in <code>tintColor</code>. You simply set the property and you’re good to go.</li>
+<li><strong> 您在Core Data中存储图像的方式。</strong> 特性列表包含每个领结的文件名，而不是文件图像-实际图像位于项目的资源目录中。 使用此文件名，您将实例化<code>UIImage</code>，并立即通过<code>pngData()</code>将其转换为<code>Data</code>，然后将其存储在<code>imageData</code>属性中。</li>
+<li><strong> 你储存颜色的方式 </strong> 即使颜色存储在可转换属性中，在将其存储在<code>tintColor</code>中之前，也不需要任何特殊处理。 您只需设置属性即可。</li>
 </ol>
-<p>The previous methods insert all the bow tie data you had in <strong>SampleData.plist</strong> into Core Data. Now you need to access the data from somewhere!</p>
-<p>Next, replace <code>viewDidLoad()</code> with the following implementation:</p>
+<p>前面的方法将 <strong>SampleData.plist</strong> 中的所有领结数据插入到<code>Core Data</code>中。 现在您需要从某个地方访问数据！</p>
+<p>接下来，将<code>viewDidLoad（）</code>替换为以下实现：</p>
 <div class="highlight"><pre><span></span><code><span class="c1">// </span><span class="cs">MARK:</span><span class="c1"> - View Life Cycle</span>
 <span class="kr">override</span> <span class="kd">func</span> <span class="nf">viewDidLoad</span><span class="p">()</span> <span class="p">{</span>
   <span class="kc">super</span><span class="p">.</span><span class="n">viewDidLoad</span><span class="p">()</span>
@@ -8552,16 +8545,16 @@ Note since you’ve provided a <strong>Custom Class</strong> of <code>UIColor</c
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>This is where you fetch the bow ties from Core Data and populate the UI.</p>
-<p>Step by step, here’s what you’re doing with this code:</p>
+<p>这是您从<code>Core Data</code>获取领结并填充<code>UI</code>的地方。</p>
+<p>一步一步来，下面是你对这段代码所做的：</p>
 <ol>
-<li>You call <code>insertSampleData()</code>, which you implemented earlier. Since <code>viewDidLoad()</code>can be called every time the app is launched, <code>insertSampleData()</code> performs a fetch to make sure it isn’t inserting the sample data into Core Data multiple times.</li>
-<li>You create a fetch request for the purpose of fetching the newly inserted <code>BowTie</code>entities. The segmented control has tabs to filter by color, so the predicate adds the condition to find the bow ties matching the selected color. Predicates are both very flexible and very powerful — you’ll read more about them in Chapter 4, “Intermediate Fetching.”
-   For now, know this particular predicate is looking for bow ties with their <code>searchKey</code> property set to the segmented control’s first button title: in this case, <strong>R</strong>.</li>
-<li>As always, the managed object context does the heavy lifting for you. It executes the fetch request you crafted moments earlier and returns an array of <code>BowTie</code> objects.</li>
-<li>You populate the user interface with the first bow tie in the <code>results</code> array. If there was an error, print the error to the console.</li>
+<li>调用前面实现的<code>insertSampleData()</code>。 由于每次启动应用程序时都可以调用<code>viewDidLoad()</code>，因此<code>insertSampleData()</code>会执行一次提取，以确保不会多次将样本数据插入<code>Core Data</code>。</li>
+<li>您创建一个获取请求，用于获取新插入的<code>BowTie</code>实体。 分段控件具有按颜色进行筛选的选项卡，因此谓词添加条件以查找与所选颜色匹配的领结。谓词既非常灵活又非常强大--您将在第4章“中间获取”中阅读更多关于谓词的内容。
+    现在，我们知道这个特定的谓词正在查找领结，其<code>searchKey</code>属性设置为分段控件的第一个按钮标题：在本例中为 <strong>R</strong>。</li>
+<li>与往常一样，托管对象上下文为您完成了繁重的工作。 它执行您刚才创建的<code>fetch</code>请求，并返回一个<code>BowTie</code>对象数组。</li>
+<li>您使用<code>results</code>数组中的第一个领结填充用户界面。 如果出现错误，则将错误打印到控制台。</li>
 </ol>
-<p>You haven’t defined the <code>populate</code> method yet, so Xcode is throwing a warning. Add the following implementation below <code>insertSampleData()</code>:</p>
+<p>你还没有定义<code>populate</code>方法，所以<code>Xcode</code>抛出了一个警告。 在<code>insertSampleData()</code>下面添加如下实现：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">populate</span><span class="p">(</span><span class="n">bowtie</span><span class="p">:</span> <span class="n">BowTie</span><span class="p">)</span> <span class="p">{</span>
 
   <span class="k">guard</span> <span class="kd">let</span> <span class="nv">imageData</span> <span class="p">=</span> <span class="n">bowtie</span><span class="p">.</span><span class="n">photoData</span> <span class="k">as</span> <span class="n">Data</span><span class="p">?,</span>
@@ -8587,24 +8580,24 @@ Note since you’ve provided a <strong>Custom Class</strong> of <code>UIColor</c
   <span class="n">view</span><span class="p">.</span><span class="n">tintColor</span> <span class="p">=</span> <span class="n">tintColor</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>There’s a UI element for most attributes defined in a bow tie. Since Core Data only stores the image as a blob of binary data, it’s your job to reconstitute it back into an image so the view controller’s image view can use it.</p>
-<p>Similarly, you can’t use the <code>lastWorn</code> date attribute directly. You first need to create a date formatter to turn the date into a string humans can understand.</p>
-<p>Finally, the <code>tintColor</code> transformable attribute that stores your bow tie’s color changes the color of not one, but <code>all</code> the elements on the screen. Simply set the tint color on the view controller’s view and <em>voilà</em>! Everything is now tinted the same color.</p>
+<p>在领结中定义的大多数属性都有一个<code>UI</code>元素。 由于<code>Core Data</code>只将图像存储为二进制数据的<code>blob</code>，因此您的工作是将其重新构造回图像，以便视图控制器的图像视图可以使用它。</p>
+<p>同样，您不能直接使用<code>lastWorn</code>的<code>date</code>属性。 您首先需要创建一个日期格式化程序，将日期转换为人们可以理解的字符串。</p>
+<p>最后，存储领结颜色的<code>tintColor</code>可转换属性改变屏幕上所有元素的颜色，而不是一个元素的颜色。 只需在视图控制器的视图上设置色彩，然后就可以了！ 现在一切都是相同的颜色。</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Xcode generates some <code>NSManagedObject</code> subclass properties as optional types. That’s why inside the <code>populate</code> method, you unwrap some of the Core Data properties on <code>BowTie</code> using a <code>guard</code> statement at the beginning of the method.</p>
+<p><code>Xcode</code>生成一些<code>NSManagedObject</code>子类属性作为可选类型。 这就是为什么在<code>populate</code>方法中，您在方法的开头使用<code>guard</code>语句来展开<code>BowTie</code>上的一些<code>Core Data</code>属性。</p>
 </div>
-<p>Build and run the app. The red bow tie appears on the screen, like so:</p>
+<p>构建并运行应用程序。红色领结出现在屏幕上，如下所示：</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/40a85d522eeb92ffb5a8473ebcbc2d995814ca50bac43741f74645908031f20b/original.png" /></p>
-<p>The <strong>Wear</strong> and <strong>Rate</strong> buttons do nothing at the moment. Tapping on the different parts of the segmented controls also does nothing. You’ve still got work to do!</p>
-<p>First, you need to keep track of the currently selected bow tie so you can reference it from anywhere in your class. Still in <strong>ViewController.swift</strong>, add the following property below <code>managedContext</code> to do this:</p>
+<p><strong>Wear</strong> 和 <strong>Rate</strong> 按钮目前没有任何功能。 轻敲分段控件的不同部分也不会执行任何操作。 你还有工作要做！</p>
+<p>首先，您需要跟踪当前选择的领结，以便您可以在课堂上的任何地方引用它。 还是在 <strong>ViewController.swift</strong> 中，在<code>managedContext</code>下面添加如下属性：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nv">currentBowTie</span><span class="p">:</span> <span class="n">BowTie</span><span class="p">!</span>
 </code></pre></div>
-<p>Next, find the call to <code>populate(bowtie:)</code> in the <code>do-catch</code> statement in <code>viewDidLoad()</code>and add the following line above it to set the initial value of <code>currentBowTie</code>:</p>
+<p>接下来，在<code>viewDidLoad()</code>中的<code>do-catch</code>语句中找到<code>populate(bowtie:)</code>的调用，并在其上方添加以下行，以设置<code>currentBowTie</code>的初始值：</p>
 <div class="highlight"><pre><span></span><code><span class="n">currentBowTie</span> <span class="p">=</span> <span class="n">tie</span>
 </code></pre></div>
-<p>Keeping track of the currently selected bow tie is necessary to implement the <strong>Wear</strong> and <strong>Rate</strong>buttons since these actions only affect the current bow tie.</p>
-<p>Every time the user taps on <strong>Wear</strong>, the button executes the <code>wear(_:)</code> action method. But <code>wear(_:)</code> is empty at the moment. Replace the <code>wear(_:)</code> implementation with the following:</p>
+<p>要实现 <strong>Wear</strong> 和 <strong>Rate</strong> 按钮，必须跟踪当前选择的领结，因为这些操作仅影响当前领结。</p>
+<p>用户每次点击<strong>Wear</strong>按钮，按钮都会执行<code>wear(_:)</code>操作方法。 但<code>wear(_:)</code>目前为空。 将<code>wear(_:)</code>实现替换为以下内容：</p>
 <div class="highlight"><pre><span></span><code><span class="kr">@IBAction</span> <span class="kd">func</span> <span class="nf">wear</span><span class="p">(</span><span class="kc">_</span> <span class="n">sender</span><span class="p">:</span> <span class="bp">UIButton</span><span class="p">)</span> <span class="p">{</span>  
   <span class="n">currentBowTie</span><span class="p">.</span><span class="n">timesWorn</span> <span class="o">+=</span> <span class="mi">1</span>
   <span class="n">currentBowTie</span><span class="p">.</span><span class="n">lastWorn</span> <span class="p">=</span> <span class="n">Date</span><span class="p">()</span>
@@ -8617,10 +8610,10 @@ Note since you’ve provided a <strong>Custom Class</strong> of <code>UIColor</c
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>This method takes the currently selected bow tie and increments its <code>timesWorn</code> attribute by one. Next, you change the <code>lastWorn</code> date to today and save the managed object context to commit these changes to disk. Finally, you populate the user interface to visualize these changes.</p>
-<p>Build and run the application and tap <strong>Wear</strong> as many times as you’d like. It looks like you thoroughly enjoy the timeless elegance of a red bow tie!</p>
+<p>此方法采用当前选定的领结，并将其<code>timesWorn</code>属性加<code>1</code>。 接下来，将<code>lastWorn</code>日期更改为今天，并保存托管对象上下文以将这些更改提交到磁盘。 最后，填充用户界面以可视化这些更改。</p>
+<p>构建并运行应用程序，然后点击 <strong>Wear</strong>，次数不限。 它看起来像你彻底享受永恒的优雅的红色领结！</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/f3fb5a25106aab9bbd8181cc158ce1897985f6ddd133aebf849c18f81828c491/original.png" /></p>
-<p>Similarly, every time the user taps on <strong>Rate</strong>, it executes the <code>rate(_:)</code> action method in your code. <code>rate(_:)</code> is currently empty. Replace the implementation of <code>rate(_:)</code> with the following:</p>
+<p>同样的，每次用户点击 <strong>Rate</strong>，都会执行代码中的<code>rate(_:)</code>的<code>action</code>方法。 <code>rate(_:)</code>当前为空。 将<code>rate(_:)</code>的实现替换为：</p>
 <div class="highlight"><pre><span></span><code><span class="kr">@IBAction</span> <span class="kd">func</span> <span class="nf">rate</span><span class="p">(</span><span class="kc">_</span> <span class="n">sender</span><span class="p">:</span> <span class="bp">UIButton</span><span class="p">)</span> <span class="p">{</span>
 
   <span class="kd">let</span> <span class="nv">alert</span> <span class="p">=</span> <span class="bp">UIAlertController</span><span class="p">(</span><span class="n">title</span><span class="p">:</span> <span class="s">&quot;New Rating&quot;</span><span class="p">,</span>
@@ -8649,8 +8642,8 @@ Note since you’ve provided a <strong>Custom Class</strong> of <code>UIColor</c
   <span class="n">present</span><span class="p">(</span><span class="n">alert</span><span class="p">,</span> <span class="n">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>Tapping on <strong>Rate</strong> now brings up an alert view controller with a single text field, a cancel button and a save button. Tapping the save button calls <code>update(rating:)</code>, which…</p>
-<p>Whoops, you haven’t defined that method yet. Appease Xcode by adding the following implementation below <code>populate(bowtie:)</code>:</p>
+<p>点击 <strong>Rate</strong> 现在会显示一个带有单个文本字段、取消按钮和保存按钮的警报视图控制器。 点击保存按钮调用<code>update（rating：）</code>，这...</p>
+<p>哎呀，你还没有定义这个方法。 通过在<code>populate(bowtie:)</code>下面添加以下实现来满足<code>Xcode</code>：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">update</span><span class="p">(</span><span class="n">rating</span><span class="p">:</span> <span class="nb">String</span><span class="p">?)</span> <span class="p">{</span>
 
   <span class="k">guard</span> <span class="kd">let</span> <span class="nv">ratingString</span> <span class="p">=</span> <span class="n">rating</span><span class="p">,</span>
@@ -8667,26 +8660,25 @@ Note since you’ve provided a <strong>Custom Class</strong> of <code>UIColor</c
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>You convert the text from the alert view’s text field into a <code>Double</code> and use it to update the current bow ties <code>rating</code> property. Finally, you commit your changes as usual by saving the managed object context and refresh the UI to see your changes in real time.</p>
-<p>Try it out. Build and run the app and tap <strong>Rate</strong>:</p>
+<p>您可以将警报视图的文本字段中的文本转换为<code>Double</code>，并使用它来更新当前领结<code>rating</code>属性。 最后，您可以像往常一样提交更改，方法是保存托管对象上下文并刷新<code>UI</code>以真实的查看更改。</p>
+<p>试试看。 构建并运行应用程序，点击 <strong> Rate </strong>：</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/2603fee503032aa8ed31d5a3734568993187567b6334583489495478d83f01c8/original.png" /></p>
-<p>Enter any decimal number from 0 to 5 and tap <strong>Save</strong>. As you’d expect, the rating label updates to the new value you entered. Now tap <strong>Rate</strong> one more time. Remember the timeless elegance of a red bow tie? Let’s say you like it so much you decide to rate it a 6 out of 5. Tap <strong>Save</strong> to refresh the user interface:</p>
+<p>输入<code>0</code>到<code>5</code>之间的任意小数，点击<strong>Save</strong>。 如您所料，分级标签将更新为您输入的新值。 现在再点击一次<strong>Rate</strong>。 还记得红色领结的永恒优雅吗？ 假设你非常喜欢它，你决定给它打6分。 点击<strong>Save</strong>，刷新用户界面：    </p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/392b9a76d01da64af6b6ad481bb057c8f9bd2335a6fb94dde30ebed6275a3cf0/original.png" /></p>
-<p>While you may absolutely <em>love</em> the color red, this is neither the time nor the place for hyperbole. Your app let you save a 6 for a value that’s only supposed to go up to 5. You’ve got invalid data on your hands.</p>
-<h2 id="data-validation-in-core-data">Data validation in Core Data<a class="headerlink" href="#data-validation-in-core-data" title="Permanent link">&para;</a></h2>
-<p>Your first instinct may be to write client-side validation—something like, “Only save the new rating if the value is greater than 0 and less than 5.” Fortunately, you don’t have to write this code yourself. Core Data supports validation for most attribute types out of the box.</p>
-<p>Open <strong>BowTies.xcdatamodeld</strong>, select the <strong>rating</strong> attribute and open the data model inspector.</p>
+<p>虽然你可能绝对喜欢红色，但现在既不是夸张的时候，也不是夸张的地方。 您的应用程序允许您将6保存为仅应最高为5的值。 你手上有无效数据。</p>
+<h2 id="_5">核心数据中的数据校验<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>您的第一直觉可能是编写客户端验证-类似于“仅在值大于0且小于5时保存新评级” 幸运的是，您不必自己编写这些代码。 <code>Core Data</code>支持对大多数属性类型进行开箱即用的验证。</p>
+<p>打开 <strong>BowTies.xcdatamodeld</strong>，选择 <strong>rating</strong> 属性，打开数据模型检查器。</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/01a60fa479245d2174f359605a90197cb5b95d02a511ce3fd0532b07081193bf/original.png" /></p>
-<p>Next to <strong>Validation</strong>, type <strong>0</strong> for minimum and <strong>5</strong> for maximum. That’s it! No need to write any Swift to reject invalid data.</p>
+<p>在 <strong>Validation</strong> 旁边，键入 <strong>0</strong> 表示最小值，键入 <strong>5</strong> 表示最大值。 就是这样！ 不需要写任何<code>Swift</code>来拒绝无效数据。</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Normally, you have to <strong>version</strong> your data model if you want to change it after you’ve shipped your app. You’ll learn more about this in Chapter 6, “Versioning &amp; Migration.”
-Attribute validation is one of the few exceptions. If you add it to your app after shipping, you don’t have to version your data model. Lucky you!</p>
+<p>通常情况下，如果你想在发布应用后更改数据模型，你必须对数据模型进行 <strong>version</strong>。你将在第6章“版本化和迁移”中了解更多。属性验证是少数例外之一。 如果您在交付后将其添加到应用，则无需对数据模型进行版本控制。 你真幸运！</p>
 </div>
-<p>But what does this do, exactly?</p>
-<p>Validation kicks in immediately after you call <code>save()</code> on your managed object context. The managed object context checks with the model to see if any of the new values conflict with the validation rules you’ve put in place.</p>
-<p>If there’s a validation error, the save fails. Remember that <code>NSError</code> in the <code>do-catch</code> block wrapping the <code>save</code> method? Up until now, you’ve had no reason to do anything special if there’s an error other than log it to the console. Validation changes that.</p>
-<p>Build and run the app once more. Give the red bowtie a rating of 6 out of 5 and save. A rather cryptic error message will spill out onto your console:</p>
+<p>但这到底是做什么的？</p>
+<p>在托管对象上下文中调用<code>save()</code>后，验证将立即启动。 托管对象上下文检查模型，以查看是否有任何新值与您已设置的验证规则冲突。</p>
+<p>如果存在验证错误，则保存失败。 还记得<code>do-catch</code>块中包装<code>保存</code>方法的<code>NSError</code>吗？ 到目前为止，如果出现错误，除了将其记录到控制台之外，您没有理由做任何特别的事情。 验证改变了这一点。</p>
+<p>再次构建并运行应用程序。 给予红色领结的评分为6分（满分5分）并保存。 一个相当隐晦的错误消息将溢出到您的控制台上：</p>
 <div class="highlight"><pre><span></span><code><span class="n">Could</span> <span class="n">not</span> <span class="n">save</span> <span class="n">Error</span> <span class="n">Domain</span><span class="p">=</span><span class="n">NSCocoaErrorDomain</span> <span class="n">Code</span><span class="p">=</span><span class="mi">1610</span> <span class="s">&quot;rating is too large.&quot;</span> <span class="n">UserInfo</span><span class="p">={</span><span class="n">NSValidationErrorObject</span><span class="p">=&lt;</span><span class="n">BowTie</span><span class="p">:</span> <span class="mh">0x600002b8ab20</span><span class="p">&gt;</span> <span class="p">(</span><span class="n">entity</span><span class="p">:</span> <span class="n">BowTie</span><span class="p">;</span> <span class="n">id</span><span class="p">:</span> <span class="mh">0xcef31f910384f2ad</span> <span class="p">&lt;</span><span class="n">x</span><span class="o">-</span><span class="n">coredata</span><span class="p">:</span><span class="c1">//A64812B6-5D4D-4934-805C-72F6A345EC7B/BowTie/p5&gt;; data: {</span>
     <span class="n">id</span> <span class="p">=</span> <span class="s">&quot;800C3526-E83A-44AC-B718-D36934708921&quot;</span><span class="p">;</span>
     <span class="n">isFavorite</span> <span class="p">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -8711,8 +8703,8 @@ Attribute validation is one of the few exceptions. If you add it to your app aft
     <span class="n">url</span> <span class="p">=</span> <span class="s">&quot;https://en.wikipedia.org/wiki/Bow_tie&quot;</span><span class="p">;</span>
 <span class="p">}),</span> <span class="s">&quot;NSValidationErrorValue&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s">&quot;NSValidationErrorKey&quot;</span><span class="p">:</span> <span class="n">rating</span><span class="p">,</span> <span class="s">&quot;NSLocalizedDescription&quot;</span><span class="p">:</span> <span class="n">rating</span> <span class="k">is</span> <span class="n">too</span> <span class="n">large</span><span class="p">.]</span>
 </code></pre></div>
-<p>The <code>userInfo</code> dictionary that comes with the error contains all kinds of useful information about why Core Data aborted your save operation. It even has a localized error message you can show your users, under the key <code>NSLocalizedDescription</code>: <code>rating is too large.</code></p>
-<p>What you do with this error, however, is entirely up to you. Open <strong>ViewController.swift</strong> and replace <code>update(rating:)</code> with the following to handle the error appropriately:</p>
+<p>错误附带的<code>userInfo</code>字典包含有关<code>Core Data</code>中止保存操作的原因的各种有用信息。 它甚至有一个本地化的错误消息，您可以在<code>NSLocalizedDescription</code>键下向用户显示：<code>rating is too large.。</code></p>
+<p>但是，如何处理这个错误完全取决于您。 打开 <strong>ViewController.swift</strong>，将<code>update（rating：）</code>替换为以下内容，正确处理错误：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">update</span><span class="p">(</span><span class="n">rating</span><span class="p">:</span> <span class="nb">String</span><span class="p">?)</span> <span class="p">{</span>
 
   <span class="k">guard</span> <span class="kd">let</span> <span class="nv">ratingString</span> <span class="p">=</span> <span class="n">rating</span><span class="p">,</span>
@@ -8738,23 +8730,23 @@ Attribute validation is one of the few exceptions. If you add it to your app aft
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>If there’s an error that occurred because the new rating was either too large or too small, then you present the alert view again.</p>
-<p>Otherwise, you populate the user interface with the new rating as before.</p>
-<p>But wait… Where did <code>NSValidationNumberTooLargeError</code> and <code>NSValidationNumberTooSmallError</code> come from? Go back to the previous console reading and look closely at the first line:</p>
+<p>如果由于新评级太大或太小而出现错误，则再次显示警报视图。</p>
+<p>否则，您将像以前一样使用新评级填充用户界面。</p>
+<p>但是等等...<code>NSValidationNumberTooLargeError</code>和<code>NSValidationNumberTooSmallError</code>从何而来？ 回到前面的控制台阅读，仔细看第一行：</p>
 <div class="highlight"><pre><span></span><code><span class="n">Could</span> <span class="n">not</span> <span class="n">save</span> <span class="n">Error</span> <span class="n">Domain</span><span class="p">=</span><span class="n">NSCocoaErrorDomain</span> <span class="n">Code</span><span class="p">=</span><span class="mi">1610</span> <span class="s">&quot;rating is too large.&quot;</span>
 </code></pre></div>
-<p><code>NSValidationNumberTooLargeError</code> is an error code that maps to the integer 1610.</p>
-<p>For a full list of Core Data errors and code definitions, you can consult <strong>CoreDataErrors.h</strong> in Xcode by Cmd-clicking on <code>NSValidationNumberTooLargeError</code>.</p>
+<p><code>NSValidationNumberTooLargeError</code>是映射到整数<code>1610</code>的错误代码。</p>
+<p>有关<code>Core Data</code>错误和代码定义的完整列表，您可以通过单击<code>NSValidationNumberTooLargeError</code>查看<code>Xcode</code>中的 <strong>CoreDataErrors.h</strong>。</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>When an <code>NSError</code> is involved, it’s standard practice to check the domain and code for the error to determine what went wrong. You can read more about this in Apple’s <code>Error Handling Programming Guide</code>:https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ErrorHandlingCocoa/CreateCustomizeNSError/CreateCustomizeNSError.html</p>
+<p>当涉及到<code>NSError</code>时，标准的做法是检查域和错误代码，以确定出了什么问题。 你可以在<code>Apple</code>的<a href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ErrorHandlingCocoa/CreateCustomizeNSError/CreateCustomizeNSError.html"><code>Error Handling Programming Guide</code></a>中阅读更多关于这一点的信息。</p>
 </div>
-<p>Build and run the app. Verify the new validation rules work properly by once again showing the red tie some love.</p>
+<p>构建并运行应用程序。通过再次向红领带展示一些爱来验证新的验证规则是否正常工作。</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/1bde8727a4d0f6fc074440e80c46185006cb0f382be54523230ed030d57ef453/original.png" /></p>
-<p>If you enter any value above 5 and try to save, the app rejects your rating and asks you to try again with a new alert view. Success!</p>
-<h2 id="tying-everything-up">Tying everything up<a class="headerlink" href="#tying-everything-up" title="Permanent link">&para;</a></h2>
-<p>The <strong>Wear</strong> and <strong>Rate</strong> buttons are working properly, but the app can only display one tie. Tapping the different values on the segmented control is supposed to switch ties. You’ll finish up this sample project by implementing that feature.</p>
-<p>Every time the user taps the segmented control, it executes the <code>segmentedControl(_:)</code>action method in your code. Replace the implementation of <code>segmentedControl(_:)</code> with the following:</p>
+<p>如果您输入任何高于<code>5</code>的值并尝试保存，应用程序将拒绝您的评级，并要求您使用新的警报视图重试。成功了！</p>
+<h2 id="_6">把一切绑起来<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<p><strong>Wear</strong>、<strong>Rate</strong>按钮正常，但应用只能显示一条领带。 在分段控件上点击不同的值应该是为了切换关系。 您将通过实现该特性来完成这个示例项目。</p>
+<p>每次用户点击分段控件时，它都会执行代码中的<code>segmentedControl(_:)</code>操作方法。 将<code>segmentedControl（_：）</code>的实现替换为以下内容：</p>
 <div class="highlight"><pre><span></span><code><span class="kr">@IBAction</span> <span class="kd">func</span> <span class="nf">segmentedControl</span><span class="p">(</span><span class="kc">_</span> <span class="n">sender</span><span class="p">:</span> <span class="bp">UISegmentedControl</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">guard</span> <span class="kd">let</span> <span class="nv">selectedValue</span> <span class="p">=</span> <span class="n">sender</span><span class="p">.</span><span class="n">titleForSegment</span><span class="p">(</span>
     <span class="n">at</span><span class="p">:</span> <span class="n">sender</span><span class="p">.</span><span class="n">selectedSegmentIndex</span><span class="p">)</span> <span class="k">else</span> <span class="p">{</span>
@@ -8775,19 +8767,19 @@ Attribute validation is one of the few exceptions. If you add it to your app aft
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>The title of each segment in the segmented control corresponds to a particular tie’s <code>searchKey</code> attribute. Grab the title of the currently selected segment and fetch the appropriate bow tie using a well-crafted <code>NSPredicate</code>.</p>
-<p>Then, use the first bow tie in the array of results (there should only be one per <code>searchKey</code>) to populate the user interface.</p>
-<p>Build and run the app. Tap different letters on the segmented control for a psychedelic treat.</p>
+<p>分段控件中每个分段的标题对应于特定关系的<code>searchKey</code>属性。 抓取当前所选片段的标题，并使用精心制作的<code>NSPerdicate</code>获取适当的领结。</p>
+<p>然后，使用结果数组中的第一个蝴蝶结（每个<code>searchKey</code>应该只有一个）来填充用户界面。</p>
+<p>构建并运行应用程序。点击分段控件上的不同字母，享受迷幻享受。</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/a89a783d1db599f3dcb92acb80c2306a91e6211cbb7c719bd2f71b29530fddff/original.png" /></p>
-<p>You did it! With this bow tie app under your belt, you’re well on your way to becoming a Core Data master.</p>
-<h2 id="key-points">Key points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
+<p>你做到了！ 有了这个领结应用程序在你的腰带，你很好地在你的方式成为一个核心数据的主人。</p>
+<h2 id="_7">关键点<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Core Data supports different <strong>attribute data types</strong>, which determines the kind of data you can store in your entities and how much space they will occupy on disk. Some common attribute data types are <strong>String</strong>, <strong>Date</strong>, and <strong>Double</strong>.</li>
-<li>The <strong>Binary Data</strong> attribute data type gives you the option of storing arbitrary amounts of binary data in your data model.</li>
-<li>The <strong>Transformable</strong> attribute data type lets you store any object that conforms to <code>NSSecureCoding</code> in your data model.</li>
-<li>Using an <code>NSManagedObject</code> <strong>subclass</strong> is a better way to work with a Core Data entity. You can either generate the subclass manually or let Xcode do it automatically.</li>
-<li>You can <strong>refine</strong> the set entities fetched by <code>NSFetchRequest</code> using an <code>NSPredicate</code>.</li>
-<li>You can set <strong>validation rules</strong> (e.g. maximum value and minimum value) to most attribute data types directly in the data model editor. The managed object context will throw an error if you try to save invalid data.</li>
+<li><code>Core Data</code>支持不同的 <strong>attribute data types</strong>，这决定了您可以在实体中存储的数据类型以及它们在磁盘上占用的空间。 常见的属性数据类型有<code>String</code>、<code>Date</code>、<code>Double</code>。</li>
+<li><strong>Binary Data</strong> 属性数据类型允许您在数据模型中存储任意数量的二进制数据。</li>
+<li><strong>Transformable</strong> 属性数据类型允许您在数据模型中存储任何符合<code>NSSecureCoding</code>的对象。</li>
+<li>使用<code>NSManagedObject</code> <strong>subclass</strong> 是处理<code>Core Data</code>实体的更好方法。 您可以手动生成子类，也可以让<code>Xcode</code>自动生成。</li>
+<li>您可以使用<code>NSPerdicate</code>对<code>NSFetchRequest</code>获取的集合实体进行 <strong>automatically</strong>。</li>
+<li>大多数属性数据类型都可以直接在数据模型编辑器中设置 <strong>validation rules</strong>（如最大值、最小值）。 如果尝试保存无效数据，托管对象上下文将引发错误。</li>
 </ul>
 
 
