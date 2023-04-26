@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#3the-core-data-stack" class="md-skip">
+        <a href="#3core-data" class="md-skip">
           跳转至
         </a>
       
@@ -303,71 +303,71 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#getting-started" class="md-nav__link">
-    Getting started
+  <a href="#_1" class="md-nav__link">
+    入门
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#rolling-your-own-core-data-stack" class="md-nav__link">
-    Rolling your own Core Data stack
+  <a href="#core-data" class="md-nav__link">
+    滚动自己的Core Data栈
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-managed-object-model" class="md-nav__link">
-    The managed object model
+  <a href="#_2" class="md-nav__link">
+    托管对象模型
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-persistent-store" class="md-nav__link">
-    The persistent store
+  <a href="#_3" class="md-nav__link">
+    持久化存储
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-persistent-store-coordinator" class="md-nav__link">
-    The persistent store coordinator
+  <a href="#_4" class="md-nav__link">
+    持久化存储协调器
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-managed-object-context" class="md-nav__link">
-    The managed object context
+  <a href="#_5" class="md-nav__link">
+    托管对象上下文
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-persistent-store-container" class="md-nav__link">
-    The persistent store container
+  <a href="#_6" class="md-nav__link">
+    持久化存储容器
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#creating-your-stack-object" class="md-nav__link">
-    Creating your stack object
+  <a href="#_7" class="md-nav__link">
+    创建堆栈对象
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#modeling-your-data" class="md-nav__link">
-    Modeling your data
+  <a href="#_8" class="md-nav__link">
+    数据建模
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#adding-managed-object-subclasses" class="md-nav__link">
-    Adding managed object subclasses
+  <a href="#_9" class="md-nav__link">
+    添加托管对象子类
   </a>
   
 </li>
@@ -8099,71 +8099,71 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#getting-started" class="md-nav__link">
-    Getting started
+  <a href="#_1" class="md-nav__link">
+    入门
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#rolling-your-own-core-data-stack" class="md-nav__link">
-    Rolling your own Core Data stack
+  <a href="#core-data" class="md-nav__link">
+    滚动自己的Core Data栈
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-managed-object-model" class="md-nav__link">
-    The managed object model
+  <a href="#_2" class="md-nav__link">
+    托管对象模型
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-persistent-store" class="md-nav__link">
-    The persistent store
+  <a href="#_3" class="md-nav__link">
+    持久化存储
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-persistent-store-coordinator" class="md-nav__link">
-    The persistent store coordinator
+  <a href="#_4" class="md-nav__link">
+    持久化存储协调器
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-managed-object-context" class="md-nav__link">
-    The managed object context
+  <a href="#_5" class="md-nav__link">
+    托管对象上下文
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-persistent-store-container" class="md-nav__link">
-    The persistent store container
+  <a href="#_6" class="md-nav__link">
+    持久化存储容器
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#creating-your-stack-object" class="md-nav__link">
-    Creating your stack object
+  <a href="#_7" class="md-nav__link">
+    创建堆栈对象
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#modeling-your-data" class="md-nav__link">
-    Modeling your data
+  <a href="#_8" class="md-nav__link">
+    数据建模
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#adding-managed-object-subclasses" class="md-nav__link">
-    Adding managed object subclasses
+  <a href="#_9" class="md-nav__link">
+    添加托管对象子类
   </a>
   
 </li>
@@ -8204,94 +8204,92 @@
                   
 
 
-<h1 id="3the-core-data-stack">3.The Core Data Stack<a class="headerlink" href="#3the-core-data-stack" title="Permanent link">&para;</a></h1>
-<p>Written by Pietro Rea</p>
-<p>Until now, you’ve been relying on Xcode’s Core Data template. There’s nothing wrong with getting help from Xcode (that’s what it’s there for!). But if you really want to know how Core Data works, building your own Core Data stack is a must.</p>
-<p>The stack is made up of four Core Data classes:</p>
+<h1 id="3core-data">3.<code>Core Data</code>栈<a class="headerlink" href="#3core-data" title="Permanent link">&para;</a></h1>
+<p>到目前为止，您一直依赖于<code>Xcode</code>的<code>Core Data</code>模板。 从<code>Xcode</code>获得帮助没有什么错（这就是它存在的原因！）。 但如果你真的想知道<code>Core Data</code>是如何工作的，那么构建自己的<code>Core Data</code>堆栈是必须的。</p>
+<p>堆栈由四个<code>Core Data</code>类组成：</p>
 <ul>
 <li><code>NSManagedObjectModel</code></li>
 <li><code>NSPersistentStore</code></li>
 <li><code>NSPersistentStoreCoordinator</code></li>
 <li><code>NSManagedObjectContext</code></li>
 </ul>
-<p>Of these four classes, you’ve only encountered <code>NSManagedObjectContext</code> so far in this book. But the other three were there behind the scenes the whole time, supporting your managed context.</p>
-<p>In this chapter, you’ll learn the details of what these four classes do. Rather than rely on the default starter template, you’ll build your own Core Data stack; a customizable <strong>wrapper</strong>around these classes.</p>
-<h2 id="getting-started">Getting started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
-<p>The sample project for this chapter is a simple dog-walking app. This application lets you save the date and time of your dog walks in a simple table view. Use this app regularly and your pooch (and his bladder) will love you.</p>
-<p>You’ll find the sample project <strong>DogWalk</strong> in the resources accompanying this book. Open <strong>DogWalk.xcodeproj</strong>, then build and run the starter project.</p>
-<p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/140a5730bf990e212c0d0b51cbe11d7133ce31bca6bc615edb78165fb05a5c60/original.png" /></p>
-<p>As you can see, the sample app is already a fully-working (albeit simple) prototype. Tapping on the plus (+) button on the top-right adds a new entry to the list of walks. The image represents the dog you’re currently walking, but otherwise does nothing.</p>
-<p>The app has all the functionality it needs, except for one important feature: The list of walks doesn’t persist. If you terminate <strong>DogWalk</strong> and re-launch, your entire history is gone. How will you remember if you walked your pooch this morning?</p>
-<p>Your task in this chapter is to save the list of walks in Core Data. If that sounds like something you’ve already done in Chapters 1 and 2, here’s the twist; you’ll be writing your own Core Data stack to understand what’s really going on under the hood!</p>
-<h2 id="rolling-your-own-core-data-stack">Rolling your own Core Data stack<a class="headerlink" href="#rolling-your-own-core-data-stack" title="Permanent link">&para;</a></h2>
-<p>Knowing how the Core Data stack works is more than a <strong>nice to know</strong>. If you’re working with a more advanced setup, such as migrating data from an old persistent store, digging into the stack is essential.</p>
-<p>Before you jump into the code, let’s consider what each of the four classes in the Core Data stack — <code>NSManagedObjectModel</code>, <code>NSPersistentStore</code>, <code>NSPersistentStoreCoordinator</code> and <code>NSManagedObjectContext</code> — does in detail.</p>
+<p>在这四个类中，到目前为止，您在本书中只遇到了<code>NSManagedObjectContext</code>。 但其他三个一直在幕后支持您的托管上下文。</p>
+<p>在本章中，您将详细了解这四个类的功能。 您将构建自己的<code>Core Data</code>堆栈，而不是依赖于默认的启动器模板;一个可定制的 <strong>wrapper</strong> 围绕这些类。</p>
+<h2 id="_1">入门<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>本章的示例项目是一个简单的遛狗应用程序。该应用程序允许您将遛狗的日期和时间保存在一个简单的表视图中。 经常使用这个应用程序，你的狗（和他的膀胱）会喜欢你的。</p>
+<p>您将在本书附带的参考资料中找到示例项目 <strong>DogWalk</strong>。 打开 <strong>DogWalk.xcodeproj</strong>，然后构建并运行<code>starter</code>项目。
+<img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/140a5730bf990e212c0d0b51cbe11d7133ce31bca6bc615edb78165fb05a5c60/original.png" /></p>
+<p>正如您所看到的，示例应用程序已经是一个完全可用的（尽管很简单）原型。 点击右上角的加号(+)按钮可将新条目添加到行走列表中。 该图像表示您当前正在散步的狗，但除此之外什么也不做。</p>
+<p>该应用程序具有所需的所有功能，除了一个重要功能：不会持续存在该散步列表。 如果您终止 <strong>DogWalk</strong> 并重新启动，您的整个历史记录将消失。 如果你今天早上遛狗你怎么会记得？</p>
+<p>本章中的任务是在<code>Core Data</code>中保存行走列表。 如果这听起来像是你在第一章和第二章中已经做过的事情，这里有一个转折;您将编写自己的核心数据堆栈，以了解引擎盖下到底发生了什么！</p>
+<h2 id="core-data">滚动自己的<code>Core Data</code>栈<a class="headerlink" href="#core-data" title="Permanent link">&para;</a></h2>
+<p>了解核心数据堆栈的工作原理不仅仅是一个 <strong>nice to know</strong>。 如果您正在使用更高级的设置，例如从旧的持久性存储中迁移数据，则深入研究堆栈是必不可少的。</p>
+<p>在开始编写代码之前，让我们详细考虑一下<code>Core Data</code>堆栈中的四个类-- <code>NSManagedObjectModel</code>、<code>NSPersistentStore</code>、<code>NSPersistentStoreCoordinator</code>和<code>NSManagedObjectContext</code> --中的每一个都做了什么。</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This is one of the few parts of the book where you’ll read about the theory before using the concepts in practice. It’s almost impossible to separate one component from the rest of the stack and use it in isolation.</p>
+<p>这是本书中为数不多的几个部分之一，在实践中使用这些概念之前，你会先阅读有关理论的内容。 几乎不可能将一个组件从堆栈的其余部分中分离出来并单独使用它。</p>
 </div>
-<h2 id="the-managed-object-model">The managed object model<a class="headerlink" href="#the-managed-object-model" title="Permanent link">&para;</a></h2>
-<p>The <code>NSManagedObjectModel</code> represents each object type in your app’s data model, the properties they can have, and the relationships between them. Other parts of the Core Data stack use the model to create objects, store properties and save data.</p>
-<p>As mentioned earlier in the book, it can be helpful to think about <code>NSManagedObjectModel</code> as a database schema. If your Core Data stack uses SQLite under the hood, <code>NSManagedObjectModel</code> represents the schema for the database.</p>
-<p>However, SQLite is only one of many persistent store types you can use in Core Data (more on this later), so it’s better to think of the managed object model in more general terms.</p>
+<h2 id="_2">托管对象模型<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p><code>NSManagedObjectModel</code>表示应用数据模型中的每个对象类型、它们可以具有的属性以及它们之间的关系。 <code>Core Data</code>堆栈的其他部分使用模型来创建对象、存储属性和保存数据。</p>
+<p>正如本书前面提到的，将<code>NSManagedObjectModel</code>视为数据库模式可能会有所帮助。 如果您的<code>Core Data</code>堆栈在后台使用<code>SQLite</code>，则<code>NSManagedObjectModel</code>表示数据库的模式。</p>
+<p>但是，<code>SQLite</code>只是您可以在<code>Core Data</code>中使用的许多持久存储类型之一（稍后将详细介绍），因此最好从更一般的角度来考虑托管对象模型。</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>You may be wondering how <code>NSManagedObjectModel</code> relates to the data model editor you’ve been using all along. Good question!
-The visual editor creates and edits an <strong>xcdatamodel</strong> file. There’s a special compiler, <code>momc</code>, that compiles the model file into a set of files in a <strong>momd</strong> folder.
-Just as your Swift code is compiled and optimized so it can run on a device, the compiled model can be accessed efficiently at runtime. Core Data uses the compiled contents of the <strong>momd</strong> folder to initialize an <code>NSManagedObjectModel</code> at runtime.</p>
+<p>您可能想知道<code>NSManagedObjectModel</code>与您沿着在使用的数据模型编辑器之间的关系。 问得好！
+可视化编辑器创建并编辑 <strong>xcdatamodel</strong> 文件。 有一个特殊的编译器，<code>momc</code>，它将模型文件编译成一组文件，放在一个 <strong>momd</strong> 文件夹中。
+就像你的<code>Swift</code>代码经过编译和优化，可以在设备上运行一样，编译后的模型可以在运行时高效地访问。 <code>Core Data</code>使用 <strong>momd</strong> 文件夹的编译内容在运行时初始化<code>NSManagedObjectModel</code>。</p>
 </div>
-<h2 id="the-persistent-store">The persistent store<a class="headerlink" href="#the-persistent-store" title="Permanent link">&para;</a></h2>
-<p><code>NSPersistentStore</code> reads and writes data to whichever storage method you’ve decided to use. Core Data provides four types of <code>NSPersistentStore</code> out of the box: three atomic and one non-atomic.</p>
-<p>An <strong>atomic</strong> persistent store needs to be completely deserialized and loaded into memory before you can make any read or write operations. In contrast, a <strong>non-atomic</strong> persistent store can load chunks of itself onto memory as needed.</p>
-<p>Here’s a brief overview of the four built-in Core Data store types:</p>
+<h2 id="_3">持久化存储<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p><code>NSPersistentStore</code>将数据读写到您决定使用的任何存储方法。 <code>Core Data</code>提供了四种开箱即用的<code>NSPersistentStore</code>类型：三个原子和一个非原子。</p>
+<p><strong>atomic</strong> 持久存储需要完全反序列化并加载到内存中，然后才能进行任何读写操作。 相比之下，<strong>non-atomic</strong> 持久存储可以根据需要将其自身的块加载到内存中。</p>
+<p>以下是四种内置<code>Core Data</code>存储类型的简要概述：</p>
 <ol>
-<li><strong>NSSQLiteStoreType</strong> is backed by an SQLite database. It’s the only non-atomic store type Core Data supports out of the box, giving it a lightweight and efficient memory footprint. This makes it the best choice for most iOS projects. Xcode’s Core Data template uses this store type by default.</li>
-<li><strong>NSXMLStoreType</strong> is backed by an XML file, making it the most human-readable of all the store types. This store type is atomic, so it can have a large memory footprint. <code>NSXMLStoreType</code> is only available on OS X.</li>
-<li><strong>NSBinaryStoreType</strong> is backed by a binary data file. Like <code>NSXMLStoreType</code>, it’s also an atomic store, so the entire binary file must be loaded onto memory before you can do anything with it. You’ll rarely find this type of persistent store in real-world applications.</li>
-<li><strong>NSInMemoryStoreType</strong> is the in-memory persistent store type. In a way, this store type is not really <em>persistent</em>. Terminate the app or turn off your phone, and the data stored in an in-memory store type disappears into thin air. Although this may seem to defeat the purpose of Core Data, in-memory persistent stores can be helpful for unit testing and some types of caching.</li>
+<li><strong>NSSQLiteStoreType</strong> 由<code>SQLite</code>数据库支持。 它是<code>Core Data</code>支持的唯一非原子存储类型，使其具有轻量级和高效的内存占用。 这使得它成为大多数<code>iOS</code>项目的最佳选择。 <code>Xcode</code>的<code>Core Data</code>模板默认使用这种存储类型。</li>
+<li><strong>NSXMLStoreType</strong> 由<code>XML</code>文件支持，使其成为所有存储类型中最易于阅读的类型。 此存储类型是原子的，因此它可能会占用大量内存。 <code>NSXMLStoreType</code>仅在<code>OS X</code>上可用。</li>
+<li><strong>NSBinaryStoreType</strong> 由二进制数据文件支持。 与<code>NSXMLStoreType</code>一样，它也是一个原子存储，因此在对它执行任何操作之前，必须将整个二进制文件加载到内存中。在现实世界的应用程序中，很少能找到这种类型的持久存储。</li>
+<li><strong>NSInMemoryStoreType</strong> 为内存持久存储类型。 在某种程度上，这种存储类型并不是真正的持久化。 终止应用程序或关闭手机，存储在内存存储类型中的数据就会消失在空气中。 虽然这似乎违背了<code>Core Data</code>的目的，但内存中的持久存储对于单元测试和某些类型的缓存是有帮助的。</li>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Were you holding your breath for a persistent store type backed by a JSON file or a CSV file? Bummer. The good news is you can create your own type of persistent store by subclassing <code>NSIncrementalStore</code>.
-Refer to Apple’s Incremental Store Programming Guide if you’re curious about this option:
-<a href="https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/IncrementalStorePG/Introduction/Introduction.html">https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/IncrementalStorePG/Introduction/Introduction.html</a></p>
+<p>您是否对<code>JSON</code>文件或<code>CSV</code>文件支持的持久化存储类型屏住了呼吸？ 真扫兴 好消息是，您可以通过子类化<code>NSIncrementalStore</code>来创建自己的持久存储类型。
+如果您对此选项感到好奇，请参阅<code>Apple</code>的增量存储编程指南：    <a href="https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/IncrementalStorePG/Introduction/Introduction.html">https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/IncrementalStorePG/Introduction/Introduction.html</a></p>
 </div>
-<h2 id="the-persistent-store-coordinator">The persistent store coordinator<a class="headerlink" href="#the-persistent-store-coordinator" title="Permanent link">&para;</a></h2>
-<p><code>NSPersistentStoreCoordinator</code> is the bridge between the managed object model and the persistent store. It’s responsible for using the model and the persistent stores to do most of the hard work in Core Data. It understands the <code>NSManagedObjectModel</code> and knows how to send information to, and fetch information from, the <code>NSPersistentStore</code>.</p>
-<p><code>NSPersistentStoreCoordinator</code> also hides the implementation details of how your persistent store or stores are configured. This is useful for two reasons:</p>
+<h2 id="_4">持久化存储协调器<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p><code>NSPersistentStoreCoordinator</code>是托管对象模型和持久存储之间的桥梁。 它负责使用模型和持久性存储来完成<code>Core Data</code>中的大部分繁重工作。 它理解<code>NSManagedObjectModel</code>，并且知道如何向<code>NSPersistentStore</code>发送信息和从<code>NSPersistentStore</code>获取信息。</p>
+<p><code>NSPersistentStoreCoordinator</code>还隐藏了如何配置持久存储的实现细节。 这是有用的，原因有二：</p>
 <ol>
-<li><code>NSManagedObjectContext</code> (coming next!) doesn’t have to know if it’s saving to an SQLite database, XML file or even a custom incremental store.</li>
-<li>If you have multiple persistent stores, the persistent store coordinator presents a unified interface to the managed context. As far as the managed context is concerned, it always interacts with a single, aggregate persistent store.</li>
+<li><code>NSManagedObjectContext</code>（即将推出！） 不需要知道它是保存到<code>SQLite</code>数据库、<code>XML</code>文件还是自定义增量存储。</li>
+<li>如果您有多个持久性存储，则持久性存储协调器将提供一个到托管上下文的统一接口。 就托管上下文而言，它总是与单个聚合持久性存储交互。</li>
 </ol>
-<h2 id="the-managed-object-context">The managed object context<a class="headerlink" href="#the-managed-object-context" title="Permanent link">&para;</a></h2>
-<p>On a day-to-day basis, you’ll work with <code>NSManagedObjectContext</code> the most out of the four stack components. You’ll probably only see the other three components when you need to do something more advanced with Core Data.</p>
-<p>Since working with <code>NSManagedObjectContext</code> is so common, understanding how contexts work is very important! Here are some things you may have already picked up from the book so far:</p>
+<h2 id="_5">托管对象上下文<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>在日常工作中，您将使用四个堆栈组件中最常用的<code>NSManagedObjectContext</code>。 当您需要对<code>Core Data</code>执行更高级的操作时，您可能只会看到其他三个组件。</p>
+<p>由于使用<code>NSManagedObjectContext</code>非常普遍，因此了解上下文的工作方式非常重要！ 以下是你可能已经从书中学到的一些东西：</p>
 <ul>
-<li>A context is an in-memory scratchpad for working with your managed objects.</li>
-<li>You do all of the work with your Core Data objects within a managed object context.</li>
-<li>Any changes you make won’t affect the underlying data on disk until you call <code>save()</code>on the context.</li>
+<li>上下文是用于处理托管对象的内存中的暂存器。</li>
+<li>您可以在托管对象上下文中使用<code>Core Data</code>对象完成所有工作。</li>
+<li>你所做的任何更改都不会影响磁盘上的底层数据，直到你在上下文上调用<code>save()</code>。</li>
 </ul>
-<p>Now here are five things about contexts not mentioned before. A few of them are very important for later chapters, so pay close attention:</p>
+<p>这里有五件关于上下文的事情之前没有提到。 其中一些对后面的章节非常重要，所以请密切关注：</p>
 <ol>
-<li>The context <em>manages</em> the lifecycle of the objects it creates or fetches. This lifecycle management includes powerful features such as faulting, inverse relationship handling and validation.</li>
-<li>A managed object cannot exist without an associated context. In fact, a managed object and its context are so tightly coupled that every managed object keeps a reference to its context, which can be accessed like so:</li>
+<li>上下文 <em>manages</em> 它创建或获取的对象的生命周期。 这种生命周期管理包括强大的功能，如故障、反向关系处理和验证。</li>
+<li>没有关联的上下文，托管对象就不能存在。 事实上，托管对象和它的上下文是紧密耦合的，每个托管对象都保持对其上下文的引用，可以这样访问：</li>
 </ol>
 <div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">managedContext</span> <span class="p">=</span> <span class="n">employee</span><span class="p">.</span><span class="n">managedObjectContext</span>
 </code></pre></div>
 <ol>
-<li>Contexts are very territorial; once a managed object has been associated with a particular context, it will remain associated with the same context for the duration of its lifecycle.</li>
-<li>An application can use more than one context — most non-trivial Core Data applications fall into this category. Since a context is an in-memory scratch pad for what’s on disk, you can actually load the same Core Data object onto two different contexts simultaneously.</li>
-<li>A context is not thread-safe. The same goes for a managed object: You can only interact with contexts and managed objects on the same thread in which they were created.</li>
+<li>背景是非常领土; 一旦被管理对象已经与特定上下文相关联，它将在其生命周期的持续时间内保持与相同上下文相关联。</li>
+<li>一个应用程序可以使用多个上下文-大多数重要的<code>Core Data</code>应用程序都属于这一类。 由于上下文是磁盘上内容的内存中暂存器，因此实际上可以同时将同一个<code>Core Data</code>对象加载到两个不同的上下文中。</li>
+<li>上下文不是线程安全的。 这同样适用于托管对象：您只能在创建上下文和托管对象的同一线程上与它们进行交互。</li>
 </ol>
-<p>Apple has provided many ways to work with contexts in multithreaded applications. You’ll read all about different concurrency models in Chapter 9, “Multiple Managed Object Contexts.”</p>
-<h2 id="the-persistent-store-container">The persistent store container<a class="headerlink" href="#the-persistent-store-container" title="Permanent link">&para;</a></h2>
-<p>If you thought there were only four pieces to the Core Data stack, you’re in for a surprise! As of iOS 10, there’s a new class to orchestrate all four Core Data stack classes: the managed model, the store coordinator, the persistent store and the managed context.</p>
-<p>The name of this class is <code>NSPersistentContainer</code> and as its name implies, it’s a container that holds everything together. Instead of wasting your time writing boilerplate code to wire up all four stack components together, you can simply initialize an <code>NSPersistentContainer</code>, load its persistent stores, and you’re good to go.</p>
-<h2 id="creating-your-stack-object">Creating your stack object<a class="headerlink" href="#creating-your-stack-object" title="Permanent link">&para;</a></h2>
-<p>Now you know what each component does, it’s time to return to <strong>DogWalk</strong> and implement your own Core Data stack.</p>
-<p>As you know from previous chapters, Xcode creates its Core Data stack in the app delegate. You’re going to do it differently. Instead of mixing app delegate code with Core Data code, you’ll create a separate class to encapsulate the stack.</p>
-<p>Go to <strong>File ▸ New ▸ File…</strong>, select the <strong>iOS ▸ Source ▸ Swift File</strong> template and click <strong>Next</strong>. Name the file <strong>CoreDataStack</strong> and click <strong>Create</strong> to save the file.</p>
-<p>Go to the newly created <strong>CoreDataStack.swift</strong>. You’ll be creating this file piece-by-piece. Start by replacing the contents of the file with the following:</p>
+<p><code>Apple</code>提供了许多在多线程应用程序中处理上下文的方法。 您将在第9章“多个托管对象上下文”中阅读到有关不同并发模型的所有内容。</p>
+<h2 id="_6">持久化存储容器<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<p>如果您认为核心数据堆栈只有四个部分，那么您将大吃一惊！ 从<code>iOS 10</code>开始，有一个新的类来编排所有四个<code>Core Data</code>堆栈类：托管模型、存储协调器、持久存储和托管上下文。</p>
+<p>这个类的名称是<code>NSPersistentContainer</code>，顾名思义，它是一个将所有内容保存在一起的容器。 您不必浪费时间编写样板代码来将所有四个堆栈组件连接在一起，只需初始化一个<code>NSPersistentContainer</code>，加载其持久化存储，就可以开始了。</p>
+<h2 id="_7">创建堆栈对象<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<p>现在你知道了每个组件的作用，是时候回到 <strong>DogWalk</strong> 并实现你自己的<code>Core Data</code>堆栈了。</p>
+<p>正如你从前面的章节中所知道的，<code>Xcode</code>在<code>app</code>委托中创建了它的<code>Core Data</code>堆栈。 你要用不同的方式。 您将创建一个单独的类来封装堆栈，而不是将应用程序委托代码与<code>Core Data</code>代码混合在一起。</p>
+<p>进入 <strong>File ▸ New ▸ File…</strong>，选择<strong>iOS ▸ Source ▸ Swift File</strong>模板，点击【下一步】。 将文件命名为 <strong>CoreDataStack</strong>，单击<strong>Create</strong>保存文件。</p>
+<p>进入新创建的 <strong>CoreDataStack.swift</strong>。 您将逐个创建此文件。 首先将文件的内容替换为以下内容：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">import</span> <span class="nc">Foundation</span>
 <span class="kd">import</span> <span class="nc">CoreData</span>
 
@@ -8314,16 +8312,16 @@ Refer to Apple’s Incremental Store Programming Guide if you’re curious about
   <span class="p">}()</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>You start by importing the <code>Foundation</code> and <code>CoreData</code> modules. Next, create a private property to store the <code>modelName</code>. Next, create an initializer to save <code>modelName</code> into private property.</p>
-<p>Next, you set up a lazily instantiated <code>NSPersistentContainer</code>, passing the <code>modelName</code>you stored during initialization. The only other thing you need to do is call <code>loadPersistentStores(completionHandler:)</code> on the persistent container (despite the appearance of the completion handler, this method doesn’t run asynchronously by default). Finally, add the following lazily instantiated property below <code>modelName</code>:</p>
+<p>首先导入<code>Foundation</code>和<code>CoreData</code>模块。 接下来，创建一个私有属性来存储<code>modelName</code>。 接下来，创建一个初始化器，将<code>modelName</code>保存到私有属性中。</p>
+<p>接下来，设置一个延迟实例化的<code>NSPersistentContainer</code>，传递初始化期间存储的<code>modelName</code>。 您需要做的唯一其他事情是在持久化容器上调用<code>loadPersistentStores（completionHandler：）</code>（尽管出现了完成处理程序，但该方法默认情况下不会异步运行）。 最后，在<code>modelName</code>下面添加如下延迟实例化属性：</p>
 <div class="highlight"><pre><span></span><code><span class="kr">lazy</span> <span class="kd">var</span> <span class="nv">managedContext</span><span class="p">:</span> <span class="bp">NSManagedObjectContext</span> <span class="p">=</span> <span class="p">{</span>
   <span class="k">return</span> <span class="kc">self</span><span class="p">.</span><span class="n">storeContainer</span><span class="p">.</span><span class="n">viewContext</span>
 <span class="p">}()</span>
 </code></pre></div>
-<p>Even though <code>NSPersistentContainer</code> has public accessors for its managed context, the managed model, the store coordinator and the persistent stores (via <code>[NSPersistentStoreDescription]</code>), <code>CoreDataStack</code> works a bit differently.</p>
-<p>For instance, the only publicly accessible part of <code>CoreDataStack</code> is the <code>NSManagedObjectContext</code> because of the lazy property you just added. Everything else is marked <code>private</code>. Why is this?</p>
-<p>The managed context is the only entry point required to access the rest of the stack. The persistent store coordinator is a public property on the <code>NSManagedObjectContext</code>. Similarly, both the managed object model and the array of persistent stores are public properties on the <code>NSPersistentStoreCoordinator</code>.</p>
-<p>Finally, add the following method below the <code>storeContainer</code> property:</p>
+<p>尽管<code>NSPersistentContainer</code>有公共访问器用于其托管上下文、托管模型、存储协调器和持久存储（通过<code>[NSPersistentStoreDescription]</code>），但<code>CoreDataStack</code>的工作方式略有不同。</p>
+<p>例如，<code>CoreDataStack</code>的唯一可公开访问的部分是<code>NSManagedObjectContext</code>，因为您刚刚添加了惰性属性。 其他的都标着<code>private</code>。 这是为什么呢？</p>
+<p>托管上下文是访问堆栈其余部分所需的唯一入口点。 持久存储协调器是<code>NSManagedObjectContext</code>上的公共属性。 类似地，托管对象模型和持久存储数组都是<code>NSPersistentStoreCoordinator</code>上的公共属性。</p>
+<p>最后，在<code>storeContainer</code>属性下面添加如下方法：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">saveContext</span> <span class="p">()</span> <span class="p">{</span>
   <span class="k">guard</span> <span class="n">managedContext</span><span class="p">.</span><span class="n">hasChanges</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="p">}</span>
 
@@ -8334,51 +8332,51 @@ Refer to Apple’s Incremental Store Programming Guide if you’re curious about
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>This is a convenience method to save the stack’s managed object context and handle any resulting errors.</p>
-<p>Open <strong>ViewController.swift</strong> and make the following changes. First, import the Core Data module. Add the following below <code>import UIKit</code>:</p>
+<p>这是保存堆栈的托管对象上下文并处理任何由此产生的错误的方便方法。</p>
+<p>打开 <strong>ViewController.swift</strong>，进行以下更改。 首先，导入<code>Core Data</code>模块。 在<code>import UIKit</code>下面添加以下内容：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">import</span> <span class="nc">CoreData</span>
 </code></pre></div>
-<p>Next, add the following property below <code>dateFormatter</code> to hold the Core Data stack:</p>
+<p>接下来，在<code>dateFormatter</code>下面添加以下属性来保存<code>Core Data</code>堆栈：</p>
 <div class="highlight"><pre><span></span><code><span class="kr">lazy</span> <span class="kd">var</span> <span class="nv">coreDataStack</span> <span class="p">=</span> <span class="n">CoreDataStack</span><span class="p">(</span><span class="n">modelName</span><span class="p">:</span> <span class="s">&quot;DogWalk&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="modeling-your-data">Modeling your data<a class="headerlink" href="#modeling-your-data" title="Permanent link">&para;</a></h2>
-<p>Now your shiny new Core Data stack is securely fastened to the main view controller, it’s time to create your data model.</p>
-<p>Head over to your Project Navigator and… Wait a second. There’s no data model file! That’s right. Since I generated this sample application without enabling the option to use Core Data, there’s no <strong>.xcdatamodeld</strong> file.</p>
-<p>No worries. Go to <strong>File ▸ New ▸ File…</strong>, select the <strong>iOS ▸ Core Data ▸ Data Model</strong> template and click <strong>Next</strong>.</p>
-<p>Name the file <strong>DogWalk.xcdatamodeld</strong> and click <strong>Create</strong> to save the file.</p>
+<h2 id="_8">数据建模<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<p>现在你闪亮的新核心数据堆栈已经安全地固定在主视图控制器上，是时候创建你的数据模型了。</p>
+<p>转到项目导航器，然后...等一下。 没有数据模型文件！ 是的。 因为我生成这个示例应用程序时没有启用使用<code>Core Data</code>的选项，所以没有 <strong>.xcdatamodeld</strong> 文件。</p>
+<p>别担心 进入<strong>File ▸ New ▸ File…</strong>，选择<strong>iOS ▸ Core Data ▸ Data Model</strong>模板，点击<strong>Next</strong>。</p>
+<p>将文件命名为 <strong>DogWalk.xcdatamodeld</strong>，单击*<em>Create</em>保存文件。</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/9347909433239e83ccdf82fd9d5ec76d824a9992a9dc910101bf5121fdaaab6f/original.png" /></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>You’ll have problems later on if you don’t name your data model file precisely <strong>DogWalk.xcdatamodeld</strong>. This is because <strong>CoreDataStack.swift</strong> expects to find the compiled version at <strong>DogWalk.momd.</strong></p>
+<p>如果您没有将数据模型文件精确地命名为 <strong> DogWalk.xcdatamodeld </strong>，那么以后就会出现问题。 这是因为 <strong>CoreDataStack.swift</strong> 期望在 <strong> DogWalk.momd </strong> 找到编译后的版本。</p>
 </div>
-<p>Open the data model file and create a new entity named <strong>Dog</strong>. You should be able to do this on your own by now, but in case you forgot how, click the <strong>Add Entity</strong> button on the bottom left.</p>
-<p>Add an attribute named <strong>name</strong> of type <strong>String</strong>. Your data model should look like this:</p>
+<p>打开数据模型文件，新建一个名为 <strong>Dog</strong> 的实体。 您现在应该能够自己完成此操作，但如果您忘记了如何操作，请单击左下方的 <strong>Add Entity</strong> 按钮。</p>
+<p>添加一个名为 <strong>name</strong> 的属性，类型为 <strong>String</strong>。 你的数据模型应该看起来像这样：</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/82f546d1374c87ff866a34eba35ab39f4830301b78a402f6a8982bf8e606ebe3/original.png" /></p>
-<p>You also want to keep track of the walks for a particular dog. After all, that’s the whole point of the app!</p>
-<p>Define another entity and name it <strong>Walk</strong>. Then add an attribute named <strong>date</strong> and set its type to <strong>Date</strong>.</p>
+<p>您还希望跟踪特定狗的散步。 毕竟，这就是应用程序的全部意义！</p>
+<p>定义另一个实体并将其命名为 <strong>Walk</strong>。 然后添加名为 <strong>date</strong> 的属性，并将其类型设置为 <strong>Date</strong>。</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/593bab9ef93872fa939f1b7fc36987af6f90c9f5336b3476fd3dc0f59fcf5b41/original.png" /></p>
-<p>Go back to the <code>Dog</code> entity. You might think you need to add a new attribute of type <strong>Array</strong> to hold the walks, but there is no array type in Core Data. Instead, the way to do this is to model it as a relationship. Add a new relationship and name it <strong>walks</strong>.</p>
-<p>Set the destination to <strong>Walk</strong>:</p>
+<p>返回到<code>Dog</code>实体。 您可能认为需要添加一个类型为 <strong>Array</strong> 的新属性来保存遍历，但<code>Core Data</code>中没有数组类型。 相反，实现这一点的方法是将其建模为一种关系。 添加一个新关系并将其命名为 <strong>walks</strong>。</p>
+<p>将目的地设置为 <strong>Walk</strong>：</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/843e4b2f49e10d80f8f964d9bfd2d9d8f43ef5db52c6cbe1fe29d794f96ff7cb/original.png" /></p>
-<p>You can think of the destination as the receiving end of a relationship. Every relationship begins as a to-one relationship by default, which means you can only track one walk per dog at the moment. Unless you don’t plan on keeping your dog for very long, you probably want to track more than one walk.</p>
-<p>To fix this, with the <strong>walks</strong> relationship selected, open the <strong>Data Model</strong> Inspector:</p>
+<p>你可以把目的地想象成一段关系的接收端。 默认情况下，每个关系都是以一对一的关系开始的，这意味着您目前只能跟踪每只狗的一次散步。 除非你不打算让你的狗很长时间，你可能想跟踪一个以上的步行。</p>
+<p>若要解决此问题，请在选中 <strong> walkes </strong> 关系的情况下，打开 <strong>Data Mode</strong> 检查器：</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/eb3a22443416d094b8359ae0ded5d902d68f21eae072815db789feb6c6cbb19a/original.png" /></p>
-<p>Click on the <strong>Type</strong> dropdown, select <strong>To Many</strong> and check <strong>Ordered</strong>. This means one dog can have many walks and the order of the walks matters, since you’ll be displaying the walks sorted by date.</p>
-<p>Select the <strong>Walk</strong> entity and create an inverse relationship back to <strong>Dog</strong>. Set the destination as <strong>dog</strong> and the inverse as <strong>walks</strong>.</p>
+<p>点击 <strong>Type</strong> 下拉菜单，选择 <strong>To Many</strong>，勾选 <strong>Ordered</strong>。 这意味着一只狗可以有很多次散步，散步的顺序很重要，因为您将按日期排序显示散步。</p>
+<p>选择 <strong>Walk</strong> 实体并创建反向关系回到 <strong>Dog</strong>。 将目的地设置为 <strong>dog</strong>，反之设置为 <strong>walks</strong>。</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/33cc6cf8c96a9edb6cf36536ce37362016af36c462cb7819bc81ac5c2216b3fc/original.png" /></p>
-<p>It’s OK to leave this relationship as a to-one relationship. A dog can have many walks, but a walk can only belong to one dog — for the purposes of this app, at least.</p>
-<p>The inverse lets the model know how to find its way back, so to speak. Given a walk record, you can follow the relationship to the dog. Thanks to the inverse, the model knows to follow the <strong>walks</strong> relationship to get back to the walk record.</p>
-<p>This is a good time to let you know the data model editor has another view style. This entire time you’ve been looking at the table editor style.</p>
-<p>Toggle the segmented control on the bottom-right to switch to the graph editor style:</p>
+<p>把这段关系当作一对一的关系是可以的。 一只狗可以有很多散步，但散步只能属于一只狗-至少对于这个应用程序的目的。</p>
+<p>可以说，逆模型让模型知道如何找到返回的路。 给出一个步行记录，你可以跟踪狗的关系。 多亏了逆，模型知道遵循 <strong> walkes </strong> 关系返回到·记录。</p>
+<p>这是让您了解数据模型编辑器具有另一种视图样式的好时机。 这段时间您一直在研究表编辑器样式。</p>
+<p>切换右下角的分段控件以切换到图形编辑器样式：</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/bb188fa008b9f23ec11a11b4c33ed7d5818875e3200b41a91d7f642c1833f5f2/original.png" /></p>
-<p>The graph editor is a great tool to visualize the relationships between your Core Data entities. Here the to-many relationship from <code>Dog</code> to <code>Walk</code> is represented with a double arrow. <code>Walk</code> points back to <code>Dog</code> with a single arrow, indicating a to-one relationship.</p>
-<p>Feel free to switch back and forth between the two editor styles. You might find it easier to use the table style to add and remove entities and attributes, and the graph style to see the big picture of your data model.</p>
-<h2 id="adding-managed-object-subclasses">Adding managed object subclasses<a class="headerlink" href="#adding-managed-object-subclasses" title="Permanent link">&para;</a></h2>
-<p>In the previous chapter, you learned how to create custom managed object subclasses for your Core Data entities. It’s more convenient to work this way, so this is what you’ll do for <code>Dog</code> and <code>Walk</code> as well.</p>
-<p>Like in the previous chapter, you’re going to generate custom managed object subclasses manually instead of letting Xcode do it for you so you can see what’s going on behind the scenes. Open <strong>DogWalk.xcdatamodeld</strong>, select the <code>Dog</code> entity and set the <strong>Codegen</strong>dropdown in the Data Model inspector to <strong>Manual/None</strong>. Repeat the same process for the <code>Walk</code> entity.</p>
-<p>Then, go to <strong>Editor ▸ Create NSManagedObject Subclass…</strong> and choose the <strong>DogWalk</strong>model, and then both the <strong>Dog</strong> and <strong>Walk</strong> entities. Click <strong>Create</strong> on the next screen to create the files.</p>
-<p>As you saw in Chapter 2, doing this creates two files per entity: one for the Core Data properties you defined in the model editor and one for any future functionality you may add to your managed object subclass.</p>
-<p><strong>Dog+CoreDataProperties.swift</strong> should look like this:</p>
+<p>图形编辑器是一个很好的工具，可以可视化核心数据实体之间的关系。 这里，从<code>Dog</code>到<code>Walk</code>的对多关系用双箭头表示。 <code>Walk</code>用一个箭头指向<code>Dog</code>，表示一对一的关系。</p>
+<p>您可以随意在这两种编辑器样式之间来回切换。 您可能会发现，使用表格样式添加和删除实体和属性，以及使用图形样式查看数据模型的整体情况更容易。</p>
+<h2 id="_9">添加托管对象子类<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<p>在前一章中，您学习了如何为<code>Core Data</code>实体创建自定义托管对象子类。 这样做更方便，所以这也是你对<code>Dog</code>和<code>Walk</code>所做的。</p>
+<p>与上一章一样，您将手动生成自定义托管对象子类，而不是让<code>Xcode</code>为您完成，这样您就可以看到幕后发生了什么。 打开 <strong>DogWalk.xcdatamodeld</strong>，选择<code>Dog</code>实体，在数据模型检查器中的 <strong>Codegen</strong> 下拉菜单中设置为 <strong>Manual/None</strong>。 对<code>Walk</code>实体重复相同的过程。</p>
+<p>然后，进入<strong>Editor ▸ Create NSManagedObject Subclass…</strong>，选择<strong>DogWalk</strong>模型，然后选择<strong>Dog</strong>和<strong>Walk</strong>实体。 在下一个界面中，单击<strong>Create</strong>，即可创建文件。</p>
+<p>正如您在第2章中看到的，这样做会为每个实体创建两个文件：一个用于在模型编辑器中定义的核心数据属性，另一个用于将来可能添加到托管对象子类中的任何功能。</p>
+<p><strong>Dog+CoreDataProperties.swift</strong> 应该是这样的：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">import</span> <span class="nc">Foundation</span>
 <span class="kd">import</span> <span class="nc">CoreData</span>
 
@@ -8435,13 +8433,13 @@ Refer to Apple’s Incremental Store Programming Guide if you’re curious about
 
 <span class="p">}</span>
 </code></pre></div>
-<p>Like before, the <code>name</code> attribute is a <code>String</code> optional. But what about the <code>walks</code>relationship? Core Data represents to-many relationships using sets, not arrays. Because you made the walks relationship ordered, you’ve got an <code>NSOrderedSet</code>.</p>
+<p>和前面一样，<code>name</code>属性是一个<code>String</code>可选。 但是，<code>walks</code>的关系又如何呢？ <code>Core Data</code>使用集合而不是数组表示多对关系。 因为您使<code>Walks</code>关系有序化，所以得到了一个<code>NSOrderedSet</code>。</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><code>NSSet</code> seems like an odd choice, doesn’t it? Unlike arrays, sets don’t allow accessing their members by index. In fact, there’s no ordering at all! Core Data uses NSSet because a set forces uniqueness among its members. The same object can’t feature more than once in a to-many relationship.
-If you need to access individual objects by index, you can check the <strong>Ordered</strong>checkbox in the visual editor, as you’ve done here. Core Data will then represent the relationship as an <code>NSOrderedSet</code>.</p>
+<p><code>NSSet</code>似乎是一个奇怪的选择，不是吗？ 与数组不同，集合不允许通过索引访问其成员。 事实上，根本没有秩序！ <code>Core Data</code>使用<code>NSSet</code>，因为集合强制其成员具有唯一性。 同一个对象不能在一对多关系中出现多次。
+如果需要通过索引访问单个对象，可以在可视化编辑器中选中 <strong>Ordered</strong> 复选框，就像在这里所做的那样。 然后，核心数据将关系表示为<code>NSOrderedSet</code>。</p>
 </div>
-<p>Similarly, <strong>Walk+CoreDataProperties.swift</strong> should look like this:</p>
+<p>类似地，<strong>Walk+CoreDataProperties.swift</strong> 应该如下所示：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">import</span> <span class="nc">Foundation</span>
 <span class="kd">import</span> <span class="nc">CoreData</span>
 
