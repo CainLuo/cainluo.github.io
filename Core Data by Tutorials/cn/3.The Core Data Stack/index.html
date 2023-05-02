@@ -373,22 +373,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#a-walk-down-persistence-lane" class="md-nav__link">
-    A walk down persistence lane
+  <a href="#_10" class="md-nav__link">
+    漫步在坚持的小路上
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#deleting-objects-from-core-data" class="md-nav__link">
-    Deleting objects from Core Data
+  <a href="#_11" class="md-nav__link">
+    删除核心数据对象
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#key-points" class="md-nav__link">
-    Key points
+  <a href="#_12" class="md-nav__link">
+    关键点
   </a>
   
 </li>
@@ -8169,22 +8169,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#a-walk-down-persistence-lane" class="md-nav__link">
-    A walk down persistence lane
+  <a href="#_10" class="md-nav__link">
+    漫步在坚持的小路上
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#deleting-objects-from-core-data" class="md-nav__link">
-    Deleting objects from Core Data
+  <a href="#_11" class="md-nav__link">
+    删除核心数据对象
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#key-points" class="md-nav__link">
-    Key points
+  <a href="#_12" class="md-nav__link">
+    关键点
   </a>
   
 </li>
@@ -8458,18 +8458,18 @@
 
 <span class="p">}</span>
 </code></pre></div>
-<p>The inverse relationship back to <code>Dog</code> is simply a property of type <code>Dog</code>. Easy as pie.</p>
+<p>返回到<code>Dog</code>的反向关系只是<code>Dog</code>类型的属性。 易如反掌。</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Sometimes Xcode will create relationship properties with the generic <code>NSManagedObject</code> type instead of the specific class, especially if you’re making lots of subclasses at the same time. If this happens, just correct the type yourself or generate the specific file again.</p>
+<p>有时候<code>Xcode</code>会使用通用的<code>NSManagedObject</code>类型来创建关系属性，而不是特定的类，特别是当你同时创建很多子类的时候。 如果发生这种情况，只需自己更正类型或重新生成特定的文件。</p>
 </div>
-<h2 id="a-walk-down-persistence-lane">A walk down persistence lane<a class="headerlink" href="#a-walk-down-persistence-lane" title="Permanent link">&para;</a></h2>
-<p>Now your setup is complete; your Core Data stack, your data model and your managed object subclasses. It’s time to convert <strong>DogWalk</strong> to use Core Data. You’ve done this several times before, so this should be an easy section for you.</p>
-<p>Pretend for a moment this application will at some point support tracking multiple dogs. The first step is to track the currently selected dog.</p>
-<p>Open <strong>ViewController.swift</strong> and replace the <code>walks</code> array with the following property. Ignore the errors for now, you’ll fix those in a minute:</p>
+<h2 id="_10">漫步在坚持的小路上<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h2>
+<p>现在您的设置完成了;核心数据堆栈、数据模型和托管对象子类。 是时候将 <strong>DogWalk</strong> 转换为使用<code>Core Data了</code>。 您以前已经做过几次了，所以这应该是一个简单的部分。</p>
+<p>假设这个应用程序在某个时候支持跟踪多只狗。 第一步是跟踪当前选择的狗。</p>
+<p>打开 <strong>ViewController。swift</strong> 并将<code>walks</code>数组替换为以下属性。 现在忽略错误，您将在一分钟内修复这些错误：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nv">currentDog</span><span class="p">:</span> <span class="n">Dog</span><span class="p">?</span>
 </code></pre></div>
-<p>Next, add the following code to the end of <code>viewDidLoad()</code>:</p>
+<p>接下来，在<code>viewDidLoad()</code>的末尾添加以下代码：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nv">dogName</span> <span class="p">=</span> <span class="s">&quot;Fido&quot;</span>
 <span class="kd">let</span> <span class="nv">dogFetch</span><span class="p">:</span> <span class="bp">NSFetchRequest</span><span class="p">&lt;</span><span class="n">Dog</span><span class="p">&gt;</span> <span class="p">=</span> <span class="n">Dog</span><span class="p">.</span><span class="n">fetchRequest</span><span class="p">()</span>
 <span class="n">dogFetch</span><span class="p">.</span><span class="n">predicate</span> <span class="p">=</span> <span class="bp">NSPredicate</span><span class="p">(</span><span class="n">format</span><span class="p">:</span> <span class="s">&quot;%K == %@&quot;</span><span class="p">,</span>
@@ -8490,21 +8490,21 @@
   <span class="bp">print</span><span class="p">(</span><span class="s">&quot;Fetch error: </span><span class="si">\(</span><span class="n">error</span><span class="si">)</span><span class="s"> description: </span><span class="si">\(</span><span class="n">error</span><span class="p">.</span><span class="n">userInfo</span><span class="si">)</span><span class="s">&quot;</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>First, you fetch all <code>Dog</code> entities with names of <code>"Fido"</code> from Core Data. You’ll learn more about fancy fetch requests like this in the next chapter.</p>
-<p>If the fetch request came back with results, you set the first entity (there should only be one) as the currently selected dog.</p>
-<p>If the fetch request comes back with zero results, this probably means it’s the user’s first time opening the app. If this is the case, you insert a new dog, name it “Fido”, and set it as the currently selected dog.</p>
+<p>首先，从<code>Core Data</code>中获取名称为<code>Fido</code>的所有<code>Dog</code>实体。 在下一章中，您将了解更多关于类似于这样的奇特获取请求的信息。</p>
+<p>如果<code>fetch</code>请求返回结果，则将第一个实体（应该只有一个）设置为当前选定的狗。</p>
+<p>如果<code>fetch</code>请求返回零结果，这可能意味着这是用户第一次打开应用程序。如果是这种情况，则插入一只新狗，将其命名为<code>Fido</code>，并将其设置为当前选定的狗。</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 </div>
-<p>You’ve just implemented what’s often referred to as the <strong>Find or Create</strong>pattern. The purpose of this pattern is to manipulate an object stored in Core Data without running the risk of adding a duplicate object in the process. In iOS 9, Apple introduced the ability to specify <strong>unique constraints</strong> on your Core Data entities. With unique constraints, you can specify in your data model which attributes must always be unique on an entity to avoid adding duplicates.</p>
-<p>Next, replace the implementation of <code>tableView(_:numberOfRowsInSection:)</code> with the following:</p>
+<p>您刚刚实现了通常称为 <strong>Find or Create</strong> 的模式。 此模式的目的是操作存储在<code>Core Data</code>中的对象，而不会冒在过程中添加重复对象的风险。 在<code>iOS 9</code>中，<code>Apple</code>引入了在核心数据实体上指定 <strong> 唯一约束 </strong> 的功能。 使用唯一约束，可以在数据模型中指定哪些属性在实体上必须始终唯一，以避免添加重复项。</p>
+<p>接下来，将<code>tableView（_：numberOfRowsInSection：）</code>的实现替换为以下内容：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="kc">_</span> <span class="n">tableView</span><span class="p">:</span> <span class="bp">UITableView</span><span class="p">,</span>
                <span class="n">numberOfRowsInSection</span> <span class="n">section</span><span class="p">:</span> <span class="nb">Int</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nb">Int</span> <span class="p">{</span>
   <span class="n">currentDog</span><span class="p">?.</span><span class="n">walks</span><span class="p">?.</span><span class="bp">count</span> <span class="p">??</span> <span class="mi">0</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>As you can probably guess, this ties the number of rows in the table view to the number of walks set in the currently selected dog. If there is no currently selected dog, return 0.</p>
-<p>Next, replace <code>tableView(_:cellForRowAt:)</code> with the following:</p>
+<p>正如您可能猜到的，这将表视图中的行数与当前选定的狗中设置的行走次数联系起来。 如果当前没有选择的狗，则返回0。</p>
+<p>接下来，将<code>tableView(_:cellForRowAt:)</code>替换为以下内容：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span>
   <span class="kc">_</span> <span class="n">tableView</span><span class="p">:</span> <span class="bp">UITableView</span><span class="p">,</span>
   <span class="n">cellForRowAt</span> <span class="n">indexPath</span><span class="p">:</span> <span class="n">IndexPath</span>
@@ -8521,17 +8521,17 @@
   <span class="k">return</span> <span class="n">cell</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>Only two lines of code have changed. Now, you take the date of each walk and display it in the corresponding table view cell.</p>
-<p>The <code>add(_:)</code> method still has a reference to the old <code>walks</code> array. Comment it out for now; you’ll re-implement this method in the next step:</p>
+<p>只有两行代码发生了变化。 现在，您将获取每次巡查的日期并将其显示在相应的表视图单元格中。</p>
+<p><code>add(_:)</code>方法仍然有对旧的<code>walks</code>数组的引用。 现在就把它评论出来;你将在下一步中重新实现这个方法：</p>
 <div class="highlight"><pre><span></span><code><span class="kr">@IBAction</span> <span class="kd">func</span> <span class="nf">add</span><span class="p">(</span><span class="kc">_</span> <span class="n">sender</span><span class="p">:</span> <span class="bp">UIBarButtonItem</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// walks.append(Date())</span>
   <span class="n">tableView</span><span class="p">.</span><span class="n">reloadData</span><span class="p">()</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>Build and run to make sure you have everything hooked up correctly:</p>
+<p>构建并运行以确保您已正确连接所有内容：</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/c7c5e767a5c60ca88f3501f922cd85f459002d0599b302296cbdee6f49083c18/original.png" /></p>
-<p>Hooray! If you’ve gotten this far, you’ve just inserted a dog into Core Data and are currently populating the table view with his list of walks. This list doesn’t have any walks at the moment, so the table doesn’t look very exciting.</p>
-<p>Tap the plus (+) button, and it understandably does nothing. You haven’t implemented anything underneath this control yet! Before transitioning to Core Data, <code>add(_:)</code> simply added a <code>Date</code> to an array and reloaded the table view. Re-implement it as shown below:</p>
+<p>万岁！ 如果您已经走到这一步，那么您已经将一只狗插入到<code>Core Data</code>中，并且当前正在用它的散步列表填充表视图。 这个列表目前没有任何散步，所以表看起来不是很令人兴奋。</p>
+<p>点击加号<code>(+)</code>按钮，可以理解它什么也不做。 您尚未在此控件下实现任何内容！ 在转换到<code>Core Data</code>之前，<code>add(_:)</code>只是简单地将一个<code>Date</code>添加到数组中，并重新加载了表视图。 重新实现如下：</p>
 <div class="highlight"><pre><span></span><code><span class="kr">@IBAction</span> <span class="kd">func</span> <span class="nf">add</span><span class="p">(</span><span class="kc">_</span> <span class="n">sender</span><span class="p">:</span> <span class="bp">UIBarButtonItem</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// Insert a new Walk entity into Core Data</span>
   <span class="kd">let</span> <span class="nv">walk</span> <span class="p">=</span> <span class="n">Walk</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">coreDataStack</span><span class="p">.</span><span class="n">managedContext</span><span class="p">)</span>
@@ -8552,33 +8552,33 @@
   <span class="n">tableView</span><span class="p">.</span><span class="n">reloadData</span><span class="p">()</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>The Core Data version of this method is much more complicated. First, you have to create a new <code>Walk</code> entity and set its <code>date</code> attribute to now. Next, you have to insert this walk into the currently selected dog’s list of walks.</p>
-<p>However, the walks attribute is of type <code>NSOrderedSet</code>. <code>NSOrderedSet</code> is immutable, so you first have to create a mutable copy (<code>NSMutableOrderedSet</code>), insert the new walk and <code>then</code> reset an immutable copy of this mutable ordered set back on the dog.</p>
+<p>这种方法的核心数据版本要复杂得多。 首先，您必须创建一个新的<code>Walk</code>实体，并将其<code>date</code>属性设置为<code>now</code>。 接下来，您必须将此散步插入到当前选定的狗的散步列表中。</p>
+<p>但是，<code>walks</code>属性的类型为<code>NSOrderedSet</code>。 <code>NSOrderedSet</code>是不可变的，所以你首先必须创建一个可变副本（<code>NSMutableOrderedSet</code>），插入新的<code>walk</code>，然后在<code>dog</code>上重置这个可变有序集的不可变副本。</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Is adding a new object into a to-many relationship making your head spin? Many people can sympathize, which is why <strong>Dog+CoreDataProperties</strong> contains generated accessors to the <code>walks</code> ordered set that will handle all of this for you.
-For example, you can replace the entire <code>if-let</code> statement in the last code snippet with the following:
+<p>在一个对多的关系中加入一个新的对象会让你头晕吗？ 很多人都可以理解，这就是为什么 <strong>Dog+CoreDataProperties</strong> 包含了生成的<code>walkers</code>有序集的访问器，这些访问器将为您处理所有这些。
+例如，您可以将最后一个代码片段中的整个<code>if-let</code>语句替换为以下内容：  <br />
 <div class="highlight"><pre><span></span><code><span class="n">currentDog</span><span class="p">?.</span><span class="n">addToWalks</span><span class="p">(</span><span class="n">walk</span><span class="p">)</span>
 </code></pre></div>
-Give it a try!</p>
+给予看！</p>
 </div>
-<p>Core Data can make things easier for you, though. If the relationship weren’t ordered, you’d just be able to set the <code>one</code> side of the relationship (e.g., walk.dog = currentDog) rather than the <code>many</code> side and Core Data would use the inverse relationship defined in the model editor to add the walk to the dog’s set of walks.</p>
-<p>Finally, you commit your changes to the persistent store by calling <code>saveContext()</code> on the Core Data stack and you reload the table view.</p>
-<p>Build and run the app, and tap the plus (+) button a few times.</p>
+<p>但是，核心数据可以让事情变得更容易。 如果关系不是有序的，你只可以设置关系的<code>one</code>（例如：<code>walk.dog = currentDog</code>）而不是<code>many</code>侧，<code>Core Data</code>将使用模型编辑器中定义的反向关系来将行走添加到狗的行走集合中。</p>
+<p>最后，通过在<code>Core Data</code>堆栈上调用<code>saveContext（）</code>将更改提交到持久性存储，并重新加载表视图。</p>
+<p>构建并运行应用程序，然后点击加号<code>(+)</code>按钮几次。</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/e94c35027388a4aa05413e7829226668392769573b2057707069f03c59489b25/original.png" /></p>
-<p>Great! The list of walks should now be saved in Core Data. Verify this by terminating the app in the fast app switcher and re-launching from scratch.</p>
-<h2 id="deleting-objects-from-core-data">Deleting objects from Core Data<a class="headerlink" href="#deleting-objects-from-core-data" title="Permanent link">&para;</a></h2>
-<p>Let’s say you were too trigger-friendly and tapped the plus (+) button when you didn’t mean to. You didn’t actually walk your dog, so you want to delete the walk you just added.</p>
-<p>You’ve added objects to Core Data, you’ve fetched them, modified them and saved them again. What you haven’t done yet is delete them — but you’re about to do that next.</p>
-<p>First, open <strong>ViewController.swift</strong> and add the following method to the <code>UITableViewDataSource</code> extension:</p>
+<p>太好了！ 现在应将行走列表保存在<code>Core Data</code>中。 通过在快速应用切换器中终止应用并从头开始重新启动来验证这一点。</p>
+<h2 id="_11">删除核心数据对象<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
+<p>让我们假设你太喜欢触发器了，当你不想的时候点击了加号<code>(+)</code>按钮。 您实际上并没有遛狗，因此您希望删除刚刚添加的遛狗。</p>
+<p>你已经将对象添加到核心数据中，你已经获取它们，修改它们并再次保存它们。 你还没有做的是删除它们-但你接下来要做的是删除它们。</p>
+<p>首先，打开 <strong>ViewController。swift</strong> 并在<code>UITableViewDataSource</code>扩展中添加如下方法：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="kc">_</span> <span class="n">tableView</span><span class="p">:</span> <span class="bp">UITableView</span><span class="p">,</span>
                <span class="n">canEditRowAt</span> <span class="n">indexPath</span><span class="p">:</span> <span class="n">IndexPath</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nb">Bool</span> <span class="p">{</span>
   <span class="kc">true</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>You’re going to use <code>UITableView</code>’s default behavior for deleting items: swipe left to reveal the red <strong>Delete</strong> button, then tap on it to delete.</p>
-<p>The table view calls this <code>UITableViewDataSource</code> method to ask if a particular cell is editable, and returning <code>true</code> means all the cells should be editable.</p>
-<p>Next, add the following method to the same <code>UITableViewDataSource</code> extension:</p>
+<p>您将使用<code>UITableView</code>的默认行为来删除项目：向左滑动，显示红色的 <strong>Delete</strong> 按钮，然后点击该按钮即可删除。</p>
+<p>表视图调用这个<code>UITableViewDataSource</code>方法来询问特定单元格是否可编辑，返回<code>true</code>意味着所有单元格都应可编辑。</p>
+<p>接下来，将以下方法添加到同一个<code>UITableViewDataSource</code>扩展中：</p>
 <div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span>
   <span class="kc">_</span> <span class="n">tableView</span><span class="p">:</span> <span class="bp">UITableView</span><span class="p">,</span>
   <span class="n">commit</span> <span class="n">editingStyle</span><span class="p">:</span> <span class="bp">UITableViewCell</span><span class="p">.</span><span class="n">EditingStyle</span><span class="p">,</span>
@@ -8602,29 +8602,29 @@ Give it a try!</p>
   <span class="n">tableView</span><span class="p">.</span><span class="n">deleteRows</span><span class="p">(</span><span class="n">at</span><span class="p">:</span> <span class="p">[</span><span class="n">indexPath</span><span class="p">],</span> <span class="n">with</span><span class="p">:</span> <span class="p">.</span><span class="n">automatic</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>This table view data source method is called when you tap the red <strong>Delete</strong> button. Let’s go through the code step-by-step:</p>
+<p>点击红色的<strong>Delete</strong> 按钮，调用此表视图数据源方法。 让我们一步一步地看一下代码：</p>
 <ol>
-<li>First, you get a reference to the <code>walk</code> you want to delete.</li>
-<li>Remove the walk from Core Data by calling <code>NSManagedObjectContext</code>’s <code>delete()</code>method. Core Data also takes care of removing the deleted walk from the current dog’s walks relationship.</li>
-<li>No changes are final until you save your managed object context — not even deletions!</li>
-<li>Finally, if the save operation succeeds, you animate the table view to tell the user about the deletion.</li>
+<li>首先，你得到一个你想要删除的<code>walk</code>的引用。</li>
+<li>通过调用<code>NSManagedObjectContext</code>的<code>delete()</code>方法从<code>Core Data</code>中删除遍历。 <code>Core Data</code>还负责从当前狗的行走关系中删除删除已删除的行走。</li>
+<li>在保存托管对象上下文之前，任何更改都不是最终的-甚至连删除也不是！</li>
+<li>最后，如果保存操作成功，您将对表视图进行动画处理，以告知用户有关删除的信息。</li>
 </ol>
-<p>Build and run the app one more time. You should have several walks from previous runs. Pick any and swipe to the left.</p>
+<p>再次构建并运行应用程序。 你应该从以前的跑步中走了几次。 选择任意一个，然后向左滑动。</p>
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/b2cde178a63a41183eac538353a87fb72071a2bace2e275f64a7ad335c81f79b/original.png" /></p>
-<p>Tap on the Delete button to remove the walk. Verify that the walk is actually gone by terminating the app and re-launching from scratch. The walk you just removed is gone for good. Core Data giveth and Core Data taketh away.</p>
+<p>点击删除按钮以删除漫游。 通过终止应用程序并从头开始重新启动来验证行走是否真的消失了。 你刚刚移除的走道永远消失了。 核心数据是给予的，核心数据是带走的。</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Deleting used to be one of the most “dangerous” Core Data operations. Why is this? When you remove something from Core Data, you have to delete <em>both</em> the record on disk as well as any outstanding references in code.
-Trying to access an <code>NSManagedObject</code> that had no Core Data backing store resulted in the the much-feared <code>inaccessible fault</code> Core Data crash.
-Starting with iOS 9, deletion is safer than ever. Apple introduced the property <code>shouldDeleteInaccessibleFaults</code> on <code>NSManagedObjectContext</code>, which is turned on by default. This marks bad faults as deleted and treats missing data as <code>NULL</code>/<code>nil</code>/<code>0</code>.</p>
+<p>删除曾经是最<code>dangerous</code>的核心数据操作之一。 这是为什么呢？ 当您从<code>Core Data</code>中删除某些内容时，您必须删除磁盘上的记录以及代码中任何未完成的引用。
+尝试访问没有核心数据备份存储的<code>NSManagedObject</code>会导致非常可怕的“不可访问故障”核心数据崩溃。
+从<code>iOS 9</code>开始，删除比以往任何时候都更安全。 Apple在<code>NSManagedObjectContext</code>上引入了属性<code>shouldDeleteInaccessibleFaults</code>，默认情况下该属性是打开的。 这会将错误标记为已删除，并将丢失的数据视为<code>NULL</code>/<code>nil</code>/<code>0</code>。</p>
 </div>
-<h2 id="key-points">Key points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
+<h2 id="_12">关键点<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h2>
 <ul>
-<li>The <strong>Core Data stack</strong> is made up of five classes: <code>NSManagedObjectModel</code>, <code>NSPersistentStore</code>, <code>NSPersistentStoreCoordinator</code>, <code>NSManagedObjectContext</code>and the <code>NSPersistentContainer</code> that holds everything together.</li>
-<li>The <strong>managed object model</strong> represents each object type in your app’s data model, the properties they can have, and the relationship between them.</li>
-<li>A <strong>persistent store</strong> can be backed by a SQLite database (the default), XML, a binary file or in-memory store. You can also provide your own backing store with the <strong>incremental store</strong> API.</li>
-<li>The <strong>persistent store coordinator</strong> hides the implementation details of how your persistent stores are configured and presents a simple interface for your <strong>managed object context</strong>.</li>
-<li>The <strong>managed object context</strong> manages the lifecycles of the managed objects it creates or fetches. They are responsible for fetching, editing and deleting managed objects, as well as more powerful features such as validation, faulting and inverse relationship handling.</li>
+<li><strong> Core Data stack </strong> 由五个类组成：<code>NSManagedObjectModel</code>、<code>NSPersistentStore</code>、<code>NSPersistentStoreCoordinator</code>、<code>NSManagedObjectContext</code>和<code>NSPersistentContainer</code>将所有内容保存在一起。</li>
+<li><strong> managed object mode </strong> 表示应用数据模型中的每个对象类型、它们可以拥有的属性以及它们之间的关系。</li>
+<li><strong> 持persistent store </strong> 支持<code>SQLite</code>数据库（默认）、<code>XML</code>、二进制文件或内存存储。 您也可以通过 <strong> incremental store </strong> <code>API</code>提供自己的后台存储。</li>
+<li><strong> persistent store coordinator </strong> 隐藏了您的持久化存储配置的实现细节，为您的 <strong> managed object context </strong> 提供了一个简单的接口。</li>
+<li><strong> managed object context </strong> 管理其创建或获取的托管对象的生命周期。 它们负责获取、编辑和删除托管对象，以及更强大的功能，如验证、故障和反向关系处理。</li>
 </ul>
 
 

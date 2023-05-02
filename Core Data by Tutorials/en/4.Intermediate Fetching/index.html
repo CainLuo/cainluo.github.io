@@ -8134,24 +8134,12 @@
 <p><img alt="img" src="https://assets.alexandria.raywenderlich.com/books/cdt/images/9106e81e147ebc3752f51af2741656ff36e7617816e9aba591347a8926344892/original.png" /></p>
 <p>It turns out most of the Core Data setup you had to do in the first section of the book comes ready for you to use. Below is a quick overview of the components you get in the starter project, grouped into categories:</p>
 <ul>
-<li>
-<p><strong>Seed data: seed.json</strong> is a JSON file containing real-world venue data for venues in New York City serving bubble tea. Since this is real data coming from Foursquare, the structure is more complex than previous seed data used in this book.</p>
-</li>
-<li>
-<p><strong>Data model:</strong> Click on <strong>BubbleTeaFinder.xcdatamodeld</strong> to open Xcode’s model editor. The most important entity is <code>Venue</code>. It contains attributes for a venue’s name, phone number and the number of specials it’s offering at the moment.</p>
-</li>
-</ul>
-<p>Since the JSON data is rather complex, the data model breaks down a venue’s information into other entities. These are <code>Category</code>, <code>Location</code>, <code>PriceInfo</code> and <code>Stats</code>. For example, <code>Location</code> has attributes for city, state, country, and others.</p>
-<ul>
-<li>
-<p><strong>Managed object subclasses:</strong> All the entities in your data model also have corresponding <code>NSManagedObject</code> subclasses. These are <strong>Venue+CoreDataClass.swift</strong>, <strong>Location+CoreDataClass.swift</strong>, <strong>PriceInfo+CoreDataClass.swift</strong>, <strong>Category+CoreDataClass.swift</strong> and <strong>Stats+CoreDataClass.swift</strong>. You can find these in the <strong>NSManagedObject</strong> group along with their accompanying <strong>EntityName+CoreDataProperties.swift</strong> file.</p>
-</li>
-<li>
-<p><strong>CoreDataStack</strong>: As in previous chapters, this object wraps an <code>NSPersistentContainer</code> object, which itself contains the cadre of Core Data objects known as the “stack”; the context, the model, the persistent store and the persistent store coordinator. No need to set this up — it comes ready-to-use.</p>
-</li>
-<li>
-<p><strong>View Controllers:</strong> The initial view controller that shows you the list of venues is <strong>ViewController.swift</strong>. On first launch, the initial view controller reads from <strong>seed.json</strong>, creates corresponding Core Data objects and saves them to the persistent store. Tapping the <strong>Filter</strong> button on the top-right brings up <strong>FilterViewController.swift</strong>. There’s not much going on here at the moment. You’ll add code to these two files throughout this chapter.</p>
-</li>
+<li><strong>Seed data: seed.json</strong> is a JSON file containing real-world venue data for venues in New York City serving bubble tea. Since this is real data coming from Foursquare, the structure is more complex than previous seed data used in this book.</li>
+<li><strong>Data model:</strong> Click on <strong>BubbleTeaFinder.xcdatamodeld</strong> to open Xcode’s model editor. The most important entity is <code>Venue</code>. It contains attributes for a venue’s name, phone number and the number of specials it’s offering at the moment.
+    Since the JSON data is rather complex, the data model breaks down a venue’s information into other entities. These are <code>Category</code>, <code>Location</code>, <code>PriceInfo</code> and <code>Stats</code>. For example, <code>Location</code> has attributes for city, state, country, and others.</li>
+<li><strong>Managed object subclasses:</strong> All the entities in your data model also have corresponding <code>NSManagedObject</code> subclasses. These are <strong>Venue+CoreDataClass.swift</strong>, <strong>Location+CoreDataClass.swift</strong>, <strong>PriceInfo+CoreDataClass.swift</strong>, <strong>Category+CoreDataClass.swift</strong> and <strong>Stats+CoreDataClass.swift</strong>. You can find these in the <strong>NSManagedObject</strong> group along with their accompanying <strong>EntityName+CoreDataProperties.swift</strong> file.</li>
+<li><strong>CoreDataStack</strong>: As in previous chapters, this object wraps an <code>NSPersistentContainer</code> object, which itself contains the cadre of Core Data objects known as the “stack”; the context, the model, the persistent store and the persistent store coordinator. No need to set this up — it comes ready-to-use.</li>
+<li><strong>View Controllers:</strong> The initial view controller that shows you the list of venues is <strong>ViewController.swift</strong>. On first launch, the initial view controller reads from <strong>seed.json</strong>, creates corresponding Core Data objects and saves them to the persistent store. Tapping the <strong>Filter</strong> button on the top-right brings up <strong>FilterViewController.swift</strong>. There’s not much going on here at the moment. You’ll add code to these two files throughout this chapter.</li>
 </ul>
 <p>When you first launched the sample app, you saw only static information. However, your app delegate had already read the seed data from <strong>seed.json</strong>, parsed it into Core Data objects and saved them into the persistent store.</p>
 <p>Your first task will be to fetch this data and display it in the table view. This time, you’ll do it with a twist.</p>
